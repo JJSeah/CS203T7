@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 // This annotation tells Spring that this class is a Controller
+import com.example.electric.model.Charger;
+import com.example.electric.respository.ChargerRepository;
+
 @Controller
 public class ChargerController {
 
