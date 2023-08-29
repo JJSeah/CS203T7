@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, View, Button } from 'react-native'
+import ForgetPasswordModal from "./ForgetPasswordModal"
 
 export default WelcomeScreen = ( {navigation} ) => {
 
@@ -9,11 +10,13 @@ export default WelcomeScreen = ( {navigation} ) => {
 
   const navigateToTabNavigator = () => {
     navigation.navigate('TabNavigator');
+    // return ForgetPasswordModal();
   }
 
   return (
     <View>
-      <Text>This is the welcome screen</Text>
+      <ForgetPasswordModal/>
+      {/* <Text>This is the welcome screen</Text>
       <Button
         title='Login' 
         onPress={navigateToTabNavigator}
@@ -21,7 +24,7 @@ export default WelcomeScreen = ( {navigation} ) => {
       <Button
         title='Create New Account' 
         onPress={navigateToRegisterScreen}
-      />
+      /> */}
     </View>
   );
 };
