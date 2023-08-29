@@ -1,12 +1,15 @@
 package com.example.electric.model;
 
 import jakarta.persistence.*;
-import com.example.electric.model.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name="user")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -24,7 +27,10 @@ public class User {
     private String email;
     @Column(name="password")
     private String password;
-    //No car object yet
-//    private Car[] cars;
-    //Card object not added
+    @Column(name="cars")
+    @OneToMany
+    private List<Car> cars;
+    @Column(name="card")
+    @OneToOne
+    private Card card;
 }

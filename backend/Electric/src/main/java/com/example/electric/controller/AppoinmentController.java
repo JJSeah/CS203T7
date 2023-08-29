@@ -1,14 +1,11 @@
 package com.example.electric.controller;
 
-import com.example.electric.respository.UserRepository;
-import com.example.electric.service.UserService;
+import com.example.electric.service.AppoinmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController {
+public class AppoinmentController {
     @Autowired
-    private UserService userService;
-
-
+    private AppoinmentService appoinmentService;
 }
