@@ -1,23 +1,30 @@
 import React from "react";
 import { TextInput, View, StyleSheet } from "react-native";
-import { buttonColor } from "../shared/Colors";
+import { borderColor, buttonColor, placeholderTextColor } from "../shared/Colors";
 
 export default TextField = ( { placeholder, onChangeText } ) => {
     return (
         <View>
             <TextInput
                 placeholder={placeholder}
+                placeholderTextColor={placeholderTextColor}
                 onChangeText={onChangeText}
-                style={styles}
+                style={styles.text}
             />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    fontSize: 15,
-    backgroundColor: buttonColor,
-    padding: 20,
-    margin: 15,
-    borderRadius: 10
+    text: {
+        fontSize: 15,
+        borderWidth: 3,
+        borderRadius: 10,
+        borderColor: borderColor,
+        padding: 20,
+        margin: 15,
+        borderRadius: 10,
+        fontWeight: 'bold',
+        color: 'red'
+    }
 })

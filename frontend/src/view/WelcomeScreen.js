@@ -1,19 +1,13 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image} from 'react-native';
+import { Text, View, Button, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import LogInViewController from '../viewController/LogInViewController';;
 import TextField from '../components/TextField';
+import RectangularButton from '../components/RectangularButton';
+import LinkButton from '../components/LinkButton';
 
 export default WelcomeScreen = ( { navigation } ) => {
 
   const { setEmail, setPassword, logInButtonPressed, securePasswordEntry } = LogInViewController( { navigation } )
-
-  const navigateToRegisterScreen = () => {
-    navigation.navigate('RegisterScreen');
-  }
-
-  const showForgetPasswordSheet = () => {
-    console.log("haha")
-  }
 
   return (
     <View>
@@ -24,22 +18,27 @@ export default WelcomeScreen = ( { navigation } ) => {
         onChangeText={setEmail}
       />
 
-      <TextInput
+      <TextField
         placeholder='Password'
-        onChangeText={input => setPassword(input)}
-        secureTextEntry={securePasswordEntry}
+        onChangeText={setPassword}
       />
 
-      <Button
-        title='Login' 
+      <RectangularButton
+        title="Log in"
         onPress={logInButtonPressed}
       />
 
-      <Button
-        title='Create New Account' 
-        onPress={navigateToRegisterScreen}
-      />  
+      <LinkButton
+        title='Forgotten password?'
+      />
+
+
+      <RectangularButton
+        title="Create new account"
+        onPress={() => {navigation.navigate("RegisterScreen")}}
+      />
 
     </View>
   );
 };
+
