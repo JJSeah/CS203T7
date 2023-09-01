@@ -20,6 +20,7 @@ export default WelcomeScreen = ( { navigation } ) => {
       <TextInput
         onChangeText={input => setEmail(input)}
         placeholder='Email'
+        
       />
 
       <TextInput
