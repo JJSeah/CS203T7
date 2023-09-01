@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -21,27 +21,27 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("api/v1/all")
+    @GetMapping("v1/all")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("api/v1/{id}")
+    @GetMapping("v1/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
-    @PostMapping("api/v1/")
+    @PostMapping("v1/")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-    @PutMapping("api/v1/{id}")
+    @PutMapping("v1/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         return userService.updateUser(id, updatedUser);
     }
 
-    @DeleteMapping("api/v1/{id}")
+    @DeleteMapping("v1/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
