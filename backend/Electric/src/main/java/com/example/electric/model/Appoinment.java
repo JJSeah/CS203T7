@@ -27,4 +27,7 @@ public class Appoinment {
     private Time endTime;
     @Column(name="date")
     private Date date;
+    @JoinColumn(name="station")
+    @OneToOne
+    private Station station;
 }

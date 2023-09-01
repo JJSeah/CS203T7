@@ -24,7 +24,7 @@ public class ChargerController {
     public ChargerService chargerService;
 
     @GetMapping("/station/{stationId}/chargers")
-    public List<Charger> getAllChargersAtStation(@PathVariable("stationId") String stationId ) {
+    public List<Charger> getAllChargersAtStation(@PathVariable("stationId") long stationId ) {
         return chargerService.getChargersByStation(stationId);
     }
 

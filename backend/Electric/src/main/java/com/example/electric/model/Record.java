@@ -18,17 +18,17 @@ public class Record {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private long id;
-    @Column(name="owner")
+    @JoinColumn(name="owner")
     @OneToOne
     private User owner;
-    @Column(name="car")
+    @JoinColumn(name="car")
     @OneToOne
     private Car car;
     @Column(name="time")
     private Time duration;
     @Column(name="cost")
     private double cost;
-    @Column(name="station")
+    @JoinColumn(name="station")
     @OneToOne
     private Station station;
     @Column(name="start_time")

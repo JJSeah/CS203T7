@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface ChargerRepository extends JpaRepository<Charger, Long> {
-    List<Charger> findChargersByStationId(String stationId);
+    List<Charger> findChargersByStationId(long stationId);
 }

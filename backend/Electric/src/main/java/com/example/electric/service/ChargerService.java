@@ -17,7 +17,7 @@ public class ChargerService {
         return chargerRepository.findAll();
     }
 
-    public List<Charger> getChargersByStation(String stationId) {
+    public List<Charger> getChargersByStation(long stationId) {
         return chargerRepository.findChargersByStationId(stationId);
     }
 

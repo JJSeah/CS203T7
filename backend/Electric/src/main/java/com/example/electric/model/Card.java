@@ -23,7 +23,7 @@ public class Card {
     private long number;
     @Column(name="expiry")
     private Date expiry;
-    @Column(name="owner")
+    @JoinColumn(name="owner")
     @OneToOne
     private User owner;
 

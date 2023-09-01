@@ -16,7 +16,7 @@ public class Charger {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    @Column(name="station")
+    @JoinColumn(name="station")
     @OneToOne
     private Station station;
     @Column(name="char_id")

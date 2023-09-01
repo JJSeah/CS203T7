@@ -30,7 +30,7 @@ public class User {
     @Column(name="cars")
     @OneToMany
     private List<Car> cars;
-    @Column(name="card")
+    @JoinColumn(name="card")
     @OneToOne
     private Card card;
 }
