@@ -26,6 +26,6 @@ public class Station {
     @Column(name="chargers")
     @OneToMany
     private List<Charger> chargers;
-    @Column(name="available")
-    private boolean available;
+    @Column(name="avail")
+    private boolean avail;
 }

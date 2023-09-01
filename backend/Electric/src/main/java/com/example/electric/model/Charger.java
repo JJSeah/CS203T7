@@ -23,6 +23,6 @@ public class Charger {
     private String charId;
     @Column(name="name")
     private String name;
-    @Column(name="avali")
-    private boolean avali;
+    @Column(name="avail")
+    private boolean avail;
 }
