@@ -7,11 +7,14 @@ import LinkButton from '../components/LinkButton';
 
 export default WelcomeScreen = ( { navigation } ) => {
 
-  const { setEmail, setPassword, logInButtonPressed, securePasswordEntry } = LogInViewController( { navigation } )
+  const { email, setEmail, setPassword, logInButtonPressed, securePasswordEntry, resetFields, } = LogInViewController( { navigation } )
+
+  const navigateToRegisterScreen = () => {
+    navigation.navigate("RegisterScreen")
+  }
 
   return (
     <View>
-      <Text>This is the welcome screen</Text>
 
       <TextField
         placeholder='Email'
@@ -32,10 +35,9 @@ export default WelcomeScreen = ( { navigation } ) => {
         title='Forgotten password?'
       />
 
-
       <RectangularButton
         title="Create new account"
-        onPress={() => {navigation.navigate("RegisterScreen")}}
+        onPress={navigateToRegisterScreen}
       />
 
     </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react' 
+import React, { useEffect, useState } from 'react' 
 import LogInViewModel from '../viewModels/LogInViewModel'
 
 export default LogInViewController = ( { navigation } ) => {
@@ -7,6 +7,9 @@ export default LogInViewController = ( { navigation } ) => {
     const [password, setPassword] = useState('')
     const [securePasswordEntry, setSecurePasswordEntry] = useState(true)
 
+    useEffect(() => {
+
+    });
     // const {
     //     lol
     // } = LogInViewModel()
@@ -15,12 +18,17 @@ export default LogInViewController = ( { navigation } ) => {
         navigation.navigate("TabNavigator");
     }
 
+    const resetFields = () => {
+    }
+
     return {
+        email,
         setEmail,
         setPassword,
         logInButtonPressed,
         securePasswordEntry,
-        setSecurePasswordEntry
+        setSecurePasswordEntry,
+        resetFields
     }
 
 }
