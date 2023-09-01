@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Image} from 'react-native';
 import LogInViewController from '../viewController/LogInViewController';;
+import TextField from '../components/TextField';
 
 export default WelcomeScreen = ( { navigation } ) => {
 
-  const { setEmail, setPassword, logInUser, securePasswordEntry } = LogInViewController( { navigation } )
+  const { setEmail, setPassword, logInButtonPressed, securePasswordEntry } = LogInViewController( { navigation } )
 
   const navigateToRegisterScreen = () => {
     navigation.navigate('RegisterScreen');
@@ -17,10 +18,10 @@ export default WelcomeScreen = ( { navigation } ) => {
   return (
     <View>
       <Text>This is the welcome screen</Text>
-      <TextInput
-        onChangeText={input => setEmail(input)}
+
+      <TextField
         placeholder='Email'
-        
+        onChangeText={setEmail}
       />
 
       <TextInput
@@ -29,10 +30,9 @@ export default WelcomeScreen = ( { navigation } ) => {
         secureTextEntry={securePasswordEntry}
       />
 
-
       <Button
         title='Login' 
-        onPress={logInUser}
+        onPress={logInButtonPressed}
       />
 
       <Button

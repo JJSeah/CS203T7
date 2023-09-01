@@ -7,19 +7,18 @@ export default LogInViewController = ( { navigation } ) => {
     const [password, setPassword] = useState('')
     const [securePasswordEntry, setSecurePasswordEntry] = useState(true)
 
-    const {
-        lol
-    } = LogInViewModel()
+    // const {
+    //     lol
+    // } = LogInViewModel()
 
-
-    const logInUser = () => {
+    const logInButtonPressed = () => {
         navigation.navigate("TabNavigator");
     }
 
     return {
         setEmail,
         setPassword,
-        logInUser,
+        logInButtonPressed,
         securePasswordEntry,
         setSecurePasswordEntry
     }
