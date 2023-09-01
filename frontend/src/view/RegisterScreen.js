@@ -1,14 +1,16 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button, TextInput} from 'react-native'
+import { StyleSheet, Text, View, Button, TextInput, ScrollView} from 'react-native'
 import TextField from '../components/TextField'
 import RegisterViewController from '../viewController/RegisterViewController'
+import PasswordField from '../components/PasswordField'
 
 export default RegisterScreen = ( { navigation} ) => {
 
   const {setFirstName, setLastName, setUsername, setEmail, setPassword, setSeePassword, setCheckValidEmail} = RegisterViewController( { navigation } )
 
   return (
-    <View style = {styles.container}>
+
+    <ScrollView style = {styles.container}>
       <View style = {styles.header}>
         <Text style={styles.boldText}>Sign Up</Text>
       </View>
@@ -29,8 +31,13 @@ export default RegisterScreen = ( { navigation} ) => {
         <TextField
           placeholder = 'Email'
           onChangeText={setEmail}/>  
+
+        <PasswordField
+          placeholder = 'Password'
+          onChangeText={setPassword}/>
     </View>
-    </View>
+    </ScrollView>
+ 
   )
 }
 
