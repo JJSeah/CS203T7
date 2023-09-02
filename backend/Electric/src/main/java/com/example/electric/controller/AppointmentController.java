@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/appointments")
+@RequestMapping("/api/v1/appointment")
 public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
