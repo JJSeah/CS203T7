@@ -7,14 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalTime;
 
 @Entity
-@Table(name="appoinment")
+@Table(name="appointment")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Appoinment {
+public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")

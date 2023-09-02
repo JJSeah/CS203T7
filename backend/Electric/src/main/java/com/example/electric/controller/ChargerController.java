@@ -18,7 +18,7 @@ import com.example.electric.model.Charger;
 import com.example.electric.respository.ChargerRepository;
 
 @RestController
-@RequestMapping("/charger")
+@RequestMapping("/api/v1/charger")
 public class ChargerController {
     @Autowired
     public ChargerService chargerService;
