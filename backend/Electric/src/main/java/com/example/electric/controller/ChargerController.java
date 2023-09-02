@@ -23,7 +23,12 @@ public class ChargerController {
     @Autowired
     public ChargerService chargerService;
 
-    @GetMapping("/station/{stationId}/chargers")
+    @GetMapping
+    public List<Charger> getAllChargers() {
+        return chargerService.getAllChargers();
+    }
+
+    @GetMapping("/station/{stationId}")
     public List<Charger> getAllChargersAtStation(@PathVariable("stationId") long stationId ) {
         return chargerService.getChargersByStation(stationId);
     }
