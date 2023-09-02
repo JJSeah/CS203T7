@@ -1,6 +1,8 @@
 package com.example.electric.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +25,12 @@ public class User {
     private String lastName;
     @Column(name="username")
     private String username;
-    @Column(name="email")
+
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", flags = Pattern.Flag.UNICODE_CASE)
+    @Column(unique = true, name = "Email")
     private String email;
+
     @Column(name="password")
     private String password;
     @Column(name="cars")
@@ -33,4 +39,9 @@ public class User {
     @JoinColumn(name="card")
     @OneToOne
     private Card card;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

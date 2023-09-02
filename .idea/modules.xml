@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/CS203T7.iml" filepath="$PROJECT_DIR$/.idea/CS203T7.iml" />
-      <module fileurl="file://$PROJECT_DIR$/backend/Electric/Electric.iml" filepath="$PROJECT_DIR$/backend/Electric/Electric.iml" />
     </modules>
   </component>
 </project>
