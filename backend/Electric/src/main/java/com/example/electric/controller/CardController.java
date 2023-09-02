@@ -1,13 +1,10 @@
 package com.example.electric.controller;
 
 import com.example.electric.model.Card;
-import com.example.electric.model.User;
-import com.example.electric.respository.CardRepository;
 import com.example.electric.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
