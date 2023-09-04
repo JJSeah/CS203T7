@@ -1,5 +1,5 @@
-include ':app'
 rootProject.name = 'frontend'
+include ':app'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 includeBuild('../node_modules/@react-native/gradle-plugin')
 
@@ -15,4 +15,3 @@ File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/andro
 include (':react-native-safe-area-context')
 project(':react-native-safe-area-context').projectDir = new 
 File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
-include ':app'

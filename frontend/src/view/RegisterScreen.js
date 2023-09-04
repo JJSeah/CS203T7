@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   textFailed:{
     color: 'red', 
     fontSize: 15, 
-    fontWeight: bold, 
+    fontWeight: 'bold', 
   }
 
 })
