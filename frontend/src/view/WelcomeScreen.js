@@ -4,6 +4,7 @@ import LogInViewController from '../viewController/LogInViewController';;
 import TextField from '../components/TextField';
 import RectangularButton from '../components/RectangularButton';
 import LinkButton from '../components/LinkButton';
+import PasswordField from '../components/PasswordField';
 
 export default WelcomeScreen = ( { navigation } ) => {
 
