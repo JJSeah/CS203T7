@@ -7,11 +7,10 @@ export default RegisterViewController = ( { navigation } ) => {
   const [lastName, setLastName] = useState(""); 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState(""); 
-  const [checkValidEmail, setCheckValidEmail] = useState(false)
+  const [checkValidEmail, setCheckValidEmail] = useState(false);
   const [password, setPassword] = useState("");
-  const [seePassword, setSeePassword] = useState(true)
-
-
+  const [seePassword, setSeePassword] = useState(true);
+  const [checkValidPassword, setCheckValidPassword] = useState(false);
 
 
   return {
@@ -21,7 +20,8 @@ export default RegisterViewController = ( { navigation } ) => {
       setEmail,
       setPassword,
       setCheckValidEmail,
-      setSeePassword
+      setSeePassword, 
+      setCheckValidPassword
   }
 
 }

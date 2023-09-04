@@ -1,12 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button, TextInput, ScrollView} from 'react-native'
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity} from 'react-native'
 import TextField from '../components/TextField'
 import RegisterViewController from '../viewController/RegisterViewController'
 import PasswordField from '../components/PasswordField'
 
-export default RegisterScreen = ( { navigation} ) => {
+export default RegisterScreen = ( { navigation } ) => {
 
-  const {setFirstName, setLastName, setUsername, setEmail, setPassword, setSeePassword, setCheckValidEmail} = RegisterViewController( { navigation } )
+  const {setFirstName, setLastName, setUsername, setEmail, setCheckValidEmail, setPassword, setSeePassword, setCheckValidPassword} = RegisterViewController( { navigation } )
 
   return (
 
@@ -30,12 +30,21 @@ export default RegisterScreen = ( { navigation} ) => {
 
         <TextField
           placeholder = 'Email'
-          onChangeText={setEmail}/>  
+          onChangeText={setEmail => handleCheckEmail(setEmail)}/>  
+      </View> 
 
+      {checkValidEmail ? <Text style={styles.textFailed}>Email format is incorrect.</Text>
+      : <Text style={styles.textFailed} ></Text>} 
+
+      <View>
         <PasswordField
           placeholder = 'Password'
-          onChangeText={setPassword}/>
-    </View>
+          onChangeText={setPassword => handleCheckPassword(setPassword)}/>
+      </View>
+
+      {checkValidPassword ? <Text style= {styles.textFailed}>checkValidityPassword(setPassWord)</Text>
+      : <Text style={styles.textFailed} ></Text>}
+
     </ScrollView>
  
   )
@@ -60,5 +69,10 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical : 20,
   }, 
+  textFailed:{
+    color: 'red', 
+    fontSize: 15, 
+    fontWeight: bold, 
+  }
 
 })

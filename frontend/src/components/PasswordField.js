@@ -3,30 +3,27 @@ import { View, Image, TextInput, StyleSheet, TouchableOpacity }  from 'react-nat
 import { borderColor, placeholderTextColor } from "../shared/Colors";
 import RegisterViewController from '../viewController/RegisterViewController';
 const hidePasswordImagePath = "../../assets/images/hidePassword.png"
-const showPasswordImagePath = "../../assets/images/hidePassword.png" 
+const showPasswordImagePath = "../../assets/images/showPassword.png" 
 
+export default PasswordField = ( {placeholder, onChangeText} ) => {
 
-export default PasswordField = ( {placeholder, onChangeText, seePassword, setSeePassword} ) => {
-
-    // const 
     return (
         <View>
             <TextInput 
             style = {styles.input}
             placeholder= {placeholder}
-            placeholderTextColor={placeholderTextColor}
-            onChangeText={onChangeText}   
+            placeholderTextColor={placeholderTextColor} 
             secureTextEntry = {seePassword}
+            onChangeText={onChangeText} 
             />
             <TouchableOpacity 
-             onPress={() => setSeePassword(!seePassword)}>
-                <Image source = {seePassword ? require('../../assets/images/hidePassword.png') 
-                : require('../../assets/images/hidePassword.png') } 
-            
-                style={styles.icon}
-             />
+             onPress={() => setSeePassword(!seePassword)} style={styles.icon}>
+                <View>
+                    <Image source = {seePassword ? "showPasswordImagePath"
+                                    : "hidePasswordImagePath" } size={20} color={'#333'}        
+                    />
+                </View> 
             </TouchableOpacity>
-      
         </View>
 
     ) 
@@ -42,15 +39,13 @@ const styles = StyleSheet.create({
         margin: 15,
         borderRadius: 10,
         fontWeight: 'bold',
-        color: 'red'
+        color: 'red',
+        flexDirection: 'row', 
     }, 
-    icon: {
-        size: 10,
-        color: 'black',  
-        marginRight: 10, 
-        
+    icon: { 
+        position: 'absolute',
+        right: 20, 
+        top: 8,
     }
-
-
 
 })

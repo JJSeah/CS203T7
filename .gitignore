@@ -13,6 +13,7 @@
 # Package Files #
 *.jar
 !frontend/android/gradle/wrapper/gradle-wrapper.jar
+frontend/android/local.properties
 *.war
 *.nar
 *.ear
