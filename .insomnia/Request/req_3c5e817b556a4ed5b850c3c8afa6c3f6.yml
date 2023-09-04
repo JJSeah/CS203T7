@@ -1,0 +1,34 @@
+_id: req_3c5e817b556a4ed5b850c3c8afa6c3f6
+type: Request
+parentId: fld_10ff34ec52b34231aefca350c889830b
+modified: 1693568331009
+created: 1693567954937
+url: "{{ _.base_url }}/user/v1/3"
+name: updateUser
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+        "firstName": "DANIEL",
+        "lastName": "TA",
+        "username": "johndoe",
+        "email": "johndoe@example.com",
+        "password": "mysecretpassword"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567954937
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

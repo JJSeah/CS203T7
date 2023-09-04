@@ -1,0 +1,23 @@
+_id: req_d451e039c0f94cb6b3a69aa70eac7063
+type: Request
+parentId: fld_b55307f47b3b42e89ecd0be72f0945b7
+modified: 1693568383382
+created: 1693568342922
+url: "{{ _.base_url }}/stations/v1/1"
+name: deleteStation
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693568041143
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
