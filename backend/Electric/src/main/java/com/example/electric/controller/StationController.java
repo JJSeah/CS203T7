@@ -18,27 +18,27 @@ public class StationController {
         this.stationService = stationService;
     }
 
-    @GetMapping("/v1/all")
+    @GetMapping("/all")
     public List<Station> getAllStations() {
         return stationService.getAllStations();
     }
 
-    @GetMapping("/v1/{id}")
+    @GetMapping("/{id}")
     public Station getStationById(@PathVariable Long id) {
         return stationService.getStationById(id);
     }
 
-    @PostMapping("/v1")
+    @PostMapping
     public Station createStation(@RequestBody Station station) {
         return stationService.createStation(station);
     }
 
-    @PutMapping("/v1/{id}")
+    @PutMapping("/{id}")
     public Station updateStation(@PathVariable Long id, @RequestBody Station updatedStation) {
         return stationService.updateStation(id, updatedStation);
     }
 
-    @DeleteMapping("/v1/{id}")
+    @DeleteMapping("/{id}")
     public void deleteStation(@PathVariable Long id) {
         stationService.deleteStation(id);
     }

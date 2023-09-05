@@ -18,27 +18,27 @@ public class RecordController {
         this.recordService = recordService;
     }
 
-    @GetMapping("v1/all")
+    @GetMapping("/all")
     public List<Record> getAllRecords() {
         return recordService.getAllRecords();
     }
 
-    @GetMapping("v1/{id}")
+    @GetMapping("/{id}")
     public Record getRecordById(@PathVariable Long id) {
         return recordService.getRecordById(id);
     }
 
-    @PostMapping("v1/")
+    @PostMapping
     public Record createRecord(@RequestBody Record record) {
         return recordService.createRecord(record);
     }
 
-    @PutMapping("v1/{id}")
+    @PutMapping("/{id}")
     public Record updateRecord(@PathVariable Long id, @RequestBody Record updatedRecord) {
         return recordService.updateRecord(id, updatedRecord);
     }
 
-    @DeleteMapping("v1/{id}")
+    @DeleteMapping("/{id}")
     public void deleteRecord(@PathVariable Long id) {
         recordService.deleteRecord(id);
     }

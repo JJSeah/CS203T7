@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/card")
+@RequestMapping("api/card")
 public class CardController {
     @Autowired
     private CardService cardService;
@@ -29,17 +29,17 @@ public class CardController {
         return cardService.getCardByOwner(userId);
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public Card addCard(@RequestBody Card card) {
         return cardService.addCard(card);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public Card updateCard(@RequestBody Card card, long id) {
         return cardService.updateCard(card, id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteCard(@PathVariable("id") long id) {
         cardService.deleteCard(id);
     }

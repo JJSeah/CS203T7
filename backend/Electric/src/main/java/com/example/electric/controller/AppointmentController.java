@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/appointment")
+@RequestMapping("/api/appointment")
 public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
@@ -29,17 +29,17 @@ public class AppointmentController {
         return appointmentService.getAllAppointmentsAtStation(stationId);
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public Appointment addAppointment(@RequestBody Appointment appointment) {
         return appointmentService.addAppointment(appointment);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public Appointment updateAppointment(@RequestBody Appointment updatedAppointment, @PathVariable("id") long id) {
         return appointmentService.updateAppointment(updatedAppointment, id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteAppointment(@PathVariable("id") long id) {
         appointmentService.deleteAppointment(id);
     }

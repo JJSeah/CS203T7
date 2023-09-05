@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.electric.model.Charger;
 
 @RestController
-@RequestMapping("/api/v1/charger")
+@RequestMapping("/api/charger")
 public class ChargerController {
     @Autowired
     public ChargerService chargerService;
@@ -31,17 +31,17 @@ public class ChargerController {
         return chargerService.getChargerById(chargerId);
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public long addCharger(@RequestBody Charger charger) {
         return chargerService.addCharger(charger);
     }
 
-    @PutMapping("/update/{chargerId}")
+    @PutMapping("/{chargerId}")
     public void updateCharger(@RequestBody Charger charger, @PathVariable("chargerId") long chargerId) {
         chargerService.updateCharger(charger, chargerId);
     }
 
-    @DeleteMapping("/delete/{chargerId}")
+    @DeleteMapping("/{chargerId}")
     public void deleteCharger(@PathVariable("chargerId") long chargerId) {
         chargerService.deleteCharger(chargerId);
     }
