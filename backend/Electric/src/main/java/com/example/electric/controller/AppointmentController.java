@@ -1,5 +1,7 @@
 package com.example.electric.controller;
 
+import com.example.electric.error.ErrorCode;
+import com.example.electric.exception.AppointmentNotFoundException;
 import com.example.electric.model.Appointment;
 import com.example.electric.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class AppointmentController {
 
     @GetMapping("/{appointmentId}")
     public Optional<Appointment> getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
+        if (!appointmentService.getAppointmentById(appointmentId).isPresent()) {
+            throw new AppointmentNotFoundException(ErrorCode.E1002);
+        }
         return appointmentService.getAppointmentById(appointmentId);
     }
 
