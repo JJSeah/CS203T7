@@ -10,7 +10,7 @@ export default SettingScreen = ( {navigation} ) => {
 
   return (
     <View>
-      <Text>This is the setting screen</Text>
+      <Text>Hello my Name is justin and I am doing settings</Text>
       <Button
         title="Log out"
         onPress={console.logOut}
