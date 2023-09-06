@@ -18,7 +18,7 @@ export default WelcomeScreen = ( { navigation } ) => {
     <View>
 
       <TextField
-        placeholder='Email'
+        placeholder='LOLOLOLLeong'
         onChangeText={setEmail}
       />
 
