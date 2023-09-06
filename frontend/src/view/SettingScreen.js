@@ -10,7 +10,9 @@ export default SettingScreen = ( {navigation} ) => {
 
   return (
     <View>
-      <Text>Hello my Name is justin and I am doing settings</Text>
+      <Text>Hello my Name is justin and let me code pls
+        I am so tired of this shit not running
+      </Text>
       <Button
         title="Log out"
         onPress={console.logOut}
