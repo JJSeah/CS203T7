@@ -5,6 +5,7 @@ import com.example.electric.model.User;
 import com.example.electric.model.request.LoginReq;
 import com.example.electric.model.response.ErrorRes;
 import com.example.electric.model.response.LoginRes;
+import com.example.electric.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,10 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/auth")
@@ -25,6 +23,7 @@ public class AuthController {
 
 
     private JwtUtil jwtUtil;
+    private UserService userService;
     public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -53,4 +52,10 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
+    @PostMapping("/signup")
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
+    }
+
 }
