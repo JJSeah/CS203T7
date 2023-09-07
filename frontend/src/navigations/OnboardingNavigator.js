@@ -19,11 +19,6 @@ const MyStack = () => {
                 component={RegisterScreen}
             />
 
-            <Stack.Screen
-                name="TabNavigator"
-                component={TabNavigator} 
-            />
-
         </Stack.Navigator>
     );
 };
