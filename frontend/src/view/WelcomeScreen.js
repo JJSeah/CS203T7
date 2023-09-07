@@ -1,14 +1,18 @@
-import React from 'react';
-import { Text, View, Button, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import LogInViewController from '../viewController/LogInViewController';;
+import React, { useContext } from 'react';
+import { Button, View } from 'react-native';
+import LogInViewController from '../viewController/LogInViewController';
 import TextField from '../components/TextField';
 import RectangularButton from '../components/RectangularButton';
 import LinkButton from '../components/LinkButton';
 import PasswordField from '../components/PasswordField';
+import { AuthContext } from '../context/AuthContext';
+
 
 export default WelcomeScreen = ( { navigation } ) => {
 
-  const { email, setEmail, setPassword, logInButtonPressed, securePasswordEntry, resetFields, } = LogInViewController( { navigation } )
+  const { setEmail, setPassword, logInButtonPressed } = LogInViewController ( { navigation } )
+   
+  
 
   const navigateToRegisterScreen = () => {
     navigation.navigate("RegisterScreen")
@@ -18,7 +22,7 @@ export default WelcomeScreen = ( { navigation } ) => {
     <View>
 
       <TextField
-        placeholder='Email'
+        placeholder='LOL'
         onChangeText={setEmail}
       />
 
@@ -45,3 +49,4 @@ export default WelcomeScreen = ( { navigation } ) => {
   );
 };
 
+ 

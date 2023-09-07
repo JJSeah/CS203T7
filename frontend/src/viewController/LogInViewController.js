@@ -1,34 +1,31 @@
-import React, { useEffect, useState } from 'react' 
-import LogInViewModel from '../viewModels/LogInViewModel'
+import React, { useContext, useState } from 'react' 
+import { AuthContext } from '../context/AuthContext'
 
 export default LogInViewController = ( { navigation } ) => {
-
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [securePasswordEntry, setSecurePasswordEntry] = useState(true)
 
-    useEffect(() => {
+    const { login } = useContext(AuthContext)
 
-    });
-    // const {
-    //     lol
-    // } = LogInViewModel()
 
     const logInButtonPressed = () => {
-        navigation.navigate("TabNavigator");
+        login()
     }
 
     const resetFields = () => {
     }
 
     return {
-        email,
-        setEmail,
+        email, 
+        setEmail, 
+        password, 
         setPassword,
-        logInButtonPressed,
+        logInButtonPressed, 
         securePasswordEntry,
-        setSecurePasswordEntry,
-        resetFields
-    }
+        logInButtonPressed
+    };
 
 }
+
