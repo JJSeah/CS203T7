@@ -1,7 +1,7 @@
 package com.example.electric.exceptionhandling;
 
 import com.example.electric.dto.ErrorResponse;
-import com.example.electric.exception.AppointmentNotFoundException;
+import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.exception.ObjectAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +16,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(AppointmentNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleAppointmentNotFound(AppointmentNotFoundException e) {
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAppointmentNotFound(ObjectNotFoundException e) {
         ErrorResponse response = new ErrorResponse(e.getErrorCode(),e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }

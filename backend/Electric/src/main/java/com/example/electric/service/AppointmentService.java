@@ -1,7 +1,5 @@
 package com.example.electric.service;
 
-import com.example.electric.error.ErrorCode;
-import com.example.electric.exception.AppointmentNotFoundException;
 import com.example.electric.model.Appointment;
 import com.example.electric.respository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

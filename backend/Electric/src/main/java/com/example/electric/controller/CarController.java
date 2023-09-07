@@ -1,5 +1,7 @@
 package com.example.electric.controller;
 
+import com.example.electric.error.ErrorCode;
+import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Car;
 import com.example.electric.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class CarController {
 
     @GetMapping("/{id}")
     public Optional<Car> getCarById(@PathVariable("id") long id) {
+        if (!carService.getCarById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return carService.getCarById(id);
     }
 
@@ -36,11 +41,17 @@ public class CarController {
 
     @PutMapping("/{id}")
     public Car updateCar(@RequestBody Car updatedCar, @PathVariable("id") long id) {
+        if (!carService.getCarById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return carService.updateCar(updatedCar, id);
     }
 
     @DeleteMapping("/{id}")
     public void deleteCar(@PathVariable("id") long id) {
+        if (!carService.getCarById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         carService.deleteCar(id);
     }
 }

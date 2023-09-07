@@ -1,5 +1,7 @@
 package com.example.electric.controller;
 
+import com.example.electric.error.ErrorCode;
+import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Station;
 import com.example.electric.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class StationController {
 
     @GetMapping("/{id}")
     public Station getStationById(@PathVariable Long id) {
+        if (stationService.getStationById(id) == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return stationService.getStationById(id);
     }
 
@@ -35,11 +40,17 @@ public class StationController {
 
     @PutMapping("/{id}")
     public Station updateStation(@PathVariable Long id, @RequestBody Station updatedStation) {
+        if (stationService.getStationById(id) == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return stationService.updateStation(id, updatedStation);
     }
 
     @DeleteMapping("/{id}")
     public void deleteStation(@PathVariable Long id) {
+        if (stationService.getStationById(id) == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         stationService.deleteStation(id);
     }
 }

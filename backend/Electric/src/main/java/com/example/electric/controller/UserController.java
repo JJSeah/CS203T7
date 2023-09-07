@@ -1,5 +1,7 @@
 package com.example.electric.controller;
 
+import com.example.electric.error.ErrorCode;
+import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.User;
 import com.example.electric.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
+        if (userService.getUserById(id) == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return userService.getUserById(id);
     }
 
@@ -37,11 +42,17 @@ public class UserController {
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        if (userService.getUserById(id) == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return userService.updateUser(id, updatedUser);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
+        if (userService.getUserById(id) == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         userService.deleteUser(id);
     }
 

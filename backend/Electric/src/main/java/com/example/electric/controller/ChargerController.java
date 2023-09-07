@@ -3,6 +3,8 @@ package com.example.electric.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.electric.error.ErrorCode;
+import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.service.ChargerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,9 @@ public class ChargerController {
 
     @GetMapping("/{chargerId}")
     public Optional<Charger> getChargerById(@PathVariable("chargerId") long chargerId) {
+        if (!chargerService.getChargerById(chargerId).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return chargerService.getChargerById(chargerId);
     }
 
@@ -38,11 +43,17 @@ public class ChargerController {
 
     @PutMapping("/{chargerId}")
     public void updateCharger(@RequestBody Charger charger, @PathVariable("chargerId") long chargerId) {
+        if (!chargerService.getChargerById(chargerId).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         chargerService.updateCharger(charger, chargerId);
     }
 
     @DeleteMapping("/{chargerId}")
     public void deleteCharger(@PathVariable("chargerId") long chargerId) {
+        if (!chargerService.getChargerById(chargerId).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         chargerService.deleteCharger(chargerId);
     }
 }
