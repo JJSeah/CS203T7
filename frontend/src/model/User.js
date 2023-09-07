@@ -6,10 +6,20 @@ export const UserProvider = ( { children } ) => {
 
     const [ userToken, setUserToken ] = useState(null);
 
+    const logInUser = () => {
+        // setUserToken("token")
+    }
+
+    const logOutUser = () => {
+        setUserToken(null);
+    }
+
 
     return (
-        <UserContext.Provider>
-            {children}
+        <UserContext.Provider 
+            value={{ userToken, logInUser }}
+        >
+            { children }
         </UserContext.Provider>
     );
 }

@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../model/User";
 
 export default LogInViewController = ( { navigation } ) => {
         
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
+    
+    const { logInUser } = useContext(UserContext);
 
     const logInButtonPressed = () => {
-        console.log("Log in button pressed")
+        console.log("Log in button pressed");
         navigation.navigate("HomeNavigator");
+
+        logInUser();
     }
     
     const registerButtonPressed = () => {
@@ -21,6 +26,7 @@ export default LogInViewController = ( { navigation } ) => {
     }
 
     return {
+        isLoading,
         setEmail,
         setPassword,
         logInButtonPressed,

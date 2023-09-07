@@ -1,16 +1,19 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useContext } from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
 import CustomLongButton from '../components/CustomLongButton';
 import CustomTextField from '../components/CustomTextField';
 import LogInScreenViewController from '../viewController/LogInScreenViewController';
+import { UserContext } from '../model/User';
 
 export default LogInScreen = ( { navigation } ) => {
   
-  const { setEmail, setPassword, logInButtonPressed, forgotPasswordButtonPressed, registerButtonPressed } = LogInScreenViewController( { navigation } );
-
+  const { isLoading, setEmail, setPassword, logInButtonPressed, forgotPasswordButtonPressed, registerButtonPressed } = LogInScreenViewController( { navigation } );
+  const { userToken } = useContext(UserContext);
 
   return (
     <View>
+
+      <Text>{userToken}</Text>      
 
       <CustomTextField
         placeholder="Email"

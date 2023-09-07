@@ -10,6 +10,7 @@ const Stack = createNativeStackNavigator();
 
 export default AppStack = () => {
 
+
     return (
         <Stack.Navigator>
 
