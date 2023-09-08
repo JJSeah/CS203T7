@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import CustomLongButton from '../components/CustomLongButton';
 import HomeScreenViewController from '../viewController/HomeScreenViewController';
+import { UserContext } from '../model/User';
 
 export default HomeScreen = ( { navigation } ) => {
 
   const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed } = HomeScreenViewController( { navigation} );
+
+  const { logOutUser } = useContext(UserContext);
+
 
   return (
     <View>
@@ -24,6 +28,11 @@ export default HomeScreen = ( { navigation } ) => {
       <CustomLongButton
         title="Automate booking"
         onPress={automateBookingButtonPressed}
+      />
+
+      <CustomLongButton
+        title="Log out user" 
+        onPress={logOutUser}
       />
 
     </View>

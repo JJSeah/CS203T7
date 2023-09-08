@@ -7,7 +7,7 @@ export const UserProvider = ( { children } ) => {
     const [ userToken, setUserToken ] = useState(null);
 
     const logInUser = () => {
-        // setUserToken("token")
+        setUserToken("token")
     }
 
     const logOutUser = () => {
@@ -17,7 +17,7 @@ export const UserProvider = ( { children } ) => {
 
     return (
         <UserContext.Provider 
-            value={{ userToken, logInUser }}
+            value={{ userToken, logInUser, logOutUser }}
         >
             { children }
         </UserContext.Provider>

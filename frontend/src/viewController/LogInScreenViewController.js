@@ -11,8 +11,6 @@ export default LogInViewController = ( { navigation } ) => {
 
     const logInButtonPressed = () => {
         console.log("Log in button pressed");
-        navigation.navigate("HomeNavigator");
-
         logInUser();
     }
     

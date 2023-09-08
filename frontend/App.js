@@ -1,11 +1,18 @@
 import { UserProvider } from './src/model/User';
-import OnboardingNavigator from './src/navigation/OnboardingNavigation'
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
 
   return (
     <UserProvider>
-      <OnboardingNavigator/>
+
+      <NavigationContainer>
+
+        <AppNavigator/> 
+
+      </NavigationContainer>
+
     </UserProvider>
   );
 

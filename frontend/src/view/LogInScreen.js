@@ -11,9 +11,7 @@ export default LogInScreen = ( { navigation } ) => {
   const { userToken } = useContext(UserContext);
 
   return (
-    <View>
-
-      <Text>{userToken}</Text>      
+    <View>   
 
       <CustomTextField
         placeholder="Email"
