@@ -14,7 +14,7 @@ export default LogInViewController = ( { navigation } ) => {
         logIn();
     }
     
-    const registerButtonPressed = () => {
+    const makeNewAccountButtonPressed  = () => {
         console.log("Register button pressed")
         navigation.navigate("RegisterScreen");
     }
@@ -28,7 +28,7 @@ export default LogInViewController = ( { navigation } ) => {
         setEmail,
         setPassword,
         logInButtonPressed,
-        registerButtonPressed,
+        makeNewAccountButtonPressed,
         forgotPasswordButtonPressed
     };
 
