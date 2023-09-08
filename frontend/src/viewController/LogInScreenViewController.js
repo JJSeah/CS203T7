@@ -7,11 +7,11 @@ export default LogInViewController = ( { navigation } ) => {
     const [ password, setPassword ] = useState("");
     const [ isLoading, setIsLoading ] = useState(true);
     
-    const { logInUser } = useContext(UserContext);
+    const { logIn } = useContext(UserContext);
 
     const logInButtonPressed = () => {
         console.log("Log in button pressed");
-        logInUser();
+        logIn();
     }
     
     const registerButtonPressed = () => {

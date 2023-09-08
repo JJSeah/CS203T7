@@ -6,18 +6,18 @@ export const UserProvider = ( { children } ) => {
 
     const [ userToken, setUserToken ] = useState(null);
 
-    const logInUser = () => {
+    const logIn = () => {
         setUserToken("token")
     }
 
-    const logOutUser = () => {
+    const logOut = () => {
         setUserToken(null);
     }
 
 
     return (
         <UserContext.Provider 
-            value={{ userToken, logInUser, logOutUser }}
+            value={{ userToken, logIn, logOut }}
         >
             { children }
         </UserContext.Provider>

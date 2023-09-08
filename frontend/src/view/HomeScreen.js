@@ -8,8 +8,7 @@ export default HomeScreen = ( { navigation } ) => {
 
   const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed } = HomeScreenViewController( { navigation} );
 
-  const { logOutUser } = useContext(UserContext);
-
+  const { logOut } = useContext(UserContext);
 
   return (
     <View>
@@ -32,7 +31,7 @@ export default HomeScreen = ( { navigation } ) => {
 
       <CustomLongButton
         title="Log out user" 
-        onPress={logOutUser}
+        onPress={logOut}
       />
 
     </View>
