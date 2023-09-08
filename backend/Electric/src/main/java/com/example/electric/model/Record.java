@@ -18,23 +18,34 @@ public class Record {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private long id;
-    @JoinColumn(name="owner")
-    @OneToOne
+
+    //link to user 
+    @ManyToOne
+    @JoinColumn(name="owner.id")
     private User owner;
-    @JoinColumn(name="car")
-    @OneToOne
+
+    //link to car
+    @ManyToOne
+    @JoinColumn(name="car.id")
     private Car car;
+
     @Column(name="time")
     private Time duration;
     @Column(name="cost")
     private double cost;
+
     @JoinColumn(name="station")
     @OneToOne
     private Station station;
+    
     @Column(name="start_time")
     private Time startTime;
     @Column(name="end_time")
     private Time endTime;
     @Column(name="date")
     private Date date;
+
+    //link to appointment 
+    @OneToOne(mappedBy = "record", cascade = CascadeType.ALL)
+    private Appointment appointment;
 }

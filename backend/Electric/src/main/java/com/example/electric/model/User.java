@@ -31,17 +31,31 @@ public class User {
     @Column(unique = true, name = "Email")
     private String email;
 
-    @Column(name="password")
-    private String password;
+@Column(name="password")
+private String password;
+
+    //link to cars
     @Column(name="cars")
-    @OneToMany
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Car> cars;
-    @JoinColumn(name="card")
-    @OneToOne
-    private Card card;
+
+    //link to Credit card 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Card> card;
+
+    //link to appointment
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Appointment> appointment;
+
+    //link to record 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Record> records;
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
+
+
+   
 }

@@ -16,13 +16,18 @@ public class Charger {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    @JoinColumn(name="station")
-    @OneToOne
-    private Station station;
+
+    
     @Column(name="char_id")
     private String charId;
     @Column(name="name")
     private String name;
     @Column(name="avail")
     private boolean avail;
+
+    //Link to Station
+    @ManyToOne
+    @JoinColumn(name="station_id")
+    private Station station;
+
 }

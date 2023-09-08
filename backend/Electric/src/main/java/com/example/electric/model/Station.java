@@ -23,9 +23,12 @@ public class Station {
     private double latitude;
     @Column(name="longitude")
     private double longitude;
-    @Column(name="chargers")
-    @OneToMany
-    private List<Charger> chargers;
+
     @Column(name="avail")
     private boolean avail;
+
+    //link to charger
+    @OneToMany (mappedBy = "station", cascade = CascadeType.ALL)
+    private List<Charger> chargers;
+    
 }

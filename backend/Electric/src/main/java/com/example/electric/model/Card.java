@@ -23,8 +23,10 @@ public class Card {
     private long number;
     @Column(name="expiry")
     private Date expiry;
-    @JoinColumn(name="owner")
-    @OneToOne
+
+    //link to owner
+    @ManyToOne
+    @JoinColumn(name="owner.id")
     private User owner;
 
 }

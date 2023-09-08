@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.*;
 
 @Entity
 @Table(name="car")
@@ -15,9 +16,6 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private long id;
-    @JoinColumn(name="owner")
-    @OneToOne
-    private User owner;
     @Column(name="nickname")
     private String nickname;
     @Column(name="model")
@@ -30,5 +28,15 @@ public class Car {
     private double batteryPercentage;
     @Column(name="battery_capacity")
     private int batteryCapacity;
+
+    //link to owner(user)
+    @ManyToOne
+    @JoinColumn(name="owner.id")
+    private User owner;
+
+    //link to records
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    private List<Record> records; 
+    
 
 }
