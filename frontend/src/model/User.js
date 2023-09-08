@@ -6,7 +6,6 @@ import { LOG_IN_URL, LOAD_USER_DATA_URL } from '../constants/Config';
 const userTokenString = "userToken"
 const userIdString = "userId"
 
-
 export const UserContext = createContext();
 
 export const UserProvider = ( { children } ) => {
@@ -17,27 +16,31 @@ export const UserProvider = ( { children } ) => {
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
     const logIn = (email, password) => {
-        axios.post(LOG_IN_URL, {
-            email, 
-            password 
-        })
-        .then( res => {
-            let data = res.data;
+        // axios.post(LOG_IN_URL, {
+        //     email, 
+        //     password 
+        // })
+        // .then( res => {
+        //     let data = res.data;
 
-            let token = data.token;
-            setUserToken(token);
+        //     let token = data.token;
+        //     setUserToken(token);
 
-            // setUserId(id);
+        //     // setUserId(id);
 
-            SecureStore.setItemAsync(userTokenString, token);
+        //     SecureStore.setItemAsync(userTokenString, token);
             
-            // SecureStore.setItemAsync(userIdString, JSON.stringify(userId));
-        })
-        .catch(e => {
-            console.log(`Log in error ${e}`)
-        })
+        //     // SecureStore.setItemAsync(userIdString, JSON.stringify(userId));
+        // })
+        // .catch(e => {
+        //     console.log(`Log in error ${e}`)
+        // })
 
-        // loadUserData(userId)
+        // // loadUserData(userId)
+
+        SecureStore.setItemAsync(userTokenString, "userTokenTemp")
+        setUserToken("userTokenTemp")
+
     }
 
     const loadUserData = (id) => {
@@ -93,7 +96,6 @@ export const UserProvider = ( { children } ) => {
             "password": password
         }
     }
-
 
     return (
         <UserContext.Provider 
