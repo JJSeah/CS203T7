@@ -52,4 +52,11 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+    public long getUserIDByEmail(String email) {
+        return userRepository.getUserIDByEmail(email);
+    }
+
+    public User getUserByEmail(String email) {  // check if user exists
+        return userRepository.getUserByEmail(email);
+    }
 }

@@ -24,10 +24,11 @@ public class AuthController {
 
     private JwtUtil jwtUtil;
     private UserService userService;
-    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
 
+        this.userService = userService;
     }
 
     @ResponseBody
@@ -40,7 +41,9 @@ public class AuthController {
             String email = authentication.getName();
             User user = new User(email,"");
             String token = jwtUtil.createToken(user);
-            LoginRes loginRes = new LoginRes(email,token);
+            // Fetch the user's ID from your database or wherever it is stored
+            User u = userService.getUserByEmail(email);
+            LoginRes loginRes = new LoginRes(u.getId(),email,token);
 
             return ResponseEntity.ok(loginRes);
 

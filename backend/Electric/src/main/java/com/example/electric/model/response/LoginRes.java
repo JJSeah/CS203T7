@@ -3,8 +3,10 @@ package com.example.electric.model.response;
 public class LoginRes {
     private String email;
     private String token;
+    private long id;
 
-    public LoginRes(String email, String token) {
+    public LoginRes(long id, String email, String token) {
+        this.id = id;
         this.email = email;
         this.token = token;
     }
@@ -23,5 +25,8 @@ public class LoginRes {
 
     public void setToken(String token) {
         this.token = token;
+    }
+    public long getID() {
+        return id;
     }
 }
