@@ -9,7 +9,6 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 export default LogInScreen = ( { navigation } ) => {
   
   const { isLoading, setEmail, setPassword, logInButtonPressed, forgotPasswordButtonPressed, makeNewAccountButtonPressed } = LogInScreenViewController( { navigation } );
-  const { userToken } = useContext(UserContext);
 
   return (
     <View>   

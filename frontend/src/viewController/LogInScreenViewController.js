@@ -1,17 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../model/User";
 
+
 export default LogInViewController = ( { navigation } ) => {
         
-    const [ email, setEmail ] = useState("");
-    const [ password, setPassword ] = useState("");
+    const [ email, setEmail ] = useState("johndoe@example.com");
+    const [ password, setPassword ] = useState("mysecretpassword");
     const [ isLoading, setIsLoading ] = useState(true);
     
     const { logIn } = useContext(UserContext);
 
     const logInButtonPressed = () => {
         console.log("Log in button pressed");
-        logIn();
+        logIn(email, password);
     }
     
     const makeNewAccountButtonPressed  = () => {
