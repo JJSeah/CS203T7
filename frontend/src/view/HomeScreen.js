@@ -6,7 +6,7 @@ import { UserContext } from '../model/User';
 
 export default HomeScreen = ( { navigation } ) => {
 
-  const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed } = HomeScreenViewController( { navigation} );
+  const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed} = HomeScreenViewController( { navigation} );
 
   const { logOut } = useContext(UserContext);
 
