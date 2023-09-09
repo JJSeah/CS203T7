@@ -6,7 +6,6 @@ import CustomLongButton from '../components/CustomLongButton'
 import PasswordField from '../components/PasswordField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const SignupSchema = Yup.object().shape({
 
@@ -44,9 +43,10 @@ const SignupSchema = Yup.object().shape({
     .required('Please confirm your password.')
 });
 
+
 export default RegisterScreen = ( { navigation } ) => {
 
-  const {seePassword, signUpButtonPressed} = RegisterScreenViewController({navigation})
+  const {signUpButtonPressed} = RegisterScreenViewController({navigation})
 
   return (
   <Formik initialValues ={{
@@ -116,7 +116,7 @@ export default RegisterScreen = ( { navigation } ) => {
           values={values.password}
           onChangeText={handleChange('password')}
           onBlur={() => setFieldTouched('password')}
-          secureTextEntry={seePassword}/>
+          secureTextEntry={true}/>
 
         {errors.password && touched.password && (
           <Text style={styles.textFailed}>{errors.password}</Text>
@@ -128,7 +128,7 @@ export default RegisterScreen = ( { navigation } ) => {
           values={values.confirmPassword}
           onChangeText={handleChange('confirmPassword')}
           onBlur={() => setFieldTouched('confirmPassword')}
-          secureTextEntry={seePassword}/>
+          secureTextEntry={true}/>
 
         {errors.confirmPassword && touched.confirmPassword && (
           <Text style={styles.textFailed}>{errors.confirmPassword}</Text>
@@ -171,5 +171,6 @@ const styles = StyleSheet.create({
     color: 'red', 
     fontSize: 15, 
     fontWeight: 'bold', 
+    marginLeft: 10,
   }, 
 })
