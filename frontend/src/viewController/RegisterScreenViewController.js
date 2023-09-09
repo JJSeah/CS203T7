@@ -1,5 +1,5 @@
 import React, {useState} from 'react'; 
-// import RegisterViewModel from '../viewModels/RegisterViewModel'
+import RegisterViewModel from '../viewModel/RegisterViewModel'
 
 export default RegisterScreenViewController = ( { navigation } ) => {
 
@@ -7,7 +7,7 @@ export default RegisterScreenViewController = ( { navigation } ) => {
   const [lastName, setLastName] = useState(""); 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState(""); 
-  const [checkValidEmail, setCheckValidEmail] = useState(false);
+  const [checkValidEmail, setCheckValidEmail] = useState(true);
   const [password, setPassword] = useState("");
   const [seePassword, setSeePassword] = useState(true);
   const [checkValidPassword, setCheckValidPassword] = useState(false);

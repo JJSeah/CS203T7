@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, TextInput, View} from 'react-native';
 
-export default CustomTextField = ( { placeholder, value, onChangeText } ) => {
+export default CustomTextField = ( { placeholder, values, onChangeText } ) => {
 
   return (
     <View>
 
         <TextInput
             placeholder={placeholder} 
-            value={value}
+            values={values}
             onChangeText={onChangeText}
         />
 
