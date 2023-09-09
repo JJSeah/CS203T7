@@ -3,6 +3,6 @@ import RegisterScreenViewController from '../viewController/RegisterScreenViewCo
 
 export default RegisterViewModel = ( { navigation } ) => {
 
-  const {setEmail, setCheckValidEmail} = RegisterScreenViewController({navigation})
+
 
 }

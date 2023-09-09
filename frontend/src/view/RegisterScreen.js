@@ -3,8 +3,10 @@ import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity
 import CustomTextField from '../components/CustomTextField'
 import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
 import CustomLongButton from '../components/CustomLongButton'
+import PasswordField from '../components/PasswordField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const SignupSchema = Yup.object().shape({
 
@@ -44,7 +46,7 @@ const SignupSchema = Yup.object().shape({
 
 export default RegisterScreen = ( { navigation } ) => {
 
-  const {signUpButtonPressed} = RegisterScreenViewController({navigation})
+  const {seePassword, signUpButtonPressed} = RegisterScreenViewController({navigation})
 
   return (
   <Formik initialValues ={{
@@ -56,24 +58,24 @@ export default RegisterScreen = ( { navigation } ) => {
       confirmPassword: ''
   }}
   validationSchema={SignupSchema}
-  // onSubmit={values => Alert.alert(JSON.stringify(values))}
+  validateOnMount={true}
+  onSubmit={values => console.log(values)}
   > 
    {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
     <ScrollView style = {styles.container}>
       <View style = {styles.header}>
         <Text style={styles.boldText}>Register</Text>
-        <Text style={{color: 'grey'}}> Enter Your Details to Register</Text>
       </View>
 
       <View style = {styles.body}>
         <CustomTextField
           placeholder = 'First Name'
-          values={values.firstName}
+          value={values.firstName}
           onChangeText={handleChange('firstName')}
           onBlur={() => setFieldTouched('firstName')}/>
           
 
-        {errors.firstName && (
+        {errors.firstName && touched.firstName &&  (
           <Text style={styles.textFailed}>{errors.firstName}</Text>
         )}
 
@@ -83,7 +85,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onChangeText={handleChange('lastName')}
           onBlur={() => setFieldTouched('lastName')}/>
 
-        {errors.lastName && (
+        {errors.lastName && touched.lastName && (
           <Text style={styles.textFailed}>{errors.lastName}</Text>
         )}
          
@@ -93,7 +95,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onChangeText={handleChange('username')}
           onBlur={() => setFieldTouched('username')}/>
 
-        {errors.username && (
+        {errors.username && touched.username && (
           <Text style={styles.textFailed}>{errors.username}</Text>
         )}
 
@@ -104,30 +106,31 @@ export default RegisterScreen = ( { navigation } ) => {
           onChangeText={handleChange('email')}
           onBlur={() => setFieldTouched('email')}/>  
 
-        {errors.email && (
+        {errors.email && touched.email && (
           <Text style={styles.textFailed}>{errors.email}</Text>
         )}
 
-        <CustomTextField
+        <PasswordField
           placeholder = 'Password'
           autoCapitalize={false}
           values={values.password}
           onChangeText={handleChange('password')}
           onBlur={() => setFieldTouched('password')}
-          secureTextEntry={true}/>
+          secureTextEntry={seePassword}/>
 
-        {errors.password && (
+        {errors.password && touched.password && (
           <Text style={styles.textFailed}>{errors.password}</Text>
         )}
 
-        <CustomTextField
+        <PasswordField
           placeholder = 'Confirm Password'
           autoCapitalize={false}
           values={values.confirmPassword}
           onChangeText={handleChange('confirmPassword')}
-          onBlur={() => setFieldTouched('confirmPassword')}/>
+          onBlur={() => setFieldTouched('confirmPassword')}
+          secureTextEntry={seePassword}/>
 
-        {errors.confirmPassword && (
+        {errors.confirmPassword && touched.confirmPassword && (
           <Text style={styles.textFailed}>{errors.confirmPassword}</Text>
         )}
         
@@ -161,12 +164,12 @@ const styles = StyleSheet.create({
   body:{
     backgroundColor: '#fff', 
     fontSize: 30, 
-    padding: 20,
-    marginVertical : 20,
+    padding: 10,
+    marginVertical : 10,
   }, 
   textFailed:{
     color: 'red', 
     fontSize: 15, 
     fontWeight: 'bold', 
-  }
+  }, 
 })
