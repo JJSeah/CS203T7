@@ -12,7 +12,17 @@ export default HomeScreen = ( { navigation } ) => {
 
   return (
     <View>
+
       <Text>Welcome {userData.username}</Text>
+
+      <Text>Your email is {userData.email}</Text>
+
+      <Text>Your id is {userData.id}</Text>
+
+      <Text>Your firstName is {userData.firstName}</Text>
+
+      <Text>Your lastName is {userData.lastName}</Text>
+
 
       <CustomLongButton
         title="Add car"

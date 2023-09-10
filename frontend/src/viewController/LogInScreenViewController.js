@@ -26,6 +26,8 @@ export default LogInViewController = ( { navigation } ) => {
 
     return {
         isLoading,
+        email, 
+        password,
         setEmail,
         setPassword,
         logInButtonPressed,

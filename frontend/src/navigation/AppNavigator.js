@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 export default AppStack = () => {
 
-    const { userToken, userId, userData, isSuccessful } = useContext(UserContext);
+    const { userData, isSuccessful } = useContext(UserContext);
 
     return (
         <Stack.Navigator>

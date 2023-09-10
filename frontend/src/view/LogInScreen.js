@@ -8,10 +8,31 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 
 export default LogInScreen = ( { navigation } ) => {
   
-  const { isLoading, setEmail, setPassword, logInButtonPressed, forgotPasswordButtonPressed, makeNewAccountButtonPressed } = LogInScreenViewController( { navigation } );
+  const { isLoading, email, password, setEmail, setPassword, logInButtonPressed, forgotPasswordButtonPressed, makeNewAccountButtonPressed } = LogInScreenViewController( { navigation } );
+
 
   return (
     <View>   
+
+      <Button
+      title="load john doe data"
+      onPress={() => {
+        setEmail("ex@example.com");
+        setPassword("mysecretpassword");
+      }}
+      />
+
+      <Button
+      title="load tames doe data"
+      onPress={() => {
+        setEmail("tame@example.com");
+        setPassword("myswdcretpassword");
+      }}
+      />
+
+      <Text>The current email is ${email}</Text>
+
+      <Text>The current password is ${password}</Text>
 
       <CustomTextField
         placeholder="Email"
