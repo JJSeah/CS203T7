@@ -13,12 +13,12 @@ const Stack = createNativeStackNavigator();
 
 export default AppStack = () => {
 
-    const { userToken } = useContext(UserContext);
+    const { userToken, userId, userData, isSuccessful } = useContext(UserContext);
 
     return (
         <Stack.Navigator>
 
-            { userToken === null ? 
+            { (userData === null) ? 
 
                 // Onboarding screens
                 

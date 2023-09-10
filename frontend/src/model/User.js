@@ -12,41 +12,53 @@ export const UserProvider = ( { children } ) => {
 
     const [ userToken, setUserToken ] = useState(null);
     const [ userId, setUserId ] = useState(null);
-    const [ userInfo, setUserInfo ] = useState(null);
+    const [ userData, setUserData ] = useState(null);
+    
     const [ isSuccessful, setIsSuccessful ] = useState(false);
+    
+    useEffect(() => {
+
+        if (userToken === null && userId === null) {
+            isLoggedIn();
+        }
+
+        if (userToken !== null && userId !== null) {
+            loadUserData(userId)
+            SecureStore.setItemAsync(userTokenString, userToken);
+            SecureStore.setItemAsync(userIdString, userId);
+        }
+
+    }, [userToken, userId]);
 
     const logIn = (email, password) => {
-        // axios.post(LOG_IN_URL, {
-        //     email, 
-        //     password 
-        // })
-        // .then( res => {
-        //     let data = res.data;
+        axios.post(LOG_IN_URL, {
+            email, 
+            password 
+        })
+        .then( res => {
+            let data = res.data;
 
-        //     let token = data.token;
-        //     setUserToken(token);
+            let token = data.token;
+            let id = data.id;
 
-        //     // setUserId(id);
+            setUserToken(token);
+            setUserId(JSON.stringify(id));
 
-        //     SecureStore.setItemAsync(userTokenString, token);
-            
-        //     // SecureStore.setItemAsync(userIdString, JSON.stringify(userId));
-        // })
-        // .catch(e => {
-        //     console.log(`Log in error ${e}`)
-        // })
+        })
+        .catch(e => {
+            console.log(`Log in error ${e}`)
+        })
 
-        // // loadUserData(userId)
-
-        SecureStore.setItemAsync(userTokenString, "userTokenTemp")
-        setUserToken("userTokenTemp")
-
+        
+        // SecureStore.setItemAsync(userTokenString, "userTokenTemp")
+        // setUserToken("userTokenTemp")
     }
 
     const loadUserData = (id) => {
         axios.get(`${LOAD_USER_DATA_URL}/${id}`)
         .then( res => {
             let data = res.data
+            setUserData(data)
             console.log(data)
         })
         .catch(e => {
@@ -57,6 +69,7 @@ export const UserProvider = ( { children } ) => {
     const logOut = () => {
         setUserToken(null);
         setUserId(null);
+        setUserData(null);
 
         SecureStore.deleteItemAsync(userTokenString);
         SecureStore.deleteItemAsync(userIdString);
@@ -65,41 +78,26 @@ export const UserProvider = ( { children } ) => {
     const isLoggedIn = async() => {
         try {
             let token = await SecureStore.getItemAsync(userTokenString);
-            // let userId = await SecureStore.getItemAsync(userIdString);
+            let userId = await SecureStore.getItemAsync(userIdString);
 
             setUserToken(token)
+            setUserId(userId)
 
-            if (token !== null) {
-                console.log("User already logged in")
+            if (token !== null && userId !== null) {
+                console.log("When app launches, user already logged in")
             } else {
-                console.log("User already logged out before")
+                console.log("User logged out previously")
             }
 
-            // setUserId(userId)
-            // console.log(`This is when app launches${userId}`)
         } catch (e) {
             console.log(`User is already logged in error ${e}`);
         }
     }
 
-    // This is for when the app launches
-    useEffect(() => {
-        isLoggedIn();
-    }, []);
-
-    const registernNewUser = ( { firstName, lastName, username, email, password } ) => {
-        let newUser = {
-            "firstName": firstName,
-            "lastName": lastName,
-            "username": username,
-            "email": email,
-            "password": password
-        }
-    }
 
     return (
         <UserContext.Provider 
-            value={{ userToken, logIn, logOut }}
+            value={{ userToken, userId, userData, logIn, logOut }}
         >
             { children }
         </UserContext.Provider>

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   icon:{
-    size : 26, 
+    // size : 26, 
     color: 'black',
     marginLeft: 10, 
     marginRight: 10

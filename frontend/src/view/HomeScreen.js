@@ -8,13 +8,12 @@ export default HomeScreen = ( { navigation } ) => {
 
   const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed} = HomeScreenViewController( { navigation} );
 
-  const { userToken, logOut } = useContext(UserContext);
+  const { userData, logOut } = useContext(UserContext);
 
   return (
     <View>
+      <Text>Welcome {userData.username}</Text>
 
-      <Text>This is the home screen</Text>
-      <Text>{userToken}</Text>
       <CustomLongButton
         title="Add car"
         onPress={addCarButtonPressed}
