@@ -15,9 +15,9 @@ export default LogInScreen = ( { navigation } ) => {
     <View>   
 
       <Button
-      title="load john doe data"
+      title="load daniel ta data"
       onPress={() => {
-        setEmail("ex@example.com");
+        setEmail("johndoe@example.com");
         setPassword("mysecretpassword");
       }}
       />
