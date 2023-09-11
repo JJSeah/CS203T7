@@ -1,11 +1,14 @@
 import { React, useState } from 'react'
-import { View, Image, TextInput, StyleSheet, TouchableOpacity }  from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity }  from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-export default PasswordField = ( { placeholder, values, onChangeText, onBlur=true, secureTextEntry=true, seePassword, setSeePassword} ) => {
+export default PasswordField = ( { placeholder, values, onChangeText, onBlur, secureTextEntry } ) => {
+
+  const[seePassword, setSeePassword] = useState(true); 
 
   return (
     <View style={styles.container}>
+
         <TextInput style={styles.input}
             placeholder={placeholder} 
             value={values}
@@ -14,10 +17,10 @@ export default PasswordField = ( { placeholder, values, onChangeText, onBlur=tru
             secureTextEntry={secureTextEntry && seePassword}
         />
 
-        <TouchableOpacity onPress={seePassword}> 
+        <TouchableOpacity onPress={() => setSeePassword(!seePassword)}> 
 
         <MaterialCommunityIcons style={styles.icon}
-          name={seePassword ? 'eye-outline' : 'eye-off-outline'}
+          name={!seePassword ? 'eye-outline' : 'eye-off-outline'}
         />
 
         </TouchableOpacity>
@@ -29,7 +32,7 @@ export default PasswordField = ( { placeholder, values, onChangeText, onBlur=tru
 
 const styles = StyleSheet.create({
   container: {
-      borderWidth: 3,
+      borderWidth: 2.5,
       borderRadius: 10,
       borderColor: '#3081EE',
       padding: 10,
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   icon:{
-    // size : 26, 
+    fontSize : 18, 
     color: 'black',
     marginLeft: 10, 
     marginRight: 10

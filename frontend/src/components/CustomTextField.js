@@ -20,7 +20,7 @@ export default CustomTextField = ( { placeholder, value, onChangeText, onBlur } 
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 3,
+    borderWidth: 2.5,
     borderRadius: 10,
     borderColor: '#3081EE',
     padding: 10,
@@ -33,5 +33,5 @@ const styles = StyleSheet.create({
     flex: 1, 
     fontSize: 15, 
     paddingLeft: 10,
-},
+  },
 })

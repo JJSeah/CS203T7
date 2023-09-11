@@ -10,13 +10,9 @@ import * as Yup from 'yup'
 const SignupSchema = Yup.object().shape({
 
   firstName: Yup.string()
-    .min(2, 'Too Short')
-    .max(50, 'Too Long')
     .required('Please enter your first name.'),
 
   lastName: Yup.string()
-    .min(2, 'Too Short')
-    .max(50, 'Too Long')
     .required('Please enter your last name.'),
 
   username: Yup.string()
@@ -149,11 +145,11 @@ export default RegisterScreen = ( { navigation } ) => {
 }
 
 const styles = StyleSheet.create({
-  container : {
+  container: {
     flex: 1, 
     backgroundColor: '#fff', 
   }, 
-  header : {
+  header: {
     padding : 20,
   },
   boldText: {
@@ -171,6 +167,6 @@ const styles = StyleSheet.create({
     color: 'red', 
     fontSize: 15, 
     fontWeight: 'bold', 
-    marginLeft: 10,
+    marginLeft: 15,
   }, 
 })

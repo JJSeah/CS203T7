@@ -3,10 +3,8 @@ import { UserContext } from '../model/User';
 // import RegisterViewModel from '../viewModel/RegisterViewModel'
 
 export default RegisterScreenViewController = ( { navigation } ) => {
-
-  const [seePassword, setSeePassword] = useState(false);
   
-  const { signUp } = useContext(UserContext);
+  // const { signUp } = useContext(UserContext);
 
   const signUpButtonPressed = () => {
     console.log("Sign Up button pressed")
@@ -14,8 +12,6 @@ export default RegisterScreenViewController = ( { navigation } ) => {
   }
 
   return {
-      seePassword,
-      setSeePassword, 
       signUpButtonPressed
   }
 
