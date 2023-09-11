@@ -39,6 +39,6 @@ public class Appointment {
 
     // link to record
     @OneToOne
-    @JoinColumn(name = "record.id")
+    @JoinColumn(name = "record_id", insertable = false, updatable = false)
     private Record record;
 }

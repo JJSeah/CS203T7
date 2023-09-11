@@ -21,12 +21,12 @@ public class Record {
 
     //link to user 
     @ManyToOne
-    @JoinColumn(name="owner.id")
+    @JoinColumn(name="owner_id")
     private User owner;
 
     //link to car
     @ManyToOne
-    @JoinColumn(name="car.id")
+    @JoinColumn(name="car_id")
     private Car car;
 
     @Column(name="time")

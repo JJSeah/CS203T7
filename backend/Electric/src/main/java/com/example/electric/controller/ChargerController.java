@@ -42,11 +42,11 @@ public class ChargerController {
     }
 
     @PutMapping("/{chargerId}")
-    public void updateCharger(@RequestBody Charger charger, @PathVariable("chargerId") long chargerId) {
+    public Charger updateCharger(@RequestBody Charger charger, @PathVariable("chargerId") long chargerId) {
         if (!chargerService.getChargerById(chargerId).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        chargerService.updateCharger(charger, chargerId);
+        return chargerService.updateCharger(charger, chargerId);
     }
 
     @DeleteMapping("/{chargerId}")
