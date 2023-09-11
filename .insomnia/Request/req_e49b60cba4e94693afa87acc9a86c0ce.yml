@@ -1,0 +1,23 @@
+_id: req_e49b60cba4e94693afa87acc9a86c0ce
+type: Request
+parentId: fld_d3043ddeff6a455fb8769cf2748b5525
+modified: 1694426071003
+created: 1694426000940
+url: "{{ _.base_url }}/card/1"
+name: getCardById
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567735725
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

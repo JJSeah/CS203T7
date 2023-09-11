@@ -1,0 +1,23 @@
+_id: req_09969f34f9724d26b9e16674f61b1d47
+type: Request
+parentId: fld_f712fad6b1f543f79de63555427b3ebf
+modified: 1694427509689
+created: 1694426570268
+url: "{{ _.base_url }}/charger/2"
+name: deleteCharger
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693568041143
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

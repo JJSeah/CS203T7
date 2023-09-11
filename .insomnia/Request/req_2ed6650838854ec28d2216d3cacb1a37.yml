@@ -1,0 +1,35 @@
+_id: req_2ed6650838854ec28d2216d3cacb1a37
+type: Request
+parentId: fld_d3043ddeff6a455fb8769cf2748b5525
+modified: 1694426463299
+created: 1694426000943
+url: "{{ _.base_url }}/card/1"
+name: updateRecord
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+        "owner": {
+            "id": 1
+        },
+        "name": "bumble",
+        "numer": "1111 2222 3333 4444",
+        "expiry": "2023-12-12"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567954937
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

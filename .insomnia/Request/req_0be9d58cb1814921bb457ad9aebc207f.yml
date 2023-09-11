@@ -1,0 +1,31 @@
+_id: req_0be9d58cb1814921bb457ad9aebc207f
+type: Request
+parentId: fld_144b2807514e46fb956a86d8d15f0d05
+modified: 1694423342355
+created: 1693630322650
+url: http://localhost:8080/auth/login
+name: Login
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+        "email": "ex@example.com",
+        "password": "mysecretpassword"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1694423342238
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

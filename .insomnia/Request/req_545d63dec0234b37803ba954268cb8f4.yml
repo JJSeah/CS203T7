@@ -1,0 +1,23 @@
+_id: req_545d63dec0234b37803ba954268cb8f4
+type: Request
+parentId: fld_d3043ddeff6a455fb8769cf2748b5525
+modified: 1694426491187
+created: 1694426000945
+url: "{{ _.base_url }}/card/1"
+name: deleteAppointment
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693568041143
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
