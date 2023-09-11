@@ -24,6 +24,7 @@ export default LogInViewController = ( { navigation } ) => {
         console.log("Forgot password button pressed")
     }
 
+
     return {
         isLoading,
         email, 
@@ -32,7 +33,7 @@ export default LogInViewController = ( { navigation } ) => {
         setPassword,
         logInButtonPressed,
         makeNewAccountButtonPressed,
-        forgotPasswordButtonPressed
+        forgotPasswordButtonPressed,
     };
 
 }

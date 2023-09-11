@@ -1,11 +1,8 @@
 import { React, useState } from 'react'
 import { View, Image, TextInput, StyleSheet, TouchableOpacity }  from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
 
-export default PasswordField = ( { placeholder, values, onChangeText, onBlur, secureTextEntry, navigation}) => {
-
-  const {seePassword, setSeePassword} = RegisterScreenViewController({navigation})
+export default PasswordField = ( { placeholder, values, onChangeText, onBlur=true, secureTextEntry=true, seePassword, setSeePassword} ) => {
 
   return (
     <View style={styles.container}>
@@ -14,17 +11,13 @@ export default PasswordField = ( { placeholder, values, onChangeText, onBlur, se
             value={values}
             onChangeText={onChangeText}
             onBlur={onBlur}
-            secureTextEntry={secureTextEntry && !seePassword}
+            secureTextEntry={secureTextEntry && seePassword}
         />
 
-        <TouchableOpacity onPress={
-          ()=>{
-            setSeePassword(!seePassword); 
-          }
-        }> 
+        <TouchableOpacity onPress={seePassword}> 
 
         <MaterialCommunityIcons style={styles.icon}
-          name={!seePassword ? 'eye-outline' : 'eye-off-outline'}
+          name={seePassword ? 'eye-outline' : 'eye-off-outline'}
         />
 
         </TouchableOpacity>

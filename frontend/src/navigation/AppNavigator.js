@@ -8,6 +8,8 @@ import RegisterScreen from '../view/RegisterScreen';
 import HomeNavigator from './HomeNavigator';
 import AutomateBookingScreen from '../view/AutomateBookingScreen';
 import AddCarScreen from '../view/AddCarScreen';
+import ProfileScreen from '../view/ProfileScreen';
+import VehicleInformationScreen from '../view/VehicleInformationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +58,17 @@ export default AppStack = () => {
                         name="AddCarScreen"
                         component={AddCarScreen}
                     />
+
+                    <Stack.Screen
+                        name="ProfileScreen"
+                        component={ProfileScreen}
+                    />
+
+                    <Stack.Screen
+                        name="VehicleInformationScreen"
+                        component={VehicleInformationScreen}
+                    />
+
 
                 </Stack.Group>)
             }

@@ -15,6 +15,19 @@ export const UserProvider = ( { children } ) => {
     const [ userData, setUserData ] = useState(null);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
+
+    const signUp = (name, email) => {
+        axios.post("url", {
+            name,
+            email,
+        })
+        .then (res => {
+
+        })
+        .catch ( e => {
+
+        })
+    }
     
     useEffect(() => {
 
@@ -49,7 +62,6 @@ export const UserProvider = ( { children } ) => {
             console.log(`Log in error ${e}`)
         })
 
-        
         // SecureStore.setItemAsync(userTokenString, "userTokenTemp")
         // setUserToken("userTokenTemp")
     }
@@ -64,6 +76,7 @@ export const UserProvider = ( { children } ) => {
         .catch(e => {
             console.log(`Load user data error ${e}`)
         })
+
     }
 
     const logOut = () => {

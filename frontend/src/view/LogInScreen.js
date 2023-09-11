@@ -5,10 +5,20 @@ import CustomTextField from '../components/CustomTextField';
 import LogInScreenViewController from '../viewController/LogInScreenViewController';
 import { UserContext } from '../model/User';
 import Ionicons from "@expo/vector-icons/Ionicons"
+import PasswordField from '../components/PasswordField';
 
 export default LogInScreen = ( { navigation } ) => {
   
-  const { isLoading, email, password, setEmail, setPassword, logInButtonPressed, forgotPasswordButtonPressed, makeNewAccountButtonPressed } = LogInScreenViewController( { navigation } );
+  const { isLoading, 
+    email, 
+    setShowpassword,
+    password, 
+    setEmail, 
+    setPassword, 
+    logInButtonPressed, 
+    forgotPasswordButtonPressed, 
+    makeNewAccountButtonPressed 
+  } = LogInScreenViewController( { navigation } );
 
 
   return (

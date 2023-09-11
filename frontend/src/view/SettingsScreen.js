@@ -1,15 +1,12 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import SettingsScreenViewController from '../viewController/SettingsScreenViewController';
+import SettingsButton from '../components/SettingsButton';
 
 // Creating 2 sections: Account and Records
 // Account: Profile, Vehicle Information, Payment Methods, Notification (need?)
 // Records: Billing History, Charging History
-
-const testDate = {
-  "name": "user",
-  "email": "user@smu.edu.sg"
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -51,23 +48,36 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingsScreen = () => {
+export default SettingsScreen = ( { navigation } ) => {
+
+  const { profileButtonPressed, vehicleInformationButtonPressed } = SettingsScreenViewController( { navigation } );
+
   return (
 
     // Account Section and Records Section
     <ScrollView style={styles.container}>
+
+      {/* This is Account container */}
+
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>Account</Text>
         </View>
-        <TouchableOpacity onPress={() => handleItemPress('Profile')}>
+
+        <SettingsButton
+          title="Profile"
+          onPress={profileButtonPressed}
+        />
+
+
+        {/* <TouchableOpacity onPress={profileButtonPressed}>
           <View style={styles.item}>
             <Text style={styles.itemText}>Profile</Text>
             <FontAwesome name="angle-right" size={20} color="#ccc" /> 
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity onPress={() => handleItemPress('Vehicle Information')}>
+        <TouchableOpacity onPress={vehicleInformationButtonPressed}>
           <View style={styles.item}>
             <Text style={styles.itemText}>Vehicle Information</Text>
             <FontAwesome name="angle-right" size={20} color="#ccc" /> 
@@ -88,6 +98,8 @@ export default SettingsScreen = () => {
           </View>
         </TouchableOpacity>
       </View>
+
+      {/* This is records container*/}
 
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
