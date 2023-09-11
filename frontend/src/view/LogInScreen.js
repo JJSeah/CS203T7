@@ -49,10 +49,12 @@ export default LogInScreen = ( { navigation } ) => {
         onChangeText={setEmail}
       />      
 
-      <CustomTextField
+      <PasswordField
         placeholder="Password"
         onChangeText={setPassword}
-      />      
+        secureTextEntry={true}
+      />  
+  
 
       <CustomLongButton
         title="Login"

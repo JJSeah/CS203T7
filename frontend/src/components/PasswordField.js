@@ -2,9 +2,13 @@ import { React, useState } from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity }  from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-export default PasswordField = ( { placeholder, values, onChangeText, onBlur, secureTextEntry } ) => {
+export default PasswordField = ( { placeholder, values, onChangeText, onBlur } ) => {
 
-  const[seePassword, setSeePassword] = useState(true); 
+  const [ hidePassword, setHidePassword ] = useState(true); 
+
+  const toggleSeePassword = () => {
+    setHidePassword(!hidePassword)
+  }
 
   return (
     <View style={styles.container}>
@@ -14,13 +18,13 @@ export default PasswordField = ( { placeholder, values, onChangeText, onBlur, se
             value={values}
             onChangeText={onChangeText}
             onBlur={onBlur}
-            secureTextEntry={secureTextEntry && seePassword}
+            secureTextEntry={hidePassword}
         />
 
-        <TouchableOpacity onPress={() => setSeePassword(!seePassword)}> 
+        <TouchableOpacity onPress={toggleSeePassword}> 
 
         <MaterialCommunityIcons style={styles.icon}
-          name={!seePassword ? 'eye-outline' : 'eye-off-outline'}
+          name={!hidePassword ? 'eye-outline' : 'eye-off-outline'}
         />
 
         </TouchableOpacity>
