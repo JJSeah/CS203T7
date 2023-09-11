@@ -41,6 +41,8 @@ public class SecurityConfig  {
                 .requestMatchers("/**").permitAll()
                 //authorisation here
             //    .requestMatchers("/auth/**").permitAll()
+
+
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(jwtAuthorizationFilter,UsernamePasswordAuthenticationFilter.class);

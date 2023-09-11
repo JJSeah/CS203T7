@@ -1,5 +1,6 @@
 package com.example.electric.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class Car {
     private User owner;
 
     //link to records
+    @JsonIgnore
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Record> records; 
     

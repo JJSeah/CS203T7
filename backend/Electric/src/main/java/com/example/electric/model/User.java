@@ -1,5 +1,6 @@
 package com.example.electric.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -36,18 +37,22 @@ private String password;
 
     //link to cars
     @Column(name="cars")
+    @JsonIgnore
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Car> cars;
 
-    //link to Credit card 
+    //link to Credit card
+    @JsonIgnore
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Card> card;
 
     //link to appointment
+    @JsonIgnore
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     private List<Appointment> appointment;
 
-    //link to record 
+    //link to record
+    @JsonIgnore
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Record> records;
 
