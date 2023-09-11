@@ -1,0 +1,23 @@
+_id: req_66232e383f0a47fbb3cd24d7d48dd7c0
+type: Request
+parentId: fld_ca82c0ccc041466cb3962bd30d2f1e7f
+modified: 1694429805912
+created: 1694423441606
+url: "{{ _.base_url }}/appointment/1"
+name: getAppointmentById
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567735725
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

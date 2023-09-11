@@ -1,0 +1,23 @@
+_id: req_34be680783d74c22831b4075869852b8
+type: Request
+parentId: fld_d4a26c16f2a54dffa2dc4f37b0c79f44
+modified: 1694424578405
+created: 1694424548049
+url: "{{ _.base_url }}/car"
+name: Get All Car
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1693567733243
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

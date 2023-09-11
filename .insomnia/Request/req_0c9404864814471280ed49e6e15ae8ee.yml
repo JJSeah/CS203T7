@@ -1,0 +1,23 @@
+_id: req_0c9404864814471280ed49e6e15ae8ee
+type: Request
+parentId: fld_d4a26c16f2a54dffa2dc4f37b0c79f44
+modified: 1694424537856
+created: 1694424474894
+url: "{{ _.base_url }}/car/user/1"
+name: getAllcarbyUserID
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567733343
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

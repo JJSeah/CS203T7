@@ -1,0 +1,25 @@
+_id: req_2f772692674448e3be7a28751950f4f6
+type: Request
+parentId: fld_f712fad6b1f543f79de63555427b3ebf
+modified: 1694427546193
+created: 1694426570258
+url: "{{ _.base_url }}/charger"
+name: getAllChargers
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication:
+  type: bearer
+  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleEBleGFtcGxlLmNvbSIsImV4cCI6MTkxMDQyMTEwNn0.Fm8Lx7bHmUNdEbsZLynqtsX77E3WtjIS9R08Nu7h9rA
+metaSortKey: -1693567733343
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

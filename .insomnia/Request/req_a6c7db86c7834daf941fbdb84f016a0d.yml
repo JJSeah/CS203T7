@@ -1,0 +1,38 @@
+_id: req_a6c7db86c7834daf941fbdb84f016a0d
+type: Request
+parentId: fld_d4a26c16f2a54dffa2dc4f37b0c79f44
+modified: 1694425668593
+created: 1694424474902
+url: "{{ _.base_url }}/car/2"
+name: updateCar
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+        "owner": {
+            "id": 1
+        },
+        "nickname": "beee",
+        "model": "merc",
+        "plate": "B33",
+    		"chargingRate": 100,
+    	"batteryPercentage": 75,
+    	"batteryCapacity": 7000
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567954937
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

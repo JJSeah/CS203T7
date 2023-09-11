@@ -1,0 +1,23 @@
+_id: req_7cab1601b0724e988681479612256318
+type: Request
+parentId: fld_f712fad6b1f543f79de63555427b3ebf
+modified: 1694427538516
+created: 1694426570260
+url: "{{ _.base_url }}/charger/station/2"
+name: getAllChargersAtStation
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567735725
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

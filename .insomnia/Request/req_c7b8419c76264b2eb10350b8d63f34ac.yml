@@ -1,0 +1,23 @@
+_id: req_c7b8419c76264b2eb10350b8d63f34ac
+type: Request
+parentId: fld_f712fad6b1f543f79de63555427b3ebf
+modified: 1694427575038
+created: 1694427548820
+url: "{{ _.base_url }}/charger/1"
+name: getChargerById
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1694427548820
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,39 @@
+_id: req_1e430352f5d8452ca1915f0ebb0f8392
+type: Request
+parentId: fld_ca82c0ccc041466cb3962bd30d2f1e7f
+modified: 1694430447953
+created: 1694423441608
+url: "{{ _.base_url }}/appointment"
+name: createRecord
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |
+    {
+    		"duration": "02:00:00",
+    		"startTime": "20:58:32",
+    		"endTime": "18:58:31",
+    		"date": "2023-09-11",
+    		"station": {
+    			"id": 2
+    		},
+    		"user": {
+    			"id": 1
+    		}
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567770863
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
