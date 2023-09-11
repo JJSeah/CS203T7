@@ -1,0 +1,23 @@
+_id: req_61102c08118e42f1b4d06428c7566d57
+type: Request
+parentId: fld_d4a26c16f2a54dffa2dc4f37b0c79f44
+modified: 1694425661745
+created: 1694424474905
+url: "{{ _.base_url }}/car/2"
+name: deleteCar
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693568041143
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,53 @@
+_id: req_7e7553ad4dea46f7a7ddebc52011a169
+type: Request
+parentId: fld_ca82c0ccc041466cb3962bd30d2f1e7f
+modified: 1694429881268
+created: 1694423441610
+url: "{{ _.base_url }}/appointment/1"
+name: updateRecord
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "id": 1,
+      "duration": {
+        "hours": 2,
+        "minutes": 30
+      },
+      "startTime": {
+        "hour": 9,
+        "minute": 0
+      },
+      "endTime": {
+        "hour": 11,
+        "minute": 30
+      },
+      "date": {
+        "year": 2023,
+        "month": 9,
+        "day": 8
+      },
+      "station": {
+        "id": 2
+      },
+      "user": {
+        "id": 1,
+      },
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567954937
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

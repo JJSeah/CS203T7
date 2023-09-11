@@ -1,0 +1,38 @@
+_id: req_165262e1fcd94231a79abba5ba8f8a24
+type: Request
+parentId: fld_d4a26c16f2a54dffa2dc4f37b0c79f44
+modified: 1694424891196
+created: 1694424474899
+url: "{{ _.base_url }}/car"
+name: createCar
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+        "owner": {
+            "id": 1
+        },
+        "nickname": "beee",
+        "model": "merc",
+        "plate": "B33",
+    		"chargingRate": 100,
+    	"batteryPercentage": 75,
+    	"batteryCapacity": 7000
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567770863
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

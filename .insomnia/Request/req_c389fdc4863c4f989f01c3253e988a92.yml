@@ -1,0 +1,35 @@
+_id: req_c389fdc4863c4f989f01c3253e988a92
+type: Request
+parentId: fld_f712fad6b1f543f79de63555427b3ebf
+modified: 1694427527246
+created: 1694426570264
+url: "{{ _.base_url }}/charger"
+name: createCharger
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    		"charId": 2,
+        "name": "CV1",
+        "avail": true,
+        "station": {
+            "id": 2
+        }
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.7
+authentication: {}
+metaSortKey: -1693567770863
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
