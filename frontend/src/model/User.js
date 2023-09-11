@@ -69,11 +69,13 @@ export const UserProvider = ( { children } ) => {
     const loadUserData = (id) => {
         axios.get(`${LOAD_USER_DATA_URL}/${id}`, {
 
-        }, {
-            headers: {
-                'Authorization': `Bearer ${userToken}`
-            }
-        })
+        }, 
+        // {
+        //     headers: {
+        //         'Authorization': `Bearer ${userToken}`
+        //     }
+        // }
+        )
         .then( res => {
             let data = res.data
             setUserData(data)
