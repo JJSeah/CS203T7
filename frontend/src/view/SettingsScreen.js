@@ -34,23 +34,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
-  item: {
-    flexDirection: 'row', // Aligning text and icon horizontally
-    alignItems: 'center', 
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    justifyContent: 'space-between', // Right arrow to the right
-  },
-  itemText: {
-    fontSize: 18,
-    flex: 1,
-    marginRight: 16, // icon and text spacing
-  },
 });
 
 export default SettingsScreen = ( { navigation } ) => {
 
-  const { profileButtonPressed, vehicleInformationButtonPressed } = SettingsScreenViewController( { navigation } );
+  const { profileButtonPressed, 
+    vehicleInformationButtonPressed, 
+    paymentMethodsButtonPressed, 
+    notificationButtonPressed } = SettingsScreenViewController( { navigation } );
 
   return (
 
@@ -69,34 +60,20 @@ export default SettingsScreen = ( { navigation } ) => {
           onPress={profileButtonPressed}
         />
 
+        <SettingsButton
+          title="Vehicle Information"
+          onPress={vehicleInformationButtonPressed}
+        />
 
-        {/* <TouchableOpacity onPress={profileButtonPressed}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Profile</Text>
-            <FontAwesome name="angle-right" size={20} color="#ccc" /> 
-          </View>
-        </TouchableOpacity> */}
+        <SettingsButton
+          title="Payment Methods"
+          onPress={paymentMethodsButtonPressed}
+        />
 
-        <TouchableOpacity onPress={vehicleInformationButtonPressed}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Vehicle Information</Text>
-            <FontAwesome name="angle-right" size={20} color="#ccc" /> 
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleItemPress('Payment Methods')}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Payment Methods</Text>
-            <FontAwesome name="angle-right" size={20} color="#ccc" /> 
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleItemPress('Notification')}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Notification</Text>
-            <FontAwesome name="angle-right" size={20} color="#ccc" /> 
-          </View>
-        </TouchableOpacity>
+        <SettingsButton
+          title="Notification"
+          onPress={notificationButtonPressed}
+        />
       </View>
 
       {/* This is records container*/}

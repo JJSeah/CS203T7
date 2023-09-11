@@ -10,6 +10,8 @@ import AutomateBookingScreen from '../view/AutomateBookingScreen';
 import AddCarScreen from '../view/AddCarScreen';
 import ProfileScreen from '../view/ProfileScreen';
 import VehicleInformationScreen from '../view/VehicleInformationScreen';
+import PaymentMethodsScreen from '../view/PaymentMethodsScreen';
+import NotificationScreen from '../view/NotificationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -68,8 +70,16 @@ export default AppStack = () => {
                         name="VehicleInformationScreen"
                         component={VehicleInformationScreen}
                     />
+                    
+                    <Stack.Screen
+                        name="PaymentMethodsScreen"
+                        component={PaymentMethodsScreen}
+                    />
 
-
+                    <Stack.Screen
+                        name="NotificationScreen"
+                        component={NotificationScreen}
+                    />
                 </Stack.Group>)
             }
 

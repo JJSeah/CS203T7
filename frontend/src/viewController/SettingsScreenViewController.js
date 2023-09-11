@@ -9,9 +9,18 @@ export default SettingsScreenViewController = ( { navigation } ) => {
         navigation.navigate("VehicleInformationScreen")
     }
 
+    const paymentMethodsButtonPressed = () => {
+        navigation.navigate("PaymentMethodsScreen")
+    }
+
+    const notificationButtonPressed = () => {
+        navigation.navigate("NotificationScreen")
+    }
+
     return {
         profileButtonPressed,
-        vehicleInformationButtonPressed
+        vehicleInformationButtonPressed,
+        paymentMethodsButtonPressed,
+        notificationButtonPressed,
     };
-
 }
