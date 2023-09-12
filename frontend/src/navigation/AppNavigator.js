@@ -12,6 +12,8 @@ import ProfileScreen from '../view/ProfileScreen';
 import VehicleInformationScreen from '../view/VehicleInformationScreen';
 import PaymentMethodsScreen from '../view/PaymentMethodsScreen';
 import NotificationScreen from '../view/NotificationScreen';
+import BillingHistoryScreen from '../view/BillingHistoryScreen';
+import ChargingHistoryScreen from '../view/ChargingHistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,6 +81,16 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="NotificationScreen"
                         component={NotificationScreen}
+                    />
+
+                    <Stack.Screen
+                        name="BillingHistoryScreen"
+                        component={BillingHistoryScreen}
+                    />
+
+                    <Stack.Screen
+                        name="ChargingHistoryScreen"
+                        component={ChargingHistoryScreen}
                     />
                 </Stack.Group>)
             }

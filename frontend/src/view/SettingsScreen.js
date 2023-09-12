@@ -38,10 +38,13 @@ const styles = StyleSheet.create({
 
 export default SettingsScreen = ( { navigation } ) => {
 
-  const { profileButtonPressed, 
+  const { 
+    profileButtonPressed, 
     vehicleInformationButtonPressed, 
     paymentMethodsButtonPressed, 
-    notificationButtonPressed } = SettingsScreenViewController( { navigation } );
+    notificationButtonPressed,
+    billingHistoryButtonPressed,
+    chargingHistoryButtonPressed, } = SettingsScreenViewController( { navigation } );
 
   return (
 
@@ -78,11 +81,23 @@ export default SettingsScreen = ( { navigation } ) => {
 
       {/* This is records container*/}
 
+      
+
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>Records</Text>
         </View>
-        <TouchableOpacity onPress={() => handleItemPress('Billing History')}>
+
+        <SettingsButton
+        title="Billing History"
+        onPress={billingHistoryButtonPressed}
+        />
+
+        <SettingsButton
+        title="Charging History"
+        onPress={chargingHistoryButtonPressed}
+        />
+        {/* <TouchableOpacity onPress={() => handleItemPress('Billing History')}>
           <View style={styles.item}>
             <Text style={styles.itemText}>Billing History</Text>
             <FontAwesome name="angle-right" size={20} color="#ccc" /> 
@@ -94,7 +109,7 @@ export default SettingsScreen = ( { navigation } ) => {
             <Text style={styles.itemText}>Charging History</Text>
             <FontAwesome name="angle-right" size={20} color="#ccc" /> 
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </ScrollView>
   );

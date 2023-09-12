@@ -17,10 +17,20 @@ export default SettingsScreenViewController = ( { navigation } ) => {
         navigation.navigate("NotificationScreen")
     }
 
+    const billingHistoryButtonPressed = () => {
+        navigation.navigate("BillingHistoryScreen")
+    }
+
+    const chargingHistoryButtonPressed = () => {
+        navigation.navigate("ChargingHistoryScreen")
+    }
+
     return {
         profileButtonPressed,
         vehicleInformationButtonPressed,
         paymentMethodsButtonPressed,
         notificationButtonPressed,
+        billingHistoryButtonPressed,
+        chargingHistoryButtonPressed,
     };
 }
