@@ -1,10 +1,14 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useContext } from 'react';
+import { Text, View, useColorScheme } from 'react-native';
+import { MapContext, MapProvider } from '../model/MapRepository';
 
 export default AutomateBookingScreen = () => {
+
   return (
-    <View>
-      <Text>This is the automate booking screen</Text>
-    </View>
+    <MapProvider>
+      <View>
+        <Text>This is the automate booking screen</Text>
+      </View>
+    </MapProvider>
   );
 }

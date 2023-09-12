@@ -3,6 +3,7 @@ import { Button, Text, View } from 'react-native';
 import CustomLongButton from '../components/CustomLongButton';
 import HomeScreenViewController from '../viewController/HomeScreenViewController';
 import { UserContext } from '../model/User';
+import { MapContext } from '../model/MapRepository';
 
 export default HomeScreen = ( { navigation } ) => {
 
@@ -10,7 +11,9 @@ export default HomeScreen = ( { navigation } ) => {
 
   const { userData, logOut } = useContext(UserContext);
 
+
   return (
+
     <View>
 
       <Text>Welcome {userData.username}</Text>
@@ -27,22 +30,22 @@ export default HomeScreen = ( { navigation } ) => {
       <CustomLongButton
         title="Add car"
         onPress={addCarButtonPressed}
-      />
+        />
 
       <CustomLongButton
         title="Manual booking"
         onPress={manualBookingButtonPressed}
-      />
+        />
 
       <CustomLongButton
         title="Automate booking"
         onPress={automateBookingButtonPressed}
-      />
+        />
 
       <CustomLongButton
         title="Log out user" 
         onPress={logOut}
-      />
+        />
 
     </View>
   );

@@ -1,3 +1,1 @@
-export const LOAD_USER_DATA_URL = "http://localhost:8080/api/user"
-export const LOG_IN_URL = "http://localhost:8080/auth/login"
-export const REGISTER_URL = ""
+export const BASE_URL = "http://localhost:8080"

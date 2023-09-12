@@ -45,7 +45,8 @@ export default AppStack = () => {
 
                 // Screens for logged in users
 
-                (<Stack.Group>
+                (
+                <Stack.Group>
                     
                     <Stack.Screen
                         name="HomeNavigator"

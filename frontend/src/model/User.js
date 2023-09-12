@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import * as SecureStore from "expo-secure-store"
 import axios from "axios";
-import { LOG_IN_URL, LOAD_USER_DATA_URL } from '../constants/Config';
+import { BASE_URL } from '../constants/Config';
 
 const userTokenString = "userToken"
 const userIdString = "userId"
@@ -44,7 +44,7 @@ export const UserProvider = ( { children } ) => {
     }, [userToken, userId]);
 
     const logIn = (email, password) => {
-        axios.post(LOG_IN_URL, {
+        axios.post(`${BASE_URL}/auth/login`, {
             email, 
             password 
         })
@@ -67,7 +67,7 @@ export const UserProvider = ( { children } ) => {
     }
 
     const loadUserData = (id) => {
-        axios.get(`${LOAD_USER_DATA_URL}/${id}`, {
+        axios.get(`${BASE_URL}/api/user/${id}`, {
 
         }, 
         // {
