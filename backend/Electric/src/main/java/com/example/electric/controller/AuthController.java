@@ -57,8 +57,13 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        if (!userService.isEmailUnique(user.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+        userService.createUser(user);
+        return ResponseEntity.ok("User created successfully");
     }
+
 
 }

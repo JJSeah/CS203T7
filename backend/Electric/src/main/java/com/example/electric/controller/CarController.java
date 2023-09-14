@@ -34,7 +34,7 @@ public class CarController {
         return carService.getAllCars();
     }
 
-    @PostMapping
+    @PostMapping("/add/{userId}")
     public Car addCar(@RequestBody Car car) {
         return carService.addCar(car);
     }

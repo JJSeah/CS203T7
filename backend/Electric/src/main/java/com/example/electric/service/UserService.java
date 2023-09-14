@@ -3,6 +3,7 @@ package com.example.electric.service;
 import com.example.electric.model.User;
 import com.example.electric.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,9 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
 
@@ -28,6 +32,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -40,7 +45,7 @@ public class UserService {
             user.setLastName(updatedUser.getLastName());
             user.setUsername(updatedUser.getUsername());
             user.setEmail(updatedUser.getEmail());
-            user.setPassword(updatedUser.getPassword());
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
             user.setCars(updatedUser.getCars());
             user.setCard(updatedUser.getCard());
             return userRepository.save(user);
@@ -58,5 +63,10 @@ public class UserService {
 
     public User getUserByEmail(String email) {  // check if user exists
         return userRepository.getUserByEmail(email);
+    }
+
+    public boolean isEmailUnique(String email) {
+        Optional<User> existinguser = userRepository.findByEmail(email);
+        return !existinguser.isPresent();
     }
 }
