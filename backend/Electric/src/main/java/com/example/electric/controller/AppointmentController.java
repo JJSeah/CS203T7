@@ -29,6 +29,11 @@ public class AppointmentController {
         return appointmentService.getAppointmentById(appointmentId);
     }
 
+    @GetMapping("/user/{userId}")
+    public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") long userId) {
+        return appointmentService.getAllAppointmentsByUser(userId);
+    }
+
 
     @GetMapping("/station/{stationId}")
     public List<Appointment> getAllAppointmentsAtStation(@PathVariable("stationId") long stationId) {

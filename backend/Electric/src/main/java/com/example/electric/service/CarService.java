@@ -41,4 +41,8 @@ public class CarService {
     public void deleteCar(long id) {
         carRepository.deleteById(id);
     }
+
+    public Optional<Car> getCarByUser(long userId, long carId) {
+        return carRepository.findCarByOwnerIdAndId(userId, carId);
+    }
 }

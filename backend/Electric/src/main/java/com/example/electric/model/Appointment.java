@@ -28,7 +28,7 @@ public class Appointment {
     private Date date;
 
     // Link to station
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
 

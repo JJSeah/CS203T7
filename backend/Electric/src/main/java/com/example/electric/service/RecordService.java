@@ -52,4 +52,8 @@ public class RecordService {
     public void deleteRecord(Long id) {
         recordRepository.deleteById(id);
     }
+
+    public List<Record> getAllRecordsByUser(Long userId) {
+        return recordRepository.findRecordsByOwnerId(userId);
+    }
 }

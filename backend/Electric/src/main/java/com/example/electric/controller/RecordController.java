@@ -33,6 +33,11 @@ public class RecordController {
         return recordService.getRecordById(id);
     }
 
+    @GetMapping("/user/{userId}")
+    public List<Record> getAllRecordsByUser(@PathVariable Long userId) {
+        return recordService.getAllRecordsByUser(userId);
+    }
+
     @PostMapping
     public Record createRecord(@RequestBody Record record) {
         return recordService.createRecord(record);
