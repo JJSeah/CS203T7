@@ -4,6 +4,7 @@ import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Station;
 import com.example.electric.service.StationService;
+import com.example.electric.service.VoronoiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/stations")
 public class StationController {
-
+    @Autowired
     private final StationService stationService;
+
+    @Autowired
+    private VoronoiService voronoiService;
 
     @Autowired
     public StationController(StationService stationService) {
@@ -31,6 +35,12 @@ public class StationController {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         return stationService.getStationById(id);
+    }
+
+    @GetMapping("/closest/{latitude}/{longitude}")
+    public Station getClosestStation(@PathVariable("latitude") double latitude,
+                                     @PathVariable("longitude") double longitude) {
+        return voronoiService.findClosestStation(latitude, longitude);
     }
 
     @PostMapping

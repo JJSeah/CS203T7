@@ -97,6 +97,12 @@
 			<artifactId>google-maps-services</artifactId>
 			<version>0.15.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.locationtech.jts</groupId>
+			<artifactId>jts-core</artifactId>
+			<version>1.19.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
