@@ -24,15 +24,30 @@ public class DistanceMatrixController {
         return distanceMatrixService.getDistanceMatrix(origin, destination);
     }
 
-    @GetMapping("/distance/{origin}/{destination}")
-    public long getDistanceByName(@PathVariable("origin") String station1,
-                                  @PathVariable("destination") String station2) throws Exception {
-        return distanceMatrixService.getDistanceByName(station1, station2);
+
+
+    @PostMapping("/distance")
+    public long getDistanceByID(@RequestBody Station station) throws Exception {
+        return distanceMatrixService.getDistanceByID(station);
     }
 
-    @GetMapping("/time/{origin}/{destination}")
-    public long getDurationByName(@PathVariable("origin") String station1,
-                                  @PathVariable("destination") String station2) throws Exception {
-        return distanceMatrixService.getDurationByName(station1, station2);
+    @PostMapping("/time")
+    public long getDurationByID(@RequestBody Station station) throws Exception {
+        return distanceMatrixService.getDurationByID(station);
     }
+
+//    @GetMapping("/distance/{latitude}/{longitude}/{destination}")
+//    public long getDistanceByName(@PathVariable("latitude") String latitude,
+//                                  @PathVariable("longitude") String longitude,
+//                                  @PathVariable("destination") String station2) throws Exception {
+//        return distanceMatrixService.getDistanceByName(latitude,longitude, station2);
+//    }
+
+//    @GetMapping("/time/{origin}/{destination}")
+//    public long getDurationByName(@PathVariable("origin") String station1,
+//                                  @PathVariable("destination") String station2) throws Exception {
+//        return distanceMatrixService.getDurationByName(station1, station2);
+//    }
+
+
 }

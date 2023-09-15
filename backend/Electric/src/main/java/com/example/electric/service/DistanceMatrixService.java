@@ -28,30 +28,49 @@ public class DistanceMatrixService {
                 .await(); // This will make the API request and return the result.
     }
 
-    public long getDistanceByName(String station1, String station2) throws Exception {
-        Station s1 = stationRepository.findStationByName(station1).orElse(null);
-        Station s2 = stationRepository.findStationByName(station2).orElse(null);
-        String location1 = Double.toString(s1.getLatitude()) + "," + Double.toString(s1.getLongitude());
-        String location2 = Double.toString(s2.getLatitude()) + "," + Double.toString(s2.getLongitude());
+    public long getDistanceByID(Station station) throws Exception{
+        Station dest = stationRepository.findById(station.getId()).orElse(null);
+        String location1 = Double.toString(station.getLatitude()) + "," + Double.toString(station.getLongitude());
+        String location2 = Double.toString(dest.getLatitude()) + "," + Double.toString(dest.getLongitude());
 
         DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];
 
         return distanceMatrix.elements[0].distance.inMeters;
+
     }
 
-    public long getDurationByName(String station1, String station2) throws Exception {
-        Station s1 = stationRepository.findStationByName(station1).orElse(null);
-        Station s2 = stationRepository.findStationByName(station2).orElse(null);
-        String location1 = Double.toString(s1.getLatitude()) + "," + Double.toString(s1.getLongitude());
-        String location2 = Double.toString(s2.getLatitude()) + "," + Double.toString(s2.getLongitude());
+    public long getDurationByID(Station station) throws Exception {
+        Station dest = stationRepository.findById(station.getId()).orElse(null);
+        String location1 = Double.toString(station.getLatitude()) + "," + Double.toString(station.getLongitude());
+        String location2 = Double.toString(dest.getLatitude()) + "," + Double.toString(dest.getLongitude());
 
         DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];
 
         return distanceMatrix.elements[0].duration.inSeconds;
+
     }
 
-    public Station getClosestChargingStation(String current) {
+//    public long getDistanceByName(String latitude,String longitude, String station2) throws Exception {
+////        Station s1 = stationRepository.findStationByName(station1).orElse(null);
+//        Station s2 = stationRepository.findStationByName(station2).orElse(null);
+//        String location1 = (latitude + "," + longitude);
+//        String location2 = Double.toString(s2.getLatitude()) + "," + Double.toString(s2.getLongitude());
+//
+//        DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];
+//
+//        return distanceMatrix.elements[0].distance.inMeters;
+//    }
 
-        return null;
-    }
+//    public long getDurationByName(String station1, String station2) throws Exception {
+//        Station s1 = stationRepository.findStationByName(station1).orElse(null);
+//        Station s2 = stationRepository.findStationByName(station2).orElse(null);
+//        String location1 = Double.toString(s1.getLatitude()) + "," + Double.toString(s1.getLongitude());
+//        String location2 = Double.toString(s2.getLatitude()) + "," + Double.toString(s2.getLongitude());
+//
+//        DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];
+//
+//        return distanceMatrix.elements[0].duration.inSeconds;
+//    }
+
+
 }
