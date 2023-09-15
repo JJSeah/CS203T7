@@ -38,7 +38,7 @@ public class StationController {
     }
 
     @GetMapping("/closest/{latitude}/{longitude}")
-    public Station getClosestStation(@PathVariable("latitude") double latitude,
+    public Station slgetClosestStation(@PathVariable("latitude") double latitude,
                                      @PathVariable("longitude") double longitude) {
         return voronoiService.findClosestStation(latitude, longitude);
     }
