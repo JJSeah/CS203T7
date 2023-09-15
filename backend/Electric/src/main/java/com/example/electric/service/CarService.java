@@ -42,7 +42,11 @@ public class CarService {
         carRepository.deleteById(id);
     }
 
-    public Optional<Car> getCarByUser(long userId, long carId) {
+    public Car getCarByUser(long userId, long carId) {
+        return carRepository.findCarByOwnerIdAndId(userId, carId);
+    }
+
+    public Car getCarByUserId(long userId, long carId){
         return carRepository.findCarByOwnerIdAndId(userId, carId);
     }
 }

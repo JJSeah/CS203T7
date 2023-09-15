@@ -29,7 +29,7 @@ public class CarController {
         return carService.getAllCarsByUser(userId);
     }
     @GetMapping("/user/{userId}/car/{carId}")
-    public Optional<Car> getCarByUser(@PathVariable("userId")long userId, @PathVariable("carId")long carId) {
+    public Car getCarByUser(@PathVariable("userId")long userId, @PathVariable("carId")long carId) {
         return carService.getCarByUser(userId, carId);
     }
 
