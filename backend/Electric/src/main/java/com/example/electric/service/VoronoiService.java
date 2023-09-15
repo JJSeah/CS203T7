@@ -44,7 +44,7 @@ public class VoronoiService {
 
     public Polygon findCell(Geometry diagram, Coordinate stationCoordinate) {
         GeometryFactory factory = new GeometryFactory();
-        Coordinate[] coords = new Coordinate[]{stationCoordinate};
+//        Coordinate[] coords = new Coordinate[]{stationCoordinate};
         Geometry stationPoint = factory.createPoint(stationCoordinate);
 
         // Find the cell associated with the station by finding the closest polygon in the Voronoi diagram
@@ -65,7 +65,7 @@ public class VoronoiService {
     }
 
     public Coordinate findWithinCell(Polygon cell, Coordinate[] coordinates) {
-        Coordinate nearestHospital = null;
+        Coordinate nearestStation = null;
         double minDistance = Double.MAX_VALUE;
 
         for (Coordinate coordinate : coordinates) {
@@ -73,15 +73,14 @@ public class VoronoiService {
             if (cell.contains(new GeometryFactory().createPoint(coordinate))) {
                 // Calculate the distance between the station and the hospital
                 double distance = cell.distance(new GeometryFactory().createPoint(coordinate));
-                //!!!TEST CASE CONDITION BECAUSE CURRENTLY NO LIVE LOCATION
-                if (distance != 0 && distance < minDistance) {
+                if (distance < minDistance) {
                     minDistance = distance;
-                    nearestHospital = coordinate;
+                    nearestStation = coordinate;
                 }
             }
         }
 
-        return nearestHospital;
+        return nearestStation;
     }
 
 }
