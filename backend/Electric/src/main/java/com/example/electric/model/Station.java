@@ -32,5 +32,6 @@ public class Station {
     @JsonIgnore
     @OneToMany (mappedBy = "station", cascade = CascadeType.ALL)
     private List<Charger> chargers;
+
     
 }

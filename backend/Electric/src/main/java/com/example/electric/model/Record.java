@@ -34,8 +34,9 @@ public class Record {
     @Column(name="cost")
     private double cost;
 
+
+    @ManyToOne
     @JoinColumn(name="station")
-    @OneToOne
     private Station station;
     
     @Column(name="start_time")
@@ -45,7 +46,7 @@ public class Record {
     @Column(name="date")
     private Date date;
 
-    //link to appointment 
-    @OneToOne(mappedBy = "record", cascade = CascadeType.ALL)
+//    link to appointment
+    @OneToOne(mappedBy = "record")
     private Appointment appointment;
 }
