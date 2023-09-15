@@ -1,18 +1,39 @@
-import React, {useContext, useState} from 'react'; 
-import { UserContext } from '../model/User';
-// import RegisterViewModel from '../viewModel/RegisterViewModel'
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../model/User";
 
-export default RegisterScreenViewController = ( { navigation } ) => {
-  
-  // const { signUp } = useContext(UserContext);
 
-  const signUpButtonPressed = () => {
-    console.log("Sign Up button pressed")
-    navigation.navigate("LogInScreen");
-  }
+export default LogInViewController = ( { navigation } ) => {
+        
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(true);
+    
+    const { logIn } = useContext(UserContext);
 
-  return {
-      signUpButtonPressed
-  }
+    const logInButtonPressed = () => {
+        console.log("Log in button pressed");
+        logIn(email, password);
+    }
+    
+    const makeNewAccountButtonPressed  = () => {
+        console.log("Register button pressed")
+        navigation.navigate("RegisterScreen");
+    }
+
+    const forgotPasswordButtonPressed = () => {
+        console.log("Forgot password button pressed")
+    }
+
+
+    return {
+        isLoading,
+        email, 
+        password,
+        setEmail,
+        setPassword,
+        logInButtonPressed,
+        makeNewAccountButtonPressed,
+        forgotPasswordButtonPressed,
+    };
 
 }
