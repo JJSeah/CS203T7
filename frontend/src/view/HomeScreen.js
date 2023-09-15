@@ -1,16 +1,15 @@
 import React, { useContext } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, Text, View, ScrollView } from 'react-native';
 import CustomLongButton from '../components/CustomLongButton';
 import HomeScreenViewController from '../viewController/HomeScreenViewController';
 import { UserContext } from '../model/User';
-import { MapContext } from '../model/MapRepository';
+import CarSwiperView from '../components/CarSwiperView';
 
 export default HomeScreen = ( { navigation } ) => {
 
   const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed} = HomeScreenViewController( { navigation} );
 
-  const { userData, logOut } = useContext(UserContext);
-
+  const { userData, userCars, logOut } = useContext(UserContext);
 
   return (
 
@@ -46,7 +45,12 @@ export default HomeScreen = ( { navigation } ) => {
         title="Log out user" 
         onPress={logOut}
         />
+        
+        {/* 
+        <CarSwiperView
+          data={userCars}
+        /> */}
 
-    </View>
+      </View>
   );
 }

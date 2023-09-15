@@ -13,6 +13,7 @@ export const UserProvider = ( { children } ) => {
     const [ userToken, setUserToken ] = useState(null);
     const [ userId, setUserId ] = useState(null);
     const [ userData, setUserData ] = useState(null);
+    const [ userCars, setUserCars ] = useState([]);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
@@ -44,7 +45,10 @@ export const UserProvider = ( { children } ) => {
     }, [userToken, userId]);
 
     const logIn = (email, password) => {
-        axios.post(`${BASE_URL}/auth/login`, {
+
+        let url = `${BASE_URL}/auth/login`
+
+        axios.post(url, {
             email, 
             password 
         })
@@ -78,8 +82,13 @@ export const UserProvider = ( { children } ) => {
         )
         .then( res => {
             let data = res.data
-            setUserData(data)
-            console.log(data)
+            let userData = data.user
+            let userCars = data.car
+            let userCard = data.card
+
+            setUserData(userData)
+            setUserCars(userCars)
+            // console.log(userCars);
         })
         .catch(e => {
             console.log(`Load user data error ${e}`)
@@ -118,7 +127,7 @@ export const UserProvider = ( { children } ) => {
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, logIn, logOut }}
+            value={{ userToken, userId, userData, userCars, logIn, logOut }}
         >
             { children }
         </UserContext.Provider>
