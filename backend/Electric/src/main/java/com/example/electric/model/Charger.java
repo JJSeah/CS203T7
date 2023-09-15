@@ -24,6 +24,10 @@ public class Charger {
     private String name;
     @Column(name="avail")
     private boolean avail;
+    @Column(name="type")
+    private String type;
+    @Column(name="charging_rate")
+    private double chargingRate;
 
     //Link to Station
     @ManyToOne

@@ -3,7 +3,9 @@ package com.example.electric.controller;
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Car;
+import com.example.electric.model.User;
 import com.example.electric.service.CarService;
+import com.example.electric.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class CarController {
     @Autowired
     private CarService carService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/{id}")
     public Optional<Car> getCarById(@PathVariable("id") long id) {
@@ -39,7 +43,12 @@ public class CarController {
     }
 
     @PostMapping("/add/{userId}")
-    public Car addCar(@RequestBody Car car) {
+    public Car addCar(@PathVariable("userId") long id, @RequestBody Car car) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        car.setOwner(user);
         return carService.addCar(car);
     }
 
