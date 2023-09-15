@@ -28,6 +28,15 @@ public class StationService {
         return optionalStation.orElse(null);
     }
 
+    public Station getStationByName(String name) {
+        Optional<Station> optionalStation = stationRepository.findStationByName(name);
+        return optionalStation.orElse(null);
+    }
+
+    public Station getStationByCoordinate(double latitude, double longitude) {
+        Optional<Station> optionalStation = stationRepository.findStationByLatitudeAndLongitude(latitude, longitude);
+        return optionalStation.orElse(null);
+    }
     public Station createStation(Station station) {
         return stationRepository.save(station);
     }
