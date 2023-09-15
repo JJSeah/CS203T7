@@ -4,8 +4,8 @@ import { UserContext } from "../model/User";
 
 export default LogInViewController = ( { navigation } ) => {
         
-    const [ email, setEmail ] = useState("");
-    const [ password, setPassword ] = useState("");
+    const [ email, setEmail ] = useState("ex@example.com");
+    const [ password, setPassword ] = useState("mysecretpassword");
     const [ isLoading, setIsLoading ] = useState(true);
     
     const { logIn } = useContext(UserContext);

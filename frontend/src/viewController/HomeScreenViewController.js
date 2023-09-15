@@ -1,10 +1,7 @@
-import { useContext, useState } from "react";
-import { UserContext } from "../model/User";
+import { useState } from "react";
 
 export default HomeScreenViewController = ( { navigation } ) => {
     
-    const { userCars } = useContext(UserContext);
-
     const addCarButtonPressed = () => {
         console.log("Add car button pressed")
         navigation.navigate("AddCarScreen")
@@ -16,7 +13,6 @@ export default HomeScreenViewController = ( { navigation } ) => {
     }
 
     const manualBookingButtonPressed = () => {
-        console.log(userCars)
         console.log("Manual booking button pressed")
     }
 

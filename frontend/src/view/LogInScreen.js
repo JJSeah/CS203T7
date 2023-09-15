@@ -25,10 +25,18 @@ export default LogInScreen = ( { navigation } ) => {
     <View>   
 
       <Button
-      title="Load fake data"
+      title="load daniel ta data"
       onPress={() => {
-        setEmail("ex@example.com");
+        setEmail("johndoe@example.com");
         setPassword("mysecretpassword");
+      }}
+      />
+
+      <Button
+      title="load tames doe data"
+      onPress={() => {
+        setEmail("tame@example.com");
+        setPassword("myswdcretpassword");
       }}
       />
 
