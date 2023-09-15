@@ -20,6 +20,8 @@ public class Station {
     private long id;
     @Column(name="name")
     private String name;
+    @Column(name="address")
+    private String address;
     @Column(name="latitude")
     private double latitude;
     @Column(name="longitude")
