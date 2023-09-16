@@ -8,33 +8,7 @@ import SettingsButton from '../components/SettingsButton';
 // Account: Profile, Vehicle Information, Payment Methods, Notification (need?)
 // Records: Billing History, Charging History
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff', 
-    padding: 16,
-  },
-  sectionContainer: {
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    backgroundColor: '#f9f9f9', 
-  },
-  section: {
-    backgroundColor: '#ADD8E6', 
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-  },
-  
-  sectionHeader: {
-    fontSize: 20, // Account and Records
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-});
+
 
 export default SettingsScreen = ( { navigation } ) => {
 
@@ -97,22 +71,36 @@ export default SettingsScreen = ( { navigation } ) => {
         title="Charging History"
         onPress={chargingHistoryButtonPressed}
         />
-        {/* <TouchableOpacity onPress={() => handleItemPress('Billing History')}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Billing History</Text>
-            <FontAwesome name="angle-right" size={20} color="#ccc" /> 
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleItemPress('Charging History')}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Charging History</Text>
-            <FontAwesome name="angle-right" size={20} color="#ccc" /> 
-          </View>
-        </TouchableOpacity> */}
       </View>
     </ScrollView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff', 
+    padding: 16,
+  },
+  sectionContainer: {
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    backgroundColor: '#f9f9f9', 
+  },
+  section: {
+    backgroundColor: '#ADD8E6', 
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  
+  sectionHeader: {
+    fontSize: 20, // Account and Records
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+});
 

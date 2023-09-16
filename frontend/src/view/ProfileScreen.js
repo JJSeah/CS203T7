@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button, StyleSheet } from 'react-native';
 import { UserContext } from '../model/User';
+import InBetweenSpace from '../components/InBetweenSpace';
 
 export default ProfileScreen = () => {
 
@@ -9,15 +10,30 @@ export default ProfileScreen = () => {
   return (
     <View>
 
-      <Text>Welcome {userData.username}</Text>
+      {/* Username can't be edited */}
 
-        <Text>Your email is {userData.email}</Text>
+      <InBetweenSpace
+      title="Username"
+      value={userData.username}
+      />
 
-        <Text>Your id is {userData.id}</Text>
+      <InBetweenSpace
+      title="Given Name"
+      value={userData.firstName}
+      />
 
-        <Text>Your firstName is {userData.firstName}</Text>
+      <InBetweenSpace
+      title="Surname"
+      value={userData.lastName}
+      />
 
-        <Text>Your lastName is {userData.lastName}</Text>
+      <InBetweenSpace
+      title="email"
+      value={userData.email}
+      />
+
     </View>
   );
 }
+
+
