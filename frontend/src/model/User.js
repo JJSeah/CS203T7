@@ -29,8 +29,7 @@ export const UserProvider = ( { children } ) => {
             email,
             password
         })
-        .then (res => {
-            
+        .then (res => { 
             console.log('res', res.data)
         })
         .catch (e => {
