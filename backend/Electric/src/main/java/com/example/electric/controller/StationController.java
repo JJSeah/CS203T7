@@ -37,12 +37,18 @@ public class StationController {
         return stationService.getStationById(id);
     }
 
-    @GetMapping("/closest/{latitude}/{longitude}")
-    public Station slgetClosestStation(@PathVariable("latitude") double latitude,
-                                     @PathVariable("longitude") double longitude) {
+//    @GetMapping("/closest/{latitude}/{longitude}")
+//    public Station slgetClosestStation(@PathVariable("latitude") double latitude,
+//                                     @PathVariable("longitude") double longitude) {
+//        return voronoiService.findClosestStation(latitude, longitude);
+//    }
+
+    @GetMapping("/closest")
+    public Station slgetClosestStation(@RequestBody Station station) {
+        double latitude = station.getLatitude();
+        double longitude = station.getLongitude();
         return voronoiService.findClosestStation(latitude, longitude);
     }
-
     @PostMapping
     public Station createStation(@RequestBody Station station) {
         return stationService.createStation(station);
