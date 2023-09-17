@@ -14,6 +14,7 @@ export const UserProvider = ( { children } ) => {
     const [ userId, setUserId ] = useState(null);
     const [ userData, setUserData ] = useState(null);
     const [ userCars, setUserCars ] = useState([]);
+    const [ allStations, setAllStations ] = useState([]);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
@@ -88,6 +89,9 @@ export const UserProvider = ( { children } ) => {
 
             setUserData(userData)
             setUserCars(userCars)
+
+            getAllStations()
+
         })
         .catch(e => {
             console.log(`Load user data error ${e}`)
@@ -124,10 +128,21 @@ export const UserProvider = ( { children } ) => {
         }
     }
 
+    const getAllStations = async() => {
+        axios.get(`${BASE_URL}/api/stations/all`)
+        .then ( res => {
+            let data = res.data
+            setAllStations(data)
+        })
+        .catch( e => {
+            console.log(`Error loading stations ${e}`)
+        })
+    }
+
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, userCars, logIn, logOut, setUserCars }}
+            value={{ userToken, userId, userData, userCars, allStations, logIn, logOut, setUserCars }}
         >
             { children }
         </UserContext.Provider>

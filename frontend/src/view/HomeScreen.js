@@ -9,7 +9,7 @@ export default HomeScreen = ( { navigation } ) => {
 
   const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed} = HomeScreenViewController( { navigation} );
 
-  const { userData, userCars, logOut } = useContext(UserContext);
+  const { userData, userCars, logOut, allStations } = useContext(UserContext);
 
   return (
 
@@ -24,13 +24,6 @@ export default HomeScreen = ( { navigation } ) => {
       <Text>Your firstName is {userData.firstName}</Text>
 
       <Text>Your lastName is {userData.lastName}</Text>
-
-      {
-        userCars.map(car => (
-            <Text key={car.id}>{car.nickname}</Text>
-        ))
-      }
-
 
 
       <CustomLongButton
@@ -53,10 +46,6 @@ export default HomeScreen = ( { navigation } ) => {
         onPress={logOut}
         />
         
-      <Button
-        onPress={() => {console.log(userCars)}}
-        title="test out cars"
-      />
       </View>
   );
 }
