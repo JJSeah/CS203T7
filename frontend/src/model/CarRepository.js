@@ -22,14 +22,14 @@ export const CarRepository = () => {
         })
         .then( res => {
             loadCarsData()
-        })
+        } )
         .catch(e => {
             console.log(`Error adding car to back end ${e}`)
         })
 
     }
 
-    const loadCarsData = async () => {
+    const loadCarsData = async() => {
         console.log("loading cars")
         let url = `${BASE_URL}/api/car/user/${userId}` 
         axios.get(url)

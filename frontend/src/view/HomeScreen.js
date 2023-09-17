@@ -35,6 +35,14 @@ export default HomeScreen = ( { navigation } ) => {
 
       <Text>Your lastName is {userData.lastName}</Text>
 
+      {
+        userCars.map(car => (
+          <View key={car.id}>
+            <Text>{car.nickname}</Text>
+          </View>
+        ))
+      }
+
 
       <CustomLongButton
         title="Add car"
