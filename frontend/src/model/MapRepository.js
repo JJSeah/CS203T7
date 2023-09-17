@@ -7,7 +7,7 @@ export const MapContext = createContext();
 
 export const MapProvider = ( { children } ) => {
 
-    const [ stations, setStations ] = useState(null)
+    const [ stations, setStations ] = useState(null);
 
     const getAllLocations = () => {
         axios.get(`${BASE_URL}/api/stations/all`)

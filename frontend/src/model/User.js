@@ -37,7 +37,7 @@ export const UserProvider = ( { children } ) => {
         }
 
         if (userToken !== null && userId !== null) {
-            loadUserData(userId)
+            loadUserData()
             SecureStore.setItemAsync(userTokenString, userToken);
             SecureStore.setItemAsync(userIdString, userId);
         }
@@ -61,7 +61,6 @@ export const UserProvider = ( { children } ) => {
 
             setUserToken(token);
             setUserId(JSON.stringify(id));
-
         })
         .catch(e => {
             console.log(`Log in error ${e}`)
@@ -71,10 +70,10 @@ export const UserProvider = ( { children } ) => {
         // setUserToken("userTokenTemp")
     }
 
-    const loadUserData = (id) => {
-        axios.get(`${BASE_URL}/api/user/${id}`, {
+    const loadUserData = () => {
+        let url = `${BASE_URL}/api/user/${userId}`
 
-        }, 
+        axios.get(url
         // {
         //     headers: {
         //         'Authorization': `Bearer ${userToken}`
@@ -89,13 +88,13 @@ export const UserProvider = ( { children } ) => {
 
             setUserData(userData)
             setUserCars(userCars)
-            // console.log(userCars);
         })
         .catch(e => {
             console.log(`Load user data error ${e}`)
         })
 
     }
+
 
     const logOut = () => {
         setUserToken(null);
@@ -121,14 +120,14 @@ export const UserProvider = ( { children } ) => {
             }
 
         } catch (e) {
-            console.log(`User is already logged in error ${e}`);
+            console.log(`User is already logged in error ${e}`); 
         }
     }
 
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, userCars, logIn, logOut }}
+            value={{ userToken, userId, userData, userCars, logIn, logOut, setUserCars }}
         >
             { children }
         </UserContext.Provider>
