@@ -36,11 +36,12 @@ export default PasswordField = ( { placeholder, values, onChangeText, onBlur } )
 
 const styles = StyleSheet.create({
   container: {
-      borderWidth: 2.5,
+      borderWidth: 2.2,
       borderRadius: 10,
       borderColor: '#3081EE',
       padding: 10,
-      margin: 10,
+      marginHorizontal: 15,
+      marginTop: 15,
       borderRadius: 8,
       flexDirection: 'row', 
       alignItems: 'center'
