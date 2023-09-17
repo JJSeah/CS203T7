@@ -19,16 +19,22 @@ export const UserProvider = ( { children } ) => {
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
-    const signUp = (name, email) => {
-        axios.post("url", {
-            name,
+    const signUp = (firstName, lastName, username, email, password) => {
+        let url = `${BASE_URL}/auth/signup`;
+
+        axios.post(url, {
+            firstName,
+            lastName, 
+            username,
             email,
+            password
         })
         .then (res => {
-
+            
+            console.log('res', res.data)
         })
-        .catch ( e => {
-
+        .catch (e => {
+            console.log(`Sign up error ${e}`)
         })
     }
     
@@ -143,7 +149,7 @@ export const UserProvider = ( { children } ) => {
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, userCars, allStations, logIn, logOut, setUserCars, coordinates, setCoordinates}}
+            value={{ userToken, userId, userData, userCars, allStations, logIn, logOut, signUp, setUserCars, coordinates, setCoordinates}}
         >
             { children }
         </UserContext.Provider>

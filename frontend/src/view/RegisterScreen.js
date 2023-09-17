@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, Alert, secureTextEntry } from 'react-native'
 import CustomTextField from '../components/CustomTextField'
 import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
@@ -6,6 +6,8 @@ import CustomLongButton from '../components/CustomLongButton'
 import PasswordField from '../components/PasswordField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { UserContext } from '../model/User';
+
 
 const SignupSchema = Yup.object().shape({
 
@@ -16,8 +18,8 @@ const SignupSchema = Yup.object().shape({
     .required('Please enter your last name.'),
 
   username: Yup.string()
-    .min(6, 'Minimum of 6 characters')
-    .max(15, 'Maximum of 15 characters')
+    .min(6, 'Username must contain 6-15 characters.')
+    .max(15, 'Username must contain 6-15 characters.')
     .required('Please enter your username.'),
 
   email: Yup.string()
@@ -26,15 +28,15 @@ const SignupSchema = Yup.object().shape({
     .required('Please enter your email address.'),
 
   password: Yup.string()
-    .min(8)
+    .min(8, 'Password must contain at least 8 characters.')
     .required('Please enter your password.')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, 
-      'Must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one digit and one special character'
+      'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one digit and one special character'
       ),
 
   confirmPassword: Yup.string()
-    .min(8, 'Password must contain a minimum of 8 characters.')
+    .min(8, 'Password must contain at least 8 characters.')
     .oneOf([Yup.ref('password')], 'Your passwords do not match.')
     .required('Please confirm your password.')
 });
@@ -43,7 +45,8 @@ const SignupSchema = Yup.object().shape({
 export default RegisterScreen = ( { navigation } ) => {
 
   const {signUpButtonPressed} = RegisterScreenViewController({navigation})
-
+  const { userData } = useContext(UserContext)
+  
   return (
   <Formik initialValues ={{
       firstName:'', 
@@ -165,8 +168,8 @@ const styles = StyleSheet.create({
   }, 
   textFailed:{
     color: 'red', 
-    fontSize: 15, 
-    fontWeight: 'bold', 
+    fontSize: 13, 
+    fontWeight: 'semibold', 
     marginLeft: 15,
   }, 
 })
