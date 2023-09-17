@@ -6,7 +6,7 @@ import SettingsButton from '../components/SettingsButton';
 
 // Creating 2 sections: Account and Records
 // Account: Profile, Vehicle Information, Payment Methods, Notification (need?)
-// Records: Billing History, Charging History
+// Suuport & Legal: Get Help, Privacy Policy, About
 
 
 
@@ -17,8 +17,9 @@ export default SettingsScreen = ( { navigation } ) => {
     vehicleInformationButtonPressed, 
     paymentMethodsButtonPressed, 
     notificationButtonPressed,
-    billingHistoryButtonPressed,
-    chargingHistoryButtonPressed, } = SettingsScreenViewController( { navigation } );
+    getHelpButtonPressed,
+    privacyPolicyButtonPressed,
+    aboutButtonPressed, } = SettingsScreenViewController( { navigation } );
 
   return (
 
@@ -55,22 +56,27 @@ export default SettingsScreen = ( { navigation } ) => {
 
       {/* This is records container*/}
 
-      
 
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Records</Text>
+          <Text style={styles.sectionHeader}>Support & Legal</Text>
         </View>
 
         <SettingsButton
-        title="Billing History"
-        onPress={billingHistoryButtonPressed}
+        title="Get Help"
+        onPress={getHelpButtonPressed}
         />
 
         <SettingsButton
-        title="Charging History"
-        onPress={chargingHistoryButtonPressed}
+        title="Privacy Policy"
+        onPress={privacyPolicyButtonPressed}
         />
+
+        <SettingsButton
+        title="About"
+        onPress={aboutButtonPressed}
+        />
+
       </View>
     </ScrollView>
   );

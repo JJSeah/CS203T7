@@ -17,12 +17,20 @@ export default SettingsScreenViewController = ( { navigation } ) => {
         navigation.navigate("NotificationScreen")
     }
 
-    const billingHistoryButtonPressed = () => {
-        navigation.navigate("BillingHistoryScreen")
+    const getHelpButtonPressed = () => {
+        navigation.navigate("GetHelpScreen")
     }
 
-    const chargingHistoryButtonPressed = () => {
-        navigation.navigate("ChargingHistoryScreen")
+    const privacyPolicyButtonPressed = () => {
+        navigation.navigate("PrivacyPolicyScreen")
+    }
+
+    const aboutButtonPressed = () => {
+        navigation.navigate("AboutScreen")
+    }
+
+    const editProfileButtonPressed = () => {
+        navigation.navigate("EditProfileScreen")
     }
 
     return {
@@ -30,7 +38,9 @@ export default SettingsScreenViewController = ( { navigation } ) => {
         vehicleInformationButtonPressed,
         paymentMethodsButtonPressed,
         notificationButtonPressed,
-        billingHistoryButtonPressed,
-        chargingHistoryButtonPressed,
+        getHelpButtonPressed,
+        privacyPolicyButtonPressed,
+        aboutButtonPressed,
+        editProfileButtonPressed,
     };
 }

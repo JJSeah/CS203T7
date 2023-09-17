@@ -12,8 +12,10 @@ import ProfileScreen from '../view/ProfileScreen';
 import VehicleInformationScreen from '../view/VehicleInformationScreen';
 import PaymentMethodsScreen from '../view/PaymentMethodsScreen';
 import NotificationScreen from '../view/NotificationScreen';
-import BillingHistoryScreen from '../view/BillingHistoryScreen';
-import ChargingHistoryScreen from '../view/ChargingHistoryScreen';
+import GetHelpScreen from '../view/GetHelpScreen';
+import PrivacyPolicyScreen from '../view/PrivacyPolicyScreen';
+import AboutScreen from '../view/AboutScreen';
+import EditProfileScreen from '../view/EditProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -85,13 +87,22 @@ export default AppStack = () => {
                     />
 
                     <Stack.Screen
-                        name="BillingHistoryScreen"
-                        component={BillingHistoryScreen}
+                        name="PrivacyPolicyScreen"
+                        component={PrivacyPolicyScreen}
                     />
 
                     <Stack.Screen
-                        name="ChargingHistoryScreen"
-                        component={ChargingHistoryScreen}
+                        name="GetHelpScreen"
+                        component={GetHelpScreen}
+                    />
+
+                    <Stack.Screen
+                        name="AboutScreen"
+                        component={AboutScreen}
+                    />
+                    <Stack.Screen
+                        name="EditProfileScreen"
+                        component={EditProfileScreen}
                     />
                 </Stack.Group>)
             }
