@@ -23,10 +23,6 @@ export default AddCarScreen = ( { navigation } ) => {
   return (
     <View>
 
-      <Text>
-        Drop down list
-      </Text>
-
       <CustomDropDownList
         setSelected={model => {dropdownSelectListPressed(model)}}
         data={CarModelsData.map(car => car.model)}

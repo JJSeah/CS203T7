@@ -5,7 +5,7 @@ import { BASE_URL } from '../constants/Config';
 import { UserContext } from './User';
 
 
-export const CarRepository = ( ) => {
+export const CarRepository = () => {
 
     const { userId, setUserCars, userCars } = useContext(UserContext);
 
@@ -30,8 +30,8 @@ export const CarRepository = ( ) => {
     }
 
     const loadCarsData = async () => {
-        let url = `${BASE_URL}/api/car/user/${userId}`
-        
+        console.log("loading cars")
+        let url = `${BASE_URL}/api/car/user/${userId}` 
         axios.get(url)
         .then( res => {
             let data = res.data
@@ -42,6 +42,6 @@ export const CarRepository = ( ) => {
         })
     }
 
-    return { addCarToBackend }; 
+    return { addCarToBackend, loadCarsData }; 
 
 }

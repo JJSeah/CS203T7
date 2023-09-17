@@ -15,6 +15,7 @@ export const UserProvider = ( { children } ) => {
     const [ userData, setUserData ] = useState(null);
     const [ userCars, setUserCars ] = useState([]);
     const [ allStations, setAllStations ] = useState([]);
+    const [ coordinates, setCoordinates ] = useState ( { "latitude": 0, "longitude": 0 } )
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
@@ -142,7 +143,7 @@ export const UserProvider = ( { children } ) => {
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, userCars, allStations, logIn, logOut, setUserCars }}
+            value={{ userToken, userId, userData, userCars, allStations, logIn, logOut, setUserCars, coordinates, setCoordinates}}
         >
             { children }
         </UserContext.Provider>
