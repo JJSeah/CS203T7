@@ -136,6 +136,8 @@ export const UserProvider = ( { children } ) => {
     }
 
 
+
+
     // Edit profile
     // const updateProfile = (firstName, surname, email) => {
     //     let url = `${BASE_URL}/api/user/{id}`
@@ -160,7 +162,13 @@ export const UserProvider = ( { children } ) => {
     // }
 
     const getAllStations = async() => {
-        axios.get(`${BASE_URL}/api/stations/all`)
+        axios.get(`${BASE_URL}/api/stations/all`, 
+        {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
+        )
         .then ( res => {
             let data = res.data
             setAllStations(data)

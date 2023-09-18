@@ -39,7 +39,7 @@ public class SecurityConfig  {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/**").permitAll()
+                // .requestMatchers("/**").permitAll()
                 //authorisation here
                     //AuthController
                     .requestMatchers("/auth/**").permitAll()
@@ -53,7 +53,8 @@ public class SecurityConfig  {
 
                     //carController
                     .requestMatchers(HttpMethod.GET, "/api/car/**", "/api/car").permitAll()
-                    .requestMatchers(HttpMethod.POST,"/api/car").permitAll()
+                    // .requestMatchers(HttpMethod.POST,"/api/car").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/api/car").authenticated()
                     .requestMatchers(HttpMethod.PUT, "/api/car/*").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/api/car/*").permitAll()
 
@@ -81,13 +82,15 @@ public class SecurityConfig  {
 
 
                     //Station contoller
-                    .requestMatchers(HttpMethod.GET, "/api/stations/all", "/api/stations/*").permitAll()
+                    // .requestMatchers(HttpMethod.GET, "/api/stations/all", "/api/stations/*").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/stations/all", "/api/stations/*").authenticated()
                     .requestMatchers(HttpMethod.POST,"/api/stations").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/stations/*").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/api/stations/*").permitAll()
 
                     //User contoller
-                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").permitAll()
+                    // .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").authenticated()
                     .requestMatchers(HttpMethod.POST,"/api/user/").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/user/*").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/api/user/*").permitAll()

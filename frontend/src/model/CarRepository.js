@@ -7,19 +7,23 @@ import { UserContext } from './User';
 
 export const CarRepository = () => {
 
-    const { userId, setUserCars, userCars } = useContext(UserContext);
+    const { userToken, userId, setUserCars, userCars } = useContext(UserContext);
 
     const addCarToBackend = (newCar) => {
         let url = `${BASE_URL}/api/car/add/${userId}`
-        
+
         axios.post(url, {
             "nickname": newCar.nickname,
             "model": newCar.model,
             "plate": newCar.carPlate,
             "chargingRate": newCar.chargingRate,
             "batteryPercentage": newCar.batteryPercentage,
-            "batteryCapacity": newCar.batteryCapacity
-        })
+            "batteryCapacity": newCar.batteryCapacity,
+        }, 
+        {
+            headers: { Authorization: `Bearer ${userToken}` }
+        }
+        )
         .then( res => {
             loadCarsData()
         } )
