@@ -5,9 +5,9 @@ import { BASE_URL } from '../constants/Config';
 import { UserContext } from './User';
 
 
-export const CarRepository = ( ) => {
+export const CarRepository = () => {
 
-    const { userData, userId } = useContext(UserContext);
+    const { userId, setUserCars, userCars } = useContext(UserContext);
 
     const addCarToBackend = (newCar) => {
         let url = `${BASE_URL}/api/car/add/${userId}`
@@ -21,14 +21,27 @@ export const CarRepository = ( ) => {
             "batteryCapacity": newCar.batteryCapacity
         })
         .then( res => {
-            console.log(res.data)
-        })
+            loadCarsData()
+        } )
         .catch(e => {
             console.log(`Error adding car to back end ${e}`)
         })
 
     }
 
-    return { addCarToBackend }; 
+    const loadCarsData = async() => {
+        console.log("loading cars")
+        let url = `${BASE_URL}/api/car/user/${userId}` 
+        axios.get(url)
+        .then( res => {
+            let data = res.data
+            setUserCars(data)
+        })
+        .catch(e => {
+            console.log(`Error adding car to back end ${e}`)
+        })
+    }
+
+    return { addCarToBackend, loadCarsData }; 
 
 }

@@ -1,15 +1,99 @@
-import React, { useContext } from 'react';
-import { Text, View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
 import { UserContext } from '../model/User';
+import { Dropdown } from 'react-native-element-dropdown';
+
+const month = [
+  {label: 'January', value:'1'}, 
+  {label: 'February', value:'2'}, 
+  {label: 'March', value:'3'}, 
+  {label: 'April', value:'4'}, 
+  {label: 'May', value:'5'}, 
+  {label: 'June', value:'6'}, 
+  {label: 'July', value:'7'}, 
+  {label: 'August', value:'8'}, 
+  {label: 'September', value:'9'}, 
+  {label: 'October', value:'10'}, 
+  {label: 'November', value:'11'}, 
+  {label: 'December', value:'12'}, 
+]
+
+const year =[
+  {label: '2022', value:'1'}, 
+  {label: '2023', value: '2'}, 
+  {label: '2024', value: '3'}
+]
 
 export default HistoryScreen = () => {
 
-  const { userData } = useContext(UserContext);
+  const [monthValue, setMonthValue] = useState(null);
+  const [yearValue, setYearValue] = useState(null);
+  // const [isFocus, setIsFocus] = useState(false); 
+  
 
   return (
-    <View>
-      
-      <Text>This is the history screen</Text>
-    </View>
-  );
+    <><View style={styles.dropDownContainer}>
+      <Dropdown style={styles.month}
+        data={month}
+        placeholder="Month"
+        searchPlaceholder="Select Month"
+        value={monthValue}
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        // onFocus={() => setIsFocus(true)}
+        // onBlur={() => setIsFocus(false)}
+        onChange={data => {
+          setMonthValue(data.value);
+          // setIsFocus(false);
+        } } />
+
+      <Dropdown style={styles.year}
+        data={year}
+        placeholder='2023'
+        value={yearValue}
+        labelField="label"
+        valueField="value"
+        onChange={data => {
+          setYearValue(data.value);
+        } } />
+    </View><View>
+
+      <Text>
+
+      </Text>
+
+      </View></>
+  
+  )
+
 }
+
+const styles = StyleSheet.create({
+  dropDownContainer:{
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // marginHorizontal: 20, 
+  },
+  month: {
+    // flex: 1,
+    height: 45, 
+    width: 135, 
+    borderColor: 'gray', 
+    borderWidth: 0.5, 
+    borderRadius: 5, 
+    paddingHorizontal: 15,
+    marginLeft: 130,
+    marginTop: 10, 
+  }, 
+  year:{
+    height: 45, 
+    width: 95, 
+    borderColor: 'gray',
+    borderWidth: 0.5, 
+    borderRadius: 5, 
+    paddingHorizontal: 15,
+    marginLeft: 10,
+    marginTop: 10, 
+  }
+})

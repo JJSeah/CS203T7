@@ -4,12 +4,22 @@ import CustomLongButton from '../components/CustomLongButton';
 import HomeScreenViewController from '../viewController/HomeScreenViewController';
 import { UserContext } from '../model/User';
 import CarSwipeView from '../components/CarSwipeView';
+import { useFocusEffect } from '@react-navigation/native';
+import { CarRepository } from '../model/CarRepository';
 
 export default HomeScreen = ( { navigation } ) => {
 
   const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed} = HomeScreenViewController( { navigation} );
 
-  const { userData, userCars, logOut } = useContext(UserContext);
+  const { userData, userCars, logOut } = useContext(UserContext); 
+
+  const { loadCarsData } = CarRepository();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadCarsData();
+    }, [])
+  )
 
   return (
 
@@ -24,6 +34,14 @@ export default HomeScreen = ( { navigation } ) => {
       <Text>Your firstName is {userData.firstName}</Text>
 
       <Text>Your lastName is {userData.lastName}</Text>
+
+      {
+        userCars.map(car => (
+          <View key={car.id}>
+            <Text>{car.nickname}</Text>
+          </View>
+        ))
+      }
 
 
       <CustomLongButton
@@ -46,10 +64,6 @@ export default HomeScreen = ( { navigation } ) => {
         onPress={logOut}
         />
         
-      <Button
-        onPress={() => {console.log(userCars)}}
-        title="test out cars"
-      />
       </View>
   );
 }
