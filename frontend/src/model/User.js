@@ -19,6 +19,7 @@ export const UserProvider = ( { children } ) => {
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
+    
     const signUp = (firstName, lastName, username, email, password) => {
         let url = `${BASE_URL}/auth/signup`;
 
@@ -81,12 +82,12 @@ export const UserProvider = ( { children } ) => {
     const loadUserData = () => {
         let url = `${BASE_URL}/api/user/${userId}`
 
-        axios.get(url
-        // {
-        //     headers: {
-        //         'Authorization': `Bearer ${userToken}`
-        //     }
-        // }
+        axios.get(url,
+        {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
         )
         .then( res => {
             let data = res.data
@@ -135,6 +136,8 @@ export const UserProvider = ( { children } ) => {
     }
 
 
+
+
     // Edit profile
     // const updateProfile = (firstName, surname, email) => {
     //     let url = `${BASE_URL}/api/user/{id}`
@@ -159,7 +162,13 @@ export const UserProvider = ( { children } ) => {
     // }
 
     const getAllStations = async() => {
-        axios.get(`${BASE_URL}/api/stations/all`)
+        axios.get(`${BASE_URL}/api/stations/all`, 
+        {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
+        )
         .then ( res => {
             let data = res.data
             setAllStations(data)
