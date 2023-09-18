@@ -8,10 +8,25 @@ export default AutomateBookingScreen = () => {
   const { coordinates } = useContext(UserContext);
 
   return (
-      <View>
-        <Text>This is the automate booking screen</Text>
-        <Text>{coordinates.latitude}</Text>
-        <Text>{coordinates.longitude}</Text>
-      </View>
+
+      (coordinates === null) ?
+
+
+      (
+        <View>
+          <Text>Please grant location</Text>          
+        </View>
+      ) 
+      
+      
+      :
+
+      (
+        <View>
+          <Text>This is the automate booking screen</Text>
+          <Text>{coordinates.latitude}</Text>
+          <Text>{coordinates.longitude}</Text>
+        </View> 
+      )
   );
 }

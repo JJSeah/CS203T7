@@ -15,7 +15,7 @@ export const UserProvider = ( { children } ) => {
     const [ userData, setUserData ] = useState(null);
     const [ userCars, setUserCars ] = useState([]);
     const [ allStations, setAllStations ] = useState([]);
-    const [ coordinates, setCoordinates ] = useState ( { "latitude": 0, "longitude": 0 } )
+    const [ coordinates, setCoordinates ] = useState (null)
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
@@ -40,6 +40,7 @@ export const UserProvider = ( { children } ) => {
     
     useEffect(() => {
 
+        console.log("initial app")
         if (userToken === null && userId === null) {
             isLoggedIn();
         }
@@ -98,7 +99,6 @@ export const UserProvider = ( { children } ) => {
             setUserCars(userCars)
 
             getAllStations()
-
         })
         .catch(e => {
             console.log(`Load user data error ${e}`)
