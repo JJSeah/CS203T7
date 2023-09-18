@@ -26,7 +26,7 @@ export default EditProfileScreen = ( { navigation } ) => {
       />       */}
 
       <InBetweenSpace
-      title="Given Name"
+      title="First Name"
       value={userData.firstName}
       />
 

@@ -19,6 +19,13 @@ export const UserProvider = ( { children } ) => {
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
+<<<<<<< HEAD
+    
+
+    const signUp = (name, email) => {
+        axios.post("url", {
+            name,
+=======
     const signUp = (firstName, lastName, username, email, password) => {
         let url = `${BASE_URL}/auth/signup`;
 
@@ -26,6 +33,7 @@ export const UserProvider = ( { children } ) => {
             firstName,
             lastName, 
             username,
+>>>>>>> c0b3b50b0a3e53e2b2aafab14638561fb5401a65
             email,
             password
         })
@@ -133,6 +141,30 @@ export const UserProvider = ( { children } ) => {
             console.log(`User is already logged in error ${e}`); 
         }
     }
+
+
+    // Edit profile
+    // const updateProfile = (firstName, surname, email) => {
+    //     let url = `${BASE_URL}/api/user/{id}`
+
+    //     axios.put(url, {
+    //         firstname,
+    //         surname,
+    //         email,
+    //     })
+    //     .then( res => {
+    //         let data = res.data;
+
+    //         let firstName = userData.firstName;
+    //         let surname = userData.surname;
+    //         Let email = userData.email;
+
+    //         setFirstName(firstName);
+    //         setSurname(surname);
+    //         setEmail(email);
+
+    //     })
+    // }
 
     const getAllStations = async() => {
         axios.get(`${BASE_URL}/api/stations/all`)

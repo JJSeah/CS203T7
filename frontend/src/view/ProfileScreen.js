@@ -23,7 +23,7 @@ export default ProfileScreen = ( { navigation } ) => {
       />
 
       <InBetweenSpace
-      title="Given Name"
+      title="First Name"
       value={userData.firstName}
       />
 
