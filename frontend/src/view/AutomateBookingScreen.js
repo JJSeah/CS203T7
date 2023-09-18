@@ -14,7 +14,7 @@ export default AutomateBookingScreen = () => {
 
       (
         <View>
-          <Text>Please grant location</Text>          
+          <Text>Please grant location</Text>
         </View>
       ) 
       
