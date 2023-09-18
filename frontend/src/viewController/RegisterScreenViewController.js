@@ -10,8 +10,7 @@ export default RegisterViewController = ( { navigation } ) => {
     const signUpButtonPressed = () => {
         console.log("Sign Up button pressed");
         signUp(firstName, lastName, username, email, password);
-    }
-    
+    }  
 
     return {
         // isLoading,

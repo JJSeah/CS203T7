@@ -45,7 +45,6 @@ const SignupSchema = Yup.object().shape({
 export default RegisterScreen = ( { navigation } ) => {
 
   const {signUpButtonPressed} = RegisterScreenViewController({navigation})
-  const { userData } = useContext(UserContext)
   
   return (
   <Formik initialValues ={{
