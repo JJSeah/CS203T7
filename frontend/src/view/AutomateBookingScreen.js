@@ -7,17 +7,25 @@ export default AutomateBookingScreen = () => {
   
   const { coordinates } = useContext(UserContext);
 
+  useEffect(() => {
+
+    if (coordinates === null) {
+      return;
+    }
+
+    console.log("Calling API here")
+
+}, []);
+
   return (
 
       (coordinates === null) ?
-
 
       (
         <View>
           <Text>Please grant location</Text>          
         </View>
-      ) 
-      
+      )    
       
       :
 

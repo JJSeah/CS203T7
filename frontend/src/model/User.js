@@ -81,12 +81,12 @@ export const UserProvider = ( { children } ) => {
     const loadUserData = () => {
         let url = `${BASE_URL}/api/user/${userId}`
 
-        axios.get(url
-        // {
-        //     headers: {
-        //         'Authorization': `Bearer ${userToken}`
-        //     }
-        // }
+        axios.get(url,
+        {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
         )
         .then( res => {
             let data = res.data
