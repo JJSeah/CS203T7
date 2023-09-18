@@ -41,13 +41,28 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             // Update the user fields as needed
-            user.setFirstName(updatedUser.getFirstName());
-            user.setLastName(updatedUser.getLastName());
+            if(updatedUser.getFirstName() != null){
+                user.setFirstName(updatedUser.getFirstName());
+            }
+            if(updatedUser.getLastName() != null){
+             user.setLastName(updatedUser.getLastName());
+            }
+            if(updatedUser.getUsername() != null){
             user.setUsername(updatedUser.getUsername());
-            user.setEmail(updatedUser.getEmail());
-            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-            user.setCars(updatedUser.getCars());
-            user.setCard(updatedUser.getCard());
+            }
+            if(updatedUser.getEmail() != null){
+                user.setEmail(updatedUser.getEmail());
+            }
+            if(updatedUser.getPassword() != null){
+                user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            }
+            if(updatedUser.getCars() != null){
+                user.setCars(updatedUser.getCars());
+            }
+            if(updatedUser.getCard() != null){
+                user.setCard(updatedUser.getCard());
+            }
+
             return userRepository.save(user);
         } else {
             return null; // User not found
