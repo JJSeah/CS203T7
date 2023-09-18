@@ -38,6 +38,7 @@ public class UserService {
 
     public User updateUser(Long id, User updatedUser) {
         Optional<User> optionalUser = userRepository.findById(id);
+
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             // Update the user fields as needed

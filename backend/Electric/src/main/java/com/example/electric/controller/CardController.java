@@ -31,6 +31,9 @@ public class CardController {
 
     @GetMapping("/user/{userId}")
     public Optional<Card> getCardByUser(@PathVariable("userId") long userId) {
+        if (!cardService.getCardById(userId).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return cardService.getCardByOwner(userId);
     }
 
