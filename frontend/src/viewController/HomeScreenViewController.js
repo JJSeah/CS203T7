@@ -17,17 +17,19 @@ export default HomeScreenViewController = ( { navigation } ) => {
     }
     
     const getCurrentLocation = async() => {
+        setCoordinates(null)
+
         let { status } = await Location.requestForegroundPermissionsAsync();
+        
         if ( status !== 'granted') {
           console.log("Please grant location permissions")
-          navigation.navigate("AutomateBookingScreen")
         } else {
             console.log("Getting current locations")
             let currentLocation = await Location.getCurrentPositionAsync({});
             setCoordinates(currentLocation.coords)
             console.log(currentLocation.coords)
-            navigation.navigate("AutomateBookingScreen")
         }
+        navigation.navigate("AutomateBookingScreen")
     }
 
     const manualBookingButtonPressed = () => {
