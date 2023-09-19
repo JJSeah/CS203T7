@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Text, View, ScrollView } from 'react-native';
+import { Button, Text, View, ScrollView, TextBase } from 'react-native';
 import CustomLongButton from '../components/CustomLongButton';
 import HomeScreenViewController from '../viewController/HomeScreenViewController';
 import { UserContext } from '../model/User';
@@ -12,12 +12,12 @@ export default HomeScreen = ( { navigation } ) => {
 
   const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed} = HomeScreenViewController( { navigation} );
 
-  const { userData, userCars, logOut } = useContext(UserContext); 
+  const { userData, userCars, logOut, currentCar } = useContext(UserContext); 
 
   const { loadCarsData } = CarRepository();
 
   useFocusEffect(
-    React.useCallback(() => {
+    React.useCallback(() => {      
       loadCarsData();
     }, [])
   )

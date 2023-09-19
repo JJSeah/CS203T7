@@ -67,7 +67,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="AddCarScreen"
                         component={AddCarScreen}
-                        options={{headerShown:false}}
+                        // options={{headerShown:false}}
                     />
 
                     <Stack.Screen

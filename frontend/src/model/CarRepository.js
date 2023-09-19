@@ -7,12 +7,13 @@ import { UserContext } from './User';
 
 export const CarRepository = () => {
 
-    const { userToken, userId, setUserCars, userCars } = useContext(UserContext);
+    const { userToken, userId, setUserCars, userCars, setCurrentCar } = useContext(UserContext);
 
     const addCarToBackend = (newCar) => {
         let url = `${BASE_URL}/api/car/add/${userId}`
 
-        axios.post(url, {
+        axios.post(url, 
+        {
             "nickname": newCar.nickname,
             "model": newCar.model,
             "plate": newCar.carPlate,
@@ -30,16 +31,16 @@ export const CarRepository = () => {
         .catch(e => {
             console.log(`Error adding car to back end ${e}`)
         })
-
+        
     }
-
+    
     const loadCarsData = async() => {
-        console.log("loading cars")
         let url = `${BASE_URL}/api/car/user/${userId}` 
         axios.get(url)
         .then( res => {
             let data = res.data
             setUserCars(data)
+            // setCurrentCar(userCars[userCars.length - 1])
         })
         .catch(e => {
             console.log(`Error adding car to back end ${e}`)

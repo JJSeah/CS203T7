@@ -4,6 +4,7 @@ import CustomLongButton from '../components/CustomLongButton'
 import CustomTextField from '../components/CustomTextField'
 import AddCarScreenViewController from '../viewController/AddCarScreenViewController';
 import CustomDropDownList from '../components/CustomDropDownList';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default AddCarScreen = ( { navigation } ) => {
 
@@ -21,6 +22,7 @@ export default AddCarScreen = ( { navigation } ) => {
   } = AddCarScreenViewController( { navigation} )
 
   return (
+    <SafeAreaView>
     <View>
 
       <CustomDropDownList
@@ -66,5 +68,6 @@ export default AddCarScreen = ( { navigation } ) => {
 
 
     </View>
+    </SafeAreaView>
   );
 }

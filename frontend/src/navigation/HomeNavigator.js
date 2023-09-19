@@ -40,7 +40,6 @@ export default MyTabs = () => {
                 component={HistoryScreen}
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
-                        // return <Ionicons name="clipboard-list"/>
                         return <FontAwesome5 name="clipboard-list"/>
                     },
                     headerShown:false

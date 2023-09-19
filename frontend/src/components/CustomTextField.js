@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
-export default CustomTextField = ( { placeholder, value, onChangeText, onBlur } ) => {
+export default CustomTextField = ( { placeholder, value, onChangeText, onBlur, autoCapitalize = "none", autoCorrect = false} ) => {
 
   return (
     <View style={styles.container}>
@@ -11,6 +11,8 @@ export default CustomTextField = ( { placeholder, value, onChangeText, onBlur } 
             value={value}
             onChangeText={onChangeText}
             onBlur={onBlur}
+            autoCorrect={autoCorrect}
+            autoCapitalize={autoCapitalize}
         />
 
     </View>
