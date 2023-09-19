@@ -3,6 +3,7 @@ import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SettingsScreenViewController from '../viewController/SettingsScreenViewController';
 import SettingsButton from '../components/SettingsButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Creating 2 sections: Account and Records
 // Account: Profile, Vehicle Information, Payment Methods, Notification (need?)
@@ -24,7 +25,7 @@ export default SettingsScreen = ( { navigation } ) => {
   return (
 
     // Account Section and Records Section
-    <ScrollView style={styles.container}>
+    <SafeAreaView>
 
       {/* This is Account container */}
 
@@ -78,7 +79,7 @@ export default SettingsScreen = ( { navigation } ) => {
         />
 
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 

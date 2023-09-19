@@ -19,7 +19,8 @@ export default MyTabs = () => {
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
                         return <Ionicons name="ios-home"/>
-                    }
+                    },
+                    headerShown:false,
                 }}
             />
 
@@ -29,7 +30,8 @@ export default MyTabs = () => {
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
                         return <Ionicons name="map"/>
-                    }
+                    },
+                    headerShown:false
                 }}
             />
 
@@ -40,7 +42,8 @@ export default MyTabs = () => {
                     tabBarIcon: ( {focused, color, size} ) => {
                         // return <Ionicons name="clipboard-list"/>
                         return <FontAwesome5 name="clipboard-list"/>
-                    }
+                    },
+                    headerShown:false
                 }}
             />
 
@@ -50,7 +53,8 @@ export default MyTabs = () => {
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
                         return <Ionicons name="settings"/>
-                    }
+                    },
+                    headerShown:false
                 }}
             />
 

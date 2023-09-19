@@ -32,38 +32,47 @@ export default HistoryScreen = () => {
   
 
   return (
-    <><View style={styles.dropDownContainer}>
-      <Dropdown style={styles.month}
-        data={month}
-        placeholder="Month"
-        searchPlaceholder="Select Month"
-        value={monthValue}
-        maxHeight={300}
-        labelField="label"
-        valueField="value"
-        // onFocus={() => setIsFocus(true)}
-        // onBlur={() => setIsFocus(false)}
-        onChange={data => {
-          setMonthValue(data.value);
-          // setIsFocus(false);
-        } } />
+    <SafeAreaView>
+      <View>
 
-      <Dropdown style={styles.year}
-        data={year}
-        placeholder='2023'
-        value={yearValue}
-        labelField="label"
-        valueField="value"
-        onChange={data => {
-          setYearValue(data.value);
-        } } />
-    </View><View>
+        <View style={styles.dropDownContainer}>
+          <Dropdown style={styles.month}
+            data={month}
+            placeholder="Month"
+            searchPlaceholder="Select Month"
+            value={monthValue}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            // onFocus={() => setIsFocus(true)}
+            // onBlur={() => setIsFocus(false)}
+            onChange={data => {
+              setMonthValue(data.value);
+              // setIsFocus(false);
+            } } />
 
-      <Text>
+          <Dropdown style={styles.year}
+            data={year}
+            placeholder='2023'
+            value={yearValue}
+            labelField="label"
+            valueField="value"
+            onChange={data => {
+              setYearValue(data.value);
+            } } />
+        </View>
+    
+        <View>
+
+        <Text>
         
-      </Text>
+        </Text>
 
-      </View></>
+        </View> 
+
+
+      </View>
+    </SafeAreaView>
   
   )
 

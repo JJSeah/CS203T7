@@ -6,6 +6,7 @@ import { UserContext } from '../model/User';
 import CarSwipeView from '../components/CarSwipeView';
 import { useFocusEffect } from '@react-navigation/native';
 import { CarRepository } from '../model/CarRepository';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default HomeScreen = ( { navigation } ) => {
 
@@ -22,7 +23,7 @@ export default HomeScreen = ( { navigation } ) => {
   )
 
   return (
-
+    <SafeAreaView>
     <View>
 
       <Text>Welcome {userData.username}</Text>
@@ -65,5 +66,6 @@ export default HomeScreen = ( { navigation } ) => {
         />
         
       </View>
+    </SafeAreaView>
   );
 }

@@ -35,6 +35,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="LogInScreen" 
                         component={LogInScreen}
+                        options={{headerShown:false}}
                     />
 
                     <Stack.Screen
@@ -53,17 +54,20 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="HomeNavigator"
                         component={HomeNavigator}
+                        options={{headerShown:false}}
                     />
 
                     <Stack.Screen
                         name="AutomateBookingScreen"
                         component={AutomateBookingScreen}
+                        options={{headerShown:false}}
                     />
         
         
                     <Stack.Screen
                         name="AddCarScreen"
                         component={AddCarScreen}
+                        options={{headerShown:false}}
                     />
 
                     <Stack.Screen
@@ -100,10 +104,12 @@ export default AppStack = () => {
                         name="AboutScreen"
                         component={AboutScreen}
                     />
+
                     <Stack.Screen
                         name="EditProfileScreen"
                         component={EditProfileScreen}
                     />
+
                 </Stack.Group>)
             }
 
