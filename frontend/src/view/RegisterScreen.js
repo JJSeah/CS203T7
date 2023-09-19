@@ -99,7 +99,6 @@ export default RegisterScreen = ( { navigation } ) => {
 
         <CustomTextField
           placeholder = 'Email'
-          autoCapitalize={false}
           values ={values.email}
           onChangeText={handleChange('email')}
           onBlur={() => setFieldTouched('email')}/>  
@@ -110,7 +109,6 @@ export default RegisterScreen = ( { navigation } ) => {
 
         <PasswordField
           placeholder = 'Password'
-          autoCapitalize={false}
           values={values.password}
           onChangeText={handleChange('password')}
           onBlur={() => setFieldTouched('password')}

@@ -35,7 +35,6 @@ export const UserProvider = ( { children } ) => {
             password
         })
         .then (res => { 
-            console.log('res', res.data)
         })
         .catch (e => {
             console.log(`Sign up error ${e}`)
