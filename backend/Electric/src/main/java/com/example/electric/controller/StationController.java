@@ -43,7 +43,7 @@ public class StationController {
 //        return voronoiService.findClosestStation(latitude, longitude);
 //    }
 
-    @GetMapping("/closest")
+    @PostMapping("/closest")
     public Station slgetClosestStation(@RequestBody Station station) {
         double latitude = station.getLatitude();
         double longitude = station.getLongitude();
