@@ -136,7 +136,7 @@ export default RegisterScreen = ( { navigation } ) => {
 
       <CustomLongButton
         title="Sign Up"
-        onPress={signUpButtonPressed}
+        onPress={() => { signUpButtonPressed(values.firstName, values.lastName, values.username, values.email, values.password)}}
         disabled={!isValid}
       />
 

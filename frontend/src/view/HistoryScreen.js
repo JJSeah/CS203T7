@@ -60,7 +60,7 @@ export default HistoryScreen = () => {
     </View><View>
 
       <Text>
-
+        
       </Text>
 
       </View></>

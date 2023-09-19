@@ -20,7 +20,7 @@ export const UserProvider = ( { children } ) => {
     const [ isSuccessful, setIsSuccessful ] = useState(false);
 
     
-    const signUp = (firstName, lastName, username, email, password) => {
+    const signUp = async(firstName, lastName, username, email, password) => {
         let url = `${BASE_URL}/auth/signup`;
 
         axios.post(url, {
