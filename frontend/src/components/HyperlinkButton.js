@@ -1,21 +1,25 @@
 import React from 'react';
-import { Button, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import { Button, Text, View, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
 
 export default HyperlinkButton = ( { title, onPress, disabled = false} ) => {
   
   return (
     <View style={styles.container}>
 
-      <TouchableHighlight
+      <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
       >
 
         <View>
-          <Text>{title}</Text>
+            <Text 
+            style={styles.text}
+            >
+                {title}
+            </Text>
         </View>
 
-      </TouchableHighlight>
+      </TouchableOpacity>
 
     </View>
   );
@@ -29,5 +33,9 @@ const styles = StyleSheet.create ({
     paddingHorizontal: 12, 
     marginLeft: 10, 
     marginRight: 10, 
+    alignItems: 'center'
   }, 
+  text: {
+    color: 'blue',
+  }
 })
