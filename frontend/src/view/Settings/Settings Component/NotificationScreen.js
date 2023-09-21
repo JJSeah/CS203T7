@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
-import { UserContext } from '../model/User';
+import { UserContext } from '../../../model/User';
 
 export default NotificationScreen = () => {
 

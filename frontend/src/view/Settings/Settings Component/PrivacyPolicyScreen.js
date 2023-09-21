@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
-import { UserContext } from '../model/User';
+import { UserContext } from '../../../model/User';
 
-export default AboutScreen = () => {
+export default PrivacyPolicyScreen = () => {
 
     const { userData } = useContext(UserContext);
 
@@ -10,7 +10,7 @@ export default AboutScreen = () => {
     <View>
       <Text>{userData.name}</Text>
       <Text>{userData.email}</Text>
-      <Text>This is About Screen</Text>
+      <Text>This is Privacy Policy screen</Text>
     </View>
   );
 }

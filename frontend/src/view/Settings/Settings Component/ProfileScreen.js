@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
-import { UserContext } from '../model/User';
-import InBetweenSpace from '../components/InBetweenSpace';
-import SettingsScreenViewController from '../viewController/SettingsScreenViewController';
-import CustomLongButton from '../components/CustomLongButton';
+import { UserContext } from '../../../model/User';
+import InBetweenSpace from '../../../components/InBetweenSpace';
+import SettingsScreenViewController from '../../../viewController/SettingsScreenViewController';
+import CustomLongButton from '../../../components/CustomLongButton';
+
+// fonts
 
 export default ProfileScreen = ( { navigation } ) => {
 
