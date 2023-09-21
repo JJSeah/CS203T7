@@ -7,6 +7,7 @@ import CarSwipeView from '../components/CarSwipeView';
 import { useFocusEffect } from '@react-navigation/native';
 import { CarRepository } from '../model/CarRepository';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from '../components/Design';
 
 export default HomeScreen = ( { navigation } ) => {
 
@@ -23,50 +24,64 @@ export default HomeScreen = ( { navigation } ) => {
   )
 
   return (
-    <SafeAreaView>
-    <View>
+    <SafeAreaView style = {styles.container}>
+      <View>
+      <Text style = {styles.header}>Hello world</Text>
+      <Text style = {styles.subHeader}>Hello world</Text>
+      <Text style = {styles.bodyText}>Hello world</Text>
 
-      <Text>Welcome {userData.username}</Text>
-
-      <Text>Your email is {userData.email}</Text>
-
-      <Text>Your id is {userData.id}</Text>
-
-      <Text>Your firstName is {userData.firstName}</Text>
-
-      <Text>Your lastName is {userData.lastName}</Text>
-
-      {
-        userCars.map(car => (
-          <View key={car.id}>
-            <Text>{car.nickname}</Text>
-     
-          </View>
-        ))
-      }
-
-
-      <CustomLongButton
-        title="Add car"
-        onPress={addCarButtonPressed}
-        />
-
-      <CustomLongButton
-        title="Manual booking"
-        onPress={manualBookingButtonPressed}
-        />
-
-      <CustomLongButton
-        title="Automate booking"
-        onPress={automateBookingButtonPressed}
-        />
-
-      <CustomLongButton
-        title="Log out user" 
-        onPress={logOut}
-        />
-        
+      <View style = {styles.boxContainer}>
+      <Text style = {styles.SectionHeader}>This is section header</Text>
       </View>
+      
+      </View>
+      
     </SafeAreaView>
+    
+    // <SafeAreaView>
+    // <View>
+
+    //   <Text>Welcome {userData.username}</Text>
+
+    //   <Text>Your email is {userData.email}</Text>
+
+    //   <Text>Your id is {userData.id}</Text>
+
+    //   <Text>Your firstName is {userData.firstName}</Text>
+
+    //   <Text>Your lastName is {userData.lastName}</Text>
+
+    //   {
+    //     userCars.map(car => (
+    //       <View key={car.id}>
+    //         <Text>{car.nickname}</Text>
+     
+    //       </View>
+    //     ))
+    //   }
+
+
+    //   <CustomLongButton
+    //     title="Add car"
+    //     onPress={addCarButtonPressed}
+    //     />
+
+    //   <CustomLongButton
+    //     title="Manual booking"
+    //     onPress={manualBookingButtonPressed}
+    //     />
+
+    //   <CustomLongButton
+    //     title="Automate booking"
+    //     onPress={automateBookingButtonPressed}
+    //     />
+
+    //   <CustomLongButton
+    //     title="Log out user" 
+    //     onPress={logOut}
+    //     />
+        
+    //   </View>
+    // </SafeAreaView>
   );
 }
