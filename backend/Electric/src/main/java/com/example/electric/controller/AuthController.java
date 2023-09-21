@@ -31,6 +31,17 @@ public class AuthController {
         this.userService = userService;
     }
 
+    /**
+     * Log in a user by validating their credentials and providing an authentication token.
+     *
+     * This endpoint allows a user to log in by providing their email and password. It validates
+     * the credentials, generates an authentication token using JWT (JSON Web Token), and returns
+     * the token along with user information. If the provided credentials are invalid, it responds
+     * with an error message.
+     *
+     * @param loginReq The login request containing email and password.
+     * @return A ResponseEntity with login information or an error response.
+     */
     @ResponseBody
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody LoginReq loginReq)  {
@@ -56,6 +67,14 @@ public class AuthController {
         }
     }
 
+    /**
+     * Create a new user account.
+     *
+     * This endpoint allows the creation of a new user account by providing user details.
+     *
+     * @param user The user object containing user information.
+     * @return The created user object.
+     */
     @PostMapping("/signup")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
