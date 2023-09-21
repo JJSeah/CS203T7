@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     fontSize: 27,
     fontWeight: 'bold',
     textAlign: 'left',
-    margin: 50,
+    margin: 50, 
     marginBottom: 0,
   },
   subHeader: {
