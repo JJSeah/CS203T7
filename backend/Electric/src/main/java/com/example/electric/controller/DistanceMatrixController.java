@@ -28,10 +28,6 @@ public class DistanceMatrixController {
     @Autowired
     private CarService carService;
 
-    @GetMapping("/distanceMatrix")
-    @Operation(summary = "Get Distance from 2 points", description = "Calculate distance between origin and destination by lat and long.", tags = {
-            "Algorithm" })
-
     /**
      * Calculate the distance matrix between two locations.
      *
@@ -51,6 +47,8 @@ public class DistanceMatrixController {
      * @throws Exception If there is an issue with calculating the distance matrix.
      */
     @GetMapping("/distanceMatrix")
+    @Operation(summary = "Get Distance from 2 points", description = "Calculate distance between origin and destination by lat and long.", tags = {
+            "Algorithm" })
     public DistanceMatrix getDistance(
             @RequestParam String origin,
             @RequestParam String destination) throws Exception {
@@ -82,8 +80,8 @@ public class DistanceMatrixController {
         // Calculate time to arrive, distance, cost, and estimate time of charging
         String timeToArrive = String.valueOf(distanceMatrixService.getDurationByID(station));
         String distance = String.valueOf(distanceMatrixService.getDistanceByID(station));
-        String costOfCharging = calculateCostOfCharging(carService.getCarByUserId(userId, carId));
-        String estimateTimeOfCharging = calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));
+        String costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUserId(userId, carId));
+        String estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));
 
         // Create a Map to return the information in JSON format
         Map<String, Object> response = new HashMap<>();
@@ -96,18 +94,7 @@ public class DistanceMatrixController {
 
         return response;
     }
-
-    private String calculateEstimateTimeOfCharging(Car car) {
-        double time = (car.getBatteryCapacity() * (100 - car.getBatteryPercentage())) / (60 * 60);
-
-        return "" + time;
-    }
-
-    private String calculateCostOfCharging(Car car) {
-        double cost = (car.getBatteryCapacity() * (100.0 - car.getBatteryPercentage())) / 1000 * 0.12;
-
-        return "" + cost;
-    }
+    
 
     /**
      * Calculate and retrieve the distance between two points.
