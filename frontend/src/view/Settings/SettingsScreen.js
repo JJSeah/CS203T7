@@ -1,8 +1,8 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import SettingsScreenViewController from '../viewController/SettingsScreenViewController';
-import SettingsButton from '../components/SettingsButton';
+import SettingsScreenViewController from '../../viewController/SettingsScreenViewController';
+import SettingsButton from '../../components/SettingsButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Creating 2 sections: Account and Records

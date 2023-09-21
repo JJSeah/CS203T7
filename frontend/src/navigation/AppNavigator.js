@@ -8,14 +8,14 @@ import RegisterScreen from '../view/RegisterScreen';
 import HomeNavigator from './HomeNavigator';
 import AutomateBookingScreen from '../view/AutomateBookingScreen';
 import AddCarScreen from '../view/AddCarScreen';
-import ProfileScreen from '../view/ProfileScreen';
-import VehicleInformationScreen from '../view/VehicleInformationScreen';
-import PaymentMethodsScreen from '../view/PaymentMethodsScreen';
-import NotificationScreen from '../view/NotificationScreen';
-import GetHelpScreen from '../view/GetHelpScreen';
-import PrivacyPolicyScreen from '../view/PrivacyPolicyScreen';
-import AboutScreen from '../view/AboutScreen';
-import EditProfileScreen from '../view/EditProfileScreen';
+import ProfileScreen from '../view/Settings/Settings Component/ProfileScreen';
+import VehicleInformationScreen from '../view/Settings/Settings Component/VehicleInformationScreen';
+import PaymentMethodsScreen from '../view/Settings/Settings Component/PaymentMethodsScreen';
+import NotificationScreen from '../view/Settings/Settings Component/NotificationScreen';
+import GetHelpScreen from '../view/Settings/Settings Component/GetHelpScreen';
+import PrivacyPolicyScreen from '../view/Settings/Settings Component/PrivacyPolicyScreen';
+import AboutScreen from '../view/Settings/Settings Component/AboutScreen';
+import EditProfileScreen from '../view/Settings/Settings Component/EditProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
