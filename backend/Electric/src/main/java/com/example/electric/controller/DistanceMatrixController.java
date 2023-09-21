@@ -94,7 +94,7 @@ public class DistanceMatrixController {
 
         return response;
     }
-    
+
 
     /**
      * Calculate and retrieve the distance between two points.

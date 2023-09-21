@@ -106,6 +106,7 @@ public class CarController {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         car.setOwner(user);
+        return carService.addCar(car);
     }
 
     /**
