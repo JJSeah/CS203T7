@@ -3,6 +3,10 @@ import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-na
 import { UserContext } from '../model/User';
 import { Dropdown } from 'react-native-element-dropdown';
 
+// take here
+import Swiper from "react-native-deck-swiper"
+import SingleCarSwiperView from '../components/SingleCarSwiperView';
+
 const month = [
   {label: 'January', value:'1'}, 
   {label: 'February', value:'2'}, 
@@ -30,6 +34,10 @@ export default HistoryScreen = () => {
   const [yearValue, setYearValue] = useState(null);
   // const [isFocus, setIsFocus] = useState(false); 
   
+
+  // take here
+  const { userCars } = useContext(UserContext);
+  const { currentCar, setCurrentCar } = useContext(UserContext);
 
   return (
     <SafeAreaView>
@@ -61,12 +69,31 @@ export default HistoryScreen = () => {
               setYearValue(data.value);
             } } />
         </View>
+
     
         <View>
 
-        <Text>
-        
-        </Text>
+        <Text>start here</Text>
+
+        <Swiper
+          cards={userCars}
+          infinite={true}
+          onSwiped={index => {
+            console.log(currentCar)
+            setCurrentCar(userCars[(index + 1) % userCars.length])
+          }}
+          renderCard={card => {
+            return( 
+              <SingleCarSwiperView
+                car={card}
+              />
+            )
+          }}
+        />
+
+        <Text>The current car is {currentCar.nickname}</Text>
+
+
 
         </View> 
 

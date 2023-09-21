@@ -16,7 +16,7 @@ export const CarRepository = () => {
         {
             "nickname": newCar.nickname,
             "model": newCar.model,
-            "plate": newCar.carPlate,
+            "plate": newCar.plate,
             "chargingRate": newCar.chargingRate,
             "batteryPercentage": newCar.batteryPercentage,
             "batteryCapacity": newCar.batteryCapacity,
@@ -26,6 +26,7 @@ export const CarRepository = () => {
         }
         )
         .then( res => {
+            console.log(res.data)
             loadCarsData()
         } )
         .catch(e => {
