@@ -42,14 +42,21 @@ public class AppointmentController {
      * @throws ObjectNotFoundException If no appointment with the given ID is found.
      */
     @GetMapping("/{appointmentId}")
-    @Operation(summary = "Get Appointment", description = "Get Appointment using ID",tags = {"Appointment"})
-    public Optional<Appointment> getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
-        if (!appointmentService.getAppointmentById(appointmentId).isPresent()) {
-            throw new ObjectNotFoundException(ErrorCode.E1002);
-        }
-        return appointmentService.getAppointmentById(appointmentId);
+    @Operation(summary = "Get Appointment", description = "Get Appointment using ID", tags = {"Appointment"})
+    public Appointment getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
+        return appointmentService.getAppointmentById(appointmentId)
+                .orElseThrow(() -> new ObjectNotFoundException(ErrorCode.E1002));
     }
 
+    /**
+     * Retrieve a list of appointments associated with a user.
+     *
+     * This endpoint allows the retrieval of a list of appointments that are associated with
+     * a specific user, identified by their UserID. It provides access to the user's appointments.
+     *
+     * @param userId The unique identifier (UserID) of the user.
+     * @return A list of appointments associated with the specified user.
+     */
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get User's Appointments", description = "Get a list of User's Appointment from UserID",tags = {"Appointment"})
     public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") long userId) {
