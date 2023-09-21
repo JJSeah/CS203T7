@@ -46,7 +46,7 @@ public class SecurityConfig  {
 
                     //AppointmentController
                     .requestMatchers(HttpMethod.GET, "/api/appointment/**", "/api/appointment").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/appointment//station/*").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/appointment/station/*").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/appointment").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/appointment/*").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/api/appointment/*").permitAll()
@@ -84,7 +84,10 @@ public class SecurityConfig  {
                     //Station contoller
                     // .requestMatchers(HttpMethod.GET, "/api/stations/all", "/api/stations/*").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/stations/all", "/api/stations/*").authenticated()
-                    .requestMatchers(HttpMethod.POST,"/api/stations").permitAll()
+                    // .requestMatchers(HttpMethod.POST,"/api/stations", "/api/stations/*").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/api/stations", "/api/stations/*").authenticated()
+                    // .requestMatchers(HttpMethod.POST,"/api/stationCheck/**").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/api/stationCheck/**").authenticated()
                     .requestMatchers(HttpMethod.PUT, "/api/stations/*").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/api/stations/*").permitAll()
 

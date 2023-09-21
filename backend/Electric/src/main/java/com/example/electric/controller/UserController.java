@@ -9,6 +9,7 @@ import com.example.electric.model.response.UserCarPaymentResponse;
 import com.example.electric.service.CarService;
 import com.example.electric.service.CardService;
 import com.example.electric.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +37,13 @@ public class UserController {
     }
 
     @GetMapping("/all")
+    @Operation(summary = "Get All Users", description = "Get All Users",tags = {"User"})
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get User", description = "Get User by ID",tags = {"User"})
     public UserCarPaymentResponse getUserInfo(@PathVariable Long id) {
         User user = userService.getUserById(id);
         List<Car> car = carService.getAllCarsByUser(id);
@@ -72,6 +75,7 @@ public class UserController {
 //    }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update User", description = "Update User by ID",tags = {"User"})
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         if (userService.getUserById(id) == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -80,6 +84,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete User", description = "Delete User by ID",tags = {"User"})
     public void deleteUser(@PathVariable Long id) {
         if (userService.getUserById(id) == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);

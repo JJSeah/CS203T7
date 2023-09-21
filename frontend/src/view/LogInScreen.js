@@ -6,6 +6,7 @@ import LogInScreenViewController from '../viewController/LogInScreenViewControll
 import { UserContext } from '../model/User';
 import Ionicons from "@expo/vector-icons/Ionicons"
 import PasswordField from '../components/PasswordField';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default LogInScreen = ( { navigation } ) => {
   
@@ -22,47 +23,49 @@ export default LogInScreen = ( { navigation } ) => {
 
 
   return (
-    <View>   
+    <SafeAreaView>
+        <View>   
 
-      <Button
-      title="Load fake data"
-      onPress={() => {
-        setEmail("ex@example.com");
-        setPassword("mysecretpassword");
-      }}
-      />
+          <Button
+          title="Load fake data"
+          onPress={() => {
+            setEmail("Leong123@gmail.com");
+            setPassword("Leong123@gmail.com!");
+          }}
+          />
 
-      <Text>The current email is ${email}</Text>
+          <Text>The current email is ${email}</Text>
 
-      <Text>The current password is ${password}</Text>
+          <Text>The current password is ${password}</Text>
 
-      <CustomTextField
-        placeholder="Email"
-        onChangeText={setEmail}
-      />      
+          <CustomTextField
+            placeholder="Email"
+            onChangeText={setEmail}
+          />      
 
-      <PasswordField
-        placeholder="Password"
-        onChangeText={setPassword}
-        secureTextEntry={true}
-      />  
-  
+          <PasswordField
+            placeholder="Password"
+            onChangeText={setPassword}
+            secureTextEntry={true}
+          />  
+      
 
-      <CustomLongButton
-        title="Login"
-        onPress={logInButtonPressed}
-      />
+          <CustomLongButton
+            title="Login"
+            onPress={logInButtonPressed}
+          />
 
-      <CustomLongButton
-        title="Forgot Password"
-        onPress={forgotPasswordButtonPressed}
-      />
+          <CustomLongButton
+            title="Forgot Password"
+            onPress={forgotPasswordButtonPressed}
+          />
 
-      <CustomLongButton
-        title="Make new account"
-        onPress={makeNewAccountButtonPressed}
-      />
+          <CustomLongButton
+            title="Make new account"
+            onPress={makeNewAccountButtonPressed}
+          />
 
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }

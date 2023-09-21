@@ -4,7 +4,7 @@ import * as Location from 'expo-location'
 
 export default HomeScreenViewController = ( { navigation } ) => {
     
-    const { setCoordinates } = useContext(UserContext);
+    const { setUserCoordinates } = useContext(UserContext);
 
     const addCarButtonPressed = () => {
         console.log("Add car button pressed")
@@ -17,7 +17,7 @@ export default HomeScreenViewController = ( { navigation } ) => {
     }
     
     const getCurrentLocation = async() => {
-        setCoordinates(null)
+        setUserCoordinates(null)
 
         let { status } = await Location.requestForegroundPermissionsAsync();
         
@@ -26,7 +26,7 @@ export default HomeScreenViewController = ( { navigation } ) => {
         } else {
             console.log("Getting current locations")
             let currentLocation = await Location.getCurrentPositionAsync({});
-            setCoordinates(currentLocation.coords)
+            setUserCoordinates(currentLocation.coords)
             console.log(currentLocation.coords)
         }
         navigation.navigate("AutomateBookingScreen")

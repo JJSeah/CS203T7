@@ -14,13 +14,17 @@ export const UserProvider = ( { children } ) => {
     const [ userId, setUserId ] = useState(null);
     const [ userData, setUserData ] = useState(null);
     const [ userCars, setUserCars ] = useState([]);
+
+    const [ currentCar, setCurrentCar ] = useState(null);
+
     const [ allStations, setAllStations ] = useState([]);
-    const [ coordinates, setCoordinates ] = useState (null)
+    const [ userCoordinates, setUserCoordinates ] = useState (null);
+    const [ closestStation, setClosestStation ] = useState(null);
+    const [ upcomingAppointment, setUpcomingAppointment ] = useState(null);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
-
     
-    const signUp = (firstName, lastName, username, email, password) => {
+    const signUp = async(firstName, lastName, username, email, password) => {
         let url = `${BASE_URL}/auth/signup`;
 
         axios.post(url, {
@@ -31,7 +35,6 @@ export const UserProvider = ( { children } ) => {
             "password" : password
         })
         .then (res => { 
-            console.log('res', res.data)
         })
         .catch (e => {
             console.log(`Sign up error ${e}`)
@@ -53,10 +56,9 @@ export const UserProvider = ( { children } ) => {
 
     }, [userToken, userId]);
 
-    const logIn = (email, password) => {
+    const logIn = async(email, password) => {
 
         let url = `${BASE_URL}/auth/login`
-
 
         axios.post(url, {
             email, 
@@ -70,16 +72,15 @@ export const UserProvider = ( { children } ) => {
 
             setUserToken(token);
             setUserId(JSON.stringify(id));
+
         })
         .catch(e => {
             console.log(`Log in error ${e}`)
         })
 
-        // SecureStore.setItemAsync(userTokenString, "userTokenTemp")
-        // setUserToken("userTokenTemp")
     }
 
-    const loadUserData = () => {
+    const loadUserData = async() => {
         let url = `${BASE_URL}/api/user/${userId}`
 
         axios.get(url,
@@ -97,6 +98,7 @@ export const UserProvider = ( { children } ) => {
 
             setUserData(userData)
             setUserCars(userCars)
+            // setCurrentCar(userCars[0])
 
             getAllStations()
         })
@@ -178,7 +180,13 @@ export const UserProvider = ( { children } ) => {
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, userCars, allStations, logIn, logOut, signUp, setUserCars, coordinates, setCoordinates}}
+            value={{ userToken, userId, userData, userCars, allStations, 
+                logIn, logOut, signUp, setUserCars, 
+                userCoordinates, setUserCoordinates,
+                closestStation, setClosestStation,
+                upcomingAppointment, setUpcomingAppointment,
+                currentCar, setCurrentCar
+            }}
         >
             { children }
         </UserContext.Provider>
