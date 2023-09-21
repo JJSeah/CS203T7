@@ -18,6 +18,7 @@ public class CardController {
     private CardService cardService;
 
     @GetMapping
+    @Operation(summary = "Get All Cards", description = "Get All Cards",tags = {"Card"})
     public List<Card> getAllCards() {
         return cardService.getAllCards();
     }
