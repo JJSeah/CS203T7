@@ -80,6 +80,7 @@ export const UserProvider = ( { children } ) => {
 
     }
 
+
     const loadUserData = async() => {
         let url = `${BASE_URL}/api/user/${userId}`
 
@@ -98,7 +99,10 @@ export const UserProvider = ( { children } ) => {
 
             setUserData(userData)
             setUserCars(userCars)
-            // setCurrentCar(userCars[0])
+
+            if (userCars.length > 0) {
+                setCurrentCar(userCars[0])
+            } 
 
             getAllStations()
         })
@@ -107,7 +111,6 @@ export const UserProvider = ( { children } ) => {
         })
 
     }
-
 
     const logOut = () => {
         setUserToken(null);
