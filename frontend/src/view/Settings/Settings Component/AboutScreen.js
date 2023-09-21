@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
-import { UserContext } from '../model/User';
+import { UserContext } from '../../../model/User';
 
-export default GetHelpScreen = () => {
+export default AboutScreen = () => {
 
     const { userData } = useContext(UserContext);
 
@@ -10,7 +10,7 @@ export default GetHelpScreen = () => {
     <View>
       <Text>{userData.name}</Text>
       <Text>{userData.email}</Text>
-      <Text>This is GetHelpScreen screen</Text>
+      <Text>This is About Screen</Text>
     </View>
   );
 }

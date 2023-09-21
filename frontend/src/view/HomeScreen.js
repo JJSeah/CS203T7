@@ -17,7 +17,7 @@ export default HomeScreen = ( { navigation } ) => {
   const { loadCarsData } = CarRepository();
 
   useFocusEffect(
-    React.useCallback(() => {      
+    React.useCallback(() => {    
       loadCarsData();
     }, [])
   )

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "../view/HomeScreen";
 import HistoryScreen from "../view/HistoryScreen";
 import MapScreen from "../view/MapScreen";
-import SettingsScreen from "../view/SettingsScreen";
+import SettingsScreen from "../view/Settings/SettingsScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome5 } from '@expo/vector-icons';
 

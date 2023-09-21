@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
-import { UserContext } from '../model/User';
-import InBetweenSpace from '../components/InBetweenSpace';
-import CustomTextField from '../components/CustomTextField';
+import { UserContext } from '../../../model/User';
+import InBetweenSpace from '../../../components/InBetweenSpace';
+import CustomTextField from '../../../components/CustomTextField';
 
 
 export default EditProfileScreen = ( { navigation } ) => {
