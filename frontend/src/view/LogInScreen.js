@@ -7,6 +7,7 @@ import { UserContext } from '../model/User';
 import Ionicons from "@expo/vector-icons/Ionicons"
 import PasswordField from '../components/PasswordField';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import HyperlinkButton from '../components/HyperlinkButton';
 
 export default LogInScreen = ( { navigation } ) => {
   
@@ -49,13 +50,13 @@ export default LogInScreen = ( { navigation } ) => {
             secureTextEntry={true}
           />  
       
-
+          
           <CustomLongButton
             title="Login"
             onPress={logInButtonPressed}
           />
 
-          <CustomLongButton
+          <HyperlinkButton
             title="Forgot Password"
             onPress={forgotPasswordButtonPressed}
           />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 
-export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
+export default HyperlinkButton = ( { title, onPress, disabled = false} ) => {
   
   return (
     <View style={styles.container}>
@@ -9,7 +9,6 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
       <TouchableHighlight
         onPress={onPress}
         disabled={disabled}
-        underlayColor="#DDDDDD"
       >
 
         <View>
