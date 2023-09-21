@@ -39,6 +39,7 @@ export default HomeScreen = ( { navigation } ) => {
         userCars.map(car => (
           <View key={car.id}>
             <Text>{car.nickname}</Text>
+     
           </View>
         ))
       }

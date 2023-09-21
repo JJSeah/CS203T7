@@ -4,13 +4,19 @@ import { UserContext } from '../model/User';
 
 export default VehicleInformationScreen = () => {
 
-    const { userData } = useContext(UserContext);
+  const { userCars } = useContext(UserContext);
 
   return (
     <View>
-      <Text>{userData.name}</Text>
-      <Text>{userData.email}</Text>
-      <Text>This is Vehicle Information screen</Text>
+
+      { userCars.map(car => {
+        return (
+          <View key={car.id}>
+            <Text>{car.nickname}</Text>
+            <Text>{car.batteryCapacity}</Text>
+          </View>
+        )
+      })}
     </View>
   );
 }

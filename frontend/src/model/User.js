@@ -24,11 +24,11 @@ export const UserProvider = ( { children } ) => {
         let url = `${BASE_URL}/auth/signup`;
 
         axios.post(url, {
-            firstName,
-            lastName, 
-            username,
-            email,
-            password
+            "firstName": firstName,
+            "lastName": lastName, 
+            "username": username,
+            "email": email,
+            "password" : password
         })
         .then (res => { 
             console.log('res', res.data)
@@ -139,25 +139,22 @@ export const UserProvider = ( { children } ) => {
 
 
     // Edit profile
-    // const updateProfile = (firstName, surname, email) => {
-    //     let url = `${BASE_URL}/api/user/{id}`
+    // const updateProfile = async(newFirstName, newLastName, newEmail) => {
+    //     let url = `${BASE_URL}/api/user/${userId}`
 
     //     axios.put(url, {
-    //         firstname,
-    //         surname,
-    //         email,
+    //         "firstName": newFirstName,
+    //         "lastName": newLastName,
+    //         "email": newEmail,
     //     })
     //     .then( res => {
-    //         let data = res.data;
+    //         console.log("Successfully updated backend")
 
-    //         let firstName = userData.firstName;
-    //         let surname = userData.surname;
-    //         Let email = userData.email;
+    //         let reload = async() => {
+    //             loadUserData()
+    //         }
 
-    //         setFirstName(firstName);
-    //         setSurname(surname);
-    //         setEmail(email);
-
+    //         reload()
     //     })
     // }
 
