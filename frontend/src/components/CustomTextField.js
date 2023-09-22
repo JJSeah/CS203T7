@@ -8,6 +8,7 @@ export default CustomTextField = ( { placeholder, value, onChangeText, onBlur, a
 
         <TextInput style={styles.input}
             placeholder={placeholder} 
+            placeholderTextColor={'white'}
             value={value}
             onChangeText={onChangeText}
             onBlur={onBlur}
@@ -24,17 +25,18 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 2.2,
     borderRadius: 10,
-    borderColor: '#3081EE',
+    borderColor: 'white',
     padding: 10,
     marginHorizontal: 15,
     marginTop: 15,
     borderRadius: 8,
     flexDirection: 'row', 
-    alignItems: 'center'
+    alignItems: 'center',    
   }, 
   input:{
     flex: 1, 
     fontSize: 15, 
     paddingLeft: 10,
+    color: 'white'
   },
 })

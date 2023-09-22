@@ -1,5 +1,6 @@
 package com.example.electric.service;
 
+import com.example.electric.model.Car;
 import com.example.electric.model.Station;
 import com.example.electric.respository.StationRepository;
 import com.google.maps.DistanceMatrixApi;
@@ -48,6 +49,18 @@ public class DistanceMatrixService {
 
         return distanceMatrix.elements[0].duration.inSeconds;
 
+    }
+
+    public String calculateEstimateTimeOfCharging(Car car) {
+        double time = (car.getBatteryCapacity() * (100 - car.getBatteryPercentage())) / (60 * 60);
+
+        return "" + time;
+    }
+
+    public String calculateCostOfCharging(Car car) {
+        double cost = (car.getBatteryCapacity() * (100.0 - car.getBatteryPercentage())) / 1000 * 0.12;
+
+        return "" + cost;
     }
 
 //    public long getDistanceByName(String latitude,String longitude, String station2) throws Exception {

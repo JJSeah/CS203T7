@@ -9,7 +9,7 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
       <TouchableHighlight
         onPress={onPress}
         disabled={disabled}
-        underlayColor="#DDDDDD"
+        underlayColor="grey"
       >
 
         <View>
@@ -24,12 +24,13 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
 
 const styles = StyleSheet.create ({
   container: {
-    borderRadius: 50, 
-    borderColor: '#3081EE',
+    borderRadius: 70, 
+    borderColor: 'white',
+    backgroundColor:'white',
     paddingVertical: 10, 
     paddingHorizontal: 12, 
-    marginLeft: 10, 
-    marginRight: 10, 
+    marginLeft: 25, 
+    marginRight: 25, 
     alignItems: 'center',
   }, 
 })

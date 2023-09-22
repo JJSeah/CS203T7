@@ -7,6 +7,7 @@ import CarSwipeView from '../components/SingleCarSwiperView'
 import { useFocusEffect } from '@react-navigation/native';
 import { CarRepository } from '../model/CarRepository';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from '../components/Design';
 
 export default HomeScreen = ( { navigation } ) => {
 
@@ -23,6 +24,20 @@ export default HomeScreen = ( { navigation } ) => {
   )
 
   return (
+    // <SafeAreaView style = {styles.container}>
+    //   <View>
+    //   <Text style = {styles.header}>Hello world</Text>
+    //   <Text style = {styles.subHeader}>Hello world</Text>
+    //   <Text style = {styles.bodyText}>Hello world</Text>
+
+    //   <View style = {styles.boxContainer}>
+    //   <Text style = {styles.SectionHeader}>This is section header</Text>
+    //   </View>
+      
+    //   </View>
+      
+    // </SafeAreaView>
+    
     <SafeAreaView>
     <View>
 

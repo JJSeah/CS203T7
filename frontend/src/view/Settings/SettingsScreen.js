@@ -4,6 +4,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SettingsScreenViewController from '../../viewController/SettingsScreenViewController';
 import SettingsButton from '../../components/SettingsButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+// import { styles } from '../../components/Design';
+
 
 // Creating 2 sections: Account and Records
 // Account: Profile, Vehicle Information, Payment Methods, Notification (need?)
@@ -25,9 +27,8 @@ export default SettingsScreen = ( { navigation } ) => {
   return (
 
     // Account Section and Records Section
+    
     <SafeAreaView>
-
-      {/* This is Account container */}
 
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
@@ -80,15 +81,11 @@ export default SettingsScreen = ( { navigation } ) => {
 
       </View>
     </SafeAreaView>
+
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff', 
-    padding: 16,
-  },
+ const styles = StyleSheet.create({
   sectionContainer: {
     marginBottom: 24,
     borderWidth: 1,
@@ -110,4 +107,3 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
-

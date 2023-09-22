@@ -4,8 +4,8 @@ import { UserContext } from '../model/User';
 import { Dropdown } from 'react-native-element-dropdown';
 
 // take here
-import Swiper from "react-native-deck-swiper"
-import SingleCarSwiperView from '../components/SingleCarSwiperView';
+// import Swiper from "react-native-deck-swiper"
+// import SingleCarSwiperView from '../components/SingleCarSwiperView';
 
 const month = [
   {label: 'January', value:'1'}, 
@@ -73,6 +73,7 @@ export default HistoryScreen = () => {
     
         <View>
         <Text>start here</Text>
+<<<<<<< HEAD
           
         <View style={ { height: 400 }}>
           <Swiper
@@ -93,6 +94,26 @@ export default HistoryScreen = () => {
           />
         </View>
         <Text>The current car is {currentCar.nickname}</Text>
+=======
+
+        {/* <Swiper
+          cards={userCars}
+          infinite={true}
+          onSwiped={index => {
+            console.log(currentCar)
+            setCurrentCar(userCars[(index + 1) % userCars.length])
+          }}
+          renderCard={card => {
+            return( 
+              <SingleCarSwiperView
+                car={card}
+              />
+            )
+          }}
+        /> */}
+
+        {/* <Text>The current car is {currentCar.nickname}</Text> */}
+>>>>>>> 363587a8a583d01fcbe82ced1c258c4052efb963
 
 
 

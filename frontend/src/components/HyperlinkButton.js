@@ -4,7 +4,7 @@ import { Button, Text, View, StyleSheet, TouchableHighlight, TouchableOpacity } 
 export default HyperlinkButton = ( { title, onPress, disabled = false} ) => {
   
   return (
-    <View style={styles.container}>
+    <View>
 
       <TouchableOpacity
         onPress={onPress}
@@ -13,7 +13,7 @@ export default HyperlinkButton = ( { title, onPress, disabled = false} ) => {
 
         <View>
             <Text 
-            style={styles.text}
+            style={{color:'white'}}
             >
                 {title}
             </Text>
@@ -25,17 +25,17 @@ export default HyperlinkButton = ( { title, onPress, disabled = false} ) => {
   );
 }
 
-const styles = StyleSheet.create ({
-  container: {
-    borderRadius: 50, 
-    borderColor: '#3081EE',
-    paddingVertical: 10, 
-    paddingHorizontal: 12, 
-    marginLeft: 10, 
-    marginRight: 10, 
-    alignItems: 'center'
-  }, 
-  text: {
-    color: 'blue',
-  }
-})
+// const styles = StyleSheet.create ({
+//   container: {
+//     borderRadius: 50, 
+//     borderColor: 'white',
+//     paddingVertical: 10, 
+//     paddingHorizontal: 12, 
+//     marginLeft: 10, 
+//     marginRight: 10, 
+//     alignItems: 'center'
+//   }, 
+//   text: {
+//     color: 'white',
+//   }
+// })
