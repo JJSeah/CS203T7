@@ -72,25 +72,26 @@ export default HistoryScreen = () => {
 
     
         <View>
-
         <Text>start here</Text>
-
-        <Swiper
-          cards={userCars}
-          infinite={true}
-          onSwiped={index => {
-            console.log(currentCar)
-            setCurrentCar(userCars[(index + 1) % userCars.length])
-          }}
-          renderCard={card => {
-            return( 
-              <SingleCarSwiperView
-                car={card}
-              />
-            )
-          }}
-        />
-
+          
+        <View style={ { height: 400 }}>
+          <Swiper
+            cardStyle={ { backgroundColor:'red', height: 400 }}
+            cards={userCars}
+            infinite={true}
+            onSwiped={index => {
+              console.log(currentCar)
+              setCurrentCar(userCars[(index + 1) % userCars.length])
+            }}
+            renderCard={card => {
+              return( 
+                <SingleCarSwiperView
+                  car={card}
+                />
+              )
+            }}
+          />
+        </View>
         <Text>The current car is {currentCar.nickname}</Text>
 
 
