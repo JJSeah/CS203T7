@@ -5,14 +5,14 @@ import com.example.electric.exception.ObjectNotFoundException;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.example.electric.exception.ForbiddenException;
 import com.example.electric.exception.ObjectAlreadyExistsException;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.nio.file.AccessDeniedException;
 import java.util.*;
 
 import org.springframework.http.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -60,4 +60,22 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, headers, status);
 
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAccessDeniedException(AccessDeniedException ex) {
+        // You can log or print the error message here
+        System.err.println("Access Denied: " + ex.getMessage());
+
+        // You can redirect or return an error page
+        // Example: return "error/access-denied";
+        
+        // Alternatively, you can throw a custom exception or return a custom response.
+        return "error/access-denied"; // This is just an example, you can customize it as needed.
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<String> handleForbiddenException(ForbiddenException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+    }
 }
+
