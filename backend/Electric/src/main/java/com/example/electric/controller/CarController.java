@@ -72,7 +72,7 @@ public class CarController {
     @GetMapping("/user/{userId}/car/{carId}")
     @Operation(summary = "Get Car By User", description = "Get Car using ID and UserID", tags = { "Car" })
     public Car getCarByUser(@PathVariable("userId") long userId, @PathVariable("carId") long carId) {
-        return carService.getCarByUser(userId, carId);
+        return carService.getCarByUserId(userId, carId);
     }
 
     /**
