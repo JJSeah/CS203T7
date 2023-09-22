@@ -65,7 +65,7 @@ public class UserController {
     public UserCarPaymentResponse getUserInfo(@PathVariable Long id) {
         User user = userService.getUserById(id);
         List<Car> car = carService.getAllCarsByUser(id);
-        Optional<Card> card = cardService.getCardByUser(id);
+        Optional<Card> card = cardService.getCardByUserId(id);
 
         if (user == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);

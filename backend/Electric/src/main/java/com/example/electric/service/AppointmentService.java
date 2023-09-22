@@ -2,6 +2,7 @@ package com.example.electric.service;
 
 import com.example.electric.model.Appointment;
 import com.example.electric.respository.AppointmentRepository;
+import com.example.electric.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,9 @@ import java.util.Optional;
 public class AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
@@ -40,10 +44,16 @@ public class AppointmentService {
     }
 
     public void deleteAppointment(long appointmentId) {
+        if (!appointmentRepository.existsById(appointmentId)) {
+            return;
+        }
         appointmentRepository.deleteById(appointmentId);
     }
 
     public List<Appointment> getAllAppointmentsByUser(long userId) {
+        if (!userRepository.existsById(userId)) {
+            return null;
+        }
         return appointmentRepository.findAppointmentsByUserId(userId);
     }
 }

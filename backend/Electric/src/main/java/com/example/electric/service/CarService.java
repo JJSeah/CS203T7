@@ -29,7 +29,7 @@ public class CarService {
         if (!userRepository.existsById(userId)) {
             return null;
         }
-        return carRepository.findCarsByOwnerId(userId);
+        return carRepository.findCarsByUserId(userId);
 
     }
 
@@ -58,7 +58,7 @@ public class CarService {
         if (!userRepository.existsById(userId)) {
             return null;
         }
-        return carRepository.findCarByOwnerIdAndId(userId, carId);
+        return carRepository.findCarByUserIdAndId(userId, carId);
 
     }
 }

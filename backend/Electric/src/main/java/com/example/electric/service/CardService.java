@@ -21,7 +21,7 @@ public class CardService {
         return cardRepository.findById(id);
     }
 
-    public Optional<Card> getCardByUser(long userId) {
+    public Optional<Card> getCardByUserId(long userId) {
         return cardRepository.findCardByUserId(userId);
     }
 
@@ -33,12 +33,15 @@ public class CardService {
         if (!cardRepository.existsById(id)) {
             return null;
         }
-
         updatedCard.setId(id);
         return cardRepository.save(updatedCard);
     }
 
+
     public void deleteCard(long id) {
+        if (!cardRepository.existsById(id)) {
+            return;
+        }
         cardRepository.deleteById(id);
     }
 }

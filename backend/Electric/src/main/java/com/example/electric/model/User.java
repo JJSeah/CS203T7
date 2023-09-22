@@ -62,5 +62,8 @@ public class User {
     }
 
 
-   
+    public User(long userId, String john) {
+        this.id = userId;
+        this.firstName = john;
+    }
 }

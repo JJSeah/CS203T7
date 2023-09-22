@@ -1,20 +1,16 @@
 package com.example.electric.controller;
 
-import com.example.electric.model.Car;
 import com.example.electric.model.Station;
 import com.example.electric.service.CarService;
 import com.example.electric.service.DistanceMatrixService;
 import com.example.electric.service.StationService;
 import com.google.maps.model.DistanceMatrix;
-import com.google.maps.model.DistanceMatrixRow;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -80,8 +76,8 @@ public class DistanceMatrixController {
         // Calculate time to arrive, distance, cost, and estimate time of charging
         String timeToArrive = String.valueOf(distanceMatrixService.getDurationByID(station));
         String distance = String.valueOf(distanceMatrixService.getDistanceByID(station));
-        String costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUser(userId, carId));
-        String estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUser(userId, carId));
+        String costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUserId(userId, carId));
+        String estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));
 
         // Create a Map to return the information in JSON format
         Map<String, Object> response = new HashMap<>();
