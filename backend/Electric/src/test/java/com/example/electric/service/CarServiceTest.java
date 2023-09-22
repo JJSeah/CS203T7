@@ -67,7 +67,7 @@ class CarServiceTest {
         cars.add(new Car(1L, "Tesla", "Model S"));
         cars.add(new Car(2L, "Tesla", "Model X"));
         when(userRepository.existsById(userId)).thenReturn(true);
-        when(carRepository.findCarsByOwnerId(userId)).thenReturn(cars);
+        when(carRepository.findCarsByUserId(userId)).thenReturn(cars);
 
         List<Car> result = carService.getAllCarsByUser(userId);
 
@@ -82,7 +82,7 @@ class CarServiceTest {
         List<Car> result = carService.getAllCarsByUser(userId);
 
         verify(userRepository, times(1)).existsById(userId);
-        verify(carRepository, never()).findCarsByOwnerId(userId);
+        verify(carRepository, never()).findCarsByUserId(userId);
         assertNull(result);
     }
 
@@ -155,12 +155,12 @@ class CarServiceTest {
         long carId = 2L;
         Car car = new Car();
         when(userRepository.existsById(userId)).thenReturn(true);
-        when(carRepository.findCarByOwnerIdAndId(userId, carId)).thenReturn(car);
+        when(carRepository.findCarByUserIdAndId(userId, carId)).thenReturn(car);
 
         Car result = carService.getCarByUserId(userId, carId);
 
         verify(userRepository, times(1)).existsById(userId);
-        verify(carRepository, times(1)).findCarByOwnerIdAndId(userId, carId);
+        verify(carRepository, times(1)).findCarByUserIdAndId(userId, carId);
         assertSame(car, result);
     }
 
@@ -173,7 +173,7 @@ class CarServiceTest {
         Car result = carService.getCarByUserId(userId, carId);
 
         verify(userRepository, times(1)).existsById(userId);
-        verify(carRepository, never()).findCarByOwnerIdAndId(userId, carId);
+        verify(carRepository, never()).findCarByUserIdAndId(userId, carId);
         assertNull(result);
     }
 }
