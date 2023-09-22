@@ -8,14 +8,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.*;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name="user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -61,6 +65,47 @@ public class User {
         this.password = password;
     }
 
+        @Column(name ="authorities")
+    // @NotNull(message = "Authorities should not be null")
+    // We define two roles/authorities: ROLE_USER or ROLE_ADMIN (for now)
+    private String authorities;
+
+    /* Return a collection of authorities (roles) granted to the user.
+    */
+
+    public String getAuthority(){
+        return authorities;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.authorities.isEmpty()){
+            return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return Arrays.asList(new SimpleGrantedAuthority(authorities));
+    }
+
+    /*
+    The various is___Expired() methods return a boolean to indicate whether
+    or not the user’s account is enabled or expired.
+    */
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
     public User(long userId, String john) {
         this.id = userId;

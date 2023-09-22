@@ -75,7 +75,7 @@ public class SecurityConfig  {
                     .requestMatchers(HttpMethod.GET, "/api/distance").permitAll()
 
                     //RecordController
-                    .requestMatchers(HttpMethod.GET, "/api/records/all", "/api/records/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/records/all", "/api/records/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST,"/api/records").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/records/*").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/api/records/*").permitAll()
@@ -93,7 +93,7 @@ public class SecurityConfig  {
 
                     //User contoller
                     // .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").authenticated()
+                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").hasRole("USER")
                     .requestMatchers(HttpMethod.POST,"/api/user/").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/user/*").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/api/user/*").permitAll()

@@ -63,6 +63,9 @@ public class UserService {
             if(updatedUser.getCard() != null){
                 user.setCard(updatedUser.getCard());
             }
+            if(updatedUser.getAuthorities() != null){
+                user.setAuthorities(updatedUser.getAuthority());
+            }
 
             return userRepository.save(user);
         } else {
