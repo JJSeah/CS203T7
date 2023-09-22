@@ -32,18 +32,18 @@ public class User {
     @Column(unique = true, name = "Email")
     private String email;
 
-@Column(name="password")
-private String password;
+    @Column(name="password")
+    private String password;
 
     //link to cars
     @Column(name="cars")
     @JsonIgnore
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Car> cars;
 
     //link to Credit card
     @JsonIgnore
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Card> card;
 
     //link to appointment
@@ -53,7 +53,7 @@ private String password;
 
     //link to record
     @JsonIgnore
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records;
 
     public User(String email, String password) {

@@ -32,8 +32,8 @@ public class Car {
 
     //link to owner(user)
     @ManyToOne
-    @JoinColumn(name="owner_id")
-    private User owner;
+    @JoinColumn(name="user_id")
+    private User user;
 
     //link to records
     @JsonIgnore

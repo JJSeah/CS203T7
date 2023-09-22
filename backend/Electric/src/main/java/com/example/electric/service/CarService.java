@@ -22,7 +22,7 @@ public class CarService {
     }
 
     public List<Car> getAllCarsByUser(long ownerId) {
-        return carRepository.findCarsByOwnerId(ownerId);
+        return carRepository.findCarsByUserId(ownerId);
     }
 
     public Car addCar(Car car) {
@@ -44,10 +44,6 @@ public class CarService {
     }
 
     public Car getCarByUser(long userId, long carId) {
-        return carRepository.findCarByOwnerIdAndId(userId, carId);
-    }
-
-    public Car getCarByUserId(long userId, long carId){
-        return carRepository.findCarByOwnerIdAndId(userId, carId);
+        return carRepository.findCarByUserIdAndId(userId, carId);
     }
 }

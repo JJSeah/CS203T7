@@ -1,6 +1,5 @@
 package com.example.electric.service;
 
-import com.example.electric.model.Car;
 import com.example.electric.model.Card;
 import com.example.electric.respository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,8 @@ public class CardService {
         return cardRepository.findById(id);
     }
 
-    public Optional<Card> getCardByOwner(long ownderId) {
-        return cardRepository.findCardByOwnerId(ownderId);
+    public Optional<Card> getCardByUser(long userId) {
+        return cardRepository.findCardByUserId(userId);
     }
 
     public Card addCard(Card card) {
