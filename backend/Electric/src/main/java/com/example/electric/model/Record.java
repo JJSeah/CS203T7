@@ -21,8 +21,8 @@ public class Record {
 
     //link to user 
     @ManyToOne
-    @JoinColumn(name="owner_id")
-    private User owner;
+    @JoinColumn(name="user_id")
+    private User user;
 
     //link to car
     @ManyToOne

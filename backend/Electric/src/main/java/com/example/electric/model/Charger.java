@@ -16,7 +16,6 @@ public class Charger {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-
     
     @Column(name="char_id")
     private String charId;

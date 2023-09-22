@@ -24,11 +24,13 @@ public class CarService {
         return carRepository.findById(id);
     }
 
+
     public List<Car> getAllCarsByUser(long userId) {
         if (!userRepository.existsById(userId)) {
             return null;
         }
         return carRepository.findCarsByOwnerId(userId);
+
     }
 
     public Car addCar(Car car) {
@@ -52,11 +54,11 @@ public class CarService {
         carRepository.deleteById(id);
     }
 
-
     public Car getCarByUserId(long userId, long carId){
         if (!userRepository.existsById(userId)) {
             return null;
         }
         return carRepository.findCarByOwnerIdAndId(userId, carId);
+
     }
 }
