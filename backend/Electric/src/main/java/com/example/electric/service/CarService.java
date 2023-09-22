@@ -2,6 +2,7 @@ package com.example.electric.service;
 
 import com.example.electric.model.Car;
 import com.example.electric.respository.CarRepository;
+import com.example.electric.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import java.util.Optional;
 public class CarService {
     @Autowired
     private CarRepository carRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Car> getAllCars() {
         return carRepository.findAll();
@@ -21,8 +24,13 @@ public class CarService {
         return carRepository.findById(id);
     }
 
-    public List<Car> getAllCarsByUser(long ownerId) {
-        return carRepository.findCarsByOwnerId(ownerId);
+
+    public List<Car> getAllCarsByUser(long userId) {
+        if (!userRepository.existsById(userId)) {
+            return null;
+        }
+        return carRepository.findCarsByOwnerId(userId);
+
     }
 
     public Car addCar(Car car) {
@@ -40,14 +48,17 @@ public class CarService {
     }
 
     public void deleteCar(long id) {
+        if (!carRepository.existsById(id)) {
+            return;
+        }
         carRepository.deleteById(id);
     }
 
-    public Car getCarByUser(long userId, long carId) {
-        return carRepository.findCarByOwnerIdAndId(userId, carId);
-    }
-
     public Car getCarByUserId(long userId, long carId){
+        if (!userRepository.existsById(userId)) {
+            return null;
+        }
         return carRepository.findCarByOwnerIdAndId(userId, carId);
+
     }
 }

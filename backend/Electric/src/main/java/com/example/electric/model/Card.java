@@ -26,7 +26,7 @@ public class Card {
 
     //link to owner
     @ManyToOne
-    @JoinColumn(name="owner.id")
-    private User owner;
+    @JoinColumn(name="user_id")
+    private User user;
 
 }

@@ -80,8 +80,8 @@ public class DistanceMatrixController {
         // Calculate time to arrive, distance, cost, and estimate time of charging
         String timeToArrive = String.valueOf(distanceMatrixService.getDurationByID(station));
         String distance = String.valueOf(distanceMatrixService.getDistanceByID(station));
-        String costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUserId(userId, carId));
-        String estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));
+        String costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUser(userId, carId));
+        String estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUser(userId, carId));
 
         // Create a Map to return the information in JSON format
         Map<String, Object> response = new HashMap<>();

@@ -64,7 +64,7 @@ public class CardController {
         if (!cardService.getCardById(userId).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        return cardService.getCardByOwner(userId);
+        return cardService.getCardByUser(userId);
     }
 
     /**

@@ -35,7 +35,7 @@ public class RecordService {
         if (optionalRecord.isPresent()) {
             Record record = optionalRecord.get();
             // Update the record fields as needed
-            record.setOwner(updatedRecord.getOwner());
+            record.setUser(updatedRecord.getUser());
             record.setCar(updatedRecord.getCar());
             record.setDuration(updatedRecord.getDuration());
             record.setCost(updatedRecord.getCost());
@@ -54,6 +54,6 @@ public class RecordService {
     }
 
     public List<Record> getAllRecordsByUser(Long userId) {
-        return recordRepository.findRecordsByOwnerId(userId);
+        return recordRepository.findRecordsByUserId(userId);
     }
 }
