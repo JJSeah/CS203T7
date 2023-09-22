@@ -111,4 +111,17 @@ public class User implements UserDetails {
         this.id = userId;
         this.firstName = john;
     }
+
+    public User(long userId, String firstName, String password) {
+        this.id = userId;
+        this.firstName = firstName;
+        this.password = password;
+    }
+
+    public User(long userId, String firstName, String password, String email) {
+        this.id = userId;
+        this.firstName = firstName;
+        this.password = password;
+        this.email = email;
+    }
 }

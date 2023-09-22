@@ -18,7 +18,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -74,14 +75,15 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            return;
+        }
         userRepository.deleteById(id);
-    }
-    public long getUserIDByEmail(String email) {
-        return userRepository.getUserIDByEmail(email);
     }
 
     public User getUserByEmail(String email) {  // check if user exists
-        return userRepository.getUserByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        return optionalUser.orElse(null);
     }
 
     public boolean isEmailUnique(String email) {
