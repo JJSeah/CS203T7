@@ -153,7 +153,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void TestGetUserByEmailNonExistent() {
+    public void testGetUserByEmailNonExistent() {
         String email = "donta@gmail.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
@@ -163,7 +163,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void TestIsEmailUnique_EmailIsUnique() {
+    public void testIsEmailUnique_EmailIsUnique() {
         String email = "donta@gmail.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
@@ -173,7 +173,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void TestIsEmailUnique_EmailIsNotUnique() {
+    public void testIsEmailUnique_EmailIsNotUnique() {
         String email = "donta@gmail.com";
         User user = new User();
         user.setEmail(email);

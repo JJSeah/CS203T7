@@ -65,7 +65,7 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-        @Column(name ="authorities")
+    @Column(name ="authorities")
     // @NotNull(message = "Authorities should not be null")
     // We define two roles/authorities: ROLE_USER or ROLE_ADMIN (for now)
     private String authorities;
