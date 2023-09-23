@@ -80,7 +80,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.authorities.isEmpty()){
+        if (this.authorities == null){
             return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
         }
         return Arrays.asList(new SimpleGrantedAuthority(authorities));
