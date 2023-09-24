@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react'
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, Alert, secureTextEntry } from 'react-native'
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, KeyboardAvoidingView, secureTextEntry, Platform, TouchableWithoutFeedback , SafeAreaView, Keyboard} from 'react-native'
 import CustomTextField from '../components/CustomTextField'
 import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
 import CustomLongButton from '../components/CustomLongButton'
@@ -57,19 +57,10 @@ export default RegisterScreen = ( { navigation } ) => {
       await FontLoader();
       setIsReady(true);
       await SplashScreen.hideAsync();
-    
     }; 
 
     loadFonts();
   }, []);
-
-  if (!isReady) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
 
   return (
   <Formik initialValues ={{
@@ -85,17 +76,25 @@ export default RegisterScreen = ( { navigation } ) => {
   onSubmit={values => console.log(values)}
   > 
    {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
-    <ScrollView style = {styles.container}>
-      <View style = {styles.header}>
+    
+
+    <SafeAreaView style={[styles.container, {flex:1}]}>
+      <View style={styles.header}>
         <Text style={styles.headerText}>Create Account</Text>
       </View>
-
-      <View style = {registerStyle.body}>
+      <KeyboardAvoidingView style={{flex:1}}
+        behavior={Platform.OS === 'ios'?'padding':'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios'?64:0}>
+        
+        <ScrollView style={{flexGrow:1}}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View>
+            <View style = {registerStyle.body}>
         <CustomTextField
-          placeholder = 'First Name'
-          value={values.firstName}
-          onChangeText={handleChange('firstName')}
-          onBlur={() => setFieldTouched('firstName')}/>
+        placeholder = 'First Name'
+        value={values.firstName}
+        onChangeText={handleChange('firstName')}
+        onBlur={() => setFieldTouched('firstName')}/>
           
 
         {errors.firstName && touched.firstName &&  (
@@ -157,7 +156,7 @@ export default RegisterScreen = ( { navigation } ) => {
         
       </View> 
 
-      <View style={{margin: 40, marginBottom: 10}}>
+      <View style={{margin: 40, marginBottom: 35}}>
         <CustomLongButton
         title="Sign Up"
         onPress={() => { signUpButtonPressed(values.firstName, values.lastName, values.username, values.email, values.password)}}
@@ -171,9 +170,14 @@ export default RegisterScreen = ( { navigation } ) => {
         <HyperlinkButton 
           title="Log In"
           onPress={signUpButtonPressed}
-      />
-      </View>
-    </ScrollView>
+        />
+        <View style={{flex:1}}/>
+                </View>
+              </View>
+            </TouchableWithoutFeedback> 
+          </ScrollView>
+        </KeyboardAvoidingView>  
+     </SafeAreaView>
     )}
     </Formik>
   )

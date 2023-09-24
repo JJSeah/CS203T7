@@ -6,12 +6,10 @@ export default HyperlinkButton = ( { title, onPress, disabled = false} ) => {
   
   return (
     <View>
-
       <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
       >
-
         <View>
             <Text 
             style={styles.hyperLinkText}
@@ -19,9 +17,7 @@ export default HyperlinkButton = ( { title, onPress, disabled = false} ) => {
               {title}
             </Text>
         </View>
-
       </TouchableOpacity>
-
     </View>
   );
 }

@@ -36,27 +36,15 @@ export default LogInScreen = ({ navigation }) => {
     const loadFonts = async() => {
       await FontLoader();
       setIsReady(true);
-      await SplashScreen.hideAsync();
-    
+      await SplashScreen.hideAsync();   
     }; 
 
     loadFonts();
   }, []);
 
-  // if(!isReady){
-  //     return (
-  //     <AppLoading
-  //       startAsync={loadFonts}
-  //       onFinish={() => setIsReady(true)}
-  //       onError={() => {}}
-  //     />
-  //   );
-  // }
-
   if (!isReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Loading...</Text>
       </View>
     );
   }
