@@ -62,7 +62,8 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontSize: 16,
-    fontFamily: 'Product-Sans-Regular'
+    fontFamily: 'Product-Sans-Regular',
+    padding: 5
   }, 
   hyperLinkText:{
     color:'#B2D3C2', 
