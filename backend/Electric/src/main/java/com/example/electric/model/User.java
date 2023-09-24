@@ -107,9 +107,9 @@ public class User implements UserDetails {
         return true;
     }
 
-    public User(long userId, String john) {
+    public User(long userId, String firstName) {
         this.id = userId;
-        this.firstName = john;
+        this.firstName = firstName;
     }
 
     public User(long userId, String firstName, String password) {

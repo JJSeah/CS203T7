@@ -49,4 +49,15 @@ public class Record {
 //    link to appointment
     @OneToOne(mappedBy = "record")
     private Appointment appointment;
+
+    public Record(long id) {
+        this.id = id;
+    }
+
+    public Record(long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
+
+    
 }
