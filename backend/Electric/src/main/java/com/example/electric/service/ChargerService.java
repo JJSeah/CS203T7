@@ -30,16 +30,21 @@ public class ChargerService {
         return charger.getId();
     }
 
-    public Charger updateCharger(Charger updatedCharger, long chargerId) {
+    public Optional<Charger> updateCharger(Charger updatedCharger, long chargerId) {
         if (!chargerRepository.existsById(chargerId)) {
             return null;
         }
 
         updatedCharger.setId(chargerId);
-        return chargerRepository.save(updatedCharger);
+        return Optional.of(chargerRepository.save(updatedCharger));
     }
 
-    public void deleteCharger(long chargerId) {
+    public Optional<Charger> deleteCharger(long chargerId) {
+        if (!chargerRepository.existsById(chargerId)) {
+            return null;
+        }
+        Optional<Charger> deleted = chargerRepository.findById(chargerId);
         chargerRepository.deleteById(chargerId);
+        return deleted;
     }
 }

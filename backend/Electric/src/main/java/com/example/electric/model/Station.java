@@ -35,5 +35,12 @@ public class Station {
     @OneToMany (mappedBy = "station", cascade = CascadeType.ALL)
     private List<Charger> chargers;
 
+    public Station(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    
+
     
 }
