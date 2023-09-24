@@ -14,18 +14,21 @@ export const styles = StyleSheet.create({
     textAlign: 'left',
     margin: 50, 
     marginBottom: 0,
+    fontFamily: 'Product-Sans-Regular'
   },
   subHeader: {
-    color: 'white',
-    fontSize: 20,
-    textAlign: 'left',
-    margin: 20,
-  },
-  bodyText: {
     color: 'white',
     fontSize: 16,
     textAlign: 'left',
     margin: 20,
+    fontFamily: 'Product-Sans-Regular',
+  },
+  bodyText: {
+    color: 'black',
+    fontSize: 16,
+    textAlign: 'left',
+    margin: 20,
+    fontFamily: 'Product-Sans-Regular'
   },
   boxContainer: {
     backgroundColor:'white',
@@ -37,10 +40,17 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderHeight: 3,
     fontSize: 20,
-    color: '#FAA',
+    color: 'white',
     padding: 20,
     backgroundColor: '#FFA',
     margin: 20,
   },
   // add more as you go
+  button: {
+      borderRadius: 80, 
+      marginHorizontal: 90, 
+      marginVertical: 20, 
+      alignItems: 'center',
+      justifyContent: 'center',
+  }
 });

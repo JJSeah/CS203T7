@@ -56,17 +56,17 @@ public class CardServiceTest {
     }
 
     @Test
-    public void testGetCardByOwner() {
+    public void testGetCardByUser() {
         // Mock data
-        long ownerId = 1L;
+        long userId = 1L;
         Card card = new Card();
-        when(cardRepository.findCardByOwnerId(ownerId)).thenReturn(Optional.of(card));
+        when(cardRepository.findCardByUserId(userId)).thenReturn(Optional.of(card));
 
         // Call the service method
-        Optional<Card> result = cardService.getCardByOwner(ownerId);
+        Optional<Card> result = cardService.getCardByUser(userId);
 
         // Verify method calls and assertions
-        verify(cardRepository, times(1)).findCardByOwnerId(ownerId);
+        verify(cardRepository, times(1)).findCardByUserId(userId);
         assertTrue(result.isPresent());
         assertSame(card, result.get());
     }

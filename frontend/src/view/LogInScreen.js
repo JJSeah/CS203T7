@@ -11,11 +11,16 @@ import HyperlinkButton from '../components/HyperlinkButton';
 import { styles } from "../components/Design";
 import { Image, Icon } from 'react-native';
 import { IMAGENAME } from '../../assets/images/index';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import FontLoader from '../constants/FontLoader';
 
 export default LogInScreen = ({ navigation }) => {
 
   const { isLoading,
     email,
+    isReady,
+    setIsReady,
     setShowpassword,
     password,
     setEmail,
@@ -24,6 +29,19 @@ export default LogInScreen = ({ navigation }) => {
     forgotPasswordButtonPressed,
     makeNewAccountButtonPressed
   } = LogInScreenViewController({ navigation });
+
+  const loadFonts = async() => {
+    await FontLoader();
+  }; 
+  if(!isReady){
+    return (
+      <AppLoading
+        startAsync={loadFonts}
+        onFinish={() => setIsReady(true)}
+        onError={() => {}}
+      />
+    );
+  }
 
 
   return (
@@ -40,7 +58,7 @@ export default LogInScreen = ({ navigation }) => {
 
 
         <Text style={{...styles.header, textAlign:'center', marginTop: 0}}>Welcome To Electric </Text>
-        <Text style={{...styles.bodyText, textAlign:'center', marginBottom:0}}> Welcome to EcoCharge Finder, your electric car's best friend. Log in to discover nearby charging stations and keep your EV on the move</Text>
+        <Text style={{...styles.subHeader, textAlign:'center', marginBottom:0}}> Welcome to EcoCharge Finder, your electric car's best friend. Log in to discover nearby charging stations and keep your EV on the move</Text>
 
         <View style={{padding:10}}>
         <CustomTextField

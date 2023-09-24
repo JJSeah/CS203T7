@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
     flex: 1, 
     fontSize: 15, 
     paddingLeft: 10,
-    color: 'white'
+    color: 'white', 
+    fontFamily: 'Product-Sans-Regular'
   },
   icon:{
     fontSize : 18, 
