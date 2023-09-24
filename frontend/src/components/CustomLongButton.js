@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Text, View, StyleSheet, TouchableHighlight, Pressable, Animated, TouchableOpacity} from 'react-native';
+import { Button, Text, View, TouchableOpacity} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient'
+import { styles } from './Design';
 
 export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
 
@@ -11,7 +12,7 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
       colors={['#DFE9F3','#F5F7FA', '#C3CFE2' ]}
       start={{x: 0.2, y: 0.2, z: 0.3}}
       end={{x: 0.9, y: 1, z: 1}}
-      style={styles.container}>
+      style={styles.button}>
 
       <TouchableOpacity
         onPress={onPress}
@@ -19,7 +20,7 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
         activeOpacity={0.3}
         >
    
-      <Text style={styles.text}>{title}</Text>      
+      <Text style={styles.bodyText}>{title}</Text>      
   
       </TouchableOpacity>
     
@@ -29,17 +30,3 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
   );
 }
 
-const styles = StyleSheet.create ({
-  container: {
-    borderRadius: 80, 
-    padding: 15,
-    marginHorizontal: 90, 
-    marginVertical: 20, 
-    alignItems: 'center',
-    justifyContent: 'center',
-  }, 
-  text: {
-    fontWeight: 'bold',
-    fontFamily: 'Product-Sans-Regular'
-  },
-})

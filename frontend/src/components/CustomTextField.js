@@ -38,5 +38,6 @@ const styles = StyleSheet.create({
     fontSize: 15, 
     paddingLeft: 10,
     color: 'white',
+    fontFamily: 'Product-Sans-Regular'
   },
 })
