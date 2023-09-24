@@ -91,6 +91,7 @@ public class AuthController {
         if (!userService.isEmailUnique(user.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
+
         userService.createUser(user);
         return ResponseEntity.ok("User created successfully");
 

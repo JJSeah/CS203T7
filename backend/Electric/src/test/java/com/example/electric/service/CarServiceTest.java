@@ -80,14 +80,14 @@ class CarServiceTest {
         long userId = 1L;
         List<Car> cars = new ArrayList<>();
         when(userRepository.existsById(userId)).thenReturn(true);
-        when(carRepository.findCarsByOwnerId(userId)).thenReturn(cars);
+        when(carRepository.findCarsByUserId(userId)).thenReturn(cars);
 
         // Call the service method
         List<Car> result = carService.getAllCarsByUser(userId);
 
         // Verify method calls and assertions
         verify(userRepository, times(1)).existsById(userId);
-        verify(carRepository, times(1)).findCarsByOwnerId(userId);
+        verify(carRepository, times(1)).findCarsByUserId(userId);
         assertSame(cars, result);
     }
 
@@ -102,7 +102,7 @@ class CarServiceTest {
 
         // Verify method calls and assertions
         verify(userRepository, times(1)).existsById(userId);
-        verify(carRepository, never()).findCarsByOwnerId(userId);
+        verify(carRepository, never()).findCarsByUserId(userId);
         assertNull(result);
     }
 
@@ -191,14 +191,14 @@ class CarServiceTest {
         long carId = 2L;
         Car car = new Car();
         when(userRepository.existsById(userId)).thenReturn(true);
-        when(carRepository.findCarByOwnerIdAndId(userId, carId)).thenReturn(car);
+        when(carRepository.findCarByUserIdAndId(userId, carId)).thenReturn(car);
 
         // Call the service method
         Car result = carService.getCarByUserId(userId, carId);
 
         // Verify method calls and assertions
         verify(userRepository, times(1)).existsById(userId);
-        verify(carRepository, times(1)).findCarByOwnerIdAndId(userId, carId);
+        verify(carRepository, times(1)).findCarByUserIdAndId(userId, carId);
         assertSame(car, result);
     }
 
@@ -214,7 +214,7 @@ class CarServiceTest {
 
         // Verify method calls and assertions
         verify(userRepository, times(1)).existsById(userId);
-        verify(carRepository, never()).findCarByOwnerIdAndId(userId, carId);
+        verify(carRepository, never()).findCarByUserIdAndId(userId, carId);
         assertNull(result);
     }
 }
