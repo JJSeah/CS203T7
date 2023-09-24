@@ -157,11 +157,14 @@ export default RegisterScreen = ( { navigation } ) => {
         
       </View> 
 
-      <CustomLongButton
+      <View style={{margin: 40, marginBottom: 10}}>
+        <CustomLongButton
         title="Sign Up"
         onPress={() => { signUpButtonPressed(values.firstName, values.lastName, values.username, values.email, values.password)}}
         disabled={!isValid}
-      />
+        />
+      </View>
+      
 
       <View style={{flexDirection: 'row', marginLeft: 85}}>
         <Text style={registerStyle.text}>Already have an account?  </Text>

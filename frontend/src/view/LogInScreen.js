@@ -90,19 +90,20 @@ export default LogInScreen = ({ navigation }) => {
         />
         </View>
 
-      <View style={{marginLeft: 250}}>
+      <View style={{marginLeft: 255}}>
         <HyperlinkButton
           title="Forgot Password?"
           onPress={forgotPasswordButtonPressed}
         />
       </View>
 
+      <View style={{margin: 45, marginBottom: 35}}>
         <CustomLongButton
           title="Log In"
           onPress={logInButtonPressed}
         />
-
-  
+      </View>
+      
       <View style={{flexDirection: 'row', marginLeft: 90}}>
         <Text style={{color: 'white'}}>Don't have an account?  </Text>
         <HyperlinkButton style={styles.hyperLinkText}
