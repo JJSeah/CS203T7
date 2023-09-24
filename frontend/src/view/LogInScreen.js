@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ActivityIndicator, Button, Text, View } from 'react-native';
 import CustomLongButton from '../components/CustomLongButton';
 import CustomTextField from '../components/CustomTextField';
@@ -12,8 +12,11 @@ import { styles } from "../components/Design";
 import { Image, Icon } from 'react-native';
 import { IMAGENAME } from '../../assets/images/index';
 import * as Font from 'expo-font';
-import AppLoading from 'expo-app-loading';
+// import AppLoading from 'expo-app-loading';
 import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default LogInScreen = ({ navigation }) => {
 
@@ -30,19 +33,34 @@ export default LogInScreen = ({ navigation }) => {
     makeNewAccountButtonPressed
   } = LogInScreenViewController({ navigation });
 
-  const loadFonts = async() => {
-    await FontLoader();
-  }; 
-  if(!isReady){
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    
+    }; 
+
+    loadFonts();
+  }, []);
+
+  // if(!isReady){
+  //     return (
+  //     <AppLoading
+  //       startAsync={loadFonts}
+  //       onFinish={() => setIsReady(true)}
+  //       onError={() => {}}
+  //     />
+  //   );
+  // }
+
+  if (!isReady) {
     return (
-      <AppLoading
-        startAsync={loadFonts}
-        onFinish={() => setIsReady(true)}
-        onError={() => {}}
-      />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
     );
   }
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,7 +104,6 @@ export default LogInScreen = ({ navigation }) => {
         />
 
         <HyperlinkButton 
-          container = {borderColor = 'green'}
           title="Create Account"
           onPress={makeNewAccountButtonPressed}
         />

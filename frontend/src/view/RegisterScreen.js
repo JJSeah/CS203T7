@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect} from 'react'
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, Alert, secureTextEntry } from 'react-native'
 import CustomTextField from '../components/CustomTextField'
 import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
@@ -9,9 +9,10 @@ import * as Yup from 'yup'
 import { UserContext } from '../model/User';
 import { styles } from "../components/Design"; 
 import * as Font from 'expo-font';
-import AppLoading from 'expo-app-loading';
 import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
 
+SplashScreen.preventAutoHideAsync();
 
 const SignupSchema = Yup.object().shape({
 
@@ -48,21 +49,27 @@ const SignupSchema = Yup.object().shape({
 
 export default RegisterScreen = ( { navigation } ) => {
 
-  const {signUpButtonPressed} = RegisterScreenViewController({navigation})
-  const [isReady, setIsReady] = useState(false);
+  const {signUpButtonPressed, isReady, setIsReady} = RegisterScreenViewController({navigation})
 
-  const loadFonts = async() => {
-    await FontLoader();
-  }; 
-  if(!isReady){
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    
+    }; 
+
+    loadFonts();
+  }, []);
+
+  if (!isReady) {
     return (
-      <AppLoading
-        startAsync={loadFonts}
-        onFinish={() => setIsReady(true)}
-        onError={() => {}}
-      />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
     );
   }
+
   return (
   <Formik initialValues ={{
       firstName:'', 

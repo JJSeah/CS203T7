@@ -3,7 +3,7 @@ import { UserContext } from "../model/User";
 
 
 export default RegisterViewController = ( { navigation } ) => {
-        
+    const [ isReady, setIsReady ] = useState(false);      
     // const [ isLoading, setIsLoading ] = useState(true);
     const { signUp } = useContext(UserContext);
 
@@ -15,6 +15,8 @@ export default RegisterViewController = ( { navigation } ) => {
 
     return {
         // isLoading,
+        isReady, 
+        setIsReady,
         signUpButtonPressed,
     };
 
