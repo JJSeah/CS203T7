@@ -28,7 +28,7 @@ export default LogInScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <View> 
 
         <View style={{alignItems: 'center', marginBottom:0, marginTop:25,backgroundColor:"green"}}>
           <Image
