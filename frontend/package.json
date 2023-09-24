@@ -16,6 +16,7 @@
     "axios": "^1.5.0",
     "context": "^3.0.10",
     "expo": "^49.0.9",
+    "expo-app-loading": "^2.1.1",
     "expo-font": "~11.4.0",
     "expo-linear-gradient": "^12.5.0",
     "expo-location": "~16.1.0",

@@ -5,7 +5,7 @@ import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: '#141414',
   },
   header: {
     color: 'white',
@@ -42,6 +42,5 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFA',
     margin: 20,
   },
-
   // add more as you go
 });

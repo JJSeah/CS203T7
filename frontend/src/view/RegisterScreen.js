@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, Alert, secureTextEntry } from 'react-native'
 import CustomTextField from '../components/CustomTextField'
 import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
@@ -7,6 +7,10 @@ import PasswordField from '../components/PasswordField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { UserContext } from '../model/User';
+import { styles } from "../components/Design"; 
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import FontLoader from '../constants/FontLoader';
 
 
 const SignupSchema = Yup.object().shape({
@@ -45,7 +49,20 @@ const SignupSchema = Yup.object().shape({
 export default RegisterScreen = ( { navigation } ) => {
 
   const {signUpButtonPressed} = RegisterScreenViewController({navigation})
-  
+  const [isReady, setIsReady] = useState(false);
+
+  const loadFonts = async() => {
+    await FontLoader();
+  }; 
+  if(!isReady){
+    return (
+      <AppLoading
+        startAsync={loadFonts}
+        onFinish={() => setIsReady(true)}
+        onError={() => {}}
+      />
+    );
+  }
   return (
   <Formik initialValues ={{
       firstName:'', 
@@ -62,10 +79,10 @@ export default RegisterScreen = ( { navigation } ) => {
    {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
     <ScrollView style = {styles.container}>
       <View style = {styles.header}>
-        <Text style={styles.boldText}>Register</Text>
+        <Text style={registerStyle.boldText}>Register</Text>
       </View>
 
-      <View style = {styles.body}>
+      <View style = {registerStyle.body}>
         <CustomTextField
           placeholder = 'First Name'
           value={values.firstName}
@@ -74,7 +91,7 @@ export default RegisterScreen = ( { navigation } ) => {
           
 
         {errors.firstName && touched.firstName &&  (
-          <Text style={styles.textFailed}>{errors.firstName}</Text>
+          <Text style={registerStyle.textFailed}>{errors.firstName}</Text>
         )}
 
         <CustomTextField
@@ -84,7 +101,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onBlur={() => setFieldTouched('lastName')}/>
 
         {errors.lastName && touched.lastName && (
-          <Text style={styles.textFailed}>{errors.lastName}</Text>
+          <Text style={registerStyle.textFailed}>{errors.lastName}</Text>
         )}
          
         <CustomTextField
@@ -94,7 +111,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onBlur={() => setFieldTouched('username')}/>
 
         {errors.username && touched.username && (
-          <Text style={styles.textFailed}>{errors.username}</Text>
+          <Text style={registerStyle.textFailed}>{errors.username}</Text>
         )}
 
         <CustomTextField
@@ -104,7 +121,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onBlur={() => setFieldTouched('email')}/>  
 
         {errors.email && touched.email && (
-          <Text style={styles.textFailed}>{errors.email}</Text>
+          <Text style={registerStyle.textFailed}>{errors.email}</Text>
         )}
 
         <PasswordField
@@ -115,7 +132,7 @@ export default RegisterScreen = ( { navigation } ) => {
           secureTextEntry={true}/>
 
         {errors.password && touched.password && (
-          <Text style={styles.textFailed}>{errors.password}</Text>
+          <Text style={registerStyle.textFailed}>{errors.password}</Text>
         )}
 
         <PasswordField
@@ -127,7 +144,7 @@ export default RegisterScreen = ( { navigation } ) => {
           secureTextEntry={true}/>
 
         {errors.confirmPassword && touched.confirmPassword && (
-          <Text style={styles.textFailed}>{errors.confirmPassword}</Text>
+          <Text style={registerStyle.textFailed}>{errors.confirmPassword}</Text>
         )}
         
       </View> 
@@ -144,29 +161,29 @@ export default RegisterScreen = ( { navigation } ) => {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    backgroundColor: '#fff', 
-  }, 
+const registerStyle = StyleSheet.create({
+  // container: {
+  //   flex: 1, 
+  //   backgroundColor: '#fff', 
+  // }, 
   header: {
     padding : 20,
   },
   boldText: {
     fontWeight: 'bold',
     fontSize: 40, 
-    color: 'black', 
+    color: 'white', 
   }, 
   body:{
-    backgroundColor: '#fff', 
+    // backgroundColor: '#fff', 
     fontSize: 30, 
     padding: 10,
     marginVertical : 10,
   }, 
   textFailed:{
     color: 'red', 
-    fontSize: 13, 
-    fontWeight: 'semibold', 
-    marginLeft: 15,
+    fontSize: 13.5, 
+    fontWeight: 'bold', 
+    marginLeft: 20,
   }, 
 })
