@@ -1,16 +1,15 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SettingsScreenViewController from '../../viewController/SettingsScreenViewController';
 import SettingsButton from '../../components/SettingsButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import { styles } from '../../components/Design';
+import { UserContext } from '../../model/User';
 
 
 // Creating 2 sections: Account and Records
 // Account: Profile, Vehicle Information, Payment Methods, Notification (need?)
 // Suuport & Legal: Get Help, Privacy Policy, About
-
 
 
 export default SettingsScreen = ( { navigation } ) => {
@@ -24,11 +23,15 @@ export default SettingsScreen = ( { navigation } ) => {
     privacyPolicyButtonPressed,
     aboutButtonPressed, } = SettingsScreenViewController( { navigation } );
 
+  const { logOut }  = useContext(UserContext)
+
   return (
 
     // Account Section and Records Section
     
-    <SafeAreaView>
+    <SafeAreaView 
+      style={{flex:1}} 
+    >
 
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
@@ -80,6 +83,12 @@ export default SettingsScreen = ( { navigation } ) => {
         />
 
       </View>
+
+      <View>
+
+          <CustomLongButton title="Log out user" onPress={logOut} />
+
+      </View>
     </SafeAreaView>
 
   );
@@ -92,6 +101,7 @@ export default SettingsScreen = ( { navigation } ) => {
     borderColor: '#ccc',
     borderRadius: 8,
     backgroundColor: '#f9f9f9', 
+    flex: 8
   },
   section: {
     backgroundColor: '#ADD8E6', 
@@ -100,10 +110,10 @@ export default SettingsScreen = ( { navigation } ) => {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
   },
-  
   sectionHeader: {
     fontSize: 20, // Account and Records
     fontWeight: 'bold',
     marginBottom: 8,
   },
+
 });

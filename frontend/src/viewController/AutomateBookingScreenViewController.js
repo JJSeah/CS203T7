@@ -15,7 +15,7 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
 
     }, [closestStation])
 
-    const { userToken, userId, userCars, userCoordinates, currentCar } = useContext(UserContext)
+    const { userToken, userId, userCoordinates, currentCar } = useContext(UserContext)
 
     const findClosestStation = async(latitude, longitude) => {
 
@@ -43,7 +43,7 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
 
         let stationId = closestStation.id
 
-        let url = `${BASE_URL}/api/stationCheck/${userId}/${userCars[0].id}`
+        let url = `${BASE_URL}/api/stationCheck/${userId}/${currentCar.id}`
 
         axios.post(url, {
             "latitude": userCoordinates.latitude,
@@ -55,7 +55,7 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         }        
         ).then(res => {
             let data = res.data
-            console.log(`The car used to book is ${userCars[0].id}, nickname ${userCars[0].nickname}`)
+            console.log(`The car used to book is ${currentCar.id}, nickname ${currentCar.nickname}`)
             setUpcomingAppointment(data)
         }).catch(e => {
             console.log(`Error loading details of upcoming appointment ${e}`)

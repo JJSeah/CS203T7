@@ -7,7 +7,7 @@ import { UserContext } from './User';
 
 export const CarRepository = () => {
 
-    const { userToken, userId, setUserCars, userCars, setCurrentCar } = useContext(UserContext);
+    const { userToken, userId, setUserCars, setCurrentCar } = useContext(UserContext);
 
     const addCarToBackend = (newCar) => {
         let url = `${BASE_URL}/api/car/add/${userId}`
@@ -28,7 +28,7 @@ export const CarRepository = () => {
         .then( res => {
             console.log(res.data)
             loadCarsData()
-        } )
+        })
         .catch(e => {
             console.log(`Error adding car to back end ${e}`)
         })

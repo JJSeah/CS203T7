@@ -71,27 +71,10 @@ export default HistoryScreen = () => {
             } } />
         </View>
 
-
-{/*     
-        <View>
-            <Text>start here</Text>
-
-            <View>
-
-            <CarSwiperView
-              cars={ userCars } 
-              currentCar={ currentCar }
-              onSwiped={ setCurrentCar }
-              userCars={ userCars}
-            />
-
-            </View>
-
-            <Text>end here</Text>
-        </View>  */}
-
-
+    
       </View>
+
+        
     </SafeAreaView>
   
   )
