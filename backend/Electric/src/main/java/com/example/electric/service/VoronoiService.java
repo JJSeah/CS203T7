@@ -1,5 +1,6 @@
 package com.example.electric.service;
 import com.example.electric.model.Station;
+import jakarta.validation.constraints.Null;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
@@ -38,17 +39,31 @@ public class VoronoiService {
         Geometry diagram = voronoiBuilder.getDiagram(new GeometryFactory());
 
         Polygon cell = findCell(diagram, new Coordinate(latitude, longitude));
-        Coordinate nearestStation = findWithinCell(cell, stationCoordinates);
-        return stationService.getStationByCoordinate(nearestStation.getX(), nearestStation.getY());
+        Coordinate closestStationCoordinates = findWithinCell(cell, stationCoordinates);
+        Station closestStation = null;
+
+        try {
+            closestStation = stationService.getStationByCoordinate(closestStationCoordinates.getX(), closestStationCoordinates.getY());
+        } catch (NullPointerException e) {
+            System.out.println("No stations available, should return null");
+        } finally {
+            return closestStation;
+        }
     }
 
     public Polygon findCell(Geometry diagram, Coordinate stationCoordinate) {
         GeometryFactory factory = new GeometryFactory();
 //        Coordinate[] coords = new Coordinate[]{stationCoordinate};
         Geometry stationPoint = factory.createPoint(stationCoordinate);
+        GeometryCollection polygons = factory.createGeometryCollection();
 
         // Find the cell associated with the station by finding the closest polygon in the Voronoi diagram
-        GeometryCollection polygons = (GeometryCollection) diagram;
+        try {
+            polygons = (GeometryCollection) diagram;
+        } catch (ClassCastException e) {
+            System.out.println("diagram is not a GeometryCollection");
+        }
+
         double minDistance = Double.POSITIVE_INFINITY;
         Polygon nearestCell = null;
 
