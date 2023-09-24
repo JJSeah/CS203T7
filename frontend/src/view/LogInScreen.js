@@ -56,11 +56,11 @@ export default LogInScreen = ({ navigation }) => {
         </View>
 
         <CustomLongButton
-          title="Login"
+          title="Log In"
           onPress={logInButtonPressed}
         />
 
-          <View 
+        <View 
           style={{flexDirection:'row', margin:25, marginTop:0, justifyContent:'space-between'}}>
         <HyperlinkButton
           title="Forgot Password?"
@@ -69,7 +69,7 @@ export default LogInScreen = ({ navigation }) => {
 
         <HyperlinkButton 
           container = {borderColor = 'green'}
-          title="Make new account"
+          title="Create Account"
           onPress={makeNewAccountButtonPressed}
         />
         </View>

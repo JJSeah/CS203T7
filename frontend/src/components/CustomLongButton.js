@@ -1,22 +1,29 @@
 import React from 'react';
-import { Button, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import { Button, Text, View, StyleSheet, TouchableHighlight, Pressable, Animated, TouchableOpacity} from 'react-native';
+import {LinearGradient} from 'expo-linear-gradient'
+
 
 export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
+
   
   return (
-    <View style={styles.container}>
+    <View>
+      <LinearGradient 
+      colors={['#DFE9F3','#F5F7FA', '#C3CFE2' ]}
+      start={{x: 0.2, y: 0.2, z: 0.3}}
+      end={{x: 0.9, y: 1, z: 1}}
+      style={styles.container}>
 
-      <TouchableHighlight
+      <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
-        underlayColor="grey"
-      >
-
-        <View>
-          <Text>{title}</Text>
-        </View>
-
-      </TouchableHighlight>
+        activeOpacity={0.3}
+        >
+   
+      <Text style={styles.text}>{title}</Text>      
+     
+      </TouchableOpacity>
+     </LinearGradient>
 
     </View>
   );
@@ -24,13 +31,14 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
 
 const styles = StyleSheet.create ({
   container: {
-    borderRadius: 70, 
-    borderColor: 'white',
-    backgroundColor:'white',
-    paddingVertical: 10, 
-    paddingHorizontal: 12, 
-    marginLeft: 25, 
-    marginRight: 25, 
+    borderRadius: 80, 
+    padding: 15,
+    marginHorizontal: 90, 
+    marginVertical: 20, 
     alignItems: 'center',
+    justifyContent: 'center',
   }, 
+  text: {
+    fontWeight: 'bold',
+  },
 })
