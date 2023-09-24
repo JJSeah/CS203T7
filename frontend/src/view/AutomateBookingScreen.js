@@ -30,52 +30,63 @@ export default AutomateBookingScreen = ({ navigation }) => {
   }, []);
 
   return (
-    (userCoordinates === null) ?
+    <SafeAreaView>
+      { (userCoordinates === null) ?
 
-      <GrantLocationScreen
-      />
+        <View>
+          <GrantLocationScreen
+          />
+        </View>
 
       :
-      <SafeAreaView>
-
-
-
+      
         <View>
           {
             (userCars.length === 0) ?
               <ReminderToAddCarScreen /> :
 
               (closestStation !== null) ?
-                <ClosestStationView />
+
+                <View> 
+                  <ClosestStationView />
+
+                  <View style={styles.buttonsContainer}>
+
+                      <View style={styles.buttons}>
+                        <CustomLongButton
+                          title="Confirm"
+                          onPress={() => { navigation.pop()} }
+                        />
+                      </View>
+
+                      <View style={styles.buttons}>
+                        <CustomLongButton
+                          title="Cancle"
+                          onPress={() => { navigation.pop() }}
+                        />
+                      </View>
+
+                    </View>
+                </View>
                 :
                 (<ActivityIndicator />)
           }
 
-          <View style={styles.container}>
-            <View style={styles.secondContainer}>
-              <CustomLongButton
-                title="Confirm"
-                onPress={() => { navigation.pop()} }
-                styles ={{marginBottom:5}}
-              />
 
-              <CustomLongButton
-                title="Cancle"
-                onPress={() => { navigation.pop() }}
-              />
-            </View>
-          </View>
         </View>
+      }
 
       </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  "container": {
-    marginBottom: 0
+  "buttonsContainer": {
+    flexDirection: 'row',
   },
-  
+  "buttons": {
+    flex:1
+  },
   "secondContainer": {
     margin:25,
     marginTop:0,

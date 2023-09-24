@@ -12,11 +12,11 @@ export default ClosestStationView = () => {
 
     return (
         <View>
-            <MapView style={styles.map}>
+            {/* <MapView style={styles.map}>
                 <Marker
                     coordinate={{ latitude: closestStation.latitude, longitude: closestStation.longitude }}
                 />
-            </MapView>
+            </MapView> */}
 
             <View style={{ ...styles.boxContainer, borderTopLeftRadius: 50, borderTopRightRadius: 50, margin: 25, marginBottom:5, padding:30 }}>
             <Text style= {{...styles.header, color: 'black', margin:0}}>{closestStation.name}</Text>

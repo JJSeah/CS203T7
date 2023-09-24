@@ -1,32 +1,51 @@
 import React from 'react';
-import { Button, Text, View, TouchableOpacity} from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient'
+import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'
 import { styles } from './Design';
 
 export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
-
   return (
-    <View>
-    
-      <LinearGradient 
-      colors={['#DFE9F3','#F5F7FA', '#C3CFE2' ]}
-      start={{x: 0.2, y: 0.2, z: 0.3}}
-      end={{x: 0.9, y: 1, z: 1}}
-      style={styles.button}>
+    <View style={localStyles.container}>
 
       <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
-        activeOpacity={0.3}
+        style={localStyles.toucableOpacity}
         >
-   
-      <Text style={styles.bodyText}>{title}</Text>      
+
+            <LinearGradient 
+              colors={['#DFE9F3','#F5F7FA', '#C3CFE2']}
+              start={{x: 0.2, y: 0.2, z: 0.3}}
+              end={{x: 0.9, y: 1, z: 1}}
+              style={localStyles.gradient}
+              >
+    
+            <Text style={styles.bodyText}>{title}</Text>      
   
+            </LinearGradient>
       </TouchableOpacity>
     
-     </LinearGradient>
     
     </View>
   );
 }
 
+
+const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toucableOpacity: {
+    width: '70%',
+    height: 50
+  },
+  gradient: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 80
+  }
+}
+)

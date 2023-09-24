@@ -13,7 +13,7 @@ export default HomeScreen = ( { navigation } ) => {
 
   const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed} = HomeScreenViewController( { navigation} );
 
-  const { userData, userCars, logOut, currentCar } = useContext(UserContext); 
+  const { userData, userCars, logOut } = useContext(UserContext); 
 
   const { loadCarsData } = CarRepository();
 
@@ -24,63 +24,67 @@ export default HomeScreen = ( { navigation } ) => {
   )
 
   return (
-    // <SafeAreaView style = {styles.container}>
-    //   <View>
-    //   <Text style = {styles.header}>Hello world</Text>
-    //   <Text style = {styles.subHeader}>Hello world</Text>
-    //   <Text style = {styles.bodyText}>Hello world</Text>
 
-    //   <View style = {styles.boxContainer}>
-    //   <Text style = {styles.SectionHeader}>This is section header</Text>
-    //   </View>
-      
-    //   </View>
-      
-    // </SafeAreaView>
     
     <SafeAreaView>
-    <View>
+      <View>
 
-      <Text>Welcome {userData.username}</Text>
+        <View style={{backgroundColor: 'blue'}}>
 
-      <Text>Your email is {userData.email}</Text>
+          <Text>Welcome {userData.username}</Text>
 
-      <Text>Your id is {userData.id}</Text>
+          <Text>Your email is {userData.email}</Text>
 
-      <Text>Your firstName is {userData.firstName}</Text>
+          <Text>Your id is {userData.id}</Text>
 
-      <Text>Your lastName is {userData.lastName}</Text>
+          <Text>Your firstName is {userData.firstName}</Text>
 
-      {
-        userCars.map(car => (
-          <View key={car.id}>
-            <Text>{car.nickname}</Text>
-     
-          </View>
-        ))
-      }
+          <Text>Your lastName is {userData.lastName}</Text>
+
+        </View>
 
 
-      <CustomLongButton
-        title="Add car"
-        onPress={addCarButtonPressed}
-        />
+        <View style={{backgroundColor: 'red'}}>
 
-      <CustomLongButton
-        title="Manual booking"
-        onPress={manualBookingButtonPressed}
-        />
-
-      <CustomLongButton
-        title="Automate booking"
-        onPress={automateBookingButtonPressed}
-        />
-
-      <CustomLongButton
-        title="Log out user" 
-        onPress={logOut}
-        />
+          {
+            userCars.map(car => (
+              <View key={car.id}>
+                <Text>{car.nickname}</Text>
         
+              </View>
+            ))
+          }
+
+        </View>
+
+
+        <View
+          style={{ display: 'flex',  flexDirection:'column', backgroundColor: 'green', height: 400}}
+        >
+
+
+          <CustomLongButton
+            title="Add car"
+            onPress={addCarButtonPressed}
+            />
+
+          <CustomLongButton
+            title="Manual booking"
+            onPress={manualBookingButtonPressed}
+            />
+
+          <CustomLongButton
+            title="Automate booking"
+            onPress={automateBookingButtonPressed}
+            />
+
+          <CustomLongButton
+            title="Log out user" 
+            onPress={logOut}
+            />
+
+        </View>
+
       </View>
     </SafeAreaView>
   );

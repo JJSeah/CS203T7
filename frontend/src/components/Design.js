@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
   bodyText: {
     color: 'black',
     fontSize: 16,
-    textAlign: 'left',
-    margin: 20,
+    // textAlign: 'left',
+    // margin: 20,
     fontFamily: 'Product-Sans-Regular'
   },
   boxContainer: {

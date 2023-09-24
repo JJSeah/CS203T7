@@ -6,6 +6,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 // take here
 import Swiper from "react-native-deck-swiper"
 import SingleCarSwiperView from '../components/SingleCarSwiperView';
+import CarSwiperView from './CarSwiperView';
 
 const month = [
   {label: 'January', value:'1'}, 
@@ -70,34 +71,24 @@ export default HistoryScreen = () => {
             } } />
         </View>
 
-    
+
+{/*     
         <View>
-        <Text>start here</Text>
-          
-        <View style={ { height: 400 }}>
-          <Swiper
-            cardStyle={ { backgroundColor:'red', height: 400 }}
-            cards={userCars}
-            infinite={true}
-            onSwiped={index => {
-              console.log(currentCar)
-              setCurrentCar(userCars[(index + 1) % userCars.length])
-            }}
-            renderCard={card => {
-              return( 
-                <SingleCarSwiperView
-                  car={card}
-                />
-              )
-            }}
-          />
-        </View>
-        <Text>The current car is {currentCar.nickname}</Text>
+            <Text>start here</Text>
 
-        {/* <Text>The current car is {currentCar.nickname}</Text> */}
+            <View>
 
+            <CarSwiperView
+              cars={ userCars } 
+              currentCar={ currentCar }
+              onSwiped={ setCurrentCar }
+              userCars={ userCars}
+            />
 
-        </View> 
+            </View>
+
+            <Text>end here</Text>
+        </View>  */}
 
 
       </View>

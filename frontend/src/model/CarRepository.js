@@ -41,7 +41,10 @@ export const CarRepository = () => {
         .then( res => {
             let data = res.data
             setUserCars(data)
-            // setCurrentCar(userCars[userCars.length - 1])
+            
+            if (data.length > 0) {
+                setCurrentCar(data[0])
+            }
         })
         .catch(e => {
             console.log(`Error adding car to back end ${e}`)
