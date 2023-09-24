@@ -45,6 +45,5 @@ public class Car {
         this.id = id;
         this.nickname = tesla;
         this.model = modelS;
-
     }
 }
