@@ -173,6 +173,7 @@ const registerStyle = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 40, 
     color: 'white', 
+    fontFamily: 'Product-Sans-Regular'
   }, 
   body:{
     // backgroundColor: '#fff', 
