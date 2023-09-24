@@ -28,7 +28,7 @@ export default LogInScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View> 
+      <View>
 
         <View style={{alignItems: 'center', marginBottom:0, marginTop:25,backgroundColor:"green"}}>
           <Image
@@ -76,8 +76,8 @@ export default LogInScreen = ({ navigation }) => {
               <Button
           title="Load fake data"
           onPress={() => {
-            setEmail("Leong123@gmail.com");
-            setPassword("Leong123@gmail.com!");
+            setEmail("ta@example.com");
+            setPassword("mysecretpassword");
           }}
           /> 
 

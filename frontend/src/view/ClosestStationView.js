@@ -29,11 +29,11 @@ export default ClosestStationView = () => {
             </View>
 
             <View>
-                {/* {
+                {
                         (upcomingAppointment === null) ?
                             <ActivityIndicator /> :
                             <UpcomingAppointmentView />
-                    } */}
+                    }
             </View>
 
         </View>

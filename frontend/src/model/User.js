@@ -73,6 +73,8 @@ export const UserProvider = ( { children } ) => {
             setUserToken(token);
             setUserId(JSON.stringify(id));
 
+            console.log(data)
+
         })
         .catch(e => {
             console.log(`Log in error ${e}`)

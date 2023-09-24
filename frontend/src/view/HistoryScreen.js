@@ -4,8 +4,8 @@ import { UserContext } from '../model/User';
 import { Dropdown } from 'react-native-element-dropdown';
 
 // take here
-// import Swiper from "react-native-deck-swiper"
-// import SingleCarSwiperView from '../components/SingleCarSwiperView';
+import Swiper from "react-native-deck-swiper"
+import SingleCarSwiperView from '../components/SingleCarSwiperView';
 
 const month = [
   {label: 'January', value:'1'}, 

@@ -9,9 +9,8 @@ import ClosestStationView from './ClosestStationView';
 import GrantLocationScreen from './GrantLocationScreen';
 import UpcomingAppointmentView from './UpcomingAppointmentView';
 import ReminderToAddCarScreen from './ReminderToAddCarScreen';
-import { styles } from "../components/Design"
+// import { styles } from "../components/Design"
 import MapView, { Marker } from 'react-native-maps';
-import { spread } from 'axios';
 
 
 export default AutomateBookingScreen = ({ navigation }) => {
@@ -34,15 +33,14 @@ export default AutomateBookingScreen = ({ navigation }) => {
     (userCoordinates === null) ?
 
       <GrantLocationScreen
-        styles={styles.grantLocationScreen}
       />
 
       :
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView>
 
 
 
-        <View style = {{marginBottom:0}}>
+        <View>
           {
             (userCars.length === 0) ?
               <ReminderToAddCarScreen /> :
@@ -53,8 +51,8 @@ export default AutomateBookingScreen = ({ navigation }) => {
                 (<ActivityIndicator />)
           }
 
-          <View style={{margin:25, marginTop:0, marginBottom:0}}>
-            <View style={{ backgroundColor: 'white', width:20,borderBottomLeftRadius:50, borderBottomRightRadius:50, padding:5}}>
+          <View style={styles.container}>
+            <View style={styles.secondContainer}>
               <CustomLongButton
                 title="Confirm"
                 onPress={() => { navigation.pop()} }
@@ -73,3 +71,24 @@ export default AutomateBookingScreen = ({ navigation }) => {
   );
 }
 
+const styles = StyleSheet.create({
+  "container": {
+    marginBottom: 0
+  },
+  
+  "secondContainer": {
+    margin:25,
+    marginTop:0,
+    marginBottom:0
+  },
+
+  "thirdContainer": {
+    backgroundColor: 'white', 
+    width:20,
+    borderBottomLeftRadius:50, 
+    borderBottomRightRadius:50, 
+    padding:5
+  }
+
+
+})
