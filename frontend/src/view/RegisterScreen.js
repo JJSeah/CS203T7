@@ -11,6 +11,7 @@ import { styles } from "../components/Design";
 import * as Font from 'expo-font';
 import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
+import HyperlinkButton from '../components/HyperlinkButton'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -86,7 +87,7 @@ export default RegisterScreen = ( { navigation } ) => {
    {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
     <ScrollView style = {styles.container}>
       <View style = {styles.header}>
-        <Text style={registerStyle.boldText}>Register</Text>
+        <Text style={styles.headerText}>Create Account</Text>
       </View>
 
       <View style = {registerStyle.body}>
@@ -162,6 +163,13 @@ export default RegisterScreen = ( { navigation } ) => {
         disabled={!isValid}
       />
 
+      <View style={{flexDirection: 'row', marginLeft: 85}}>
+        <Text style={registerStyle.text}>Already have an account?  </Text>
+        <HyperlinkButton 
+          title="Log In"
+          onPress={signUpButtonPressed}
+      />
+      </View>
     </ScrollView>
     )}
     </Formik>
@@ -169,25 +177,18 @@ export default RegisterScreen = ( { navigation } ) => {
 }
 
 const registerStyle = StyleSheet.create({
-  // container: {
-  //   flex: 1, 
-  //   backgroundColor: '#fff', 
-  // }, 
-  header: {
-    padding : 20,
-  },
-  boldText: {
-    fontWeight: 'bold',
-    fontSize: 40, 
-    color: 'white', 
-    fontFamily: 'Product-Sans-Regular'
-  }, 
   body:{
     // backgroundColor: '#fff', 
     fontSize: 30, 
     padding: 10,
     marginVertical : 10,
   }, 
+  text: {
+    color: 'white', 
+    fontFamily: 'Product-Sans-Regular', 
+    fontSize: 15, 
+    textAlign: 'center',
+  },
   textFailed:{
     color: 'red', 
     fontSize: 13.5, 

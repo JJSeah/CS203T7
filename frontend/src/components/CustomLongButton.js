@@ -9,10 +9,10 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
     <View>
     
       <LinearGradient 
+      style={styles.button}
       colors={['#DFE9F3','#F5F7FA', '#C3CFE2' ]}
       start={{x: 0.2, y: 0.2, z: 0.3}}
-      end={{x: 0.9, y: 1, z: 1}}
-      style={styles.button}>
+      end={{x: 0.9, y: 1, z: 1}}>
 
       <TouchableOpacity
         onPress={onPress}
@@ -20,7 +20,7 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
         activeOpacity={0.3}
         >
    
-      <Text style={styles.bodyText}>{title}</Text>      
+      <Text style={styles.buttonText}>{title}</Text>      
   
       </TouchableOpacity>
     

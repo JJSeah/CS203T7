@@ -12,7 +12,6 @@ import { styles } from "../components/Design";
 import { Image, Icon } from 'react-native';
 import { IMAGENAME } from '../../assets/images/index';
 import * as Font from 'expo-font';
-// import AppLoading from 'expo-app-loading';
 import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -91,33 +90,37 @@ export default LogInScreen = ({ navigation }) => {
         />
         </View>
 
+      <View style={{marginLeft: 250}}>
+        <HyperlinkButton
+          title="Forgot Password?"
+          onPress={forgotPasswordButtonPressed}
+        />
+      </View>
+
         <CustomLongButton
           title="Log In"
           onPress={logInButtonPressed}
         />
 
-        <View 
-          style={{flexDirection:'row', margin:25, marginTop:0, justifyContent:'space-between'}}>
-        <HyperlinkButton
-          title="Forgot Password?"
-          onPress={forgotPasswordButtonPressed}
-        />
-
-        <HyperlinkButton 
-          title="Create Account"
+  
+      <View style={{flexDirection: 'row', marginLeft: 90}}>
+        <Text style={{color: 'white'}}>Don't have an account?  </Text>
+        <HyperlinkButton style={styles.hyperLinkText}
+          title="Sign Up"
           onPress={makeNewAccountButtonPressed}
         />
-        </View>
-              <Button
-          title="Load fake data"
-          onPress={() => {
-            setEmail("Leong123@gmail.com");
-            setPassword("Leong123@gmail.com!");
-          }}
-          /> 
+      </View>
 
-        <Text style={{fontSize:10, color:'white'}}>The current email is ${email}</Text>
-          <Text style={{fontSize:10, color:'white'}}>The current password is ${password}</Text>
+      <Button
+        title="Load fake data"
+        onPress={() => {
+          setEmail("Leong123@gmail.com");
+          setPassword("Leong123@gmail.com!");
+        }}
+      /> 
+
+      <Text style={{fontSize:10, color:'white'}}>The current email is ${email}</Text>
+      <Text style={{fontSize:10, color:'white'}}>The current password is ${password}</Text>
 
       </View>
     </SafeAreaView>
