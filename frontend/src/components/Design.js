@@ -12,19 +12,25 @@ export const styles = StyleSheet.create({
     fontSize: 27,
     fontWeight: 'bold',
     textAlign: 'left',
-    margin: 50, 
-    marginBottom: 0,
+    margin: 35, 
+    marginBottom: 10,
     fontFamily: 'Product-Sans-Regular'
   },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 40, 
+    color: 'white', 
+    fontFamily: 'Product-Sans-Regular',
+  }, 
   subHeader: {
     color: 'white',
     fontSize: 16,
     textAlign: 'left',
-    margin: 20,
+    margin: 10,
     fontFamily: 'Product-Sans-Regular',
   },
   bodyText: {
-    color: 'black',
+    color: 'white',
     fontSize: 16,
     // textAlign: 'left',
     // margin: 20,
@@ -52,5 +58,17 @@ export const styles = StyleSheet.create({
       marginVertical: 20, 
       alignItems: 'center',
       justifyContent: 'center',
+  }, 
+  buttonText: {
+    color: 'black',
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 20,
+    fontFamily: 'Product-Sans-Regular'
+  }, 
+  hyperLinkText:{
+    color:'#B2D3C2', 
+    fontWeight: 900,
+    fontFamily: 'Product-Sans-Regular'
   }
 });

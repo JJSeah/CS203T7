@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
       borderColor: 'white',
       padding: 10,
       marginHorizontal: 17,
-      marginTop: 15,
+      marginTop: 17,
+      marginBottom: 3,
       borderRadius: 8,
       flexDirection: 'row', 
       alignItems: 'center'

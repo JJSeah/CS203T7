@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect} from 'react'
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, Alert, secureTextEntry } from 'react-native'
 import CustomTextField from '../components/CustomTextField'
 import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
@@ -9,9 +9,11 @@ import * as Yup from 'yup'
 import { UserContext } from '../model/User';
 import { styles } from "../components/Design"; 
 import * as Font from 'expo-font';
-import AppLoading from 'expo-app-loading';
 import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+import HyperlinkButton from '../components/HyperlinkButton'
 
+SplashScreen.preventAutoHideAsync();
 
 const SignupSchema = Yup.object().shape({
 
@@ -48,21 +50,27 @@ const SignupSchema = Yup.object().shape({
 
 export default RegisterScreen = ( { navigation } ) => {
 
-  const {signUpButtonPressed} = RegisterScreenViewController({navigation})
-  const [isReady, setIsReady] = useState(false);
+  const {signUpButtonPressed, isReady, setIsReady} = RegisterScreenViewController({navigation})
 
-  const loadFonts = async() => {
-    await FontLoader();
-  }; 
-  if(!isReady){
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    
+    }; 
+
+    loadFonts();
+  }, []);
+
+  if (!isReady) {
     return (
-      <AppLoading
-        startAsync={loadFonts}
-        onFinish={() => setIsReady(true)}
-        onError={() => {}}
-      />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
     );
   }
+
   return (
   <Formik initialValues ={{
       firstName:'', 
@@ -79,7 +87,7 @@ export default RegisterScreen = ( { navigation } ) => {
    {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
     <ScrollView style = {styles.container}>
       <View style = {styles.header}>
-        <Text style={registerStyle.boldText}>Register</Text>
+        <Text style={styles.headerText}>Create Account</Text>
       </View>
 
       <View style = {registerStyle.body}>
@@ -155,6 +163,13 @@ export default RegisterScreen = ( { navigation } ) => {
         disabled={!isValid}
       />
 
+      <View style={{flexDirection: 'row', marginLeft: 85}}>
+        <Text style={registerStyle.text}>Already have an account?  </Text>
+        <HyperlinkButton 
+          title="Log In"
+          onPress={signUpButtonPressed}
+      />
+      </View>
     </ScrollView>
     )}
     </Formik>
@@ -162,25 +177,18 @@ export default RegisterScreen = ( { navigation } ) => {
 }
 
 const registerStyle = StyleSheet.create({
-  // container: {
-  //   flex: 1, 
-  //   backgroundColor: '#fff', 
-  // }, 
-  header: {
-    padding : 20,
-  },
-  boldText: {
-    fontWeight: 'bold',
-    fontSize: 40, 
-    color: 'white', 
-    fontFamily: 'Product-Sans-Regular'
-  }, 
   body:{
     // backgroundColor: '#fff', 
     fontSize: 30, 
     padding: 10,
     marginVertical : 10,
   }, 
+  text: {
+    color: 'white', 
+    fontFamily: 'Product-Sans-Regular', 
+    fontSize: 15, 
+    textAlign: 'center',
+  },
   textFailed:{
     color: 'red', 
     fontSize: 13.5, 
