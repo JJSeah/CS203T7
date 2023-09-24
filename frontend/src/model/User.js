@@ -15,7 +15,7 @@ export const UserProvider = ( { children } ) => {
     const [ userData, setUserData ] = useState(null);
     const [ userCars, setUserCars ] = useState([]);
 
-    const [ currentCar, setCurrentCar ] = useState(null);
+    const [ currentCar, setCurrentCar ] = useState({nickname: "Loading"});
 
     const [ allStations, setAllStations ] = useState([]);
     const [ userCoordinates, setUserCoordinates ] = useState (null);
@@ -99,12 +99,11 @@ export const UserProvider = ( { children } ) => {
             let userCars = data.car
             let userCard = data.card
 
-            setUserData(userData)
-            setUserCars(userCars)
-
             if (userCars.length > 0) {
                 setCurrentCar(userCars[0])
-            } 
+            }
+            setUserData(userData)
+            setUserCars(userCars)
 
             getAllStations()
         })

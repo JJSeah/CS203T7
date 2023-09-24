@@ -1,29 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import Swiper from "react-native-deck-swiper"
 import SingleCarSwiperView from "../components/SingleCarSwiperView";
+import { UserContext } from "../model/User";
 
 
-export default CarSwiperView = ( { cars, currentCar, onSwiped } ) => {
+export default CarSwiperView = ( ) => {
+
+    const {userCars, setCurrentCar} = useContext(UserContext);
 
     return (
         <View style={localStyles.container}>
 
             {
-            (cars.length === 0) ?
+            (userCars.length === 0) ?
 
                 <Text>no cars to swipe</Text> 
             :
             
             (
                     <Swiper
-                        stackScale={cars.length}
-                        cards={cars}
+                        stackScale={userCars.length}
+                        cards={userCars}
                         infinite={true}
                         cardStyle={localStyles.cardStyle}
                         onSwiped={index => {
-                            onSwiped(cars[(index + 1) % cars.length])
-                            console.log(`The current car is ${currentCar.nickname}`)
+                            setCurrentCar(userCars[(index + 1) % userCars.length])
                         }}
                         renderCard={card => {
                             return( 
@@ -31,7 +33,6 @@ export default CarSwiperView = ( { cars, currentCar, onSwiped } ) => {
                                     <SingleCarSwiperView
                                         car={card}
                                     />
-                                    <Text>The current car is {currentCar.nickname}</Text>
                                 </View>
                             )
                         }}

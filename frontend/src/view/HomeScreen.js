@@ -39,13 +39,18 @@ export default HomeScreen = ({ navigation }) => {
 
       <View style={localStyles.headerContainer}>
         <Text>Welcome {userData.username}</Text>
+
+
+          {
+            (currentCar !== null) ?
+            <Text>Your current car is {currentCar.nickname}</Text> :
+            <Text>You do not have a car yet</Text>
+          }
+        
       </View>
 
       <View style={localStyles.swiperContainer}>
           <CarSwiperView
-              cars={userCars}
-              onSwiped={setCurrentCar}
-              currentCar={currentCar}
           />
       </View>
 
