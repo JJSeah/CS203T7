@@ -2,16 +2,16 @@ import React, { useContext } from "react";
 import {Button, Text, View, ScrollView, TextBase, StyleSheet, Image,} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 import CustomLongButton from "../components/CustomLongButton";
 import CarDetails from "../components/CarDetails";
+import CarSwipeView from "../components/SingleCarSwiperView";
+import { styles } from "../components/Design";
+
 import HomeScreenViewController from "../viewController/HomeScreenViewController";
 import { UserContext } from "../model/User";
-import CarSwipeView from "../components/SingleCarSwiperView";
 import { useFocusEffect } from "@react-navigation/native";
 import { CarRepository } from "../model/CarRepository";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "../components/Design";
 import CarSwiperView from "./CarSwiperView";
 
 export default HomeScreen = ({ navigation }) => {
@@ -21,7 +21,7 @@ export default HomeScreen = ({ navigation }) => {
     automateBookingButtonPressed,
   } = HomeScreenViewController({ navigation });
 
-  const { userData, userCars, logOut, setCurrentCar, currentCar } =
+  const { userData, userCars, setCurrentCar, currentCar } =
     useContext(UserContext);
 
   const { loadCarsData } = CarRepository();
@@ -66,18 +66,18 @@ export default HomeScreen = ({ navigation }) => {
       <View style={localStyles.carDetailsContainer}>
         {currentCar !== null ? (
           <>
-          <CarDetails 
-          icon = "battery-full" 
-          value = {currentCar.batteryPercentage} 
-          title = "BATTERY"
-          />
+            <CarDetails 
+            iconName = "batteryIcon" 
+            value = {currentCar.batteryPercentage} 
+            title = "BATTERY"
+            />
 
           <CarDetails 
-          icon = "square" 
+          iconName = "carPlateIcon" 
           value = {currentCar.plate} 
           title = "CAR PLATE"
           />
-            {/* <Text>Id: {currentCar.id}</Text> */}
+          {/* <Text>{currentCar.id}</Text> */}
           </>
         ) : (
           <Text>Please add a car</Text>
@@ -117,11 +117,14 @@ const localStyles = StyleSheet.create({
   },
   swiperContainer: {
     flex: 4,
-    backgroundColor: "blue",
+    // backgroundColor: "blue",
   },
   carDetailsContainer: {
     flex: 2,
-    backgroundColor: "white",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    // backgroundColor: "yellow",
+
   },
   bottomContainer: {
     flex: 3,
@@ -140,6 +143,7 @@ const localStyles = StyleSheet.create({
     fontFamily: "Product-Sans-Regular",
     fontSize: 14,
     color: "white",
+    marginBottom: 10,
   },
 
   carDetailsText: {
