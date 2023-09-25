@@ -1,7 +1,9 @@
 package com.example.electric.service;
 
+import com.example.electric.model.Role;
 import com.example.electric.model.User;
 import com.example.electric.respository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,8 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
-public class UserService {
+@RequiredArgsConstructor
+public class UserService{
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -34,6 +38,7 @@ public class UserService {
 
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
         return userRepository.save(user);
     }
 
@@ -64,9 +69,9 @@ public class UserService {
             if(updatedUser.getCard() != null){
                 user.setCard(updatedUser.getCard());
             }
-            if(updatedUser.getAuthorities() != null){
-                user.setAuthorities(updatedUser.getAuthority());
-            }
+//            if(updatedUser.getAuthorities() != null){
+//                user.setAuthorities(updatedUser.getAuthority());
+//            }
 
             return userRepository.save(user);
         } else {
@@ -90,4 +95,6 @@ public class UserService {
         Optional<User> existinguser = userRepository.findByEmail(email);
         return !existinguser.isPresent();
     }
+
 }
+

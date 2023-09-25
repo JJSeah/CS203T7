@@ -7,12 +7,12 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.*;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="user")
@@ -38,6 +38,9 @@ public class User implements UserDetails {
 
     @Column(name="password")
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     //link to cars
     @Column(name="cars")
@@ -65,31 +68,18 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    @Column(name ="authorities")
-    // @NotNull(message = "Authorities should not be null")
-    // We define two roles/authorities: ROLE_USER or ROLE_ADMIN (for now)
-    private String authorities;
-
-    /* Return a collection of authorities (roles) granted to the user.
-    */
-
-    public String getAuthority(){
-        return authorities;
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.authorities == null){
-            return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-        return Arrays.asList(new SimpleGrantedAuthority(authorities));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    /*
-    The various is___Expired() methods return a boolean to indicate whether
-    or not the user’s account is enabled or expired.
-    */
+    @Override
+    public String getUsername() {
+        // email in our case
+        return email;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

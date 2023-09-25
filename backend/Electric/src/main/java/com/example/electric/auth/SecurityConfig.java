@@ -1,38 +1,48 @@
 package com.example.electric.auth;
 
-import com.example.electric.service.CustomUserDetailsService;
+import com.example.electric.service.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.http.HttpMethod;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig  {
 
-    private final CustomUserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final UserServiceImpl userService;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthorizationFilter jwtAuthorizationFilter) {
-        this.userDetailsService = customUserDetailsService;
-        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
-
-    }
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder PasswordEncoder)
-            throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(PasswordEncoder);
-        return authenticationManagerBuilder.build();
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userService.userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+            throws Exception {
+        return config.getAuthenticationManager();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -75,7 +85,7 @@ public class SecurityConfig  {
                     .requestMatchers(HttpMethod.GET, "/api/distance").permitAll()
 
                     //RecordController
-                    .requestMatchers(HttpMethod.GET, "/api/records/all", "/api/records/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/records/all", "/api/records/**").hasRole("USER")
                     .requestMatchers(HttpMethod.POST,"/api/records").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/records/*").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/api/records/*").permitAll()
@@ -93,33 +103,23 @@ public class SecurityConfig  {
 
                     //User contoller
                     // .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").hasRole("USER")
+                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST,"/api/user/").permitAll()
-                    .requestMatchers(HttpMethod.PUT, "/api/user/*").permitAll()
+//                    .requestMatchers(HttpMethod.PUT, "/api/user/*").permitAll()
+                    .requestMatchers(HttpMethod.PUT, "/api/user/*").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.DELETE, "/api/user/*").permitAll()
 
 
 
                 .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(jwtAuthorizationFilter,UsernamePasswordAuthenticationFilter.class);
+                .and().sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
+                .authenticationProvider(authenticationProvider()).addFilterBefore(
+                        jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
 
-
-    // @SuppressWarnings("deprecation")
-    // @Bean
-    // public NoOpPasswordEncoder passwordEncoder() {
-    //     return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-    // }
-
-    
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
 
 

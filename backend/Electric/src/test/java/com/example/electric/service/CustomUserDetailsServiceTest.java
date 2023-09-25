@@ -10,8 +10,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomUserDetailsServiceTest {
@@ -22,32 +25,31 @@ public class CustomUserDetailsServiceTest {
     private CustomUserDetailsService customUserDetailsService;
 
     @Test
-    public void testLoadUserByUsername_UserExists() {
+    public void testLoadUserByUsername() {
+        // Arrange
+        String email = "test@example.com";
         User user = new User();
-        String email = "donta@gmail.com";
-
-        user.setUsername("donta");
-        user.setPassword("donta123");
         user.setEmail(email);
-        user.setAuthorities("USER");
+        user.setPassword("password");
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
-        when(userRepository.findUserByEmail(email)).thenReturn(user);
+        // Act
+        UserDetails userDetails = customUserDetailsService.userDetailsService().loadUserByUsername(email);
 
-        UserDetails result = customUserDetailsService.loadUserByUsername(email);
-
-        assertEquals(user.getEmail(),result.getUsername());
-        assertEquals(user.getPassword(),result.getPassword());
-        assertTrue(result.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER")));
+        // Assert
+        assertEquals(email, userDetails.getUsername());
+        assertEquals(user.getPassword(), userDetails.getPassword());
     }
 
     @Test
-    public void testLoadUserByUsername_UserNotFound() {
-        String email = "testing123@gmail.com";
+    public void testLoadUserByUsernameNotFound() {
+        // Arrange
+        String email = "test@example.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        when(userRepository.findUserByEmail(email)).thenThrow(UsernameNotFoundException.class);
-
+        // Act and Assert
         assertThrows(UsernameNotFoundException.class, () -> {
-            customUserDetailsService.loadUserByUsername(email);
+            customUserDetailsService.userDetailsService().loadUserByUsername(email);
         });
     }
 }
