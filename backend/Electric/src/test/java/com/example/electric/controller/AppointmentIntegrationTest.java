@@ -2,22 +2,23 @@ package com.example.electric.controller;
 
 import com.example.electric.model.Appointment;
 import com.example.electric.respository.AppointmentRepository;
-import com.example.electric.respository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.junit.jupiter.api.BeforeEach;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.net.URI;
 import java.sql.Time;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,34 +31,21 @@ public class AppointmentIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Autowired
-    private UserRepository users;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    private ObjectMapper objectMapper;
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+    @Value("${token.signing.key}")
+    private String jwtSigningKey;
 
 
-    @BeforeEach
-    public void setUp() {
-        objectMapper = new ObjectMapper();
-    }
-
-    private String generateBearerToken() {
-        // Generate a JWT token with the appropriate claims
-        String secret = "mysecretpassword";
-        String encodedSecret = new BCryptPasswordEncoder().encode(secret);
-        String token = Jwts.builder()
-                .setSubject("ex@example.com")
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
-                .signWith(SignatureAlgorithm.HS512, encodedSecret)
-                .compact();
-
-        // Return the token as a bearer token
+    private String generateBearerToken(Map<String, Object> extraClaims) {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
+        String token = Jwts.builder().setClaims(extraClaims).setSubject("ex@example.com")
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .signWith(Keys.hmacShaKeyFor(keyBytes), SignatureAlgorithm.HS256).compact();
         return "Bearer " + token;
     }
 
@@ -80,7 +68,7 @@ public class AppointmentIntegrationTest {
         Appointment addedAppointment = appointmentRepository.save(appointment);
 
         // Generate a bearer token
-        String token = generateBearerToken();
+        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
@@ -101,7 +89,7 @@ public class AppointmentIntegrationTest {
     @Test
     public void testGetAppointmentById_Failure() {
         // Generate a bearer token
-        String token = generateBearerToken();
+        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
@@ -124,7 +112,7 @@ public class AppointmentIntegrationTest {
         Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null);
 
         // Generate a bearer token
-        String token = generateBearerToken();
+        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
@@ -157,7 +145,7 @@ public class AppointmentIntegrationTest {
         addedAppointment.setEndTime(new Time(2));
 
         // Generate a bearer token
-        String token = generateBearerToken();
+        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
@@ -188,7 +176,7 @@ public class AppointmentIntegrationTest {
         addedAppointment.setEndTime(new Time(2));
 
         // Generate a bearer token
-        String token = generateBearerToken();
+        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
@@ -214,7 +202,7 @@ public class AppointmentIntegrationTest {
         Appointment addedAppointment = appointmentRepository.save(appointment);
 
         // Generate a bearer token
-        String token = generateBearerToken();
+        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
@@ -236,7 +224,7 @@ public class AppointmentIntegrationTest {
     @Test
     public void testDeleteAppointment_Failure() {
         // Generate a bearer token
-        String token = generateBearerToken();
+        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
