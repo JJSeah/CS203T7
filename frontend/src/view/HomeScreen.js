@@ -40,12 +40,8 @@ export default HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={localStyles.container}>
-
-
       <View style={localStyles.headerContainer}>
-        <Text>
-          Welcome back, {userData.username}!
-        </Text>
+        <Text>Welcome back, {userData.username}!</Text>
 
         {currentCar !== null ? (
           <>
@@ -53,9 +49,7 @@ export default HomeScreen = ({ navigation }) => {
             <Text>Nickname: {currentCar.nickname}</Text>
           </>
         ) : (
-          <Text>
-            You do not have a car yet
-          </Text>
+          <Text>You do not have a car yet</Text>
         )}
       </View>
 
@@ -68,8 +62,16 @@ export default HomeScreen = ({ navigation }) => {
       </View>
 
       <View style={localStyles.carDetailsContainer}>
-        <Text>Battery: {currentCar.batteryPercentage}</Text>
-        <Text>Plate: {currentCar.plate}</Text>
+        {currentCar !== null ? (
+          <>
+            <Text>Battery: {currentCar.batteryPercentage}</Text>
+            <Text>Plate: {currentCar.plate}</Text>
+            <Text>Id: {currentCar.id}</Text>
+          </>
+        ) : (
+          <Text>Please add a car</Text>
+        )
+        }
       </View>
 
       <View style={localStyles.bottomContainer}>
@@ -134,8 +136,8 @@ const localStyles = StyleSheet.create({
     flex: 3,
   },
   carDetailsContainer: {
-    flex:2,
-    backgroundColor:'white'
+    flex: 2,
+    backgroundColor: "white",
   },
   buttonContainer: {},
 });
