@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   }, 
   hyperLinkText:{
     color:'#B2D3C2', 
-    fontWeight: 900,
+    // fontWeight: 900,
     fontFamily: 'Product-Sans-Regular'
   }
 });
