@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ActivityIndicator, Button, Text, View } from 'react-native';
 import CustomLongButton from '../components/CustomLongButton';
 import CustomTextField from '../components/CustomTextField';
@@ -11,11 +11,18 @@ import HyperlinkButton from '../components/HyperlinkButton';
 import { styles } from "../components/Design";
 import { Image, Icon } from 'react-native';
 import { IMAGENAME } from '../../assets/images/index';
+import * as Font from 'expo-font';
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default LogInScreen = ({ navigation }) => {
 
   const { isLoading,
     email,
+    isReady,
+    setIsReady,
     setShowpassword,
     password,
     setEmail,
@@ -25,6 +32,22 @@ export default LogInScreen = ({ navigation }) => {
     makeNewAccountButtonPressed
   } = LogInScreenViewController({ navigation });
 
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();   
+    }; 
+
+    loadFonts();
+  }, []);
+
+  if (!isReady) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,7 +63,7 @@ export default LogInScreen = ({ navigation }) => {
 
 
         <Text style={{...styles.header, textAlign:'center', marginTop: 0}}>Welcome To Electric </Text>
-        <Text style={{...styles.bodyText, textAlign:'center', marginBottom:0}}> Welcome to EcoCharge Finder, your electric car's best friend. Log in to discover nearby charging stations and keep your EV on the move</Text>
+        <Text style={{...styles.subHeader, textAlign:'center', marginBottom:0}}> Welcome to EcoCharge Finder, your electric car's best friend. Log in to discover nearby charging stations and keep your EV on the move</Text>
 
         <View style={{padding:10}}>
         <CustomTextField
@@ -55,34 +78,38 @@ export default LogInScreen = ({ navigation }) => {
         />
         </View>
 
-        <CustomLongButton
-          title="Login"
-          onPress={logInButtonPressed}
-        />
-
-          <View 
-          style={{flexDirection:'row', margin:25, marginTop:0, justifyContent:'space-between'}}>
+      <View style={{marginLeft: 255}}>
         <HyperlinkButton
           title="Forgot Password?"
           onPress={forgotPasswordButtonPressed}
         />
+      </View>
 
-        <HyperlinkButton 
-          container = {borderColor = 'green'}
-          title="Make new account"
+      <View style={{margin: 45, marginBottom: 35}}>
+        <CustomLongButton
+          title="Log In"
+          onPress={logInButtonPressed}
+        />
+      </View>
+      
+      <View style={{flexDirection: 'row', marginLeft: 90}}>
+        <Text style={{color: 'white'}}>Don't have an account?  </Text>
+        <HyperlinkButton style={styles.hyperLinkText}
+          title="Sign Up"
           onPress={makeNewAccountButtonPressed}
         />
-        </View>
-              <Button
-          title="Load fake data"
-          onPress={() => {
-            setEmail("Leong123@gmail.com");
-            setPassword("Leong123@gmail.com!");
-          }}
-          /> 
+      </View>
 
-        <Text style={{fontSize:10, color:'white'}}>The current email is ${email}</Text>
-          <Text style={{fontSize:10, color:'white'}}>The current password is ${password}</Text>
+      <Button
+        title="Load fake data"
+        onPress={() => {
+          setEmail("Leong123@gmail.com");
+          setPassword("Leong123@gmail.com!");
+        }}
+      /> 
+
+      <Text style={{fontSize:10, color:'white'}}>The current email is ${email}</Text>
+      <Text style={{fontSize:10, color:'white'}}>The current password is ${password}</Text>
 
       </View>
     </SafeAreaView>

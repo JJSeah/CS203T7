@@ -1,37 +1,75 @@
-import React from "react";
-import { Text, View } from "react-native";
+import React, { useContext, useEffect } from "react";
+import { Text, View, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
 import Swiper from "react-native-deck-swiper"
 import SingleCarSwiperView from "../components/SingleCarSwiperView";
+import { UserContext } from "../model/User";
+import { CarRepository } from "../model/CarRepository";
 
-export default CarSwiperView = ( { cars, onSwiped } ) => {
 
-    return (
-        <View style={{backgroundColor:'red'}}>
-            (cars.length === 0) ?
+export default CarSwiperView = ( { userCars, setCurrentCar }) => {
 
-            (
-            <Text>no cars to swipe</Text> 
-            )
-            :
-            (
-            <Swiper
-            cards={cars}
-            infinite={true}
-            onSwiped={index => {
-                console.log(index)
-            //   console.log(currentCar)
-            //   setCurrentCar(userCars[(index + 1) % userCars.length])
-            }}
-            renderCard={card => {
-            return( 
-                <SingleCarSwiperView
+    // const {userCars, setCurrentCar} = useContext(UserContext);
+    // const { loadCarsData } = CarRepository()
+    const renderCar = ( card, cardIndex ) => {
+        return (
+            <View key={cardIndex}>
+              <SingleCarSwiperView
                 car={card}
                 />
-            )
-            }}
-            />
-            )
+            </View>
+        );
+    }
+
+    return (
+        <View style={localStyles.container}>
+
+            {
+            (userCars.length === 0) ?
+            <View style={localStyles.loadingCarContainer}>
+                <Text>Please add a car</Text>
+            </View>
+            :
+                (userCars[0].nickname === "dummy") ? 
+                    <View style={localStyles.loadingCarContainer}>
+                        <ActivityIndicator></ActivityIndicator>
+                    </View>
+                 :
+                <View>
+                    <Swiper
+                            key={userCars.length}
+                            stackScale={userCars.length}
+                            cards={userCars}
+                            infinite={true}
+                            cardStyle={localStyles.cardStyle}
+                            onSwiped={index => {
+                                setCurrentCar(userCars[(index + 1) % userCars.length])
+                            }}
+                            renderCard={(card, cardIndex) => {
+                                return renderCar(card, cardIndex)
+                            }}
+                        />
+                </View>
+            }
         </View>
     );
 
 }
+
+const localStyles = StyleSheet.create({
+    "container": {
+        flex:1,
+    },
+    loadingCarContainer: {
+        flex:1,
+        justifyContent: 'center'
+    },
+    "cardStyle" : {
+        backgroundColor: 'green',
+        height: 200,
+    },
+    "swiperStyle" : {
+        backgroundColor: 'transparent',
+        padding: 10,
+        margin: 20,
+    }
+})

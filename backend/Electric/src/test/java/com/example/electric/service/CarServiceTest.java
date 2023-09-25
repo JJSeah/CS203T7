@@ -70,8 +70,12 @@ class CarServiceTest {
         when(carRepository.findCarsByUserId(userId)).thenReturn(cars);
 
         List<Car> result = carService.getAllCarsByUser(userId);
+      
+        // Verify method calls and assertions
+        verify(userRepository, times(1)).existsById(userId);
+        verify(carRepository, times(1)).findCarsByUserId(userId);
+         assertEquals(cars, result);
 
-        assertEquals(cars, result);
     }
 
     @Test

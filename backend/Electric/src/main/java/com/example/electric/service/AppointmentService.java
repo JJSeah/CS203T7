@@ -1,6 +1,7 @@
 package com.example.electric.service;
 
 import com.example.electric.model.Appointment;
+import com.example.electric.model.Record;
 import com.example.electric.respository.AppointmentRepository;
 import com.example.electric.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,23 @@ public class AppointmentService {
         return appointment;
     }
 
-    public Appointment updateAppointment(Appointment updatedAppointment, long appointmentId) {
-        if (!appointmentRepository.existsById(appointmentId)) {
-            return null;
+    public Appointment updateAppointment(Appointment updatedAppointment, long id) {
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
+        if (optionalAppointment.isPresent()) {
+            Appointment appointment = optionalAppointment.get();
+            // Update the appointment fields as needed
+            appointment.setUser(updatedAppointment.getUser());
+            appointment.setDuration(updatedAppointment.getDuration());
+            appointment.setStartTime(updatedAppointment.getStartTime());
+            appointment.setEndTime(updatedAppointment.getEndTime());
+            appointment.setDate(updatedAppointment.getDate());
+            appointment.setStation(updatedAppointment.getStation());
+            appointment.setUser(updatedAppointment.getUser());
+            appointment.setRecord(updatedAppointment.getRecord());
+            return appointmentRepository.save(appointment);
+        } else {
+            return null; // Record not found
         }
-
-        updatedAppointment.setId(appointmentId);
-        return appointmentRepository.save(updatedAppointment);
     }
 
     public void deleteAppointment(long appointmentId) {

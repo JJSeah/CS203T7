@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       borderColor: 'white',
       padding: 10,
-      marginHorizontal: 15,
-      marginTop: 15,
+      marginHorizontal: 17,
+      marginTop: 17,
+      marginBottom: 3,
       borderRadius: 8,
       flexDirection: 'row', 
       alignItems: 'center'
@@ -51,7 +52,8 @@ const styles = StyleSheet.create({
     flex: 1, 
     fontSize: 15, 
     paddingLeft: 10,
-    color: 'white'
+    color: 'white', 
+    fontFamily: 'Product-Sans-Regular'
   },
   icon:{
     fontSize : 18, 

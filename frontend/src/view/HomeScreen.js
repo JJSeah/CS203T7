@@ -1,87 +1,102 @@
-import React, { useContext } from 'react';
-import { Button, Text, View, ScrollView, TextBase } from 'react-native';
-import CustomLongButton from '../components/CustomLongButton';
-import HomeScreenViewController from '../viewController/HomeScreenViewController';
-import { UserContext } from '../model/User';
-import CarSwipeView from '../components/SingleCarSwiperView'
-import { useFocusEffect } from '@react-navigation/native';
-import { CarRepository } from '../model/CarRepository';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from '../components/Design';
+import React, { useContext, useState } from "react";
+import {
+  Button,
+  Text,
+  View,
+  ScrollView,
+  TextBase,
+  StyleSheet,
+} from "react-native";
+import CustomLongButton from "../components/CustomLongButton";
+import HomeScreenViewController from "../viewController/HomeScreenViewController";
+import { UserContext } from "../model/User";
+import CarSwipeView from "../components/SingleCarSwiperView";
+import { useFocusEffect } from "@react-navigation/native";
+import { CarRepository } from "../model/CarRepository";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "../components/Design";
+import CarSwiperView from "./CarSwiperView";
 
-export default HomeScreen = ( { navigation } ) => {
+export default HomeScreen = ({ navigation }) => {
+  const {
+    addCarButtonPressed,
+    manualBookingButtonPressed,
+    automateBookingButtonPressed,
+  } = HomeScreenViewController({ navigation });
 
-  const { addCarButtonPressed, manualBookingButtonPressed, automateBookingButtonPressed} = HomeScreenViewController( { navigation} );
-
-  const { userData, userCars, logOut, currentCar } = useContext(UserContext); 
+  const { userData, userCars, logOut, setCurrentCar, currentCar } = useContext(UserContext);
 
   const { loadCarsData } = CarRepository();
 
   useFocusEffect(
-    React.useCallback(() => {    
-      loadCarsData();
+    React.useCallback(() => {
+      if (userCars !== null) {
+        loadCarsData();
+      }
     }, [])
-  )
+  );
 
   return (
-    // <SafeAreaView style = {styles.container}>
-    //   <View>
-    //   <Text style = {styles.header}>Hello world</Text>
-    //   <Text style = {styles.subHeader}>Hello world</Text>
-    //   <Text style = {styles.bodyText}>Hello world</Text>
+    <SafeAreaView style={localStyles.container}>
 
-    //   <View style = {styles.boxContainer}>
-    //   <Text style = {styles.SectionHeader}>This is section header</Text>
-    //   </View>
-      
-    //   </View>
-      
-    // </SafeAreaView>
-    
-    <SafeAreaView>
-    <View>
-
-      <Text>Welcome {userData.username}</Text>
-
-      <Text>Your email is {userData.email}</Text>
-
-      <Text>Your id is {userData.id}</Text>
-
-      <Text>Your firstName is {userData.firstName}</Text>
-
-      <Text>Your lastName is {userData.lastName}</Text>
-
-      {
-        userCars.map(car => (
-          <View key={car.id}>
-            <Text>{car.nickname}</Text>
-     
-          </View>
-        ))
-      }
+      <View style={localStyles.headerContainer}>
+        <Text>Welcome {userData.username}</Text>
 
 
-      <CustomLongButton
-        title="Add car"
-        onPress={addCarButtonPressed}
-        />
-
-      <CustomLongButton
-        title="Manual booking"
-        onPress={manualBookingButtonPressed}
-        />
-
-      <CustomLongButton
-        title="Automate booking"
-        onPress={automateBookingButtonPressed}
-        />
-
-      <CustomLongButton
-        title="Log out user" 
-        onPress={logOut}
-        />
+          {
+            (currentCar !== null) ?
+            <Text>Your current car is {currentCar.nickname}</Text> :
+            <Text>You do not have a car yet</Text>
+          }
         
       </View>
+
+      <View style={localStyles.swiperContainer}>
+          <CarSwiperView
+            userCars={userCars}
+            setCurrentCar={setCurrentCar}
+          />
+      </View>
+
+
+      <View
+        style={localStyles.bottomContainer}
+      >
+
+        <CustomLongButton title="Add car" onPress={addCarButtonPressed} />
+
+        <CustomLongButton
+          title="Manual booking"
+          onPress={manualBookingButtonPressed}
+        />
+
+        <CustomLongButton
+          title="Automate booking"
+          onPress={automateBookingButtonPressed}
+        />
+
+
+      </View>
+
     </SafeAreaView>
   );
-}
+};
+
+const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  headerContainer: {
+    flex: 1,
+    backgroundColor: 'red'
+  },
+  swiperContainer: {
+    flex: 6,
+    backgroundColor: 'blue'
+  },
+  bottomContainer: {
+    flex: 3, 
+  },
+  buttonContainer: {
+  },
+});

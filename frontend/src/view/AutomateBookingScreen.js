@@ -1,75 +1,91 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
-import * as Location from 'expo-location'
-import { UserContext } from '../model/User';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomLongButton from '../components/CustomLongButton';
-import AutomateBookingScreenViewController from '../viewController/AutomateBookingScreenViewController';
-import ClosestStationView from './ClosestStationView';
-import GrantLocationScreen from './GrantLocationScreen';
-import UpcomingAppointmentView from './UpcomingAppointmentView';
-import ReminderToAddCarScreen from './ReminderToAddCarScreen';
-import { styles } from "../components/Design"
-import MapView, { Marker } from 'react-native-maps';
-import { spread } from 'axios';
-
+import React, { useContext, useEffect, useState } from "react";
+import { Text, View, ActivityIndicator, StyleSheet } from "react-native";
+import * as Location from "expo-location";
+import { UserContext } from "../model/User";
+import { SafeAreaView } from "react-native-safe-area-context";
+import CustomLongButton from "../components/CustomLongButton";
+import AutomateBookingScreenViewController from "../viewController/AutomateBookingScreenViewController";
+import ClosestStationView from "./ClosestStationView";
+import GrantLocationScreen from "./GrantLocationScreen";
+import UpcomingAppointmentView from "./UpcomingAppointmentView";
+import ReminderToAddCarScreen from "./ReminderToAddCarScreen";
+// import { styles } from "../components/Design"
+import MapView, { Marker } from "react-native-maps";
 
 export default AutomateBookingScreen = ({ navigation }) => {
+  const { userCoordinates, closestStation, upcomingAppointment, userCars } =
+    useContext(UserContext);
 
-  const { userCoordinates, closestStation, upcomingAppointment, userCars } = useContext(UserContext);
-
-  const { findClosestStation } = AutomateBookingScreenViewController({ navigation });
+  const { findClosestStation } = AutomateBookingScreenViewController({
+    navigation,
+  });
 
   useEffect(() => {
-
     if (userCoordinates === null || userCars.length === 0) {
       return;
     }
 
     findClosestStation(userCoordinates.latitude, userCoordinates.longitude);
-
   }, []);
 
-  return (
-    (userCoordinates === null) ?
+  return userCoordinates === null ? (
+	    <GrantLocationScreen />
+  	) : userCars.length === 0 ? (
+    	<ReminderToAddCarScreen />
+  	) : closestStation !== null ? (
+    	<SafeAreaView
+			style={localStyles.container}	
+		>
+		
+		<View
+			style={localStyles.infoContainer}	
+		>
+   			<ClosestStationView/>
+		</View>
 
-      <GrantLocationScreen
-        styles={styles.grantLocationScreen}
-      />
 
-      :
-      <SafeAreaView style={styles.container}>
+      	<View 
+			style={localStyles.buttonsContainer}
+		>
+
+			<CustomLongButton
+			  title="Cancle"
+			  onPress={() => {
+				navigation.pop();
+			  }}
+			/>
+
+          	<CustomLongButton
+            	title="Confirm"
+            	onPress={() => {
+              	navigation.pop();
+            	}}
+          	/>
 
 
+      	</View>
 
-        <View style = {{marginBottom:0}}>
-          {
-            (userCars.length === 0) ?
-              <ReminderToAddCarScreen /> :
+    	</SafeAreaView>
+  	) : (
+		<SafeAreaView>
+			<ActivityIndicator/>
+		</SafeAreaView>
+  	);
+};
 
-              (closestStation !== null) ?
-                <ClosestStationView />
-                :
-                (<ActivityIndicator />)
-          }
-
-          <View style={{margin:25, marginTop:0, marginBottom:0}}>
-            <View style={{ backgroundColor: 'white', width:20,borderBottomLeftRadius:50, borderBottomRightRadius:50, padding:5}}>
-              <CustomLongButton
-                title="Confirm"
-                onPress={() => { navigation.pop()} }
-                styles ={{marginBottom:5}}
-              />
-
-              <CustomLongButton
-                title="Cancle"
-                onPress={() => { navigation.pop() }}
-              />
-            </View>
-          </View>
-        </View>
-
-      </SafeAreaView>
-  );
-}
+const localStyles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		alignItems:'stretch',
+	},
+	infoContainer: {
+		flex: 9,
+		alignItems: 'stretch'
+	},
+	buttonsContainer: {
+		flex: 1,
+		flexDirection: "row",
+	},
+});
 

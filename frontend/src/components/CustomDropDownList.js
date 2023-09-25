@@ -14,5 +14,4 @@ export default CustomDropDownList = ( { placeholder, setSelected, searchPlacehol
         </View>
     );
 
-
 };

@@ -7,8 +7,9 @@ export default SingleCarSwiperView = ( { car } ) => {
         <View key={car.id}>
             <Text>Nickname: {car.nickname}</Text> 
             <Text>Battery: {car.batteryPercentage}</Text>
-            <Text>{car.plate}</Text>
-            <Text>{car.model}</Text>
+            <Text>Car Plate: {car.plate}</Text>
+            <Text>Car Model: {car.model}</Text>
+            <Text>Car Id: {car.id}</Text>
         </View>
     );
 }

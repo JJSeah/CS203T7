@@ -1,5 +1,5 @@
-import React, {useContext} from 'react'
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, Alert, secureTextEntry } from 'react-native'
+import React, {useContext, useEffect} from 'react'
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, KeyboardAvoidingView, secureTextEntry, Platform, TouchableWithoutFeedback , SafeAreaView, Keyboard} from 'react-native'
 import CustomTextField from '../components/CustomTextField'
 import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
 import CustomLongButton from '../components/CustomLongButton'
@@ -7,7 +7,13 @@ import PasswordField from '../components/PasswordField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { UserContext } from '../model/User';
+import { styles } from "../components/Design"; 
+import * as Font from 'expo-font';
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+import HyperlinkButton from '../components/HyperlinkButton'
 
+SplashScreen.preventAutoHideAsync();
 
 const SignupSchema = Yup.object().shape({
 
@@ -44,8 +50,18 @@ const SignupSchema = Yup.object().shape({
 
 export default RegisterScreen = ( { navigation } ) => {
 
-  const {signUpButtonPressed} = RegisterScreenViewController({navigation})
-  
+  const {signUpButtonPressed, isReady, setIsReady} = RegisterScreenViewController({navigation})
+
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+
+    loadFonts();
+  }, []);
+
   return (
   <Formik initialValues ={{
       firstName:'', 
@@ -60,21 +76,29 @@ export default RegisterScreen = ( { navigation } ) => {
   onSubmit={values => console.log(values)}
   > 
    {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
-    <ScrollView style = {styles.container}>
-      <View style = {styles.header}>
-        <Text style={styles.boldText}>Register</Text>
-      </View>
+    
 
-      <View style = {styles.body}>
+    <SafeAreaView style={[styles.container, {flex:1}]}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Create Account</Text>
+      </View>
+      <KeyboardAvoidingView style={{flex:1}}
+        behavior={Platform.OS === 'ios'?'padding':'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios'?64:0}>
+        
+        <ScrollView style={{flexGrow:1}}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View>
+            <View style = {registerStyle.body}>
         <CustomTextField
-          placeholder = 'First Name'
-          value={values.firstName}
-          onChangeText={handleChange('firstName')}
-          onBlur={() => setFieldTouched('firstName')}/>
+        placeholder = 'First Name'
+        value={values.firstName}
+        onChangeText={handleChange('firstName')}
+        onBlur={() => setFieldTouched('firstName')}/>
           
 
         {errors.firstName && touched.firstName &&  (
-          <Text style={styles.textFailed}>{errors.firstName}</Text>
+          <Text style={registerStyle.textFailed}>{errors.firstName}</Text>
         )}
 
         <CustomTextField
@@ -84,7 +108,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onBlur={() => setFieldTouched('lastName')}/>
 
         {errors.lastName && touched.lastName && (
-          <Text style={styles.textFailed}>{errors.lastName}</Text>
+          <Text style={registerStyle.textFailed}>{errors.lastName}</Text>
         )}
          
         <CustomTextField
@@ -94,7 +118,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onBlur={() => setFieldTouched('username')}/>
 
         {errors.username && touched.username && (
-          <Text style={styles.textFailed}>{errors.username}</Text>
+          <Text style={registerStyle.textFailed}>{errors.username}</Text>
         )}
 
         <CustomTextField
@@ -104,7 +128,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onBlur={() => setFieldTouched('email')}/>  
 
         {errors.email && touched.email && (
-          <Text style={styles.textFailed}>{errors.email}</Text>
+          <Text style={registerStyle.textFailed}>{errors.email}</Text>
         )}
 
         <PasswordField
@@ -115,7 +139,7 @@ export default RegisterScreen = ( { navigation } ) => {
           secureTextEntry={true}/>
 
         {errors.password && touched.password && (
-          <Text style={styles.textFailed}>{errors.password}</Text>
+          <Text style={registerStyle.textFailed}>{errors.password}</Text>
         )}
 
         <PasswordField
@@ -127,46 +151,55 @@ export default RegisterScreen = ( { navigation } ) => {
           secureTextEntry={true}/>
 
         {errors.confirmPassword && touched.confirmPassword && (
-          <Text style={styles.textFailed}>{errors.confirmPassword}</Text>
+          <Text style={registerStyle.textFailed}>{errors.confirmPassword}</Text>
         )}
         
       </View> 
 
-      <CustomLongButton
+      <View style={{margin: 40, marginBottom: 35}}>
+        <CustomLongButton
         title="Sign Up"
         onPress={() => { signUpButtonPressed(values.firstName, values.lastName, values.username, values.email, values.password)}}
         disabled={!isValid}
-      />
+        />
+      </View>
+      
 
-    </ScrollView>
+      <View style={{flexDirection: 'row', marginLeft: 85}}>
+        <Text style={registerStyle.text}>Already have an account?  </Text>
+        <HyperlinkButton 
+          title="Log In"
+          onPress={signUpButtonPressed}
+        />
+        <View style={{flex:1}}/>
+                </View>
+              </View>
+            </TouchableWithoutFeedback> 
+          </ScrollView>
+        </KeyboardAvoidingView>  
+     </SafeAreaView>
     )}
     </Formik>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    backgroundColor: '#fff', 
-  }, 
-  header: {
-    padding : 20,
-  },
-  boldText: {
-    fontWeight: 'bold',
-    fontSize: 40, 
-    color: 'black', 
-  }, 
+const registerStyle = StyleSheet.create({
   body:{
-    backgroundColor: '#fff', 
+    // backgroundColor: '#fff', 
     fontSize: 30, 
     padding: 10,
     marginVertical : 10,
   }, 
+  text: {
+    color: 'white', 
+    fontFamily: 'Product-Sans-Regular', 
+    fontSize: 15, 
+    textAlign: 'center',
+  },
   textFailed:{
     color: 'red', 
-    fontSize: 13, 
-    fontWeight: 'semibold', 
-    marginLeft: 15,
+    fontSize: 13.5, 
+    fontWeight: 'bold', 
+    marginLeft: 20,
   }, 
 })

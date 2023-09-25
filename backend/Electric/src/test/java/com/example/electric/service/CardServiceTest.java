@@ -77,6 +77,7 @@ public class CardServiceTest {
         Optional<Card> result = cardService.getCardByUserId(userId);
 
         assertEquals(Optional.empty(), result);
+
     }
 
     @Test
