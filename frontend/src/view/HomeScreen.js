@@ -6,6 +6,7 @@ import CustomLongButton from "../components/CustomLongButton";
 import CarDetails from "../components/CarDetails";
 import CarSwipeView from "../components/SingleCarSwiperView";
 import { styles } from "../components/Design";
+import CustomCarButton from "../components/CustomCarButton";
 
 import HomeScreenViewController from "../viewController/HomeScreenViewController";
 import { UserContext } from "../model/User";
@@ -13,6 +14,9 @@ import { useFocusEffect } from "@react-navigation/native";
 import { CarRepository } from "../model/CarRepository";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CarSwiperView from "./CarSwiperView";
+
+import { emptyCarIcon } from "../../assets/images/index";
+
 
 export default HomeScreen = ({ navigation }) => {
   const {
@@ -49,9 +53,16 @@ export default HomeScreen = ({ navigation }) => {
             <Text style = {localStyles.subHeaderText}>
               {currentCar.nickname}
               </Text>
+              {/* <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text> */}
           </>
         ) : (
-          <Text>You do not have a car yet</Text>
+          <>
+          <Text style = {localStyles.subHeaderText}>
+            You do not have a car yet
+            </Text>
+            <Image source = {emptyCarIcon}
+            style = {localStyles.emptyCarIcon}/>
+          </>
         )}
       </View>
 
@@ -59,7 +70,6 @@ export default HomeScreen = ({ navigation }) => {
       <View style={localStyles.swiperContainer}>
         <View>
           <CarSwiperView userCars={userCars} setCurrentCar={setCurrentCar}/>
-
         </View>
       </View>
 
@@ -77,10 +87,21 @@ export default HomeScreen = ({ navigation }) => {
           value = {currentCar.plate} 
           title = "CAR PLATE"
           />
-          {/* <Text>{currentCar.id}</Text> */}
+          {/* <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text> */}
           </>
         ) : (
-          <Text>Please add a car</Text>
+          <>
+          <CarDetails 
+          iconName = "batteryIcon" 
+          value = "-"
+          title = "BATTERY"
+          />
+        <CarDetails 
+        iconName = "carPlateIcon" 
+        value = "-"
+        title = "CAR PLATE"
+        />
+          </>
         )
         }
       </View>
@@ -131,7 +152,6 @@ const localStyles = StyleSheet.create({
   },
 
 
-  
   headerText: {
     fontFamily: "Product-Sans-Regular",
     fontWeight: "bold",
@@ -146,14 +166,12 @@ const localStyles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  carDetailsText: {
-
-  },
-
-  carStyle: {
-    marginTop: 60,
-    width: 400,
-    height: 300,
+  emptyCarIcon: {
+    marginTop: 100,
+    width: 250,
+    height: 160,
+    resizeMode: 'contain',
+    opacity: 0.2,
   },
 
 
