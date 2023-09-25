@@ -71,7 +71,6 @@ export default HistoryScreen = () => {
             } } />
         </View>
 
-    
       </View>
 
         

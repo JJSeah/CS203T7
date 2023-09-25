@@ -27,77 +27,80 @@ public class CardServiceTest {
 
     @Test
     public void testGetAllCards() {
-        // Mock data
         List<Card> cards = new ArrayList<>();
+        cards.add(new Card(1L, "John Doe", "1234567890123456",  "2023-09-22"));
+        cards.add(new Card(2L,  "Jane Smith", "2345678901234567",  "2023-09-22"));
         when(cardRepository.findAll()).thenReturn(cards);
 
-        // Call the service method
         List<Card> result = cardService.getAllCards();
 
-        // Verify method calls and assertions
-        verify(cardRepository, times(1)).findAll();
-        assertSame(cards, result);
+        assertEquals(cards, result);
     }
 
     @Test
     public void testGetCardById() {
-        // Mock data
-        long cardId = 1L;
-        Card card = new Card();
-        when(cardRepository.findById(cardId)).thenReturn(Optional.of(card));
+        long id = 1L;
+        Card card = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
+        when(cardRepository.findById(id)).thenReturn(Optional.of(card));
 
-        // Call the service method
-        Optional<Card> result = cardService.getCardById(cardId);
+        Optional<Card> result = cardService.getCardById(id);
 
-        // Verify method calls and assertions
-        verify(cardRepository, times(1)).findById(cardId);
-        assertTrue(result.isPresent());
-        assertSame(card, result.get());
+        assertEquals(Optional.of(card), result);
     }
 
     @Test
-    public void testGetCardByUser() {
-        // Mock data
+    public void testGetCardByIdNonExistent() {
+        long id = 1L;
+        when(cardRepository.findById(id)).thenReturn(Optional.empty());
+
+        Optional<Card> result = cardService.getCardById(id);
+
+        assertEquals(Optional.empty(), result);
+    }
+
+    @Test
+    public void testGetCardByUserId() {
         long userId = 1L;
-        Card card = new Card();
+        Card card = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
         when(cardRepository.findCardByUserId(userId)).thenReturn(Optional.of(card));
 
-        // Call the service method
-        Optional<Card> result = cardService.getCardByUser(userId);
+        Optional<Card> result = cardService.getCardByUserId(userId);
 
-        // Verify method calls and assertions
-        verify(cardRepository, times(1)).findCardByUserId(userId);
-        assertTrue(result.isPresent());
-        assertSame(card, result.get());
+        assertEquals(Optional.of(card), result);
+    }
+
+    @Test
+    public void testGetCardByUserIdNonExistent() {
+        long userId = 1L;
+        when(cardRepository.findCardByUserId(userId)).thenReturn(Optional.empty());
+
+        Optional<Card> result = cardService.getCardByUserId(userId);
+
+        assertEquals(Optional.empty(), result);
+
     }
 
     @Test
     public void testAddCard() {
-        // Mock data
-        Card cardToAdd = new Card();
+        Card cardToAdd = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
         when(cardRepository.save(cardToAdd)).thenReturn(cardToAdd);
 
-        // Call the service method
         Card result = cardService.addCard(cardToAdd);
 
-        // Verify method calls and assertions
         verify(cardRepository, times(1)).save(cardToAdd);
-        assertSame(cardToAdd, result);
+        assertNotNull(result.getId());
     }
 
     @Test
     public void testUpdateCard() {
-        // Mock data
         long cardId = 1L;
-        Card updatedCard = new Card();
+        Card updatedCard = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
         updatedCard.setId(cardId);
         when(cardRepository.existsById(cardId)).thenReturn(true);
         when(cardRepository.save(updatedCard)).thenReturn(updatedCard);
 
-        // Call the service method
         Card result = cardService.updateCard(updatedCard, cardId);
 
-        // Verify method calls and assertions
         verify(cardRepository, times(1)).existsById(cardId);
         verify(cardRepository, times(1)).save(updatedCard);
         assertSame(updatedCard, result);
@@ -105,16 +108,13 @@ public class CardServiceTest {
 
     @Test
     public void testUpdateCardNonExistent() {
-        // Mock data
         long cardId = 1L;
-        Card updatedCard = new Card();
+        Card updatedCard = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
         updatedCard.setId(cardId);
         when(cardRepository.existsById(cardId)).thenReturn(false);
 
-        // Call the service method
         Card result = cardService.updateCard(updatedCard, cardId);
 
-        // Verify method calls and assertions
         verify(cardRepository, times(1)).existsById(cardId);
         verify(cardRepository, never()).save(updatedCard);
         assertNull(result);
@@ -122,14 +122,24 @@ public class CardServiceTest {
 
     @Test
     public void testDeleteCard() {
-        // Mock data
         long cardId = 1L;
+        when(cardRepository.existsById(cardId)).thenReturn(true);
         doNothing().when(cardRepository).deleteById(cardId);
 
-        // Call the service method
         cardService.deleteCard(cardId);
 
-        // Verify method calls
+        verify(cardRepository, times(1)).existsById(cardId);
         verify(cardRepository, times(1)).deleteById(cardId);
+    }
+
+    @Test
+    public void testDeleteCardNonExistent() {
+        long cardId = 1L;
+        when(cardRepository.existsById(cardId)).thenReturn(false);
+
+        cardService.deleteCard(cardId);
+
+        verify(cardRepository, times(1)).existsById(cardId);
+        verify(cardRepository, never()).deleteById(cardId);
     }
 }

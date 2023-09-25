@@ -33,4 +33,19 @@ public class Charger {
     @JoinColumn(name="station_id")
     private Station station;
 
+    public Charger(Long id) {
+        this.id = id;
+}
+
+    public Charger(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Charger(Long id, String name, Station station) {
+        this.id = id;
+        this.name = name;
+        this.station = station;
+    }
+
 }

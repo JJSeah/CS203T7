@@ -4,6 +4,7 @@ import AutomateBookingScreenViewController from '../viewController/AutomateBooki
 import { UserContext } from '../model/User';
 import MapView, { Marker } from 'react-native-maps';
 import UpcomingAppointmentView from './UpcomingAppointmentView';
+import { styles } from "../components/Design"
 
 export default ClosestStationView = () => {
 
@@ -92,3 +93,4 @@ const localStyles = StyleSheet.create({
       height: '100%'
     },
   });
+
