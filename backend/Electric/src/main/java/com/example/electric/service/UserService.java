@@ -1,7 +1,9 @@
 package com.example.electric.service;
 
+import com.example.electric.model.Role;
 import com.example.electric.model.User;
 import com.example.electric.respository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,8 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
-public class UserService {
+@RequiredArgsConstructor
+public class UserService{
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -18,7 +22,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -33,6 +38,7 @@ public class UserService {
 
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
         return userRepository.save(user);
     }
 
@@ -63,6 +69,9 @@ public class UserService {
             if(updatedUser.getCard() != null){
                 user.setCard(updatedUser.getCard());
             }
+//            if(updatedUser.getAuthorities() != null){
+//                user.setAuthorities(updatedUser.getAuthority());
+//            }
 
             return userRepository.save(user);
         } else {
@@ -71,18 +80,21 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            return;
+        }
         userRepository.deleteById(id);
-    }
-    public long getUserIDByEmail(String email) {
-        return userRepository.getUserIDByEmail(email);
     }
 
     public User getUserByEmail(String email) {  // check if user exists
-        return userRepository.getUserByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        return optionalUser.orElse(null);
     }
 
     public boolean isEmailUnique(String email) {
         Optional<User> existinguser = userRepository.findByEmail(email);
         return !existinguser.isPresent();
     }
+
 }
+

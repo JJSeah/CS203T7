@@ -61,7 +61,12 @@ public class ChargerService {
         }
     }
 
-    public void deleteCharger(long chargerId) {
+    public Optional<Charger> deleteCharger(long chargerId) {
+        if (!chargerRepository.existsById(chargerId)) {
+            return null;
+        }
+        Optional<Charger> deleted = chargerRepository.findById(chargerId);
         chargerRepository.deleteById(chargerId);
+        return deleted;
     }
 }

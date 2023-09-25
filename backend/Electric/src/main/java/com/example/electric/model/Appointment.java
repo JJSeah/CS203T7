@@ -41,4 +41,18 @@ public class Appointment {
     @OneToOne
     @JoinColumn(name = "record_id", nullable = true)
     private Record record;
+
+    public Appointment(long id, Time duration, Time startTime, Time endTime, Date date, User user) {
+        this.id = id;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.date = date;
+        this.user = user;
+    }
+
+
+
+    
+
 }

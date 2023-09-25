@@ -1,3 +1,6 @@
+# For frontend 
+./frontend/src/constants/Config.js
+
 # For each individual computer
 ./frontendFile/android/local.properties
 
