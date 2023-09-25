@@ -35,8 +35,8 @@ const localStyles = StyleSheet.create({
     height: 35,
     borderRadius: 20,
     borderWidth: 2,
-    borderColor:'white',
-    backgroundColor: 'grey',
+    // borderColor:'darkgrey',
+    backgroundColor: 'dimgrey',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -48,6 +48,7 @@ const localStyles = StyleSheet.create({
   iconStyle: {
     width: 23,
     height: 23,
+    tintColor: 'white'
   },
   valueStyle: {
     textAlign: 'center',
