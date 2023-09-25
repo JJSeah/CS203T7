@@ -48,6 +48,13 @@ export default AutomateBookingScreen = ({ navigation }) => {
 			style={localStyles.buttonsContainer}
 		>
 
+			<CustomLongButton
+			  title="Cancle"
+			  onPress={() => {
+				navigation.pop();
+			  }}
+			/>
+
           	<CustomLongButton
             	title="Confirm"
             	onPress={() => {
@@ -55,12 +62,7 @@ export default AutomateBookingScreen = ({ navigation }) => {
             	}}
           	/>
 
-          	<CustomLongButton
-            	title="Cancle"
-            	onPress={() => {
-              	navigation.pop();
-            	}}
-          	/>
+
       	</View>
 
     	</SafeAreaView>

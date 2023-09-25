@@ -33,8 +33,8 @@ export default AddCarScreenViewController = ( { navigation } ) => {
             "batteryPercentage": batteryPercentage,
             "batteryCapacity": batteryCapacity
         }
-        addCarToBackend(newCar);
-        navigation.pop();
+        addCarToBackend(newCar, { navigation } );
+        // navigation.pop();
     }
 
     const dropdownSelectListPressed = (model) => {
