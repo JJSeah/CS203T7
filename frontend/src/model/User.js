@@ -99,6 +99,9 @@ export const UserProvider = ( { children } ) => {
             let userCars = data.car
             let userCard = data.card
 
+
+            console.log(data)
+
             if (userCars.length > 0) {
                 setCurrentCar(userCars[0])
             }
@@ -117,6 +120,7 @@ export const UserProvider = ( { children } ) => {
         setUserToken(null);
         setUserId(null);
         setUserData(null);
+        setCurrentCar(null);
 
         SecureStore.deleteItemAsync(userTokenString);
         SecureStore.deleteItemAsync(userIdString);

@@ -22,6 +22,8 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         setClosestStation(null)
         setUpcomingAppointment(null)
 
+        console.log(`the latitude is ${latitude} and longitude is ${longitude}`)
+
         let url = `${BASE_URL}/api/stations/closest`
 
         axios.post(url, {

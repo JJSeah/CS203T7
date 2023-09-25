@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   Text,
@@ -30,6 +30,7 @@ export default HomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      console.log("haha")
       loadCarsData();
     }, [])
   );
@@ -51,6 +52,8 @@ export default HomeScreen = ({ navigation }) => {
 
       <View style={localStyles.swiperContainer}>
           <CarSwiperView
+            userCars={userCars}
+            setCurrentCar={setCurrentCar}
           />
       </View>
 
@@ -58,7 +61,6 @@ export default HomeScreen = ({ navigation }) => {
       <View
         style={localStyles.bottomContainer}
       >
-
 
         <CustomLongButton title="Add car" onPress={addCarButtonPressed} />
 
@@ -71,6 +73,7 @@ export default HomeScreen = ({ navigation }) => {
           title="Automate booking"
           onPress={automateBookingButtonPressed}
         />
+
 
       </View>
 

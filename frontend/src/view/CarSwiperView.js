@@ -3,11 +3,23 @@ import { Text, View, StyleSheet, Dimensions } from "react-native";
 import Swiper from "react-native-deck-swiper"
 import SingleCarSwiperView from "../components/SingleCarSwiperView";
 import { UserContext } from "../model/User";
+import { CarRepository } from "../model/CarRepository";
 
 
-export default CarSwiperView = ( ) => {
+export default CarSwiperView = ( { userCars, setCurrentCar }) => {
 
-    const {userCars, setCurrentCar} = useContext(UserContext);
+    // const {userCars, setCurrentCar} = useContext(UserContext);
+    // const { loadCarsData } = CarRepository()
+
+    const renderCar = ( card, cardIndex ) => {
+        return (
+            <View key={cardIndex}>
+              <SingleCarSwiperView
+                car={card}
+                />
+            </View>
+        );
+    }
 
     return (
         <View style={localStyles.container}>
@@ -20,6 +32,7 @@ export default CarSwiperView = ( ) => {
             
             (
                     <Swiper
+                        key={userCars.length}
                         stackScale={userCars.length}
                         cards={userCars}
                         infinite={true}
@@ -27,14 +40,8 @@ export default CarSwiperView = ( ) => {
                         onSwiped={index => {
                             setCurrentCar(userCars[(index + 1) % userCars.length])
                         }}
-                        renderCard={card => {
-                            return( 
-                                <View> 
-                                    <SingleCarSwiperView
-                                        car={card}
-                                    />
-                                </View>
-                            )
+                        renderCard={(card, cardIndex) => {
+                            return renderCar(card, cardIndex)
                         }}
                     />
             )}
