@@ -47,6 +47,38 @@ public class CarService {
         return carRepository.save(updatedCar);
     }
 
+    public Car updateCar(Long carId, Car updatedCar) {
+        // Step 1: Retrieve the existing car from the database
+        Optional<Car> optionalExistingCar = carRepository.findById(carId);
+
+        if (optionalExistingCar.isPresent()) {
+            Car existingCar = optionalExistingCar.get();
+
+            // Step 2: Update only the non-null fields of the existing car with the new values
+            if (updatedCar.getNickname() != null) {
+                existingCar.setNickname(updatedCar.getNickname());
+            }
+            if (updatedCar.getModel() != null) {
+                existingCar.setModel(updatedCar.getModel());
+            }
+            if (updatedCar.getPlate() != null) {
+                existingCar.setPlate(updatedCar.getPlate());
+            }
+            if (updatedCar.getChargingRate() != 0) {
+                existingCar.setChargingRate(updatedCar.getChargingRate());
+            }
+            if (updatedCar.getBatteryPercentage() != 0.0) {
+                existingCar.setBatteryPercentage(updatedCar.getBatteryPercentage());
+            }
+            if (updatedCar.getBatteryCapacity() != 0) {
+                existingCar.setBatteryCapacity(updatedCar.getBatteryCapacity());
+            }
+            return carRepository.save(existingCar);
+        } else {
+            return null;
+        }
+    }
+
     public void deleteCar(long id) {
         if (!carRepository.existsById(id)) {
             return;

@@ -33,6 +33,11 @@ public class Charger {
     @JoinColumn(name="station_id")
     private Station station;
 
+
+    public boolean getAvail(){
+        return this.avail;
+    }
+
     public Charger(Long id) {
         this.id = id;
 }
