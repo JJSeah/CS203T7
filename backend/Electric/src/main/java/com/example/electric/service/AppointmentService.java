@@ -40,17 +40,33 @@ public class AppointmentService {
         if (optionalAppointment.isPresent()) {
             Appointment appointment = optionalAppointment.get();
             // Update the appointment fields as needed
-            appointment.setUser(updatedAppointment.getUser());
-            appointment.setDuration(updatedAppointment.getDuration());
-            appointment.setStartTime(updatedAppointment.getStartTime());
-            appointment.setEndTime(updatedAppointment.getEndTime());
-            appointment.setDate(updatedAppointment.getDate());
-            appointment.setStation(updatedAppointment.getStation());
-            appointment.setUser(updatedAppointment.getUser());
-            appointment.setRecord(updatedAppointment.getRecord());
+            if (updatedAppointment.getUser() != null) {
+                appointment.setUser(updatedAppointment.getUser());
+            }
+            if (updatedAppointment.getDuration() != null) {
+                appointment.setDuration(updatedAppointment.getDuration());
+            }
+            if (updatedAppointment.getStartTime() != null) {
+                appointment.setStartTime(updatedAppointment.getStartTime());
+            }
+            if (updatedAppointment.getEndTime() != null) {
+                appointment.setEndTime(updatedAppointment.getEndTime());
+            }
+            if (updatedAppointment.getDate() != null) {
+                appointment.setDate(updatedAppointment.getDate());
+            }
+            if (updatedAppointment.getStation() != null) {
+                appointment.setStation(updatedAppointment.getStation());
+            }
+            if (updatedAppointment.getUser() != null) {
+                appointment.setUser(updatedAppointment.getUser());
+            }
+            if (updatedAppointment.getRecord() != null) {
+                appointment.setRecord(updatedAppointment.getRecord());
+            }
             return appointmentRepository.save(appointment);
         } else {
-            return null; // Record not found
+            return null; // Appointment not found
         }
     }
 

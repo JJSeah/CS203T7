@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   Button,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TextBase,
   StyleSheet,
+  Image,
 } from "react-native";
 import CustomLongButton from "../components/CustomLongButton";
 import HomeScreenViewController from "../viewController/HomeScreenViewController";
@@ -24,7 +25,8 @@ export default HomeScreen = ({ navigation }) => {
     automateBookingButtonPressed,
   } = HomeScreenViewController({ navigation });
 
-  const { userData, userCars, logOut, setCurrentCar, currentCar } = useContext(UserContext);
+  const { userData, userCars, logOut, setCurrentCar, currentCar } =
+    useContext(UserContext);
 
   const { loadCarsData } = CarRepository();
 
@@ -38,31 +40,41 @@ export default HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={localStyles.container}>
-
       <View style={localStyles.headerContainer}>
-        <Text>Welcome {userData.username}</Text>
+        <Text>Welcome back, {userData.username}!</Text>
 
-
-          {
-            (currentCar !== null) ?
-            <Text>Your current car is {currentCar.nickname}</Text> :
-            <Text>You do not have a car yet</Text>
-          }
-        
+        {currentCar !== null ? (
+          <>
+            <Text>Model: {currentCar.model}</Text>
+            <Text>Nickname: {currentCar.nickname}</Text>
+          </>
+        ) : (
+          <Text>You do not have a car yet</Text>
+        )}
       </View>
+
+      {/* <View style = {localStyles.carShowStage}></View> */}
 
       <View style={localStyles.swiperContainer}>
-          <CarSwiperView
-            userCars={userCars}
-            setCurrentCar={setCurrentCar}
-          />
+        <View style={{ flex: 1 }}>
+          <CarSwiperView userCars={userCars} setCurrentCar={setCurrentCar} />
+        </View>
       </View>
 
+      <View style={localStyles.carDetailsContainer}>
+        {currentCar !== null ? (
+          <>
+            <Text>Battery: {currentCar.batteryPercentage}</Text>
+            <Text>Plate: {currentCar.plate}</Text>
+            <Text>Id: {currentCar.id}</Text>
+          </>
+        ) : (
+          <Text>Please add a car</Text>
+        )
+        }
+      </View>
 
-      <View
-        style={localStyles.bottomContainer}
-      >
-
+      <View style={localStyles.bottomContainer}>
         <CustomLongButton title="Add car" onPress={addCarButtonPressed} />
 
         <CustomLongButton
@@ -74,10 +86,7 @@ export default HomeScreen = ({ navigation }) => {
           title="Automate booking"
           onPress={automateBookingButtonPressed}
         />
-
-
       </View>
-
     </SafeAreaView>
   );
 };
@@ -85,18 +94,50 @@ export default HomeScreen = ({ navigation }) => {
 const localStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#141414",
   },
+
   headerContainer: {
     flex: 1,
-    backgroundColor: 'red'
+    backgroundColor: "red",
+    alignItems: "center",
+  },
+  headerText: {
+    fontFamily: "Product-Sans-Regular",
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
+    marginTop: 85,
+    marginBottom: 20,
+  },
+
+  subHeaderText: {
+    fontFamily: "Product-Sans-Regular",
+    fontSize: 14,
+    color: "white",
+    marginTop: 10,
+  },
+  carStyle: {
+    marginTop: 60,
+    width: 400,
+    height: 300,
   },
   swiperContainer: {
-    flex: 6,
-    backgroundColor: 'blue'
+    flex: 4,
+    // backgroundColor: "blue",
+  },
+  carShowStage: {
+    height: 300, // Adjust the height of the car show stage as needed
+    backgroundColor: "#333", // You can use a dark color for the stage
+    justifyContent: "center",
+    alignItems: "center",
   },
   bottomContainer: {
-    flex: 3, 
+    flex: 3,
   },
-  buttonContainer: {
+  carDetailsContainer: {
+    flex: 2,
+    backgroundColor: "white",
   },
+  buttonContainer: {},
 });

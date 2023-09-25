@@ -64,12 +64,12 @@ const localStyles = StyleSheet.create({
         justifyContent: 'center'
     },
     "cardStyle" : {
-        backgroundColor: 'green',
-        height: 200,
+        backgroundColor: 'transparent',
+        justifyContent:'center',
+        alignItems: 'center',
+        height: 300
     },
     "swiperStyle" : {
         backgroundColor: 'transparent',
-        padding: 10,
-        margin: 20,
     }
 })

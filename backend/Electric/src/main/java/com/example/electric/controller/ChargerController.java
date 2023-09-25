@@ -104,7 +104,7 @@ public class ChargerController {
         if (!chargerService.getChargerById(chargerId).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        return chargerService.updateCharger(charger, chargerId).orElse(null);
+        return chargerService.updateCharger(charger, chargerId);
     }
 
     /**

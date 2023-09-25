@@ -5,17 +5,17 @@ import { BASE_URL } from "../constants/Config";
 
 export default AutomateBookingScreenViewController = ( { navigation } ) => {
 
-    const { closestStation, setClosestStation, setUpcomingAppointment } = useContext(UserContext);
+    const { closestStation, setClosestStation, setUpcomingAppointment, userToken, userId, userCoordinates, currentCar } = useContext(UserContext);
 
     useEffect(() => {
 
-        if (closestStation !== null) {
+        if (closestStation !== null && currentCar !== null 
+            && userCoordinates.latitude !== null && userCoordinates.longitude) {
             loadDetailsOfUpcomingAppointment();
         }
 
     }, [closestStation])
 
-    const { userToken, userId, userCoordinates, currentCar } = useContext(UserContext)
 
     const findClosestStation = async(latitude, longitude) => {
 

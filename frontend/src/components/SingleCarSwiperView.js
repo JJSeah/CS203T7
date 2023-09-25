@@ -1,15 +1,21 @@
 import React from 'react';
-import { View, Text, SafeAreaView, Button } from 'react-native'
+import { View, Text, SafeAreaView, Button, Image, StyleSheet } from 'react-native'; 
+import { TESLA1 } from '../../assets/images/index';
 
 export default SingleCarSwiperView = ( { car } ) => {
 
     return (
         <View key={car.id}>
-            <Text>Nickname: {car.nickname}</Text> 
-            <Text>Battery: {car.batteryPercentage}</Text>
-            <Text>Car Plate: {car.plate}</Text>
-            <Text>Car Model: {car.model}</Text>
-            <Text>Car Id: {car.id}</Text>
+          <Image
+            source={TESLA1}
+            style = {localStyles.carStyle}/>
         </View>
     );
 }
+
+const localStyles = StyleSheet.create({
+    carStyle: {
+        width: 400,
+        height: 300,
+      },
+})

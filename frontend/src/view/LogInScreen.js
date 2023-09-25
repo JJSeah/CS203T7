@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { ActivityIndicator, Button, Text, View } from 'react-native';
+import { ActivityIndicator, Button, Text, View, Image } from 'react-native';
 import CustomLongButton from '../components/CustomLongButton';
 import CustomTextField from '../components/CustomTextField';
 import LogInScreenViewController from '../viewController/LogInScreenViewController';
@@ -9,7 +9,6 @@ import PasswordField from '../components/PasswordField';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HyperlinkButton from '../components/HyperlinkButton';
 import { styles } from "../components/Design";
-import { Image, Icon } from 'react-native';
 import { IMAGENAME } from '../../assets/images/index';
 import * as Font from 'expo-font';
 import FontLoader from '../constants/FontLoader';
