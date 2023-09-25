@@ -60,7 +60,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="AutomateBookingScreen"
                         component={AutomateBookingScreen}
-                        options={{headerShown:false}}
+                        // options={{headerShown:false}}
                     />
         
         

@@ -102,8 +102,8 @@ public class SecurityConfig  {
                     .requestMatchers(HttpMethod.DELETE, "/api/stations/*").permitAll()
 
                     //User contoller
-                    // .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").permitAll()
+                    // .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST,"/api/user/").permitAll()
 //                    .requestMatchers(HttpMethod.PUT, "/api/user/*").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/user/*").hasRole("ADMIN")
