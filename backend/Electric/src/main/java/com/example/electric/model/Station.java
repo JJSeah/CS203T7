@@ -40,6 +40,13 @@ public class Station {
         this.name = name;
     }
 
+    public Station(long id, String name, double latitude, double longitude) {
+        this.id = id;
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     
 
     
