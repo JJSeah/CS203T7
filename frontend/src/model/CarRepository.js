@@ -5,10 +5,10 @@ import { BASE_URL } from "../constants/Config";
 import { UserContext } from "./User";
 
 export const CarRepository = () => {
-  const { userToken, userId, setUserCars, setCurrentCar } =
+  const { userToken, userId, setUserCars, setCurrentCar, userCars } =
     useContext(UserContext);
 
-  const addCarToBackend = (newCar) => {
+  const addCarToBackend = async(newCar, { navigation } ) => {
     let url = `${BASE_URL}/api/car/add/${userId}`;
 
     axios
@@ -27,6 +27,7 @@ export const CarRepository = () => {
         }
       )
       .then((res) => {
+        navigation.pop()
       })
       .catch((e) => {
         console.log(`Error adding car to back end ${e}`);
@@ -34,23 +35,28 @@ export const CarRepository = () => {
   };
 
   const loadCarsData = async () => {
-      
-      let url = `${BASE_URL}/api/car/user/${userId}`;
-      axios
+    let url = `${BASE_URL}/api/car/user/${userId}`;
+
+    setUserCars([{nickname: "dummy"}])
+
+    axios
       .get(url)
       .then((res) => {
         let data = res.data;
+
         setUserCars(data);
-        if (data.length === 0) {
-            setCurrentCar(null);
+
+        if (data.length > 0) {
+          setCurrentCar(data[0])
         } else {
-            setCurrentCar(data[0]);
+          setCurrentCar(null)
         }
       })
       .catch((e) => {
         console.log(`Error adding car to back end ${e}`);
       });
   };
+
 
   return { addCarToBackend, loadCarsData };
 };

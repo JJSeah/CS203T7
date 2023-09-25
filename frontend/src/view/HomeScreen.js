@@ -30,8 +30,9 @@ export default HomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("haha")
-      loadCarsData();
+      if (userCars !== null) {
+        loadCarsData();
+      }
     }, [])
   );
 
