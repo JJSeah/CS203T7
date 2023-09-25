@@ -1,5 +1,6 @@
 package com.example.electric.service;
 
+import com.example.electric.model.Appointment;
 import com.example.electric.model.Card;
 import com.example.electric.respository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +31,29 @@ public class CardService {
     }
 
     public Card updateCard(Card updatedCard, long id) {
-        if (!cardRepository.existsById(id)) {
-            return null;
+        Optional<Card> optionalCard = cardRepository.findById(id);
+        if (optionalCard.isPresent()) {
+            Card card = optionalCard.get();
+            // Update the appointment fields as needed
+            if (updatedCard.getName() != null) {
+                card.setName(updatedCard.getName());
+            }
+            if (updatedCard.getNumber() != 0L) {
+                card.setNumber(updatedCard.getNumber());
+            }
+            if (updatedCard.getExpiry() != null) {
+                card.setExpiry(updatedCard.getExpiry());
+            }
+            if (updatedCard.getUser() != null) {
+                card.setUser(updatedCard.getUser());
+            }
+            return cardRepository.save(updatedCard);
+        } else {
+            return null; // Card not found
         }
-        updatedCard.setId(id);
-        return cardRepository.save(updatedCard);
     }
 
-
     public void deleteCard(long id) {
-        if (!cardRepository.existsById(id)) {
-            return;
-        }
         cardRepository.deleteById(id);
     }
 }
