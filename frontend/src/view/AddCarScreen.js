@@ -37,12 +37,22 @@ export default AddCarScreen = ({ navigation }) => {
           />
         </View>
 
-        <View>
-          <Text>Car Model {model}</Text>
+        <View style={{margin: 20}}>
+          <Text style={styles.bodyText}
+          >
+            Car Model {model}
+            </Text>
 
-          <Text>Charging rate (kw) = {chargingRate}</Text>
+          <Text style={styles.bodyText}
+          >
+            Charging rate (kw) = {chargingRate}
+            </Text>
 
-          <Text>Battery capacity (kWh) = {batteryCapacity}</Text>
+          <Text style={styles.bodyText}
+          >
+            Battery capacity (kWh) = {batteryCapacity}
+          </Text>
+
         </View>
 
         <View>
@@ -79,4 +89,5 @@ const localStyles = StyleSheet.create({
   buttonsContainer: {
     flex : 1
   }
+
 });

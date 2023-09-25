@@ -107,8 +107,6 @@ export default LogInScreen = ({ navigation }) => {
         }}
       /> 
 
-      <Text style={{fontSize:10, color:'white'}}>The current email is ${email}</Text>
-      <Text style={{fontSize:10, color:'white'}}>The current password is ${password}</Text>
 
       </View>
     </SafeAreaView>
