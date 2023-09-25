@@ -7,7 +7,11 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -15,7 +19,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -34,6 +38,9 @@ public class User {
 
     @Column(name="password")
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     //link to cars
     @Column(name="cars")
@@ -62,5 +69,49 @@ public class User {
     }
 
 
-   
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        // email in our case
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public User(long userId, String firstName) {
+        this.id = userId;
+        this.firstName = firstName;
+    }
+
+    public User(long userId, String firstName, String password) {
+        this.id = userId;
+        this.firstName = firstName;
+        this.password = password;
+    }
+
+    public User(long userId, String firstName, String password, String email) {
+        this.id = userId;
+        this.firstName = firstName;
+        this.password = password;
+        this.email = email;
+    }
 }
