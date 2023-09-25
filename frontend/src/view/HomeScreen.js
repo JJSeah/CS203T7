@@ -1,14 +1,10 @@
 import React, { useContext } from "react";
-import {
-  Button,
-  Text,
-  View,
-  ScrollView,
-  TextBase,
-  StyleSheet,
-  Image,
-} from "react-native";
+import {Button, Text, View, ScrollView, TextBase, StyleSheet, Image,} from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+
 import CustomLongButton from "../components/CustomLongButton";
+import CarDetails from "../components/CarDetails";
 import HomeScreenViewController from "../viewController/HomeScreenViewController";
 import { UserContext } from "../model/User";
 import CarSwipeView from "../components/SingleCarSwiperView";
@@ -41,32 +37,47 @@ export default HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={localStyles.container}>
       <View style={localStyles.headerContainer}>
-        <Text>Welcome back, {userData.username}!</Text>
+        <Text style={localStyles.headerText}>
+          Welcome back, {userData.username}!
+          </Text>
 
         {currentCar !== null ? (
           <>
-            <Text>Model: {currentCar.model}</Text>
-            <Text>Nickname: {currentCar.nickname}</Text>
+            <Text style = {localStyles.subHeaderText}>
+              {currentCar.model}
+              </Text>
+            <Text style = {localStyles.subHeaderText}>
+              {currentCar.nickname}
+              </Text>
           </>
         ) : (
           <Text>You do not have a car yet</Text>
         )}
       </View>
 
-      {/* <View style = {localStyles.carShowStage}></View> */}
 
       <View style={localStyles.swiperContainer}>
-        <View style={{ flex: 1 }}>
-          <CarSwiperView userCars={userCars} setCurrentCar={setCurrentCar} />
+        <View>
+          <CarSwiperView userCars={userCars} setCurrentCar={setCurrentCar}/>
+
         </View>
       </View>
 
       <View style={localStyles.carDetailsContainer}>
         {currentCar !== null ? (
           <>
-            <Text>Battery: {currentCar.batteryPercentage}</Text>
-            <Text>Plate: {currentCar.plate}</Text>
-            <Text>Id: {currentCar.id}</Text>
+          <CarDetails 
+          icon = "battery-full" 
+          value = {currentCar.batteryPercentage} 
+          title = "BATTERY"
+          />
+
+          <CarDetails 
+          icon = "square" 
+          value = {currentCar.plate} 
+          title = "CAR PLATE"
+          />
+            {/* <Text>Id: {currentCar.id}</Text> */}
           </>
         ) : (
           <Text>Please add a car</Text>
@@ -97,47 +108,51 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#141414",
   },
 
-  headerContainer: {
-    flex: 1,
-    backgroundColor: "red",
-    alignItems: "center",
-  },
-  headerText: {
-    fontFamily: "Product-Sans-Regular",
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "white",
-    marginTop: 85,
-    marginBottom: 20,
-  },
+  // all main containers
 
-  subHeaderText: {
-    fontFamily: "Product-Sans-Regular",
-    fontSize: 14,
-    color: "white",
-    marginTop: 10,
-  },
-  carStyle: {
-    marginTop: 60,
-    width: 400,
-    height: 300,
+  headerContainer: {
+    flex: 1.5,
+    // backgroundColor: "red",
+    alignItems: "center",
   },
   swiperContainer: {
     flex: 4,
-    // backgroundColor: "blue",
-  },
-  carShowStage: {
-    height: 300, // Adjust the height of the car show stage as needed
-    backgroundColor: "#333", // You can use a dark color for the stage
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  bottomContainer: {
-    flex: 3,
+    backgroundColor: "blue",
   },
   carDetailsContainer: {
     flex: 2,
     backgroundColor: "white",
   },
+  bottomContainer: {
+    flex: 3,
+  },
+
+
+  
+  headerText: {
+    fontFamily: "Product-Sans-Regular",
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
+    marginBottom: 30,
+  },
+  subHeaderText: {
+    fontFamily: "Product-Sans-Regular",
+    fontSize: 14,
+    color: "white",
+  },
+
+  carDetailsText: {
+
+  },
+
+  carStyle: {
+    marginTop: 60,
+    width: 400,
+    height: 300,
+  },
+
+
+
   buttonContainer: {},
 });
