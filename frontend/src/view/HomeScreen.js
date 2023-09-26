@@ -42,7 +42,7 @@ export default HomeScreen = ({ navigation }) => {
     <SafeAreaView style={localStyles.container}>
       <View style={localStyles.headerContainer}>
         <Text style={localStyles.headerText}>
-          Welcome back, {userData.username}!
+          Welcome back, {userData.usernames}!
           </Text>
 
         {currentCar !== null ? (

@@ -80,6 +80,7 @@ public class UserServiceTest {
         // Assertions
         verify(passwordEncoder).encode("testpassword"); // Verify that password encoding was called
         verify(userRepository).save(user); // Verify that userRepository.save was called
+        assertEquals("testuser", savedUser.getUsernames());
         assertEquals("encodedPassword", savedUser.getPassword()); // Ensure the password is encoded in the returned user
     }
 
