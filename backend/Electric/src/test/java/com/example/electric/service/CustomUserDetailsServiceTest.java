@@ -25,7 +25,7 @@ public class CustomUserDetailsServiceTest {
     private CustomUserDetailsService customUserDetailsService;
 
     @Test
-    public void testLoadUserByUsername() {
+    public void testLoadUserByUsernames() {
         // Arrange
         String email = "test@example.com";
         User user = new User();
