@@ -58,10 +58,6 @@ public class User implements UserDetails {
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     private List<Appointment> appointment;
 
-    //link to record
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Record> records;
 
     public User(String email, String password) {
         this.email = email;
