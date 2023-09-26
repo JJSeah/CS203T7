@@ -8,14 +8,15 @@ export default SingleCarSwiperView = ( { car } ) => {
         <View key={car.id}>
           <Image
             source={TESLA1}
-            style = {localStyles.carStyle}/>
+            style = {localStyles.carStyle}
+            resizeMode='contain'/>
         </View>
     );
 }
 
 const localStyles = StyleSheet.create({
     carStyle: {
-        width: 400,
-        height: 300,
+        flex: 1,
+        marginBottom: 100,
       },
 })

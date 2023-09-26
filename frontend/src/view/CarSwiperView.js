@@ -67,7 +67,7 @@ const localStyles = StyleSheet.create({
         backgroundColor: 'transparent',
         justifyContent:'center',
         alignItems: 'center',
-        height: 300
+        height: 300,
     },
     "swiperStyle" : {
         backgroundColor: 'transparent',
