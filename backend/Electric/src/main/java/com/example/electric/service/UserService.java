@@ -55,7 +55,7 @@ public class UserService{
              user.setLastName(updatedUser.getLastName());
             }
             if(updatedUser.getUsername() != null){
-            user.setUsername(updatedUser.getUsername());
+            user.setUsernames(updatedUser.getUsername());
             }
             if(updatedUser.getEmail() != null){
                 user.setEmail(updatedUser.getEmail());
