@@ -38,16 +38,8 @@ public class CarService {
         return carRepository.save(car);
     }
 
-    public Car updateCar(Car updatedCar, long id) {
-        if (!carRepository.existsById(id)) {
-            return null;
-        }
 
-        updatedCar.setId(id);
-        return carRepository.save(updatedCar);
-    }
-
-    public Car updateCar(Long carId, Car updatedCar) {
+    public Car updateCar(Car updatedCar, Long carId) {
         // Step 1: Retrieve the existing car from the database
         Optional<Car> optionalExistingCar = carRepository.findById(carId);
 
