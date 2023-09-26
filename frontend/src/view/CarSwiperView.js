@@ -25,11 +25,14 @@ export default CarSwiperView = ( { userCars, setCurrentCar }) => {
 
             {
             (userCars.length === 0) ?
-            <View style={localStyles.loadingCarContainer}>
+            <>
+                        <View style={localStyles.loadingCarContainer}>
                 <Text>Please add a car</Text>
                        {/* <Image source = {emptyCarIcon}
             style = {localStyles.emptyCarIcon}/> */}
             </View>
+            </>
+
             :
                 (userCars[0].nickname === "dummy") ? 
                     <View style={localStyles.loadingCarContainer}>
@@ -63,7 +66,8 @@ const localStyles = StyleSheet.create({
     },
     loadingCarContainer: {
         flex:1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        // backgroundColor: 'red',
     },
     "cardStyle" : {
         backgroundColor: 'transparent',
