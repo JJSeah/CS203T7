@@ -22,7 +22,6 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         setClosestStation(null)
         setUpcomingAppointment(null)
 
-        console.log(`the latitude is ${latitude} and longitude is ${longitude}`)
 
         let url = `${BASE_URL}/api/stations/closest`
 
@@ -57,7 +56,7 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         }        
         ).then(res => {
             let data = res.data
-            console.log(`The car used to book is ${currentCar.id}, nickname ${currentCar.nickname}`)
+            console.log(`The car used to book is ${currentCar.id}, nickname ${currentCar.nickname}, id: ${currentCar.id}`)
             setUpcomingAppointment(data)
         }).catch(e => {
             console.log(`Error loading details of upcoming appointment ${e}`)

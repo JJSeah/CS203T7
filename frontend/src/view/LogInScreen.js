@@ -61,8 +61,8 @@ export default LogInScreen = ({ navigation }) => {
       </View>
 
 
-        <Text style={{...styles.header, textAlign:'center', marginTop: 0}}>Welcome To Electric </Text>
-        <Text style={{...styles.subHeader, textAlign:'center', marginBottom:0}}> Welcome to EcoCharge Finder, your electric car's best friend. Log in to discover nearby charging stations and keep your EV on the move</Text>
+        <Text style={{...styles.header, textAlign:'center', marginTop: 0}}>Welcome To Electric</Text>
+        <Text style={{...styles.subHeader, textAlign:'center', marginBottom:0}}>EcoCharge Finder is your electric car's best friend. Log in to discover nearby charging stations and keep your EV on the move</Text>
 
         <View style={{padding:10}}>
         <CustomTextField
@@ -99,13 +99,13 @@ export default LogInScreen = ({ navigation }) => {
         />
       </View>
 
-      <Button
+      {/* <Button
         title="Load fake data"
         onPress={() => {
           setEmail("Leong123@gmail.com");
           setPassword("Leong123@gmail.com!");
         }}
-      /> 
+      />  */}
 
 
       </View>
