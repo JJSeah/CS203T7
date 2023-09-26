@@ -60,9 +60,6 @@ public class AppointmentService {
             if (updatedAppointment.getUser() != null) {
                 appointment.setUser(updatedAppointment.getUser());
             }
-            if (updatedAppointment.getRecord() != null) {
-                appointment.setRecord(updatedAppointment.getRecord());
-            }
             return appointmentRepository.save(appointment);
         } else {
             return null; // Appointment not found
