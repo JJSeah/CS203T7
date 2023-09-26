@@ -65,7 +65,7 @@ public class UserServiceTest {
     @Test
     public void testCreateUser() {
         User user = new User();
-        user.setUsername("testuser");
+        user.setUsernames("testuser");
         user.setPassword("testpassword");
 
         // Mock the behavior of the passwordEncoder
