@@ -60,8 +60,8 @@ export default HomeScreen = ({ navigation }) => {
           <Text style = {localStyles.subHeaderText}>
             You do not have a car yet
             </Text>
-            <Image source = {emptyCarIcon}
-            style = {localStyles.emptyCarIcon}/>
+            {/* <Image source = {emptyCarIcon}
+            style = {localStyles.emptyCarIcon}/> */}
           </>
         )}
       </View>
