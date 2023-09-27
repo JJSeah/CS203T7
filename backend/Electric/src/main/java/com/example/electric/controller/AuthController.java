@@ -74,6 +74,8 @@ public class AuthController {
      */
     @PostMapping(value = "/signup", name = "Create User")
     @Operation(summary = "Register", description = "Register new Users", tags = { "Auth" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Email already exists.")})
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (!userService.isEmailUnique(user.getEmail())) {
             throw new RuntimeException("Email already exists");
