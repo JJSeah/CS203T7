@@ -1,11 +1,9 @@
 package com.example.electric.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.*;
 
 @Entity
 @Table(name="car")
@@ -42,4 +40,5 @@ public class Car {
         this.nickname = tesla;
         this.model = modelS;
     }
+
 }
