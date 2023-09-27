@@ -29,8 +29,8 @@ public class User implements UserDetails {
     private String firstName;
     @Column(name="last_name")
     private String lastName;
-    @Column(name="username")
-    private String username;
+    @Column(unique = true, name="usernames")
+    private String usernames;
 
     @NotNull
     @Pattern(regexp = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", flags = Pattern.Flag.UNICODE_CASE)
@@ -59,10 +59,6 @@ public class User implements UserDetails {
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     private List<Appointment> appointment;
 
-    //link to record
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Record> records;
 
     public User(String email, String password) {
         this.email = email;

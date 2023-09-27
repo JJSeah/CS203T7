@@ -26,6 +26,8 @@ public class Appointment {
     private Time endTime;
     @Column(name = "date")
     private Date date;
+    @Column(name="cost")
+    private double cost;
 
     // Link to station
     @ManyToOne
@@ -37,18 +39,14 @@ public class Appointment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // link to record
-    @OneToOne
-    @JoinColumn(name = "record_id", nullable = true)
-    private Record record;
-
-    public Appointment(long id, Time duration, Time startTime, Time endTime, Date date, User user) {
+    public Appointment(long id, Time duration, Time startTime, Time endTime, Date date, User user, double cost) {
         this.id = id;
         this.duration = duration;
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
         this.user = user;
+        this.cost = cost;
     }
 
 

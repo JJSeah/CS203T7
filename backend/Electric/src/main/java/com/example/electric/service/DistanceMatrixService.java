@@ -58,7 +58,7 @@ public class DistanceMatrixService {
     }
 
     public String calculateCostOfCharging(Car car) {
-        double cost = (car.getBatteryCapacity() * (100.0 - car.getBatteryPercentage())) / 1000 * 0.12;
+        double cost = (car.getBatteryCapacity() * (100.0 - car.getBatteryPercentage())) / 1 * 0.12;
 
         return "" + cost;
     }

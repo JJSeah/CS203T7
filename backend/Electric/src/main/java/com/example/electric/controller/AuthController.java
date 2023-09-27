@@ -51,6 +51,8 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @Operation(summary = "Login", description = "Authenticate Users", tags = { "Auth" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "403", description = "Invalid email or password.")})
     public ResponseEntity login(@RequestBody LoginReq loginReq) {
 
         authenticationManager.authenticate(

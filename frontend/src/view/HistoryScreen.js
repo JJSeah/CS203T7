@@ -29,6 +29,15 @@ const year =[
   {label: '2024', value: '3'}
 ]
 
+const fakeData = [
+  {
+    
+  },
+  {
+
+  },
+]
+
 export default HistoryScreen = () => {
 
   const [monthValue, setMonthValue] = useState(null);
