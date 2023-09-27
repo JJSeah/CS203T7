@@ -29,63 +29,50 @@ export default AutomateBookingScreen = ({ navigation }) => {
   }, []);
 
   return userCoordinates === null ? (
-	    <GrantLocationScreen />
-  	) : userCars.length === 0 ? (
-    	<ReminderToAddCarScreen />
-  	) : closestStation !== null ? (
-    	<SafeAreaView
-			style={localStyles.container}	
-		>
-		
-		<View
-			style={localStyles.infoContainer}	
-		>
-   			<ClosestStationView/>
-		</View>
+    <GrantLocationScreen />
+  ) : userCars.length === 0 ? (
+    <ReminderToAddCarScreen />
+  ) : closestStation !== null ? (
+    <SafeAreaView style={localStyles.container}>
+      <View style={localStyles.infoContainer}>
+        <ClosestStationView />
+      </View>
 
+      <View style={localStyles.buttonsContainer}>
+        <CustomLongButton
+          title="Cancel"
+          onPress={() => {
+            navigation.pop();
+          }}
+        />
 
-      	<View 
-			style={localStyles.buttonsContainer}
-		>
-
-			<CustomLongButton
-			  title="Cancle"
-			  onPress={() => {
-				navigation.pop();
-			  }}
-			/>
-
-          	<CustomLongButton
-            	title="Confirm"
-            	onPress={() => {
-              	navigation.pop();
-            	}}
-          	/>
-
-
-      	</View>
-
-    	</SafeAreaView>
-  	) : (
-		<SafeAreaView>
-			<ActivityIndicator/>
-		</SafeAreaView>
-  	);
+        <CustomLongButton
+          title="Confirm"
+          onPress={() => {
+            navigation.pop();
+          }}
+        />
+      </View>
+    </SafeAreaView>
+  ) : (
+    <SafeAreaView>
+      <ActivityIndicator />
+    </SafeAreaView>
+  );
 };
 
 const localStyles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		alignItems:'stretch',
-	},
-	infoContainer: {
-		flex: 9,
-		alignItems: 'stretch'
-	},
-	buttonsContainer: {
-		flex: 1,
-		flexDirection: "row",
-	},
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "stretch",
+  },
+  infoContainer: {
+    flex: 9,
+    alignItems: "stretch",
+  },
+  buttonsContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
 });
-

@@ -1,7 +1,6 @@
 package com.example.electric.service;
 
 import com.example.electric.model.Appointment;
-import com.example.electric.model.Record;
 import com.example.electric.respository.AppointmentRepository;
 import com.example.electric.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +59,6 @@ public class AppointmentService {
             }
             if (updatedAppointment.getUser() != null) {
                 appointment.setUser(updatedAppointment.getUser());
-            }
-            if (updatedAppointment.getRecord() != null) {
-                appointment.setRecord(updatedAppointment.getRecord());
             }
             return appointmentRepository.save(appointment);
         } else {

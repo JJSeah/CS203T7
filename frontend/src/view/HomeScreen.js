@@ -1,22 +1,22 @@
 import React, { useContext } from "react";
-import {
-  Button,
-  Text,
-  View,
-  ScrollView,
-  TextBase,
-  StyleSheet,
-  Image,
-} from "react-native";
+import {Button, Text, View, ScrollView, TextBase, StyleSheet, Image,} from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import CustomLongButton from "../components/CustomLongButton";
+import CarDetails from "../components/CarDetails";
+import CarSwipeView from "../components/SingleCarSwiperView";
+import { styles } from "../components/Design";
+import CustomCarButton from "../components/CustomCarButton";
+
 import HomeScreenViewController from "../viewController/HomeScreenViewController";
 import { UserContext } from "../model/User";
-import CarSwipeView from "../components/SingleCarSwiperView";
 import { useFocusEffect } from "@react-navigation/native";
 import { CarRepository } from "../model/CarRepository";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "../components/Design";
 import CarSwiperView from "./CarSwiperView";
+
+import { emptyCarIcon } from "../../assets/images/index";
+
 
 export default HomeScreen = ({ navigation }) => {
   const {
@@ -25,7 +25,7 @@ export default HomeScreen = ({ navigation }) => {
     automateBookingButtonPressed,
   } = HomeScreenViewController({ navigation });
 
-  const { userData, userCars, logOut, setCurrentCar, currentCar } =
+  const { userData, userCars, setCurrentCar, currentCar } =
     useContext(UserContext);
 
   const { loadCarsData } = CarRepository();
@@ -41,35 +41,67 @@ export default HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={localStyles.container}>
       <View style={localStyles.headerContainer}>
-        <Text>Welcome back, {userData.username}!</Text>
+        <Text style={localStyles.headerText}>
+          Welcome back, {userData.usernames}!
+          </Text>
 
         {currentCar !== null ? (
           <>
-            <Text>Model: {currentCar.model}</Text>
-            <Text>Nickname: {currentCar.nickname}</Text>
+            <Text style = {localStyles.subHeaderText}>
+              {currentCar.model}
+              </Text>
+            <Text style = {localStyles.subHeaderText}>
+              {currentCar.nickname}
+              </Text>
+              {/* <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text> */}
           </>
         ) : (
-          <Text>You do not have a car yet</Text>
+          <>
+          <Text style = {localStyles.subHeaderText}>
+            You do not have a car yet
+            </Text>
+            <Image source = {emptyCarIcon}
+            style = {localStyles.emptyCarIcon}/>
+          </>
         )}
       </View>
 
-      {/* <View style = {localStyles.carShowStage}></View> */}
 
       <View style={localStyles.swiperContainer}>
-        <View style={{ flex: 1 }}>
-          <CarSwiperView userCars={userCars} setCurrentCar={setCurrentCar} />
+        <View>
+          <CarSwiperView userCars={userCars} setCurrentCar={setCurrentCar}/>
         </View>
       </View>
 
       <View style={localStyles.carDetailsContainer}>
         {currentCar !== null ? (
           <>
-            <Text>Battery: {currentCar.batteryPercentage}</Text>
-            <Text>Plate: {currentCar.plate}</Text>
-            <Text>Id: {currentCar.id}</Text>
+            <CarDetails 
+            iconName = "batteryIcon" 
+            value = {currentCar.batteryPercentage} 
+            title = "BATTERY"
+            />
+
+          <CarDetails 
+          iconName = "carPlateIcon" 
+          value = {currentCar.plate} 
+          title = "CAR PLATE"
+          />
+          {/* <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text> */}
           </>
         ) : (
-          <Text>Please add a car</Text>
+          <>
+          <CarDetails 
+          iconName = "batteryIcon" 
+          value = "-"
+          title = "BATTERY"
+          />
+        <CarDetails 
+        iconName = "carPlateIcon" 
+        value = "-"
+        title = "CAR PLATE"
+        />
+          </>
         )
         }
       </View>
@@ -97,47 +129,52 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#141414",
   },
 
-  headerContainer: {
-    flex: 1,
-    backgroundColor: "red",
-    alignItems: "center",
-  },
-  headerText: {
-    fontFamily: "Product-Sans-Regular",
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "white",
-    marginTop: 85,
-    marginBottom: 20,
-  },
+  // all main containers
 
-  subHeaderText: {
-    fontFamily: "Product-Sans-Regular",
-    fontSize: 14,
-    color: "white",
-    marginTop: 10,
-  },
-  carStyle: {
-    marginTop: 60,
-    width: 400,
-    height: 300,
+  headerContainer: {
+    flex: 1.5,
+    // backgroundColor: "red",
+    alignItems: "center",
   },
   swiperContainer: {
     flex: 4,
     // backgroundColor: "blue",
   },
-  carShowStage: {
-    height: 300, // Adjust the height of the car show stage as needed
-    backgroundColor: "#333", // You can use a dark color for the stage
-    justifyContent: "center",
-    alignItems: "center",
+  carDetailsContainer: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    // backgroundColor: "yellow",
+
   },
   bottomContainer: {
     flex: 3,
   },
-  carDetailsContainer: {
-    flex: 2,
-    backgroundColor: "white",
+
+
+  headerText: {
+    fontFamily: "Product-Sans-Regular",
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
+    marginBottom: 30,
   },
+  subHeaderText: {
+    fontFamily: "Product-Sans-Regular",
+    fontSize: 14,
+    color: "white",
+    marginBottom: 10,
+  },
+
+  emptyCarIcon: {
+    marginTop: 100,
+    width: 250,
+    height: 160,
+    resizeMode: 'contain',
+    opacity: 0.2,
+  },
+
+
+
   buttonContainer: {},
 });

@@ -30,7 +30,7 @@ export const UserProvider = ( { children } ) => {
         axios.post(url, {
             "firstName": firstName,
             "lastName": lastName, 
-            "username": username,
+            "usernames": username,
             "email": email,
             "password" : password
         })
