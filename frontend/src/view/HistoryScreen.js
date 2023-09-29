@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { UserContext } from '../model/User';
 import { Dropdown } from 'react-native-element-dropdown';
 
@@ -31,10 +31,22 @@ const year =[
 
 const fakeData = [
   {
-    
+    "station": "a", 
+    "date": "2023-09-25", 
+    "cost": 23.5, 
+    key: 1
   },
   {
-
+    "station": "b", 
+    "date": "2023-02-25", 
+    "cost": 9.2, 
+    key: 2
+  },
+  {
+    "station": "c", 
+    "date": "2023-09-20", 
+    "cost": 20, 
+    key: 3
   },
 ]
 
@@ -48,6 +60,18 @@ export default HistoryScreen = () => {
   // take here
   const { userCars } = useContext(UserContext);
   const { currentCar, setCurrentCar } = useContext(UserContext);
+
+  const filteredData = fakeData.filter((item) => {
+    const dateParts = item.date.split('-');
+    const monthNo = parseInt(dateParts[1]);
+
+    return monthValue && String(monthNo) ===  monthValue;
+  });
+
+  let totalCost = 0; 
+  filteredData.forEach((item) => {
+    totalCost += item.cost;
+  });
 
   return (
     <SafeAreaView>
@@ -79,9 +103,35 @@ export default HistoryScreen = () => {
               setYearValue(data.value);
             } } />
         </View>
-
       </View>
 
+      <ScrollView>
+        {fakeData.map((item) => {
+          return(
+            <View key={item.key}>
+            <Text>{item.station} 
+            {item.date}
+            {item.cost}
+            </Text>
+            </View>
+          )
+        })}    
+      </ScrollView>
+
+      <View>
+        {filteredData.map((item) => {
+          return(
+            <View key={item.key}>
+              <Text>
+                {item.station}</Text> 
+              </View>
+          );
+        })}
+      </View>
+
+      <View> 
+        <Text>Total cost = {totalCost}</Text>
+      </View>
         
     </SafeAreaView>
   
