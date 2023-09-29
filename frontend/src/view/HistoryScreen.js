@@ -53,20 +53,27 @@ const fakeData = [
 export default HistoryScreen = () => {
 
   const [monthValue, setMonthValue] = useState(null);
-  const [yearValue, setYearValue] = useState(null);
+  const [yearValue, setYearValue] = useState("2023");
   // const [isFocus, setIsFocus] = useState(false); 
+  // const monthAbbreviation = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  //                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
 
   // take here
   const { userCars } = useContext(UserContext);
   const { currentCar, setCurrentCar } = useContext(UserContext);
 
-  const filteredData = fakeData.filter((item) => {
+  const filteredData = monthValue && yearValue
+    ? fakeData.filter((item) => {
     const dateParts = item.date.split('-');
+    // const dayNo = parseInt(dateParts[2]);
     const monthNo = parseInt(dateParts[1]);
+    const yearNo = parseInt(dateParts[0]);
+    // const monthAbbreviation = monthAbbreviation[monthNo - 1];
 
-    return monthValue && String(monthNo) ===  monthValue;
-  });
+    return String(monthNo) ===  monthValue && String(yearNo) === yearValue;
+    }) 
+    : fakeData;
 
   let totalCost = 0; 
   filteredData.forEach((item) => {
@@ -105,7 +112,7 @@ export default HistoryScreen = () => {
         </View>
       </View>
 
-      <ScrollView>
+      {/* <ScrollView>
         {fakeData.map((item) => {
           return(
             <View key={item.key}>
@@ -116,22 +123,39 @@ export default HistoryScreen = () => {
             </View>
           )
         })}    
-      </ScrollView>
+      </ScrollView> */}
 
-      <View>
+      <ScrollView>
         {filteredData.map((item) => {
           return(
             <View key={item.key}>
               <Text>
-                {item.station}</Text> 
+                station: {item.station}, 
+                date: {item.date}, 
+                cost: {item.cost}
+              </Text> 
               </View>
           );
         })}
-      </View>
+      </ScrollView>
 
-      <View> 
+      {/* <View> 
         <Text>Total cost = {totalCost}</Text>
-      </View>
+      </View> */}
+
+      {monthValue && yearValue && filteredData.length === 0 && (
+        <View>
+          <Text>No record</Text>
+        </View>
+      )}
+
+      {monthValue && yearValue && filteredData.length > 0 && (
+        <View>
+          <Text>Total cost for {month.find((m) => m.value === monthValue).label} 
+                {year.find((y) => y.label === yearValue).label}: ${totalCost}
+          </Text>
+        </View>
+      )}
         
     </SafeAreaView>
   
