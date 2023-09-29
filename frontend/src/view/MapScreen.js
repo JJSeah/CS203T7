@@ -12,6 +12,16 @@ export default MapScreen = () => {
     setSelectedStation(station);
   };
 
+  const renderStationDetails = (station) => {
+    return (
+      <View style ={styles.stationDetails}>
+        <Text>Name: {station.name}</Text>
+        <Text>Address: {station.address}</Text>
+        <Text>Availability: {station.avail ? 'available' : 'occupied'}</Text>
+      </View>
+    );
+  };
+
   const fakeData = [
     {
       station: {
@@ -48,12 +58,13 @@ export default MapScreen = () => {
       // </View>
 
       <View>
-          <MapView style={styles.map}>
-            {fakeData.map((station) => (
-              <Marker
+        <MapView style={styles.map}>
+          {fakeData.map((station) => (
+              
+            <Marker
               key={station.station.id}
               coordinate={{latitude: station.station.latitude, longitude: station.station.longitude, }}
-              onPress={() => setSelectedStation(station)}
+              onPress={() => handleMarkerPress(station)}
               >
                 <Callout>
                   <View> 
@@ -63,19 +74,15 @@ export default MapScreen = () => {
                   </View>
                 </Callout>
               </Marker> 
-            ))} 
+            
+            )
+            )} 
           </MapView>
 
-          {selectedStation && (
-          <View style={styles.stationDetails}>
-            <Text>Name: {selectedStation.station.name}</Text>
-            <Text>Address: {selectedStation.station.address}</Text>
-            <Text>Availability: {selectedStation.station.avail ? 'available' : 'occupied'}</Text>
-          </View>
-      )}
+          {selectedStation && renderStationDetails(selectedStation)}
       </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

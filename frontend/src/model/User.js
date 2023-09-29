@@ -21,6 +21,7 @@ export const UserProvider = ( { children } ) => {
     const [ userCoordinates, setUserCoordinates ] = useState (null);
     const [ closestStation, setClosestStation ] = useState(null);
     const [ upcomingAppointmentDetails, setUpcomingAppointmentDetails ] = useState(null);
+    const [ currentAppointment, setCurrentAppointment ] = useState(null);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
     
@@ -192,6 +193,7 @@ export const UserProvider = ( { children } ) => {
                 userCoordinates, setUserCoordinates,
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
+                currentAppointment, setCurrentAppointment,
                 currentCar, setCurrentCar
             }}
         >
