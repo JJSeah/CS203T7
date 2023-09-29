@@ -41,6 +41,10 @@ export const UserProvider = ( { children } ) => {
             console.log(`Sign up error ${e}`)
         })
     }
+
+    // const confirmAppointment = async() => {
+
+    // }
     
     useEffect(() => {
 
