@@ -8,7 +8,7 @@ import { styles } from "../components/Design"
 
 export default ClosestStationView = () => {
 
-    const { closestStation, upcomingAppointment, currentCar } = useContext(UserContext);
+    const { closestStation, upcomingAppointmentDetails, currentCar } = useContext(UserContext);
 
     return (
         <View style={localStyles.container}>
@@ -51,7 +51,7 @@ export default ClosestStationView = () => {
                 style={localStyles.appointmentContainer}
             >
                 {
-                        (upcomingAppointment === null) ?
+                        (upcomingAppointmentDetails === null) ?
                             <ActivityIndicator /> :
                             <UpcomingAppointmentView/>
                     }

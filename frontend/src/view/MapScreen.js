@@ -65,13 +65,14 @@ export default MapScreen = () => {
               </Marker> 
             ))} 
           </MapView>
-          {/* {selectedStation && (
+
+          {selectedStation && (
           <View style={styles.stationDetails}>
             <Text>Name: {selectedStation.station.name}</Text>
             <Text>Address: {selectedStation.station.address}</Text>
-            <Text>Availability: {selectedStation.station.avail ? 'Available' : 'Not Available'}</Text>
+            <Text>Availability: {selectedStation.station.avail ? 'available' : 'occupied'}</Text>
           </View>
-      )} */}
+      )}
       </View>
   );
 }
@@ -84,4 +85,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  stationDetails: {
+    padding: 10
+  }
 });

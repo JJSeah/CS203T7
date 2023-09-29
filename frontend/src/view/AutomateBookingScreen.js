@@ -13,7 +13,7 @@ import ReminderToAddCarScreen from "./ReminderToAddCarScreen";
 import MapView, { Marker } from "react-native-maps";
 
 export default AutomateBookingScreen = ({ navigation }) => {
-  const { userCoordinates, closestStation, upcomingAppointment, userCars } =
+  const { userCoordinates, closestStation, upcomingAppointmentDetails, userCars } =
     useContext(UserContext);
 
   const { findClosestStation } = AutomateBookingScreenViewController({
