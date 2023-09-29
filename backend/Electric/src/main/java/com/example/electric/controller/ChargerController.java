@@ -8,16 +8,20 @@ import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.service.ChargerService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 // This annotation tells Spring that this class is a Controller
 import com.example.electric.model.Charger;
+
 
 @RestController
 @RequestMapping("/api/charger")
 public class ChargerController {
     @Autowired
     public ChargerService chargerService;
+
 
     /**
      * Retrieve a list of all chargers.
@@ -45,7 +49,7 @@ public class ChargerController {
     @GetMapping("/station/{stationId}")
     @Operation(summary = "Get All Chargers at a Station", description = "Return List of Chargers at a Station using StationID",tags = {"Charger"})
 
-    public List<Charger> getAllChargersAtStation(@PathVariable("stationId") long stationId ) {
+    public List<Charger> getAllChargersAtStation(@PathVariable("stationId") long stationId ) throws ObjectNotFoundException{
         return chargerService.getChargersByStation(stationId);
     }
 
@@ -80,9 +84,10 @@ public class ChargerController {
      */
     @PostMapping
     @Operation(summary = "Add a Charger", description = "Add a Charger",tags = {"Charger"})
+    public ResponseEntity<Long> addCharger(@RequestBody Charger charger) {
+        Long chargerId = chargerService.addCharger(charger);
+        return ResponseEntity.status(HttpStatus.CREATED).body(chargerId);
 
-    public long addCharger(@RequestBody Charger charger) {
-        return chargerService.addCharger(charger);
     }
 
     /**
