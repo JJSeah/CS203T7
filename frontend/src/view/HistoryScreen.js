@@ -157,10 +157,8 @@ export default HistoryScreen = () => {
         </View>
       )}
         
-    </SafeAreaView>
-  
+    </SafeAreaView> 
   )
-
 }
 
 const styles = StyleSheet.create({
