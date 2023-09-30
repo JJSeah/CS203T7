@@ -1,12 +1,18 @@
-import React, { useContext, useState } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native';
+import HistoryScreenViewController from '../viewController/HistoryScreenViewController';
 import { UserContext } from '../model/User';
 import { Dropdown } from 'react-native-element-dropdown';
+import { styles } from "../components/Design"; 
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
 
 // take here
 import Swiper from "react-native-deck-swiper"
 import SingleCarSwiperView from '../components/SingleCarSwiperView';
 import CarSwiperView from './CarSwiperView';
+
+SplashScreen.preventAutoHideAsync();
 
 const month = [
   {label: 'January', value:'1'}, 
@@ -31,29 +37,39 @@ const year =[
 
 const fakeData = [
   {
-    "station": "a", 
+    "station": "Shell Recharge", 
     "date": "2023-09-25", 
     "cost": 23.5, 
     key: 1
   },
   {
-    "station": "b", 
+    "station": "SP Mobility ", 
     "date": "2023-02-25", 
     "cost": 9.2, 
     key: 2
   },
   {
-    "station": "c", 
+    "station": "CHARGE+", 
     "date": "2023-09-20", 
     "cost": 20, 
     key: 3
   },
 ]
 
-export default HistoryScreen = () => {
+export default HistoryScreen = ({navigation}) => {
 
-  const [monthValue, setMonthValue] = useState(null);
-  const [yearValue, setYearValue] = useState("2023");
+  const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue} = HistoryScreenViewController({navigation})
+
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+
+    loadFonts();
+  }, []);
+
   // const [isFocus, setIsFocus] = useState(false); 
   // const monthAbbreviation = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
   //                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -84,15 +100,17 @@ export default HistoryScreen = () => {
     <SafeAreaView>
       <View>
 
-        <View style={styles.dropDownContainer}>
-          <Dropdown style={styles.month}
+        <View style={historyStyles.dropDownContainer}>
+          <Dropdown style={historyStyles.month}
             data={month}
             placeholder="Month"
+            placeholderStyle={{color: 'black'}}
             searchPlaceholder="Select Month"
             value={monthValue}
             maxHeight={300}
             labelField="label"
             valueField="value"
+            // textStyle={{color : 'white'}}
             // onFocus={() => setIsFocus(true)}
             // onBlur={() => setIsFocus(false)}
             onChange={data => {
@@ -100,9 +118,10 @@ export default HistoryScreen = () => {
               // setIsFocus(false);
             } } />
 
-          <Dropdown style={styles.year}
+          <Dropdown style={historyStyles.year}
             data={year}
             placeholder='2023'
+            placeholderStyle={{color: 'black'}}
             value={yearValue}
             labelField="label"
             valueField="value"
@@ -113,23 +132,10 @@ export default HistoryScreen = () => {
       </View>
 
       {/* <ScrollView>
-        {fakeData.map((item) => {
-          return(
-            <View key={item.key}>
-            <Text>{item.station} 
-            {item.date}
-            {item.cost}
-            </Text>
-            </View>
-          )
-        })}    
-      </ScrollView> */}
-
-      <ScrollView>
         {filteredData.map((item) => {
           return(
-            <View key={item.key}>
-              <Text>
+            <View key={item.key} style={historyStyles.recordContainer}>
+              <Text style={styles.bodyText}>
                 station: {item.station}, 
                 date: {item.date}, 
                 cost: {item.cost}
@@ -137,35 +143,43 @@ export default HistoryScreen = () => {
               </View>
           );
         })}
-      </ScrollView>
-
-      {/* <View> 
-        <Text>Total cost = {totalCost}</Text>
-      </View> */}
-
+      </ScrollView> */}
       {monthValue && yearValue && filteredData.length === 0 && (
         <View>
-          <Text>No record</Text>
+          <Text style={historyStyles.totalCost}>No record</Text>
         </View>
       )}
 
       {monthValue && yearValue && filteredData.length > 0 && (
         <View>
-          <Text>Total cost for {month.find((m) => m.value === monthValue).label} 
+          <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
                 {year.find((y) => y.label === yearValue).label}: ${totalCost}
           </Text>
         </View>
       )}
+
+      <FlatList
+        data={filteredData}
+        keyExtractor={(item) => item.key.toString()}
+        renderItem={({item}) => (
+          <View style={historyStyles.recordContainer}>
+            <Text style={historyStyles.stationName}>{item.station}</Text>
+            <Text style={historyStyles.date}>{item.date}</Text>
+            <Text style={historyStyles.cost}>${item.cost}</Text>
+          </View>
+        )}
+        />
         
     </SafeAreaView> 
   )
 }
 
-const styles = StyleSheet.create({
+const historyStyles = StyleSheet.create({
   dropDownContainer:{
     flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // marginHorizontal: 20, 
+    justifyContent: 'space-between',
+    alignItems: 'center', 
+    padding: 16,
   },
   month: {
     // flex: 1,
@@ -176,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 5, 
     paddingHorizontal: 15,
     marginLeft: 130,
-    marginTop: 10, 
+    marginTop: 10,  
   }, 
   year:{
     height: 45, 
@@ -187,5 +201,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginLeft: 10,
     marginTop: 10, 
+  }, 
+  recordContainer: {
+    borderWidth: 1, 
+    borderColor: 'black', 
+    borderRadius: 10, 
+    padding: 20, 
+    margin: 8,
+  }, 
+  stationName: {
+    fontWeight: 'bold', 
+    fontSize: 20, 
+    fontFamily: 'Product-Sans-Regular'
+  },
+  date: {
+    fontSize: 16, 
+    flexDirection: 'row', 
+    fontFamily: 'Product-Sans-Regular'
+  }, 
+  cost: {
+    marginLeft: 290, 
+    fontSize: 16,
+    fontStyle: 'italic', 
+    fontFamily: 'Product-Sans-Regular'
+  }, 
+  totalCost: {
+    fontSize: 16, 
+    fontWeight: 'bold', 
+    fontFamily: 'Product-Sans-Regular', 
+    marginHorizontal: 10
   }
 })
