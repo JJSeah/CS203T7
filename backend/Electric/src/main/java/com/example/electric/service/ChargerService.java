@@ -1,6 +1,8 @@
 package com.example.electric.service;
 
 import com.example.electric.model.Charger;
+import com.example.electric.model.Station;
+import com.example.electric.model.User;
 import com.example.electric.respository.ChargerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,15 +33,40 @@ public class ChargerService {
     }
 
     public Charger updateCharger(Charger updatedCharger, long chargerId) {
+        Optional<Charger> OptionalCharger = chargerRepository.findById(chargerId);
+
+        if (OptionalCharger.isPresent()) {
+            Charger exisitinCharger = OptionalCharger.get();
+            if(updatedCharger.getCharId() != null){
+                exisitinCharger.setCharId(updatedCharger.getCharId());
+            }
+            if(updatedCharger.getName() != null){
+                exisitinCharger.setName(updatedCharger.getName());
+            }
+            if(updatedCharger.getAvail() != exisitinCharger.getAvail()){
+                exisitinCharger.setCharId(updatedCharger.getCharId());
+            }
+            if(updatedCharger.getType() != null){
+                exisitinCharger.setType(updatedCharger.getType());
+            }            
+            if(updatedCharger.getChargingRate() != 0.0){
+                exisitinCharger.setChargingRate(updatedCharger.getChargingRate());
+            }
+            if(updatedCharger.getStation() != null){
+                exisitinCharger.setStation(updatedCharger.getStation());
+            }
+            return chargerRepository.save(exisitinCharger);
+        } else {
+            return null; // charger not found
+        }
+    }
+
+    public Optional<Charger> deleteCharger(long chargerId) {
         if (!chargerRepository.existsById(chargerId)) {
             return null;
         }
-
-        updatedCharger.setId(chargerId);
-        return chargerRepository.save(updatedCharger);
-    }
-
-    public void deleteCharger(long chargerId) {
+        Optional<Charger> deleted = chargerRepository.findById(chargerId);
         chargerRepository.deleteById(chargerId);
+        return deleted;
     }
 }

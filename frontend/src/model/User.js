@@ -13,38 +13,54 @@ export const UserProvider = ( { children } ) => {
     const [ userToken, setUserToken ] = useState(null);
     const [ userId, setUserId ] = useState(null);
     const [ userData, setUserData ] = useState(null);
+    const [ userCars, setUserCars ] = useState([]);
+
+    const [ currentCar, setCurrentCar ] = useState(null);
+
+    const [ allStations, setAllStations ] = useState([]);
+    const [ userCoordinates, setUserCoordinates ] = useState (null);
+    const [ closestStation, setClosestStation ] = useState(null);
+    const [ upcomingAppointment, setUpcomingAppointment ] = useState(null);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
+    
+    const signUp = async(firstName, lastName, username, email, password) => {
+        let url = `${BASE_URL}/auth/signup`;
 
-    const signUp = (name, email) => {
-        axios.post("url", {
-            name,
-            email,
+        axios.post(url, {
+            "firstName": firstName,
+            "lastName": lastName, 
+            "usernames": username,
+            "email": email,
+            "password" : password
         })
-        .then (res => {
-
+        .then (res => { 
         })
-        .catch ( e => {
-
+        .catch (e => {
+            console.log(`Sign up error ${e}`)
         })
     }
     
     useEffect(() => {
 
+        console.log("initial app")
         if (userToken === null && userId === null) {
             isLoggedIn();
         }
 
         if (userToken !== null && userId !== null) {
-            loadUserData(userId)
+            loadUserData()
             SecureStore.setItemAsync(userTokenString, userToken);
             SecureStore.setItemAsync(userIdString, userId);
         }
 
     }, [userToken, userId]);
 
-    const logIn = (email, password) => {
-        axios.post(`${BASE_URL}/auth/login`, {
+    const logIn = async(email, password) => {
+
+        let url = `${BASE_URL}/auth/login`
+
+        axios.post(url, {
             email, 
             password 
         })
@@ -57,29 +73,41 @@ export const UserProvider = ( { children } ) => {
             setUserToken(token);
             setUserId(JSON.stringify(id));
 
+            console.log(data)
+
         })
         .catch(e => {
             console.log(`Log in error ${e}`)
         })
 
-        // SecureStore.setItemAsync(userTokenString, "userTokenTemp")
-        // setUserToken("userTokenTemp")
     }
 
-    const loadUserData = (id) => {
-        axios.get(`${BASE_URL}/api/user/${id}`, {
 
-        }, 
-        // {
-        //     headers: {
-        //         'Authorization': `Bearer ${userToken}`
-        //     }
-        // }
+    const loadUserData = async() => {
+        let url = `${BASE_URL}/api/user/${userId}`
+
+        axios.get(url,
+        {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
         )
         .then( res => {
             let data = res.data
-            setUserData(data)
+            let userData = data.user
+            let userCars = data.car
+            let userCard = data.card
+
             console.log(data)
+
+            if (userCars.length > 0) {
+                setCurrentCar(userCars[0])
+            }
+            setUserData(userData)
+            setUserCars(userCars)
+
+            getAllStations()
         })
         .catch(e => {
             console.log(`Load user data error ${e}`)
@@ -91,6 +119,7 @@ export const UserProvider = ( { children } ) => {
         setUserToken(null);
         setUserId(null);
         setUserData(null);
+        setCurrentCar(null);
 
         SecureStore.deleteItemAsync(userTokenString);
         SecureStore.deleteItemAsync(userIdString);
@@ -111,14 +140,60 @@ export const UserProvider = ( { children } ) => {
             }
 
         } catch (e) {
-            console.log(`User is already logged in error ${e}`);
+            console.log(`User is already logged in error ${e}`); 
         }
+    }
+
+
+
+
+    // Edit profile
+    // const updateProfile = async(newFirstName, newLastName, newEmail) => {
+    //     let url = `${BASE_URL}/api/user/${userId}`
+
+    //     axios.put(url, {
+    //         "firstName": newFirstName,
+    //         "lastName": newLastName,
+    //         "email": newEmail,
+    //     })
+    //     .then( res => {
+    //         console.log("Successfully updated backend")
+
+    //         let reload = async() => {
+    //             loadUserData()
+    //         }
+
+    //         reload()
+    //     })
+    // }
+
+    const getAllStations = async() => {
+        axios.get(`${BASE_URL}/api/stations/all`, 
+        {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
+        )
+        .then ( res => {
+            let data = res.data
+            setAllStations(data)
+        })
+        .catch( e => {
+            console.log(`Error loading stations ${e}`)
+        })
     }
 
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, logIn, logOut }}
+            value={{ userToken, userId, userData, userCars, allStations, 
+                logIn, logOut, signUp, setUserCars, 
+                userCoordinates, setUserCoordinates,
+                closestStation, setClosestStation,
+                upcomingAppointment, setUpcomingAppointment,
+                currentCar, setCurrentCar
+            }}
         >
             { children }
         </UserContext.Provider>

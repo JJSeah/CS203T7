@@ -3,38 +3,13 @@ import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SettingsScreenViewController from '../viewController/SettingsScreenViewController';
 import SettingsButton from '../components/SettingsButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Creating 2 sections: Account and Records
 // Account: Profile, Vehicle Information, Payment Methods, Notification (need?)
-// Records: Billing History, Charging History
+// Suuport & Legal: Get Help, Privacy Policy, About
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff', 
-    padding: 16,
-  },
-  sectionContainer: {
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    backgroundColor: '#f9f9f9', 
-  },
-  section: {
-    backgroundColor: '#ADD8E6', 
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-  },
-  
-  sectionHeader: {
-    fontSize: 20, // Account and Records
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-});
+
 
 export default SettingsScreen = ( { navigation } ) => {
 
@@ -43,13 +18,14 @@ export default SettingsScreen = ( { navigation } ) => {
     vehicleInformationButtonPressed, 
     paymentMethodsButtonPressed, 
     notificationButtonPressed,
-    billingHistoryButtonPressed,
-    chargingHistoryButtonPressed, } = SettingsScreenViewController( { navigation } );
+    getHelpButtonPressed,
+    privacyPolicyButtonPressed,
+    aboutButtonPressed, } = SettingsScreenViewController( { navigation } );
 
   return (
 
     // Account Section and Records Section
-    <ScrollView style={styles.container}>
+    <SafeAreaView>
 
       {/* This is Account container */}
 
@@ -81,38 +57,57 @@ export default SettingsScreen = ( { navigation } ) => {
 
       {/* This is records container*/}
 
-      
 
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Records</Text>
+          <Text style={styles.sectionHeader}>Support & Legal</Text>
         </View>
 
         <SettingsButton
-        title="Billing History"
-        onPress={billingHistoryButtonPressed}
+        title="Get Help"
+        onPress={getHelpButtonPressed}
         />
 
         <SettingsButton
-        title="Charging History"
-        onPress={chargingHistoryButtonPressed}
+        title="Privacy Policy"
+        onPress={privacyPolicyButtonPressed}
         />
-        {/* <TouchableOpacity onPress={() => handleItemPress('Billing History')}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Billing History</Text>
-            <FontAwesome name="angle-right" size={20} color="#ccc" /> 
-          </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handleItemPress('Charging History')}>
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Charging History</Text>
-            <FontAwesome name="angle-right" size={20} color="#ccc" /> 
-          </View>
-        </TouchableOpacity> */}
+        <SettingsButton
+        title="About"
+        onPress={aboutButtonPressed}
+        />
+
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff', 
+    padding: 16,
+  },
+  sectionContainer: {
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    backgroundColor: '#f9f9f9', 
+  },
+  section: {
+    backgroundColor: '#ADD8E6', 
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  
+  sectionHeader: {
+    fontSize: 20, // Account and Records
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+});
 

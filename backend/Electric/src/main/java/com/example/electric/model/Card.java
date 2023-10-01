@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="card")
@@ -26,7 +28,16 @@ public class Card {
 
     //link to owner
     @ManyToOne
-    @JoinColumn(name="owner.id")
-    private User owner;
+    @JoinColumn(name="user_id")
+    private User user;
 
+    public Card(long l, String johnDoe, String number, String s)  {
+        this.id = l;
+        this.name = johnDoe;
+        this.number = Long.parseLong(number);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Date date = Date.valueOf(LocalDate.parse(s, formatter));
+        this.expiry = date;
+
+    }
 }

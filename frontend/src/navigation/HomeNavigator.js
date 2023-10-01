@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "../view/HomeScreen";
 import HistoryScreen from "../view/HistoryScreen";
 import MapScreen from "../view/MapScreen";
-import SettingsScreen from "../view/SettingsScreen";
+import SettingsScreen from "../view/Settings/SettingsScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -19,7 +19,8 @@ export default MyTabs = () => {
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
                         return <Ionicons name="ios-home"/>
-                    }
+                    },
+                    headerShown:false,
                 }}
             />
 
@@ -29,7 +30,8 @@ export default MyTabs = () => {
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
                         return <Ionicons name="map"/>
-                    }
+                    },
+                    headerShown:false
                 }}
             />
 
@@ -38,9 +40,9 @@ export default MyTabs = () => {
                 component={HistoryScreen}
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
-                        // return <Ionicons name="clipboard-list"/>
                         return <FontAwesome5 name="clipboard-list"/>
-                    }
+                    },
+                    headerShown:false
                 }}
             />
 
@@ -50,7 +52,8 @@ export default MyTabs = () => {
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
                         return <Ionicons name="settings"/>
-                    }
+                    },
+                    headerShown:false
                 }}
             />
 

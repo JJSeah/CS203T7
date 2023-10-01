@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.service.ChargerService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class ChargerController {
      * @return A list of chargers, which may be empty if no chargers are found.
      */
     @GetMapping
+    @Operation(summary = "Get All Chargers", description = "Return List of Chargers",tags = {"Charger"})
     public List<Charger> getAllChargers() {
         return chargerService.getAllChargers();
     }
@@ -41,6 +43,8 @@ public class ChargerController {
      * @return A list of chargers at the specified station, which may be empty if no chargers are found.
      */
     @GetMapping("/station/{stationId}")
+    @Operation(summary = "Get All Chargers at a Station", description = "Return List of Chargers at a Station using StationID",tags = {"Charger"})
+
     public List<Charger> getAllChargersAtStation(@PathVariable("stationId") long stationId ) {
         return chargerService.getChargersByStation(stationId);
     }
@@ -56,6 +60,8 @@ public class ChargerController {
      * @throws ObjectNotFoundException If no charger with the given ID is found.
      */
     @GetMapping("/{chargerId}")
+    @Operation(summary = "Get Charger", description = "Get a Charger using ID",tags = {"Charger"})
+
     public Optional<Charger> getChargerById(@PathVariable("chargerId") long chargerId) {
         if (!chargerService.getChargerById(chargerId).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -73,6 +79,8 @@ public class ChargerController {
      * @return The unique identifier (ID) of the newly created charger.
      */
     @PostMapping
+    @Operation(summary = "Add a Charger", description = "Add a Charger",tags = {"Charger"})
+
     public long addCharger(@RequestBody Charger charger) {
         return chargerService.addCharger(charger);
     }
@@ -91,6 +99,7 @@ public class ChargerController {
      * @throws ObjectNotFoundException If no charger with the given ID is found.
      */
     @PutMapping("/{chargerId}")
+    @Operation(summary = "Update Chargers", description = "Update Charger by ID",tags = {"Charger"})
     public Charger updateCharger(@RequestBody Charger charger, @PathVariable("chargerId") long chargerId) {
         if (!chargerService.getChargerById(chargerId).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -109,6 +118,7 @@ public class ChargerController {
      * @throws ObjectNotFoundException If no charger with the given ID is found.
      */
     @DeleteMapping("/{chargerId}")
+    @Operation(summary = "Delete Chargers", description = "Delete Chargers by ID",tags = {"Charger"})
     public void deleteCharger(@PathVariable("chargerId") long chargerId) {
         if (!chargerService.getChargerById(chargerId).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);

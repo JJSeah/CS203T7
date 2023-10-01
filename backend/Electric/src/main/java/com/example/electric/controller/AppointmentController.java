@@ -4,11 +4,11 @@ import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Appointment;
 import com.example.electric.service.AppointmentService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/appointment")
@@ -25,6 +25,7 @@ public class AppointmentController {
      * @return A list of appointments, which may be empty if no appointments are found.
      */
     @GetMapping
+    @Operation(summary = "Get All Appointment", description = "Get All Appointment",tags = {"Appointment"})
     public List<Appointment> getAllAppointments() {
         return appointmentService.getAllAppointments();
     }
@@ -40,12 +41,28 @@ public class AppointmentController {
      * @throws ObjectNotFoundException If no appointment with the given ID is found.
      */
     @GetMapping("/{appointmentId}")
-    public Optional<Appointment> getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
-        if (!appointmentService.getAppointmentById(appointmentId).isPresent()) {
-            throw new ObjectNotFoundException(ErrorCode.E1002);
-        }
-        return appointmentService.getAppointmentById(appointmentId);
+    @Operation(summary = "Get Appointment", description = "Get Appointment using ID", tags = {"Appointment"})
+    public Appointment getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
+        return appointmentService.getAppointmentById(appointmentId)
+                .orElseThrow(() -> new ObjectNotFoundException(ErrorCode.E1002));
+
     }
+
+    /**
+     * Retrieve a list of appointments associated with a user.
+     *
+     * This endpoint allows the retrieval of a list of appointments that are associated with
+     * a specific user, identified by their UserID. It provides access to the user's appointments.
+     *
+     * @param userId The unique identifier (UserID) of the user.
+     * @return A list of appointments associated with the specified user.
+     */
+    @GetMapping("/user/{userId}")
+    @Operation(summary = "Get User's Appointments", description = "Get a list of User's Appointment from UserID",tags = {"Appointment"})
+    public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") long userId) {
+        return appointmentService.getAllAppointmentsByUser(userId);
+    }
+
 
     /**
      * Retrieve a list of all appointments at a specific station.
@@ -58,6 +75,7 @@ public class AppointmentController {
      * @return A list of appointments at the specified station, which may be empty if no appointments are found.
      */
     @GetMapping("/station/{stationId}")
+    @Operation(summary = "Get Stations' Appointment", description = "Get a list of stations' Appointment using StationID",tags = {"Appointment"})
     public List<Appointment> getAllAppointmentsAtStation(@PathVariable("stationId") long stationId) {
         return appointmentService.getAllAppointmentsAtStation(stationId);
     }
@@ -72,6 +90,7 @@ public class AppointmentController {
      * @return The newly created appointment.
      */
     @PostMapping
+    @Operation(summary = "Add Appointment", description = "Add Appointment",tags = {"Appointment"})
     public Appointment addAppointment(@RequestBody Appointment appointment) {
         return appointmentService.addAppointment(appointment);
     }
@@ -90,6 +109,7 @@ public class AppointmentController {
      * @throws ObjectNotFoundException If no appointment with the given ID is found.
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Update Appointment", description = "Update Appointment using ID",tags = {"Appointment"})
     public Appointment updateAppointment(@RequestBody Appointment updatedAppointment, @PathVariable("id") long id) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -108,6 +128,7 @@ public class AppointmentController {
      * @throws ObjectNotFoundException If no appointment with the given ID is found.
      */
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete Appointment", description = "Delete Appointment using ID",tags = {"Appointment"})
     public void deleteAppointment(@PathVariable("id") long id) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);

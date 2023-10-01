@@ -1,23 +1,52 @@
 import React, { useContext } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button, StyleSheet } from 'react-native';
 import { UserContext } from '../model/User';
+import InBetweenSpace from '../components/InBetweenSpace';
+import SettingsScreenViewController from '../viewController/SettingsScreenViewController';
+import CustomLongButton from '../components/CustomLongButton';
 
-export default ProfileScreen = () => {
+export default ProfileScreen = ( { navigation } ) => {
 
     const { userData } = useContext(UserContext);
+
+    const { 
+      editProfileButtonPressed, } = SettingsScreenViewController( { navigation } );
 
   return (
     <View>
 
-      <Text>Welcome {userData.username}</Text>
+      {/* Username can't be edited */}
 
-        <Text>Your email is {userData.email}</Text>
+      <InBetweenSpace
+      title="Username"
+      value={userData.username}
+      />
 
-        <Text>Your id is {userData.id}</Text>
+      <InBetweenSpace
+      title="First Name"
+      value={userData.firstName}
+      />
 
-        <Text>Your firstName is {userData.firstName}</Text>
+      <InBetweenSpace
+      title="Surname"
+      value={userData.lastName}
+      />
 
-        <Text>Your lastName is {userData.lastName}</Text>
+      <InBetweenSpace
+      title="Email"
+      value={userData.email}
+      />
+
+        <CustomLongButton
+          title="Edit"
+          onPress={editProfileButtonPressed}
+        />
+
     </View>
   );
 }
+
+
+
+
+

@@ -28,6 +28,11 @@ public class StationService {
         return optionalStation.orElse(null);
     }
 
+ 
+    public Station getStationByCoordinate(double latitude, double longitude) {
+        Optional<Station> optionalStation = stationRepository.findStationByLatitudeAndLongitude(latitude, longitude);
+        return optionalStation.orElse(null);
+    }
     public Station createStation(Station station) {
         return stationRepository.save(station);
     }
@@ -36,12 +41,25 @@ public class StationService {
         Optional<Station> optionalStation = stationRepository.findById(id);
         if (optionalStation.isPresent()) {
             Station station = optionalStation.get();
-            // Update the station fields as needed
-            station.setName(updatedStation.getName());
-            station.setLatitude(updatedStation.getLatitude());
-            station.setLongitude(updatedStation.getLongitude());
-            station.setChargers(updatedStation.getChargers());
-            station.setAvail(updatedStation.isAvail());
+    
+            // Update the station fields only if they are not null or have non-default values
+            if (updatedStation.getName() != null) {
+                station.setName(updatedStation.getName());
+            }
+            if (updatedStation.getLatitude() != 0.0) {
+                station.setLatitude(updatedStation.getLatitude());
+            }
+            if (updatedStation.getLongitude() != 0.0) {
+                station.setLongitude(updatedStation.getLongitude());
+            }
+            if (updatedStation.getChargers() != null) {
+                station.setChargers(updatedStation.getChargers());
+            }
+            if (updatedStation.isAvail() != false) {
+                station.setAvail(updatedStation.isAvail());
+            }
+    
+            // Save the updated station entity
             return stationRepository.save(station);
         } else {
             return null; // Station not found
@@ -50,5 +68,10 @@ public class StationService {
 
     public void deleteStation(Long id) {
         stationRepository.deleteById(id);
+    }
+    
+    public Station getStationByName(String name) {
+        Optional<Station> optionalStation = stationRepository.findStationByName(name);
+        return optionalStation.orElse(null);
     }
 }

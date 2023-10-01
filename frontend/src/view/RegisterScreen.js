@@ -1,11 +1,19 @@
-import React from 'react'
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, Alert, secureTextEntry } from 'react-native'
+import React, {useContext, useEffect} from 'react'
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, KeyboardAvoidingView, secureTextEntry, Platform, TouchableWithoutFeedback , SafeAreaView, Keyboard} from 'react-native'
 import CustomTextField from '../components/CustomTextField'
 import RegisterScreenViewController from '../viewController/RegisterScreenViewController'
 import CustomLongButton from '../components/CustomLongButton'
 import PasswordField from '../components/PasswordField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { UserContext } from '../model/User';
+import { styles } from "../components/Design"; 
+import * as Font from 'expo-font';
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+import HyperlinkButton from '../components/HyperlinkButton'
+
+SplashScreen.preventAutoHideAsync();
 
 const SignupSchema = Yup.object().shape({
 
@@ -16,8 +24,8 @@ const SignupSchema = Yup.object().shape({
     .required('Please enter your last name.'),
 
   username: Yup.string()
-    .min(6, 'Minimum of 6 characters')
-    .max(15, 'Maximum of 15 characters')
+    .min(6, 'Username must contain 6-15 characters.')
+    .max(15, 'Username must contain 6-15 characters.')
     .required('Please enter your username.'),
 
   email: Yup.string()
@@ -26,15 +34,15 @@ const SignupSchema = Yup.object().shape({
     .required('Please enter your email address.'),
 
   password: Yup.string()
-    .min(8)
+    .min(8, 'Password must contain at least 8 characters.')
     .required('Please enter your password.')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, 
-      'Must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one digit and one special character'
+      'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one digit and one special character'
       ),
 
   confirmPassword: Yup.string()
-    .min(8, 'Password must contain a minimum of 8 characters.')
+    .min(8, 'Password must contain at least 8 characters.')
     .oneOf([Yup.ref('password')], 'Your passwords do not match.')
     .required('Please confirm your password.')
 });
@@ -42,7 +50,17 @@ const SignupSchema = Yup.object().shape({
 
 export default RegisterScreen = ( { navigation } ) => {
 
-  const {signUpButtonPressed} = RegisterScreenViewController({navigation})
+  const {signUpButtonPressed, isReady, setIsReady} = RegisterScreenViewController({navigation})
+
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+
+    loadFonts();
+  }, []);
 
   return (
   <Formik initialValues ={{
@@ -58,21 +76,29 @@ export default RegisterScreen = ( { navigation } ) => {
   onSubmit={values => console.log(values)}
   > 
    {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
-    <ScrollView style = {styles.container}>
-      <View style = {styles.header}>
-        <Text style={styles.boldText}>Register</Text>
-      </View>
+    
 
-      <View style = {styles.body}>
+    <SafeAreaView style={[styles.container, {flex:1}]}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Create Account</Text>
+      </View>
+      <KeyboardAvoidingView style={{flex:1}}
+        behavior={Platform.OS === 'ios'?'padding':'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios'?64:0}>
+        
+        <ScrollView style={{flexGrow:1}}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View>
+            <View style = {registerStyle.body}>
         <CustomTextField
-          placeholder = 'First Name'
-          value={values.firstName}
-          onChangeText={handleChange('firstName')}
-          onBlur={() => setFieldTouched('firstName')}/>
+        placeholder = 'First Name'
+        value={values.firstName}
+        onChangeText={handleChange('firstName')}
+        onBlur={() => setFieldTouched('firstName')}/>
           
 
         {errors.firstName && touched.firstName &&  (
-          <Text style={styles.textFailed}>{errors.firstName}</Text>
+          <Text style={registerStyle.textFailed}>{errors.firstName}</Text>
         )}
 
         <CustomTextField
@@ -82,7 +108,7 @@ export default RegisterScreen = ( { navigation } ) => {
           onBlur={() => setFieldTouched('lastName')}/>
 
         {errors.lastName && touched.lastName && (
-          <Text style={styles.textFailed}>{errors.lastName}</Text>
+          <Text style={registerStyle.textFailed}>{errors.lastName}</Text>
         )}
          
         <CustomTextField
@@ -92,30 +118,28 @@ export default RegisterScreen = ( { navigation } ) => {
           onBlur={() => setFieldTouched('username')}/>
 
         {errors.username && touched.username && (
-          <Text style={styles.textFailed}>{errors.username}</Text>
+          <Text style={registerStyle.textFailed}>{errors.username}</Text>
         )}
 
         <CustomTextField
           placeholder = 'Email'
-          autoCapitalize={false}
           values ={values.email}
           onChangeText={handleChange('email')}
           onBlur={() => setFieldTouched('email')}/>  
 
         {errors.email && touched.email && (
-          <Text style={styles.textFailed}>{errors.email}</Text>
+          <Text style={registerStyle.textFailed}>{errors.email}</Text>
         )}
 
         <PasswordField
           placeholder = 'Password'
-          autoCapitalize={false}
           values={values.password}
           onChangeText={handleChange('password')}
           onBlur={() => setFieldTouched('password')}
           secureTextEntry={true}/>
 
         {errors.password && touched.password && (
-          <Text style={styles.textFailed}>{errors.password}</Text>
+          <Text style={registerStyle.textFailed}>{errors.password}</Text>
         )}
 
         <PasswordField
@@ -127,46 +151,55 @@ export default RegisterScreen = ( { navigation } ) => {
           secureTextEntry={true}/>
 
         {errors.confirmPassword && touched.confirmPassword && (
-          <Text style={styles.textFailed}>{errors.confirmPassword}</Text>
+          <Text style={registerStyle.textFailed}>{errors.confirmPassword}</Text>
         )}
         
       </View> 
 
-      <CustomLongButton
+      <View style={{margin: 40, marginBottom: 35}}>
+        <CustomLongButton
         title="Sign Up"
-        onPress={signUpButtonPressed}
+        onPress={() => { signUpButtonPressed(values.firstName, values.lastName, values.username, values.email, values.password)}}
         disabled={!isValid}
-      />
+        />
+      </View>
+      
 
-    </ScrollView>
+      <View style={{flexDirection: 'row', marginLeft: 85}}>
+        <Text style={registerStyle.text}>Already have an account?  </Text>
+        <HyperlinkButton 
+          title="Log In"
+          onPress={signUpButtonPressed}
+        />
+        <View style={{flex:1}}/>
+                </View>
+              </View>
+            </TouchableWithoutFeedback> 
+          </ScrollView>
+        </KeyboardAvoidingView>  
+     </SafeAreaView>
     )}
     </Formik>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    backgroundColor: '#fff', 
-  }, 
-  header: {
-    padding : 20,
-  },
-  boldText: {
-    fontWeight: 'bold',
-    fontSize: 40, 
-    color: 'black', 
-  }, 
+const registerStyle = StyleSheet.create({
   body:{
-    backgroundColor: '#fff', 
+    // backgroundColor: '#fff', 
     fontSize: 30, 
     padding: 10,
     marginVertical : 10,
   }, 
+  text: {
+    color: 'white', 
+    fontFamily: 'Product-Sans-Regular', 
+    fontSize: 15, 
+    textAlign: 'center',
+  },
   textFailed:{
     color: 'red', 
-    fontSize: 15, 
+    fontSize: 13.5, 
     fontWeight: 'bold', 
-    marginLeft: 15,
+    marginLeft: 20,
   }, 
 })

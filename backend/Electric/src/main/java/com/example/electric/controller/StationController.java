@@ -4,6 +4,8 @@ import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Station;
 import com.example.electric.service.StationService;
+import com.example.electric.service.VoronoiService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/stations")
 public class StationController {
-
+    @Autowired
     private final StationService stationService;
+
+    @Autowired
+    private VoronoiService voronoiService;
 
     @Autowired
     public StationController(StationService stationService) {
@@ -29,6 +34,7 @@ public class StationController {
      * @return A list of stations, which may be empty if no stations are found.
      */
     @GetMapping("/all")
+    @Operation(summary = "Get All Stations", description = "Get All Stations",tags = {"Station"})
     public List<Station> getAllStations() {
         return stationService.getAllStations();
     }
@@ -45,6 +51,7 @@ public class StationController {
      */
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get Station", description = "Get Station by ID",tags = {"Station"})
     public Station getStationById(@PathVariable Long id) {
         if (stationService.getStationById(id) == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -52,6 +59,22 @@ public class StationController {
         return stationService.getStationById(id);
     }
 
+    /**
+     * Retrieve the closest station based on latitude and longitude.
+     *
+     * This endpoint calculates and returns the closest station to a given latitude and longitude.
+     * The provided 'station' object should contain the latitude and longitude coordinates.
+     *
+     * @param station A station object with latitude and longitude coordinates.
+     * @return The closest station to the provided coordinates.
+     */
+    @PostMapping("/closest")
+    @Operation(summary = "Get Closest Station", description = "Get Closest Station by long and lat",tags = {"Algorithm"})
+    public Station slgetClosestStation(@RequestBody Station station) {
+        double latitude = station.getLatitude();
+        double longitude = station.getLongitude();
+        return voronoiService.findClosestStation(latitude, longitude);
+    }
     /**
      * Create a new station in the system.
      *
@@ -63,6 +86,7 @@ public class StationController {
      */
 
     @PostMapping
+    @Operation(summary = "Create Station", description = "Create Station",tags = {"Station"})
     public Station createStation(@RequestBody Station station) {
         return stationService.createStation(station);
     }
@@ -82,6 +106,7 @@ public class StationController {
      */
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update Station", description = "Update Station",tags = {"Station"})
     public Station updateStation(@PathVariable Long id, @RequestBody Station updatedStation) {
         if (stationService.getStationById(id) == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -100,6 +125,7 @@ public class StationController {
      * @throws ObjectNotFoundException If no station with the given ID is found.
      */
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete Station", description = "Delete Station",tags = {"Station"})
     public void deleteStation(@PathVariable Long id) {
         if (stationService.getStationById(id) == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);

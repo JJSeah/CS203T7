@@ -2,20 +2,34 @@ package com.example.electric.controller;
 
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
+import com.example.electric.model.Car;
+import com.example.electric.model.Card;
 import com.example.electric.model.User;
+import com.example.electric.model.response.UserCarPaymentResponse;
+import com.example.electric.service.CarService;
+import com.example.electric.service.CardService;
 import com.example.electric.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CarService carService;
+
+    @Autowired
+    private CardService cardService;
+
 
     @Autowired
     public UserController(UserService userService) {
@@ -31,6 +45,7 @@ public class UserController {
      * @return A list of users, which may be empty if no users are found.
      */
     @GetMapping("/all")
+    @Operation(summary = "Get All Users", description = "Get All Users",tags = {"User"})
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -46,26 +61,36 @@ public class UserController {
      * @throws ObjectNotFoundException If no user with the given ID is found.
      */
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        if (userService.getUserById(id) == null) {
+    @Operation(summary = "Get User", description = "Get User by ID",tags = {"User"})
+    public UserCarPaymentResponse getUserInfo(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        List<Car> car = carService.getAllCarsByUser(id);
+        Optional<Card> card = cardService.getCardByUserId(id);
+
+        if (user == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        return userService.getUserById(id);
+
+        UserCarPaymentResponse response = new UserCarPaymentResponse();
+        response.setUser(user);
+        response.setCar(car);
+        response.setCard(card);
+
+        return response;
     }
 
-    /**
-     * Create a new user in the system.
-     *
-     * This endpoint allows the creation of a new user in the system. The provided
-     * user object should contain the necessary details for creating the user.
-     *
-     * @param user The user object to be created.
-     * @return The newly created user.
-     */
-    @PostMapping("/")
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
+//    @GetMapping("/{id}")
+//    public User getUserById(@PathVariable Long id) {
+//        if (userService.getUserById(id) == null) {
+//            throw new ObjectNotFoundException(ErrorCode.E1002);
+//        }
+//        return userService.getUserById(id);
+//    }
+
+//    @PostMapping("/")
+//    public User createUser(@RequestBody User user) {
+//        return userService.createUser(user);
+//    }
 
     /**
      * Update an existing user with the provided information.
@@ -81,6 +106,7 @@ public class UserController {
      * @throws ObjectNotFoundException If no user with the given ID is found.
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Update User", description = "Update User by ID",tags = {"User"})
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         if (userService.getUserById(id) == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -99,6 +125,7 @@ public class UserController {
      * @throws ObjectNotFoundException If no user with the given ID is found.
      */
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete User", description = "Delete User by ID",tags = {"User"})
     public void deleteUser(@PathVariable Long id) {
         if (userService.getUserById(id) == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);

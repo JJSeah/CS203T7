@@ -4,6 +4,7 @@ import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Card;
 import com.example.electric.service.CardService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class CardController {
      * @return A list of cards, which may be empty if no cards are found.
      */
     @GetMapping
+    @Operation(summary = "Get All Cards", description = "Get All Cards",tags = {"Card"})
     public List<Card> getAllCards() {
         return cardService.getAllCards();
     }
@@ -40,6 +42,7 @@ public class CardController {
      * @throws ObjectNotFoundException If no card with the given ID is found.
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Get Card", description = "Get Card using ID",tags = {"Card"})
     public Optional<Card> getCardById(@PathVariable("id") long id) {
         if (!cardService.getCardById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -56,8 +59,12 @@ public class CardController {
      * @return An Optional containing the card owned by the user, or an empty Optional if not found.
      */
     @GetMapping("/user/{userId}")
+    @Operation(summary = "Get User's Card", description = "Get a list of User's Card from UserID",tags = {"Card"})
     public Optional<Card> getCardByUser(@PathVariable("userId") long userId) {
-        return cardService.getCardByOwner(userId);
+        if (!cardService.getCardById(userId).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        return cardService.getCardByUserId(userId);
     }
 
     /**
@@ -71,6 +78,7 @@ public class CardController {
      * @return The newly created card.
      */
     @PostMapping
+    @Operation(summary = "Add Card", description = "Add Card using ID",tags = {"Card"})
     public Card addCard(@RequestBody Card card) {
         return cardService.addCard(card);
     }
@@ -87,6 +95,7 @@ public class CardController {
      * @throws ObjectNotFoundException If no card with the given ID is found.
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Update Card", description = "Update Card using ID",tags = {"Card"})
     public Card updateCard(@RequestBody Card card, long id) {
         if (!cardService.getCardById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -103,6 +112,7 @@ public class CardController {
      * @throws ObjectNotFoundException If no card with the given ID is found.
      */
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete Card", description = "Delete Card using ID",tags = {"Card"})
     public void deleteCard(@PathVariable("id") long id) {
         if (!cardService.getCardById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);

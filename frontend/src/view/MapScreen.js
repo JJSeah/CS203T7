@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
-import { MapProvider } from '../model/MapRepository';
+import MapView, { Marker }from 'react-native-maps';
+import { UserContext } from '../model/User';
 
 export default MapScreen = () => {
+
+  const { allStations } = useContext(UserContext);
+
   return (
-    <MapProvider>
       <View>
-        <MapView
-          style={styles.map}
-          />
+        <MapView style={styles.map} >
+          {allStations.map(station => (
+            <Marker
+              key={station.id}
+              coordinate={{latitude: station.latitude, longitude: station.longitude}}
+            />
+          ))}
+        </MapView>
       </View>
-    </MapProvider>
   );
 }
 

@@ -8,12 +8,14 @@ import RegisterScreen from '../view/RegisterScreen';
 import HomeNavigator from './HomeNavigator';
 import AutomateBookingScreen from '../view/AutomateBookingScreen';
 import AddCarScreen from '../view/AddCarScreen';
-import ProfileScreen from '../view/ProfileScreen';
-import VehicleInformationScreen from '../view/VehicleInformationScreen';
-import PaymentMethodsScreen from '../view/PaymentMethodsScreen';
-import NotificationScreen from '../view/NotificationScreen';
-import BillingHistoryScreen from '../view/BillingHistoryScreen';
-import ChargingHistoryScreen from '../view/ChargingHistoryScreen';
+import ProfileScreen from '../view/Settings/Settings Component/ProfileScreen';
+import VehicleInformationScreen from '../view/Settings/Settings Component/VehicleInformationScreen';
+import PaymentMethodsScreen from '../view/Settings/Settings Component/PaymentMethodsScreen';
+import NotificationScreen from '../view/Settings/Settings Component/NotificationScreen';
+import GetHelpScreen from '../view/Settings/Settings Component/GetHelpScreen';
+import PrivacyPolicyScreen from '../view/Settings/Settings Component/PrivacyPolicyScreen';
+import AboutScreen from '../view/Settings/Settings Component/AboutScreen';
+import EditProfileScreen from '../view/Settings/Settings Component/EditProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +35,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="LogInScreen" 
                         component={LogInScreen}
+                        options={{headerShown:false}}
                     />
 
                     <Stack.Screen
@@ -51,17 +54,20 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="HomeNavigator"
                         component={HomeNavigator}
+                        options={{headerShown:false}}
                     />
 
                     <Stack.Screen
                         name="AutomateBookingScreen"
                         component={AutomateBookingScreen}
+                        // options={{headerShown:false}}
                     />
         
         
                     <Stack.Screen
                         name="AddCarScreen"
                         component={AddCarScreen}
+                        // options={{headerShown:false}}
                     />
 
                     <Stack.Screen
@@ -85,14 +91,25 @@ export default AppStack = () => {
                     />
 
                     <Stack.Screen
-                        name="BillingHistoryScreen"
-                        component={BillingHistoryScreen}
+                        name="PrivacyPolicyScreen"
+                        component={PrivacyPolicyScreen}
                     />
 
                     <Stack.Screen
-                        name="ChargingHistoryScreen"
-                        component={ChargingHistoryScreen}
+                        name="GetHelpScreen"
+                        component={GetHelpScreen}
                     />
+
+                    <Stack.Screen
+                        name="AboutScreen"
+                        component={AboutScreen}
+                    />
+
+                    <Stack.Screen
+                        name="EditProfileScreen"
+                        component={EditProfileScreen}
+                    />
+
                 </Stack.Group>)
             }
 

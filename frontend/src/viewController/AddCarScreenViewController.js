@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CarRepository } from "../model/CarRepository";
+import { CarModelsData } from "../constants/CarModels";
+import { UserContext } from "../model/User";
 
 export default AddCarScreenViewController = ( { navigation } ) => {
 
@@ -11,6 +13,7 @@ export default AddCarScreenViewController = ( { navigation } ) => {
     const [ batteryPercentage, setBatteryPercentage ] = useState(100)
     const [ batteryCapacity, setBatteryCapacity ] = useState(100)
     const [ carPlate, setCarPlate ] = useState("")
+    const [ selectedCar, setSelectedCar] = useState(null)
 
     const clearAllFieldsPressed = () => {
         setNickname("")
@@ -22,8 +25,23 @@ export default AddCarScreenViewController = ( { navigation } ) => {
     }
     
     const addCarButtonPressed = () => {
-        addCarToBackend();
-        navigation.pop();
+        const newCar = {
+            "nickname": nickname,
+            "model": model,
+            "plate": carPlate,
+            "chargingRate": chargingRate,
+            "batteryPercentage": batteryPercentage,
+            "batteryCapacity": batteryCapacity
+        }
+        addCarToBackend(newCar, { navigation } );
+        // navigation.pop();
+    }
+
+    const dropdownSelectListPressed = (model) => {
+        const selectedCar = CarModelsData.find(car => model == car.model)
+        setModel(selectedCar.model)
+        setChargingRate(selectedCar.chargingRate)
+        setBatteryCapacity(selectedCar.batteryCapacity)
     }
     
     return {
@@ -36,11 +54,13 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         batteryCapacity,
         setBatteryCapacity,
         batteryPercentage,
-        setBatteryCapacity,
+        setBatteryPercentage,
         carPlate,
         setCarPlate,
         addCarButtonPressed,
-        clearAllFieldsPressed
+        clearAllFieldsPressed,
+        CarModelsData,
+        dropdownSelectListPressed
     };
 
 }
