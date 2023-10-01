@@ -1,19 +1,23 @@
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect }from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SettingsScreenViewController from '../viewController/SettingsScreenViewController';
 import SettingsButton from '../components/SettingsButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+import { styles } from "../components/Design"; 
 // Creating 2 sections: Account and Records
 // Account: Profile, Vehicle Information, Payment Methods, Notification (need?)
 // Suuport & Legal: Get Help, Privacy Policy, About
 
-
+SplashScreen.preventAutoHideAsync();
 
 export default SettingsScreen = ( { navigation } ) => {
 
   const { 
+    isReady,
+    setIsReady,
     profileButtonPressed, 
     vehicleInformationButtonPressed, 
     paymentMethodsButtonPressed, 
@@ -22,16 +26,26 @@ export default SettingsScreen = ( { navigation } ) => {
     privacyPolicyButtonPressed,
     aboutButtonPressed, } = SettingsScreenViewController( { navigation } );
 
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+  
+    loadFonts();
+  }, []);
+
   return (
 
     // Account Section and Records Section
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
 
       {/* This is Account container */}
 
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Account</Text>
+          <Text style={styles.SectionHeader}>Account</Text>
         </View>
 
         <SettingsButton
@@ -83,7 +97,7 @@ export default SettingsScreen = ( { navigation } ) => {
   );
 };
 
-const styles = StyleSheet.create({
+const settingStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff', 

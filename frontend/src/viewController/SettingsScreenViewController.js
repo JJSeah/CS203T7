@@ -1,5 +1,8 @@
+import { useState } from "react";
 
 export default SettingsScreenViewController = ( { navigation } ) => {
+
+    const [ isReady, setIsReady ] = useState(false);    
 
     const profileButtonPressed = () => {
         navigation.navigate("ProfileScreen")
@@ -34,6 +37,8 @@ export default SettingsScreenViewController = ( { navigation } ) => {
     }
 
     return {
+        isReady, 
+        setIsReady,
         profileButtonPressed,
         vehicleInformationButtonPressed,
         paymentMethodsButtonPressed,

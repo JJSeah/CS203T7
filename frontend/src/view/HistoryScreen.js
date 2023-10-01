@@ -38,19 +38,25 @@ const year =[
 const fakeData = [
   {
     "station": "Shell Recharge", 
+    "address": "80 upper thomson",
     "date": "2023-09-25", 
+    "time": "13:05:35",
     "cost": 23.5, 
     key: 1
   },
   {
     "station": "SP Mobility ", 
+    "address": "50 toa payoh",
     "date": "2023-02-25", 
+    "time": "09:15:05",
     "cost": 9.2, 
     key: 2
   },
   {
     "station": "CHARGE+", 
+    "address": "60 orchard",
     "date": "2023-09-20", 
+    "time": "20:40:45",
     "cost": 20, 
     key: 3
   },
@@ -70,6 +76,28 @@ export default HistoryScreen = ({navigation}) => {
     loadFonts();
   }, []);
 
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr); 
+    const day = date.getDate(); 
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear(); 
+
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const month = months[monthIndex];
+
+    return `${day} ${month} ${year}`;
+  };
+
+  const formatTime = (timeStr) => {
+    const time = new Date(`2000-01-01T${timeStr}`);
+    const hours = time.getHours();
+    const mins = time.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM'; 
+    const formattedHours = hours % 12 || 12;
+
+    return `${formattedHours}:${mins.toString().padStart(2, '0')} ${ampm}`;
+  }
+
   // const [isFocus, setIsFocus] = useState(false); 
   // const monthAbbreviation = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
   //                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -85,7 +113,6 @@ export default HistoryScreen = ({navigation}) => {
     // const dayNo = parseInt(dateParts[2]);
     const monthNo = parseInt(dateParts[1]);
     const yearNo = parseInt(dateParts[0]);
-    // const monthAbbreviation = monthAbbreviation[monthNo - 1];
 
     return String(monthNo) ===  monthValue && String(yearNo) === yearValue;
     }) 
@@ -163,8 +190,11 @@ export default HistoryScreen = ({navigation}) => {
         keyExtractor={(item) => item.key.toString()}
         renderItem={({item}) => (
           <View style={historyStyles.recordContainer}>
-            <Text style={historyStyles.stationName}>{item.station}</Text>
-            <Text style={historyStyles.date}>{item.date}</Text>
+            <View style={historyStyles.stationNameContainer}>
+              <Text style={historyStyles.stationName}>{item.station}</Text>
+              <Text style={historyStyles.address}>{item.address}</Text>
+              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.time)}</Text>
+            </View>
             <Text style={historyStyles.cost}>${item.cost}</Text>
           </View>
         )}
@@ -208,19 +238,31 @@ const historyStyles = StyleSheet.create({
     borderRadius: 10, 
     padding: 20, 
     margin: 8,
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center',
   }, 
+  stationNameContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start', 
+    flex: 1,
+  },
   stationName: {
     fontWeight: 'bold', 
     fontSize: 20, 
+    fontFamily: 'Product-Sans-Regular', 
+    // marginBottom: 8,
+  },
+  address: {
+    fontSize: 13, 
+    color: 'gray',
     fontFamily: 'Product-Sans-Regular'
   },
-  date: {
-    fontSize: 16, 
-    flexDirection: 'row', 
+  dateTime: {
+    fontSize: 15, 
     fontFamily: 'Product-Sans-Regular'
   }, 
   cost: {
-    marginLeft: 290, 
     fontSize: 16,
     fontStyle: 'italic', 
     fontFamily: 'Product-Sans-Regular'
