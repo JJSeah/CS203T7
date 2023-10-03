@@ -41,6 +41,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="RegisterScreen"
                         component={RegisterScreen}
+                        options={{headerShown:false}}
                     />
 
                 </Stack.Group>) :

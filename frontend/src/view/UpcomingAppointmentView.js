@@ -5,15 +5,15 @@ import { styles } from '../components/Design';
 
 export default AppointmentView = () => {
 
-  const { upcomingAppointment } = useContext(UserContext);
+  const { upcomingAppointmentDetails } = useContext(UserContext);
 
   return (
     <View>
       <Text>Appointment details: </Text>
-      <Text>The cost of charging is ${upcomingAppointment.costOfCharging}</Text>
-      <Text>The distance to stations is {upcomingAppointment.distance} m</Text>
-      <Text>The estimated time of charging is {upcomingAppointment.estimateTimeOfCharging} hours</Text>
-      <Text>The estimated time to arrive is {upcomingAppointment.timeToArrive} seconds</Text>
+      <Text>The cost of charging is ${upcomingAppointmentDetails.costOfCharging}</Text>
+      <Text>The distance to stations is {upcomingAppointmentDetails.distance} m</Text>
+      <Text>The estimated time of charging is {upcomingAppointmentDetails.estimateTimeOfCharging} hours</Text>
+      <Text>The estimated time to arrive is {upcomingAppointmentDetails.timeToArrive} seconds</Text>
     </View>
   );
 }

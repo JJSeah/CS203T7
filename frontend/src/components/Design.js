@@ -50,6 +50,7 @@ export const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#FFA',
     margin: 20,
+    fontFamily: 'Product-Sans-Regular'
   },
   // add more as you go
   button: {
