@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -21,10 +22,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     "WHERE NOT EXISTS (" +
     "    SELECT 1 FROM Appointment a " +
     "    WHERE a.station.id = s.id AND a.charger.id = c.id AND a.status = 'Active'" +
-    "    AND (a.startTime <= :startTime OR a.endTime >= :endTime)" +
+    "    AND (a.startTime <= :startTime OR a.endTime >= :endTime) AND  a.date >= :date" +
     ")")
 List<Station> findAvailableStationsAndChargers(
     @Param("startTime") LocalTime startTime,
-    @Param("endTime") LocalTime endTime
+    @Param("endTime") LocalTime endTime,
+    @Param("date") LocalDate date
 );
 }

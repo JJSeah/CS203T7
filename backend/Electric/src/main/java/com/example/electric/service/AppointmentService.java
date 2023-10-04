@@ -7,6 +7,7 @@ import com.example.electric.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class AppointmentService {
     }
 
     public Appointment addAppointment(Appointment appointment) {
+        appointment.setStatus("Active");
         appointmentRepository.save(appointment);
         return appointment;
     }
@@ -62,6 +64,9 @@ public class AppointmentService {
             if (updatedAppointment.getUser() != null) {
                 appointment.setUser(updatedAppointment.getUser());
             }
+            if (updatedAppointment.getStatus() != null) {
+                appointment.setStatus(updatedAppointment.getStatus());
+            }
             return appointmentRepository.save(appointment);
         } else {
             return null; // Appointment not found
@@ -82,9 +87,10 @@ public class AppointmentService {
         return appointmentRepository.findAppointmentsByUserId(userId);
     }
 
-    public List<Station> getAvailableStationsAndChargers(String startTime, String endTime) {
+    public List<Station> getAvailableStationsAndChargers(String startTime, String endTime, String dateNow) {
         LocalTime start = LocalTime.parse(startTime);
         LocalTime end = LocalTime.parse(endTime);
-        return appointmentRepository.findAvailableStationsAndChargers(start, end);
+        LocalDate date = LocalDate.parse(dateNow);
+        return appointmentRepository.findAvailableStationsAndChargers(start, end, date);
     }
 }

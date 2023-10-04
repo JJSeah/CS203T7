@@ -142,6 +142,7 @@ public class AppointmentController {
     public List<Station> getAvailableStations(@RequestBody String test) {
         String start = "07:00:00";
         String end = "08:00:00";
-        return appointmentService.getAvailableStationsAndChargers(start, end);
+        String date = "2023-10-10";
+        return appointmentService.getAvailableStationsAndChargers(start, end, date);
     }
 }
