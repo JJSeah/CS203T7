@@ -28,6 +28,8 @@ public class Appointment {
     private Date date;
     @Column(name="cost")
     private double cost;
+    @Column(name="status")
+    private String status;
 
     // Link to station
     @ManyToOne
@@ -39,6 +41,11 @@ public class Appointment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    // Link to charger
+    @ManyToOne
+    @JoinColumn(name = "charger_id")
+    private Charger charger;
+
     public Appointment(long id, Time duration, Time startTime, Time endTime, Date date, User user, double cost) {
         this.id = id;
         this.duration = duration;
@@ -48,6 +55,8 @@ public class Appointment {
         this.user = user;
         this.cost = cost;
     }
+
+
 
 
 

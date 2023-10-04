@@ -3,6 +3,7 @@ package com.example.electric.controller;
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Appointment;
+import com.example.electric.model.Station;
 import com.example.electric.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,5 +135,13 @@ public class AppointmentController {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         appointmentService.deleteAppointment(id);
+    }
+
+    @PostMapping ("/available")
+    @Operation(summary = "Get Available Stations", description = "Get a list of available stations",tags = {"Appointment"})
+    public List<Station> getAvailableStations(@RequestBody String test) {
+        String start = "07:00:00";
+        String end = "08:00:00";
+        return appointmentService.getAvailableStationsAndChargers(start, end);
     }
 }
