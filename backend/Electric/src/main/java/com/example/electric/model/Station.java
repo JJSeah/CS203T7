@@ -60,6 +60,9 @@ public class Station {
         this.address = address;
     }
 
+    public Station(long l, String string, Object object, double d, double e, boolean b, Object object2) {
+    }
+
     
 
     

@@ -21,6 +21,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
+    public static final int MAX_MANUALAPPT_ALLOWED = 2;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -56,14 +58,18 @@ public class User implements UserDetails {
 
     //link to appointment
     @JsonIgnore
+    @Column(name="appointment")
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     private List<Appointment> appointment;
 
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
+    //To Keep track of ManualAppointment made 
+    // @Column(name="currentNumOfManualAppt")
+    // private int currentNumOfManualAppt = 0;
+    //link to Current Manualappointment && keep track of manualAppointments 
+    // @JsonIgnore
+    @Column(name="manualAppointments")
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Appointment> manualAppointments;
 
 
     @Override
@@ -94,6 +100,13 @@ public class User implements UserDetails {
         return true;
     }
 
+
+        public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+
     public User(long userId, String firstName) {
         this.id = userId;
         this.firstName = firstName;
@@ -110,5 +123,9 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.password = password;
         this.email = email;
+    }
+
+    public static int getMaxManualapptAllowed() {
+        return MAX_MANUALAPPT_ALLOWED;
     }
 }

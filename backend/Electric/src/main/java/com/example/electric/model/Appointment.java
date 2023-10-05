@@ -56,6 +56,9 @@ public class Appointment {
         this.cost = cost;
     }
 
+    public Appointment(long l, Time time, Time time2, Time time3, Date date2, int i, Object object, Object object2) {
+    }
+
 
 
 
