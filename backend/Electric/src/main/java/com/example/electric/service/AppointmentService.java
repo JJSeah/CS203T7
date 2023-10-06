@@ -1,7 +1,6 @@
 package com.example.electric.service;
 
-import com.example.electric.model.Appointment;
-import com.example.electric.model.Station;
+import com.example.electric.model.*;
 import com.example.electric.respository.AppointmentRepository;
 import com.example.electric.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,43 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
         return appointment;
     }
+
+//    public Appointment autobookAppointment(double latitude, double longitude, String startTime, String endTime, String dateNow, Car car, String userEmail) {
+//        //Find station
+//        Station closestStation = voronoiService.findClosestStation(latitude,longitude,startTime,endTime,dateNow);
+//
+//        //Find date and time
+//        LocalTime start = LocalTime.parse(startTime);
+//        LocalTime end = LocalTime.parse(endTime);
+//        Duration duration = Duration.between(start,end);
+//        LocalTime timeBetween = LocalTime.MIDNIGHT
+//                .plusHours(duration.toHours())
+//                .plusMinutes(duration.toMinutesPart())
+//                .plusSeconds(duration.toSecondsPart());
+//
+//        //Find cost
+//        Double cost = Double.parseDouble(distanceMatrixService.calculateCostOfCharging(car));
+//
+//        //Find user
+//        User user = userRepository.findUserByEmail(userEmail);
+//
+//        //Find charger
+//        List<Charger> chargers = closestStation.getChargers();
+//
+//        //Appointment object
+//        Appointment appointment = new Appointment(1,
+//                Time.valueOf(timeBetween),
+//                Time.valueOf(start),
+//                Time.valueOf(end),
+//                java.sql.Date.valueOf(dateNow),
+//                cost,
+//                "Active",
+//                closestStation,
+//                user,
+//                chargers.get(0));
+//
+//        return appointmentRepository.save(appointment);
+//    }
 
     public Appointment updateAppointment(Appointment updatedAppointment, long id) {
         Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
