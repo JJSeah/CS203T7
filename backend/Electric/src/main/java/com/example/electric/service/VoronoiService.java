@@ -9,18 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class VoronoiService {
     @Autowired
     private StationService stationService;
 
-    public Station findClosestStation(double latitude, double longitude) {
-        Station[] stations = stationService.getAllStations().toArray(new Station[0]);
-        Coordinate[] stationCoordinates = new Coordinate[stations.length];
+    @Autowired
+    private AppointmentService appointmentService;
+
+    public Station findClosestStation(double latitude, double longitude, String startTime, String endTime, String dateNow) {
+//        Station[] stations = stationService.getAllStations().toArray(new Station[0]);
+        List<Station> availableStations = appointmentService.getAvailableStationsAndChargers(startTime,endTime,dateNow);
+        Coordinate[] stationCoordinates = new Coordinate[availableStations.size()];
         //Mapped into stationCoordinates
-        for (int i = 0; i < stations.length; i++) {
-            Station station = stations[i];
+        for (int i = 0; i < availableStations.size(); i++) {
+            Station station = availableStations.get(i);
             Coordinate coordinate = new Coordinate(station.getLatitude(), station.getLongitude());
             stationCoordinates[i] = coordinate;
         }

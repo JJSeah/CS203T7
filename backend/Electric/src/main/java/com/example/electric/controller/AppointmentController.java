@@ -46,7 +46,6 @@ public class AppointmentController {
     public Appointment getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
         return appointmentService.getAppointmentById(appointmentId)
                 .orElseThrow(() -> new ObjectNotFoundException(ErrorCode.E1002));
-
     }
 
     /**
