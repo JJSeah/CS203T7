@@ -40,14 +40,17 @@ public class DistanceMatrixService {
 
     }
 
-    public long getDurationByID(Station station) throws Exception {
+    public int getDurationByID(Station station) throws Exception {
         Station dest = stationRepository.findById(station.getId()).orElse(null);
         String location1 = Double.toString(station.getLatitude()) + "," + Double.toString(station.getLongitude());
         String location2 = Double.toString(dest.getLatitude()) + "," + Double.toString(dest.getLongitude());
 
         DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];
 
-        return distanceMatrix.elements[0].duration.inSeconds;
+        long timeInSeconds = distanceMatrix.elements[0].duration.inSeconds;
+        long timeInMinutes = timeInSeconds / 60;
+
+        return (int)(timeInMinutes / 5) * 5;
 
     }
 
