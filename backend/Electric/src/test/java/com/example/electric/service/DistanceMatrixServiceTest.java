@@ -3,28 +3,18 @@ package com.example.electric.service;
 import com.example.electric.model.Car;
 import com.example.electric.model.Station;
 import com.example.electric.respository.StationRepository;
-import com.google.maps.DistanceMatrixApi;
-import com.google.maps.DistanceMatrixApiRequest;
-import com.google.maps.GeoApiContext;
-import com.google.maps.model.Distance;
-import com.google.maps.model.DistanceMatrix;
-import com.google.maps.model.DistanceMatrixElement;
-import com.google.maps.model.DistanceMatrixRow;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class DistanceMatrixServiceTest {
@@ -135,7 +125,7 @@ public class DistanceMatrixServiceTest {
 
     @Test
     public void testCalculateEstimateTimeOfCharging() {
-        Car car = new Car(1L,"name","Tesla","GH123",80,40,60,null,null);
+        Car car = new Car(1L,"name","Tesla","GH123",80,40,60,null);
 
         // Calculate estimated time for charging
         String estimatedTime = distanceMatrixService.calculateEstimateTimeOfCharging(car);
@@ -149,7 +139,7 @@ public class DistanceMatrixServiceTest {
 
     @Test
     public void testCalculateCostOfCharging() {
-        Car car = new Car(1L,"name","Tesla","GH123",80,40,60,null,null);
+        Car car = new Car(1L,"name","Tesla","GH123",80,40,60,null);
 
         // Calculate estimated time for charging
         String estimatedCost = distanceMatrixService.calculateCostOfCharging(car);

@@ -87,10 +87,10 @@ public class UserController {
 //        return userService.getUserById(id);
 //    }
 
-//    @PostMapping("/")
-//    public User createUser(@RequestBody User user) {
-//        return userService.createUser(user);
-//    }
+    @PostMapping("/")
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
+    }
 
     /**
      * Update an existing user with the provided information.

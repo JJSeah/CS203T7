@@ -16,6 +16,7 @@ import GetHelpScreen from '../view/Settings/Settings Component/GetHelpScreen';
 import PrivacyPolicyScreen from '../view/Settings/Settings Component/PrivacyPolicyScreen';
 import AboutScreen from '../view/Settings/Settings Component/AboutScreen';
 import EditProfileScreen from '../view/Settings/Settings Component/EditProfileScreen';
+import ManualBookingScreen from '../view/ManualBookingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="RegisterScreen"
                         component={RegisterScreen}
+                        options={{headerShown:false}}
                     />
 
                 </Stack.Group>) :
@@ -62,13 +64,23 @@ export default AppStack = () => {
                         component={AutomateBookingScreen}
                         // options={{headerShown:false}}
                     />
-        
+
+
+                    <Stack.Group
+                        screenOptions={{presentation: 'modal'}}
+                    >
+                        <Stack.Screen name="AddCarScreen"
+                            component={AddCarScreen}
+                            // options={{headerShown:false}}
+                        />
+                    </Stack.Group>
         
                     <Stack.Screen
-                        name="AddCarScreen"
-                        component={AddCarScreen}
-                        // options={{headerShown:false}}
+                            name="ManualBookingScreen"
+                            component={ManualBookingScreen}
+                            // options={{headerShown:false}}
                     />
+        
 
                     <Stack.Screen
                         name="ProfileScreen"

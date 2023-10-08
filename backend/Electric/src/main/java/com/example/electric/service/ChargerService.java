@@ -1,25 +1,33 @@
 package com.example.electric.service;
 
-import com.example.electric.model.Charger;
-import com.example.electric.model.Station;
-import com.example.electric.model.User;
-import com.example.electric.respository.ChargerRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.electric.exception.ObjectNotFoundException;
+import com.example.electric.model.Charger;
+import com.example.electric.respository.ChargerRepository;
+import com.example.electric.respository.StationRepository;
+import com.example.electric.error.ErrorCode;
 
 @Service
 public class ChargerService {
     @Autowired
     private ChargerRepository chargerRepository;
 
+    @Autowired
+    public StationRepository stationRepository;
+
     public List<Charger> getAllChargers() {
         return chargerRepository.findAll();
     }
 
     public List<Charger> getChargersByStation(long stationId) {
+        if(stationRepository.findById(stationId).isEmpty()){
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         return chargerRepository.findChargersByStationId(stationId);
     }
 

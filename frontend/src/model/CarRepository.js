@@ -27,6 +27,7 @@ export const CarRepository = () => {
         }
       )
       .then((res) => {
+        console.log(res.data)
         navigation.pop()
       })
       .catch((e) => {

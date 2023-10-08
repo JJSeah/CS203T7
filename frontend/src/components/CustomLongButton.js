@@ -14,7 +14,7 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
         >
 
             <LinearGradient 
-              colors={['#DFE9F3','#F5F7FA', '#C3CFE2']}
+              colors={['white','white', 'white']}
               start={{x: 0.2, y: 0.2, z: 0.3}}
               end={{x: 0.9, y: 1, z: 1}}
               style={localStyles.gradient}

@@ -1,11 +1,9 @@
 package com.example.electric.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.*;
 
 @Entity
 @Table(name="car")
@@ -35,15 +33,10 @@ public class Car {
     @JoinColumn(name="user_id")
     private User user;
 
-    //link to records
-    @JsonIgnore
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    private List<Record> records;
-
-
     public Car(long id, String tesla, String modelS) {
         this.id = id;
         this.nickname = tesla;
         this.model = modelS;
     }
+
 }

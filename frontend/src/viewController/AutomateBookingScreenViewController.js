@@ -5,7 +5,7 @@ import { BASE_URL } from "../constants/Config";
 
 export default AutomateBookingScreenViewController = ( { navigation } ) => {
 
-    const { closestStation, setClosestStation, setUpcomingAppointment, userToken, userId, userCoordinates, currentCar } = useContext(UserContext);
+    const { closestStation, setClosestStation, setUpcomingAppointmentDetails, userToken, userId, userCoordinates, currentCar } = useContext(UserContext);
 
     useEffect(() => {
 
@@ -20,9 +20,8 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
     const findClosestStation = async(latitude, longitude) => {
 
         setClosestStation(null)
-        setUpcomingAppointment(null)
+        setUpcomingAppointmentDetails(null)
 
-        console.log(`the latitude is ${latitude} and longitude is ${longitude}`)
 
         let url = `${BASE_URL}/api/stations/closest`
 
@@ -57,8 +56,8 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         }        
         ).then(res => {
             let data = res.data
-            console.log(`The car used to book is ${currentCar.id}, nickname ${currentCar.nickname}`)
-            setUpcomingAppointment(data)
+            console.log(`The car used to book is ${currentCar.id}, nickname ${currentCar.nickname}, id: ${currentCar.id}`)
+            setUpcomingAppointmentDetails(data)
         }).catch(e => {
             console.log(`Error loading details of upcoming appointment ${e}`)
         })
@@ -77,5 +76,4 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         confirmButtonPressed,
         findClosestStation,
     };
-
 }

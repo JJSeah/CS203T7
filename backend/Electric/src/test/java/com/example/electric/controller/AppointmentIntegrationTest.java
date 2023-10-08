@@ -62,7 +62,7 @@ public class AppointmentIntegrationTest {
     @Test
     public void testGetAppointmentById_Success() {
         // Create a new appointment
-        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null);
+        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null,0);
 
         // Add the appointment to the system
         Appointment addedAppointment = appointmentRepository.save(appointment);
@@ -109,7 +109,7 @@ public class AppointmentIntegrationTest {
     @Test
     public void testAddAppointment() throws Exception {
         // Create a new appointment
-        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null);
+        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null,0);
 
         // Generate a bearer token
         String token = generateBearerToken(new HashMap<>());
@@ -135,7 +135,7 @@ public class AppointmentIntegrationTest {
     @Test
     public void testUpdateAppointment_Sucess() {
         // Create a new appointment
-        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null);
+        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null,0);
 
         // Add the appointment to the system
         Appointment addedAppointment = appointmentRepository.save(appointment);
@@ -166,7 +166,7 @@ public class AppointmentIntegrationTest {
     @Test
     public void testUpdateAppointment_Failure() {
         // Create a new appointment
-        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null);
+        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null,0);
 
         // Add the appointment to the system
         Appointment addedAppointment = appointmentRepository.save(appointment);
@@ -196,7 +196,7 @@ public class AppointmentIntegrationTest {
     @Test
     public void testDeleteAppointment_Sucess() {
         // Create a new appointment
-        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null);
+        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null,0);
 
         // Add the appointment to the system
         Appointment addedAppointment = appointmentRepository.save(appointment);

@@ -20,7 +20,8 @@ export const UserProvider = ( { children } ) => {
     const [ allStations, setAllStations ] = useState([]);
     const [ userCoordinates, setUserCoordinates ] = useState (null);
     const [ closestStation, setClosestStation ] = useState(null);
-    const [ upcomingAppointment, setUpcomingAppointment ] = useState(null);
+    const [ upcomingAppointmentDetails, setUpcomingAppointmentDetails ] = useState(null);
+    const [ currentAppointment, setCurrentAppointment ] = useState(null);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
     
@@ -40,6 +41,10 @@ export const UserProvider = ( { children } ) => {
             console.log(`Sign up error ${e}`)
         })
     }
+
+    // const confirmAppointment = async() => {
+
+    // }
     
     useEffect(() => {
 
@@ -191,7 +196,8 @@ export const UserProvider = ( { children } ) => {
                 logIn, logOut, signUp, setUserCars, 
                 userCoordinates, setUserCoordinates,
                 closestStation, setClosestStation,
-                upcomingAppointment, setUpcomingAppointment,
+                upcomingAppointmentDetails, setUpcomingAppointmentDetails,
+                currentAppointment, setCurrentAppointment,
                 currentCar, setCurrentCar
             }}
         >

@@ -16,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name="user")
+//@Table(name="user_account")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -55,18 +56,9 @@ public class User implements UserDetails {
 
     //link to appointment
     @JsonIgnore
+    @Column(name="appointment")
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     private List<Appointment> appointment;
-
-    //link to record
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Record> records;
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
 
     @Override
@@ -97,6 +89,13 @@ public class User implements UserDetails {
         return true;
     }
 
+
+        public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+
     public User(long userId, String firstName) {
         this.id = userId;
         this.firstName = firstName;
@@ -113,5 +112,10 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.password = password;
         this.email = email;
+    }
+
+
+    public User(long l, String string, String string2, String string3, String string4, String string5, Role roleUser,
+            Object object, Object object2, Object object3) {
     }
 }

@@ -7,6 +7,8 @@ import com.example.electric.model.response.LoginRes;
 import com.example.electric.respository.UserRepository;
 import com.example.electric.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,6 +51,8 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @Operation(summary = "Login", description = "Authenticate Users", tags = { "Auth" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "403", description = "Invalid email or password.")})
     public ResponseEntity login(@RequestBody LoginReq loginReq) {
 
         authenticationManager.authenticate(
@@ -74,6 +78,8 @@ public class AuthController {
      */
     @PostMapping(value = "/signup", name = "Create User")
     @Operation(summary = "Register", description = "Register new Users", tags = { "Auth" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Email already exists.")})
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (!userService.isEmailUnique(user.getEmail())) {
             throw new RuntimeException("Email already exists");

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../model/User";
 
 
@@ -17,5 +17,4 @@ export default RegisterViewController = ( { navigation } ) => {
         setIsReady,
         signUpButtonPressed,
     };
-
 }
