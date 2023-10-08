@@ -185,7 +185,7 @@ export default HistoryScreen = ({navigation}) => {
       {monthValue && yearValue && filteredRecords.length > 0 && (
         <View>
           <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
-                {year.find((y) => y.label === yearValue).label}: ${totalCost}
+                {year.find((y) => y.label === yearValue)?.label}: ${totalCost}
           </Text>
         </View> 
       )}
