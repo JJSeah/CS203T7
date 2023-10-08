@@ -12,18 +12,6 @@ export default EditProfileScreen = ( { navigation } ) => {
 
   return (
     <View>
-      {/* <CustomTextField
-        placeholder="Given Name"
-        onChangeText={setEmail}
-      />      
-      <CustomTextField
-        placeholder="Surname"
-        onChangeText={setEmail}
-      />      
-      <CustomTextField
-        placeholder="Email"
-        onChangeText={setEmail}
-      />       */}
 
       <InBetweenSpace
       title="First Name"
