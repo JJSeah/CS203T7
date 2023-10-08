@@ -20,7 +20,7 @@ export default CustomLongButton = ( { title, onPress, disabled = false} ) => {
               style={localStyles.gradient}
               >
     
-            <Text style={styles.buttonText}>{title}</Text>      
+            <Text style={styles.buttonText}>{title}</Text>
   
             </LinearGradient>
       </TouchableOpacity>

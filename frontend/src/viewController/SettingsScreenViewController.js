@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default SettingsScreenViewController = ( { navigation } ) => {
 
-    const [ isReady, setIsReady ] = useState(false);    
+    const [ isReady, setIsReady ] = useState(false);
 
     const profileButtonPressed = () => {
         navigation.navigate("ProfileScreen")

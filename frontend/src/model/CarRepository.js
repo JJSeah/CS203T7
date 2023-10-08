@@ -27,6 +27,7 @@ export const CarRepository = () => {
         }
       )
       .then((res) => {
+        loadCarsData()
         console.log(res.data)
         navigation.pop()
       })
@@ -58,6 +59,25 @@ export const CarRepository = () => {
       });
   };
 
+  // delete car method
+  const deleteCar = async( id ) => {
+    let url = `${BASE_URL}/api/car/${id}`;
 
-  return { addCarToBackend, loadCarsData };
+    axios.delete(url)
+    .then((res) => {
+      let data = res.data;
+
+      setUserCars(data);
+      if (data.length > 0) {
+        setCurrentCar(data[0])
+      } else {
+        setCurrentCar(null)
+      }
+    })
+    .catch((e) => {
+      console.log(`Error deleting car ${e}`);
+    });
+};
+
+  return { addCarToBackend, loadCarsData, deleteCar };
 };
