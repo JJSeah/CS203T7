@@ -5,6 +5,7 @@ import com.example.electric.exception.ObjectNotFoundException;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ForbiddenException;
 import com.example.electric.exception.ObjectAlreadyExistsException;
 
@@ -76,6 +77,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<String> handleForbiddenException(ForbiddenException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+    }
+
+    
+    @ExceptionHandler(ExceedMaxManualApptException.class)
+    public ResponseEntity<String> handleMaxManualException(ExceedMaxManualApptException e) {
+        return e.toResponseEntity();
     }
 }
 

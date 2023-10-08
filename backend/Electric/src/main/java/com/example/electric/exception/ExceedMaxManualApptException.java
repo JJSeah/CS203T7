@@ -28,4 +28,5 @@ public class ExceedMaxManualApptException extends RuntimeException {
                 .body("Cannot exceed maximum manual appointment limit. Current manual appointment: "
                         + currentAppointment + ", Maximum allowed: " + maxAllowed);
     }
+
 }
