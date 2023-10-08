@@ -72,7 +72,6 @@ public class UserService{
 //            if(updatedUser.getAuthorities() != null){
 //                user.setAuthorities(updatedUser.getAuthority());
 //            }
-
             return userRepository.save(user);
         } else {
             return null; // User not found

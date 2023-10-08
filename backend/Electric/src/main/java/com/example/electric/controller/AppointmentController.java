@@ -1,6 +1,7 @@
 package com.example.electric.controller;
 
 import com.example.electric.error.ErrorCode;
+import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Appointment;
 import com.example.electric.model.Station;
@@ -64,6 +65,12 @@ public class AppointmentController {
         return appointmentService.getAllAppointmentsByUser(userId);
     }
 
+    @GetMapping("/manual/user/{userId}")
+    @Operation(summary = "Get User's Manual Active Appointments", description = "Get a list of User's Manual Active Appointment from UserID",tags = {"Manual Active Appointment"})
+    public List<Appointment> getActiveManualAppointmentByUser(@PathVariable("userId") long userId) {
+        return appointmentService.getAllActiveManualAppointmentByUser(userId);
+    }
+
 
     /**
      * Retrieve a list of all appointments at a specific station.
@@ -89,11 +96,16 @@ public class AppointmentController {
      *
      * @param appointment The appointment object to be added.
      * @return The newly created appointment.
+     * @throws ExceedMaxManualApptException
      */
     @PostMapping
     @Operation(summary = "Add Appointment", description = "Add Appointment",tags = {"Appointment"})
-    public Appointment addAppointment(@RequestBody Appointment appointment) {
-        return appointmentService.addAppointment(appointment);
+    public Appointment addAppointment(@RequestBody Appointment appointment){
+        // try {
+            return appointmentService.addAppointment(appointment);
+        // } catch (ExceedMaxManualApptException e) {
+        //     // return e.toResponseEntity();
+        // }
     }
 
     /**
@@ -117,6 +129,30 @@ public class AppointmentController {
         }
         return appointmentService.updateAppointment(updatedAppointment, id);
     }
+
+    
+    /**
+     * Complete an existing appointment with the provided information.
+     *
+     * This endpoint allows the update of an existing appointment identified by its unique
+     * identifier (ID). The provided CompletedAppointment object should contain the Completed details
+     * for the appointment. If an appointment with the specified ID is not found, it will result in
+     * an ObjectNotFoundException.
+     *
+     * @param id The unique identifier of the appointment to update.
+     * @param completedAppointment The updated appointment object containing new information.
+     * @return The completed appointment.
+     * @throws ObjectNotFoundException If no appointment with the given ID is found.
+     */
+    @PutMapping("/completed/{id}")
+    @Operation(summary = "complete Appointment", description = "complete Appointment using ID",tags = {"Appointment"})
+    public Appointment completeAppointment(@RequestBody Appointment completedAppointment, @PathVariable("id") long id) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        return appointmentService.completedAppointment(completedAppointment, id);
+    }
+
 
     /**
      * Delete an appointment by its unique identifier.

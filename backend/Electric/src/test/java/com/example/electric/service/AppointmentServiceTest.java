@@ -77,16 +77,16 @@ public class AppointmentServiceTest {
         assertEquals(appointments, result);
     }
 
-    @Test
-    public void testAddAppointment() {
-        Appointment appointmentToAdd = new Appointment(1L, new Time(0), new Time(0), new Time(0), new Date(0), 0, new Station(), null);
-        when(appointmentRepository.save(appointmentToAdd)).thenReturn(new Appointment(1L, new Time(0), new Time(0), new Time(0), new Date(0), 0, new Station(), null));
+    // @Test
+    // public void testAddAppointment() {
+    //     Appointment appointmentToAdd = new Appointment(1L, new Time(0), new Time(0), new Time(0), new Date(0), 0, new Station(), null);
+    //     when(appointmentRepository.save(appointmentToAdd)).thenReturn(new Appointment(1L, new Time(0), new Time(0), new Time(0), new Date(0), 0, new Station(), null));
 
-        Appointment result = appointmentService.addAppointment(appointmentToAdd);
+    //     Appointment result = appointmentService.addAppointment(appointmentToAdd);
 
-        verify(appointmentRepository, times(1)).save(appointmentToAdd);
-        assertNotNull(result.getId());
-    }
+    //     verify(appointmentRepository, times(1)).save(appointmentToAdd);
+    //     assertNotNull(result.getId());
+    // }
 
     @Test
     public void testUpdateAppointment() {

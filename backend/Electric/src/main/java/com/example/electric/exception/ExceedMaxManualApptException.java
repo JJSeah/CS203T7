@@ -3,7 +3,8 @@ package com.example.electric.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class ExceedMaxManualApptException extends Exception {
+
+public class ExceedMaxManualApptException extends RuntimeException {
     private int currentAppointment;
     private int maxAllowed;
 

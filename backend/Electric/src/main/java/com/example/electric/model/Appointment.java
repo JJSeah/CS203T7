@@ -14,6 +14,8 @@ import java.sql.Time;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Appointment {
+    public static final int MAX_MANUALAPPT_ALLOWED = 2;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -46,6 +48,10 @@ public class Appointment {
     @JoinColumn(name = "charger_id")
     private Charger charger;
 
+    //ManualBooking = true, AutoBooking = False;
+    @Column(name="manual_Appointment")
+    private boolean manualAppointment;
+
     public Appointment(long id, Time duration, Time startTime, Time endTime, Date date, User user, double cost) {
         this.id = id;
         this.duration = duration;
@@ -58,6 +64,14 @@ public class Appointment {
 
     public Appointment(long l, Time time, Time time2, Time time3, Date date2, int i, Object object, Object object2) {
     }
+
+    public static int getMaxManualapptAllowed() {
+        return MAX_MANUALAPPT_ALLOWED;
+    }
+
+    
+
+    
 
 
 

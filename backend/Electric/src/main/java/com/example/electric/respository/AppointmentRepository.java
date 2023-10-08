@@ -16,6 +16,23 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     public List<Appointment> findAppointmentsByStationId(long stationId);
 
     List<Appointment> findAppointmentsByUserId(long userId);
+
+    @Query("SELECT a FROM Appointment a " + 
+    "WHERE a.user.id = :user_id " + 
+    "AND a.manualAppointment = true " + 
+    "AND a.status = 'Active'")
+List<Appointment> findActiveManualApptByUserId(
+ @Param("user_id") long user_id
+);
+
+// @Query("SELECT new com.example.electric.model.Appointment(a.id, a.duration, a.startTime, a.endTime, a.date, a.cost, a.status, u.id) FROM Appointment a " + 
+// "JOIN User u ON a.user.id = u.id " +
+// "WHERE a.user.id = :user_id " + 
+// "AND a.manualAppointment = true " + 
+// "AND a.status = 'Active'")
+// List<Appointment> findActiveManualApptByUserId(@Param("user_id") long user_id);
+
+// List<Appointment> findByUser_IdAndManualAppointmentAndstatus(Long userId, boolean isManualAppointment, String status);
     
     @Query("SELECT new com.example.electric.model.Station(s.id, c.id, s.name, c.chargingRate, s.latitude, s.longitude, s.address) FROM Station s " +
     "JOIN Charger c ON s.id = c.station.id " +
