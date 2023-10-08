@@ -8,6 +8,8 @@ import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
 import { set, sortBy } from 'lodash';
 
+//test 
+
 SplashScreen.preventAutoHideAsync();
 
 const month = [
@@ -60,7 +62,7 @@ const fakeData = [
 
 export default HistoryScreen = ({navigation}) => {
 
-  const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords} = HistoryScreenViewController({navigation})
+  const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
   
   const [ originalData ] = useState(fakeData);
 
@@ -221,7 +223,10 @@ export default HistoryScreen = ({navigation}) => {
           setFilteredRecords(originalData);
          }}
         />
-      )}       
+      )}      
+
+      <Button title='test upcoming appointment screen'
+      onPress={testButtonPressed}/>
     </SafeAreaView> 
   )
 }

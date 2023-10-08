@@ -17,6 +17,7 @@ import PrivacyPolicyScreen from '../view/Settings/Settings Component/PrivacyPoli
 import AboutScreen from '../view/Settings/Settings Component/AboutScreen';
 import EditProfileScreen from '../view/Settings/Settings Component/EditProfileScreen';
 import ManualBookingScreen from '../view/ManualBookingScreen';
+import UpcomingAppointmentView from '../view/UpcomingAppointmentView';
 
 const Stack = createNativeStackNavigator();
 
@@ -63,6 +64,12 @@ export default AppStack = () => {
                         name="AutomateBookingScreen"
                         component={AutomateBookingScreen}
                         // options={{headerShown:false}}
+                    />
+
+                    <Stack.Screen
+                        name="UpcomingAppointmentView"
+                        component={UpcomingAppointmentView}
+                        options={{headerShown:true}}
                     />
 
 

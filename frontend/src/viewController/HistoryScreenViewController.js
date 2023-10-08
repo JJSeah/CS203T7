@@ -9,6 +9,11 @@ export default HistoryViewController = ( { navigation } ) => {
     const [ showAllRecords, setShowAllRecords ] = useState(false);
     const [ filteredRecords, setFilteredRecords ] = useState(null);
 
+    //test 
+    const testButtonPressed = () => {
+        console.log("confirmed appointment");
+        navigation.navigate('UpcomingAppointmentView');
+    }
 
     return {
         isReady, 
@@ -21,5 +26,6 @@ export default HistoryViewController = ( { navigation } ) => {
         setShowAllRecords, 
         filteredRecords, 
         setFilteredRecords,
+        testButtonPressed
     };
 }
