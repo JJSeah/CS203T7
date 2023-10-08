@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, FlatList, Button } from 'react-native';
 import HistoryScreenViewController from '../viewController/HistoryScreenViewController';
 import { UserContext } from '../model/User';
 import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from "../components/Design"; 
 import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
-
-// take here
-import Swiper from "react-native-deck-swiper"
-import SingleCarSwiperView from '../components/SingleCarSwiperView';
-import CarSwiperView from './CarSwiperView';
+import { set, sortBy } from 'lodash';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -64,7 +60,8 @@ const fakeData = [
 
 export default HistoryScreen = ({navigation}) => {
 
-  const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue} = HistoryScreenViewController({navigation})
+  const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords
+  , showAllButtonClicked, setShowAllButtonClicked} = HistoryScreenViewController({navigation})
 
   useEffect(() => {
     const loadFonts = async() => {
@@ -72,8 +69,7 @@ export default HistoryScreen = ({navigation}) => {
       setIsReady(true);
       await SplashScreen.hideAsync();
     }; 
-
-    loadFonts();
+    loadFonts(); 
   }, []);
 
   const formatDate = (dateStr) => {
@@ -98,30 +94,50 @@ export default HistoryScreen = ({navigation}) => {
     return `${formattedHours}:${mins.toString().padStart(2, '0')} ${ampm}`;
   }
 
-  // const [isFocus, setIsFocus] = useState(false); 
-  // const monthAbbreviation = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  //                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  
+  // useEffect(() => {
+  //   if (monthValue && yearValue) {
+  //     const filtered = fakeData.filter((item) => {
+  //       const dateParts = item.date.split('-');
+  //       const monthNo = parseInt(dateParts[1]);
+  //       const yearNo = parseInt(dateParts[0]);
+  //       return String(monthNo) === monthValue && String(yearNo) === yearValue;
+  //     });
+  //     setFilteredRecords(filtered);
+  //   } else {
+  //     setFilteredRecords(fakeData);
+  //   }
 
-  // take here
-  const { userCars } = useContext(UserContext);
-  const { currentCar, setCurrentCar } = useContext(UserContext);
+  //   return () => {
 
-  const filteredData = monthValue && yearValue
-    ? fakeData.filter((item) => {
+  //   }
+  // }, [monthValue, yearValue]);
+
+  // useEffect(() => {
+  //   setFilteredRecords((records) => sortBy(records, 'date').reverse());
+  // }, [filteredRecords]);
+
+  const filteredData = (monthValue && yearValue && !showAllButtonClicked)
+    ? sortBy(fakeData.filter((item) => {
     const dateParts = item.date.split('-');
     // const dayNo = parseInt(dateParts[2]);
     const monthNo = parseInt(dateParts[1]);
     const yearNo = parseInt(dateParts[0]);
-
+    
     return String(monthNo) ===  monthValue && String(yearNo) === yearValue;
-    }) 
-    : fakeData;
+    }), 'date').reverse()
+    : sortBy(fakeData, 'date').reverse();
 
   let totalCost = 0; 
   filteredData.forEach((item) => {
-    totalCost += item.cost;
+    totalCost += item.cost; 
   });
+
+  let totalFilteredCost = 0; 
+  filteredData.forEach((item) => {
+    totalFilteredCost += item.cost;
+  });
+
+  // const totalCost = filteredData.reduce((acc, item) => acc + item.cost, 0);
 
   return (
     <SafeAreaView>
@@ -142,6 +158,8 @@ export default HistoryScreen = ({navigation}) => {
             // onBlur={() => setIsFocus(false)}
             onChange={data => {
               setMonthValue(data.value);
+              setShowAllRecords(false);
+              setShowAllButtonClicked(false);
               // setIsFocus(false);
             } } />
 
@@ -154,6 +172,8 @@ export default HistoryScreen = ({navigation}) => {
             valueField="value"
             onChange={data => {
               setYearValue(data.value);
+              setShowAllRecords(false);
+              setShowAllButtonClicked(false);
             } } />
         </View>
       </View>
@@ -171,6 +191,7 @@ export default HistoryScreen = ({navigation}) => {
           );
         })}
       </ScrollView> */}
+
       {monthValue && yearValue && filteredData.length === 0 && (
         <View>
           <Text style={historyStyles.totalCost}>No record</Text>
@@ -180,9 +201,15 @@ export default HistoryScreen = ({navigation}) => {
       {monthValue && yearValue && filteredData.length > 0 && (
         <View>
           <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
-                {year.find((y) => y.label === yearValue).label}: ${totalCost}
+                {year.find((y) => y.label === yearValue).label}: ${totalFilteredCost}
           </Text>
-        </View>
+        </View> 
+      )}
+
+      {(!monthValue || !yearValue || showAllRecords) &&(
+      <View> 
+        <Text style={historyStyles.totalCost}>Total cost: ${totalCost}</Text>
+      </View>
       )}
 
       <FlatList
@@ -199,7 +226,18 @@ export default HistoryScreen = ({navigation}) => {
           </View>
         )}
         />
-        
+
+      {monthValue && yearValue && filteredData.length > 0 && !showAllRecords && (
+        <Button
+         title='show all records'
+         onPress={() => {
+          setMonthValue(null); 
+          setYearValue(null);
+          setShowAllRecords(true);
+          setShowAllButtonClicked(true);
+         }}
+        />
+      )}       
     </SafeAreaView> 
   )
 }
