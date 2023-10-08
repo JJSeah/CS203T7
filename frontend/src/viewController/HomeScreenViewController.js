@@ -33,7 +33,7 @@ export default HomeScreenViewController = ( { navigation } ) => {
     }
 
     const manualBookingButtonPressed = () => {
-        console.log("Manual booking button pressed")
+        navigation.navigate("ManualBookingScreen")
     }
 
 
