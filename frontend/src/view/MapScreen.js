@@ -47,9 +47,8 @@ export default MapScreen = ({navigation}) => {
               onPress={() => handleMarkerPress(station)}>
                 <Callout>
                 <View>
-                  <Text style={styles.stationName}>name: {station.name}</Text>
-                  <Text style={styles.input}>address: {station.address}</Text>
-                  <Text style={styles.input}>availability: {station.avail ? 'available' : 'occupied'}</Text>
+                  <Text style={styles.stationName}>{station.name}</Text>
+                  <Text style={styles.address}>{station.address}</Text>
                 </View>
               </Callout>    
             </Marker>
@@ -71,9 +70,11 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 50
   }, 
-  input:{
+  address:{
     fontFamily: 'Product-Sans-Regular',
     fontSize: 14, 
+    color: 'gray',
+    fontWeight: 'bold'
   }, 
   stationName:{
     fontFamily: 'Product-Sans-Regular',
