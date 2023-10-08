@@ -34,18 +34,22 @@ public class AppointmentService {
     }
 
     public Appointment addAppointment(Appointment appointment) throws ExceedMaxManualApptException {
-        // Check if current Number of manual appointments exceeeded allowed manualAppointment 
-        if(appointment.isManualAppointment()){
-            long user_id = appointment.getUser().getId();
-            int numOfExistingManualAppt = appointmentRepository.findActiveManualApptByUserId(user_id).size();
-            if(numOfExistingManualAppt >= appointment.MAX_MANUALAPPT_ALLOWED){
-                throw new ExceedMaxManualApptException(numOfExistingManualAppt, Appointment.MAX_MANUALAPPT_ALLOWED);
-            }
-        }
+
         appointment.setStatus("Active");
         appointmentRepository.save(appointment);
 
         return appointment;
+    }
+    public int checkManualAppointment(Appointment appointment){
+        // Check if current Number of manual appointments exceeeded allowed manualAppointment
+        if(appointment.isManualAppointment()){
+            long user_id = appointment.getUser().getId();
+            int numOfExistingManualAppt = appointmentRepository.findActiveManualApptByUserId(user_id).size();
+            if(numOfExistingManualAppt >= appointment.MAX_MANUALAPPT_ALLOWED){
+                return numOfExistingManualAppt;
+            }
+        }
+        return -1;
     }
 
 //    public Appointment autobookAppointment(double latitude, double longitude, String startTime, String endTime, String dateNow, Car car, String userEmail) {
