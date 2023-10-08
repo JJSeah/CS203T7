@@ -1,6 +1,5 @@
 package com.example.electric.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -64,6 +63,9 @@ public class Appointment {
     }
 
     public Appointment(long l, Time time, Time time2, Time time3, Date date2, int i, Object object, Object object2) {
+    }
+
+    public Appointment(int i, Time time, Time time1, Time time2, Date date, Double cost, String active, Station closestStation, User user, Charger charger) {
     }
 
     public static int getMaxManualapptAllowed() {

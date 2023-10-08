@@ -107,13 +107,16 @@ public class AppointmentController {
      * @throws ExceedMaxManualApptException
      */
     @PostMapping
-    @Operation(summary = "Add Appointment", description = "Add Appointment",tags = {"Appointment"})
+    @Operation(summary = "Add Manual Appointment", description = "Add Manual Appointment",tags = {"Appointment"})
     public Appointment addAppointment(@RequestBody Appointment appointment){
-        // try {
+        // Check if current Number of manual appointments exceeded allowed manualAppointment
+        appointment.setManualAppointment(true);
+        int numOfExistingManualAppt = appointmentService.checkManualAppointment(appointment);
+        if(numOfExistingManualAppt >= 0){
+            throw new ExceedMaxManualApptException(numOfExistingManualAppt, Appointment.MAX_MANUALAPPT_ALLOWED);
+        }
             return appointmentService.addAppointment(appointment);
-        // } catch (ExceedMaxManualApptException e) {
-        //     // return e.toResponseEntity();
-        // }
+
     }
 
     /**
@@ -127,6 +130,7 @@ public class AppointmentController {
      * @return The newly created appointment.
      */
     @PostMapping("/auto/{carId}")
+    @Operation(summary = "Add Auto Appointment", description = "Add Auto Appointment",tags = {"Appointment"})
     public Appointment addAppointment(@RequestBody Appointment appointment, @PathVariable long carId) {
         double latitude = appointment.getStation().getLatitude();
         double longitude = appointment.getStation().getLongitude();
