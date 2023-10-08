@@ -1,6 +1,6 @@
 package com.example.electric.service;
 
-import com.example.electric.model.Station;
+import com.example.electric.model.*;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
@@ -8,19 +8,34 @@ import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class VoronoiService {
     @Autowired
     private StationService stationService;
 
-    public Station findClosestStation(double latitude, double longitude) {
-        Station[] stations = stationService.getAllStations().toArray(new Station[0]);
-        Coordinate[] stationCoordinates = new Coordinate[stations.length];
+    @Autowired
+    private AppointmentService appointmentService;
+
+    @Autowired
+    private DistanceMatrixService distanceMatrixService;
+
+    @Autowired
+    private UserService userService;
+
+
+    public Station findClosestStation(double latitude, double longitude, String startTime, String endTime, String dateNow) {
+//        Station[] stations = stationService.getAllStations().toArray(new Station[0]);
+        List<Station> availableStations = appointmentService.getAvailableStationsAndChargers(startTime,endTime,dateNow);
+        Coordinate[] stationCoordinates = new Coordinate[availableStations.size()];
         //Mapped into stationCoordinates
-        for (int i = 0; i < stations.length; i++) {
-            Station station = stations[i];
+        for (int i = 0; i < availableStations.size(); i++) {
+            Station station = availableStations.get(i);
             Coordinate coordinate = new Coordinate(station.getLatitude(), station.getLongitude());
             stationCoordinates[i] = coordinate;
         }
@@ -44,9 +59,24 @@ public class VoronoiService {
 
         try {
             closestStation = stationService.getStationByCoordinate(closestStationCoordinates.getX(), closestStationCoordinates.getY());
+
+//            LocalTime start = LocalTime.parse(startTime);
+//            LocalTime end = LocalTime.parse(endTime);
+//            Duration duration = Duration.between(start,end);
+//            LocalTime timeBetween = LocalTime.MIDNIGHT
+//                    .plusHours(duration.toHours())
+//                    .plusMinutes(duration.toMinutesPart())
+//                    .plusSeconds(duration.toSecondsPart());
+//
+//            Appointment appointment = new Appointment(1,
+//                    Time.valueOf(timeBetween),
+//                    Time.valueOf(start),
+//                    Time.valueOf(end),
+//                    java.sql.Date.valueOf(dateNow),);
         } catch (NullPointerException e) {
             System.out.println("No stations available, should return null");
         } finally {
+
             return closestStation;
         }
     }
@@ -96,6 +126,43 @@ public class VoronoiService {
         }
 
         return nearestStation;
+    }
+
+    public Appointment autobookAppointment(double latitude, double longitude, String startTime, String endTime, String dateNow, Car car, String userEmail) {
+        //Find station
+        Station closestStation = this.findClosestStation(latitude,longitude,startTime,endTime,dateNow);
+
+        //Find date and time
+        LocalTime start = LocalTime.parse(startTime);
+        LocalTime end = LocalTime.parse(endTime);
+        Duration duration = Duration.between(start,end);
+        LocalTime timeBetween = LocalTime.MIDNIGHT
+                .plusHours(duration.toHours())
+                .plusMinutes(duration.toMinutesPart())
+                .plusSeconds(duration.toSecondsPart());
+
+        //Find cost
+        Double cost = Double.parseDouble(distanceMatrixService.calculateCostOfCharging(car));
+
+        //Find user
+        User user = userService.getUserByEmail(userEmail);
+
+        //Find charger
+        List<Charger> chargers = closestStation.getChargers();
+
+        //Appointment object
+        Appointment appointment = new Appointment(1,
+                Time.valueOf(timeBetween),
+                Time.valueOf(start),
+                Time.valueOf(end),
+                java.sql.Date.valueOf(dateNow),
+                cost,
+                "Active",
+                closestStation,
+                user,
+                chargers.get(0));
+
+        return appointmentService.addAppointment(appointment);
     }
 
 }

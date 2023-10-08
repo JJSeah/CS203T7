@@ -4,8 +4,11 @@ import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Appointment;
+import com.example.electric.model.Car;
 import com.example.electric.model.Station;
 import com.example.electric.service.AppointmentService;
+import com.example.electric.service.CarService;
+import com.example.electric.service.VoronoiService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,12 @@ import java.util.List;
 public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private VoronoiService voronoiService;
+
+    @Autowired
+    private CarService carService;
 
     /**
      * Retrieve a list of all appointments.
@@ -47,7 +56,6 @@ public class AppointmentController {
     public Appointment getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
         return appointmentService.getAppointmentById(appointmentId)
                 .orElseThrow(() -> new ObjectNotFoundException(ErrorCode.E1002));
-
     }
 
     /**
@@ -106,6 +114,30 @@ public class AppointmentController {
         // } catch (ExceedMaxManualApptException e) {
         //     // return e.toResponseEntity();
         // }
+    }
+
+    /**
+     * Add a new appointment to the system.
+     *
+     * This endpoint allows the addition of a new appointment through auto booking feature of the system. The provided
+     * appointment object should contain the necessary details for creating the appointment.
+     *
+     * @param appointment The appointment object to be added.
+     * @param carId The unique identifier of car to be charged.
+     * @return The newly created appointment.
+     */
+    @PostMapping("/auto/{carId}")
+    public Appointment addAppointment(@RequestBody Appointment appointment, @PathVariable long carId) {
+        double latitude = appointment.getStation().getLatitude();
+        double longitude = appointment.getStation().getLongitude();
+
+        String startTime = appointment.getStartTime().toString();
+        String endTime = appointment.getEndTime().toString();
+        String date = appointment.getDate().toString();
+
+        Car car = carService.getCarById(carId).orElse(null);
+        String userEmail = appointment.getUser().getEmail();
+        return voronoiService.autobookAppointment(latitude, longitude,startTime, endTime, date,car,userEmail);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.example.electric.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,16 +35,19 @@ public class Appointment {
     private String status;
 
     // Link to station
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
 
     // Link to user
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     // Link to charger
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "charger_id")
     private Charger charger;

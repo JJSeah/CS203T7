@@ -76,5 +76,4 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         confirmButtonPressed,
         findClosestStation,
     };
-
 }
