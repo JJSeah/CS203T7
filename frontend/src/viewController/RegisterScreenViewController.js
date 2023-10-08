@@ -17,5 +17,4 @@ export default RegisterViewController = ( { navigation } ) => {
         setIsReady,
         signUpButtonPressed,
     };
-
 }

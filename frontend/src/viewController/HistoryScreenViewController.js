@@ -22,5 +22,4 @@ export default HistoryViewController = ( { navigation } ) => {
         filteredRecords, 
         setFilteredRecords,
     };
-
 }
