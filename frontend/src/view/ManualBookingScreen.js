@@ -1,107 +1,169 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Text, View } from 'react-native';
-import { UserContext } from '../model/User';
-import ManualBookingScreenViewController from '../viewController/ManualBookingScreenViewController';
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Text, View, Alert, SafeAreaView, StyleSheet } from "react-native";
+import { UserContext } from "../model/User";
+import ManualBookingScreenViewController from "../viewController/ManualBookingScreenViewController";
+import CustomLongButton from "../components/CustomLongButton";
 
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
-export default ManualBookingScreen = ( { navigation } ) => {
+export default ManualBookingScreen = ({ navigation }) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [maxDate, setMaxDate] = useState(new Date());
 
-    const [ currentDate, setCurrentDate ] = useState(new Date())
-    const [ maxDate, setMaxDate ] = useState(new Date())
+  const [bookingStartTime, setBookingStartTime] = useState(new Date());
+  const [bookingEndTime, setBookingEndTime] = useState(new Date());
 
-    const [ bookingStartTime, setBookingStartTime ] = useState(new Date())
-    const [ bookingEndTime, setBookingEndTime ] = useState(new Date())
+  const diffHours = (start, end) => {
+    var diff = end.getTime() - start.getTime();
+    var hours = Math.floor(diff / 1000 / 60 / 60);
 
-    useEffect(() => {
-        
-        const interval = setInterval(
-            () => {
-                setCurrentDate(new Date())
-                setMaxDate(addDays(new Date(), 2))
+    diff -= hours * 1000 * 60 * 60;
 
-            }, 1000
-        );
+    var minutes = Math.floor(diff / 1000 / 60);
+    if (hours < 0)
+       hours = hours + 24;
 
-        return () => {
-        
-          clearInterval(interval);
-        };
-    }, [])
+    return hours;
+}
 
-    const onChangeDate = (event, selectedDate) => {
-        setBookingStartTime(selectedDate)
+const diffMinutes = (start, end) => {
+    var diff = end.getTime() - start.getTime();
+    var hours = Math.floor(diff / 1000 / 60 / 60);
+
+    diff -= hours * 1000 * 60 * 60;
+
+    var minutes = Math.floor(diff / 1000 / 60);
+    // If using time pickers with 24 hours format, add the below line get exact hours
+
+    return (minutes <= 9 ? "0" : "") + minutes;
+}
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDate(new Date());
+      setMaxDate(addDays(new Date(), 2));
+    }, 1000);
+
+    setBookingStartTime(roundDateByMinutes(bookingStartTime, 5))
+    setBookingEndTime(roundDateByMinutes(bookingEndTime, 5))
+
+    return () => {
+      clearInterval(interval);
     };
+  }, []);
 
-    const onChangeStartTime = (event, selectedDate) => {
-        setBookingStartTime(selectedDate);
-    };
+  const onChangeDate = (event, selectedDate) => {
+    setBookingStartTime(selectedDate);
+    setBookingEndTime(selectedDate);
+  };
 
-    const onChangeEndTime = (event, selectedDate) => {
-        setBookingEndTime(selectedDate);
-    };
+  const onChangeStartTime = (event, selectedDate) => {
+    setBookingStartTime(selectedDate);
+    setBookingEndTime(selectedDate);
+  };
 
-    const addDays = (date, days) => {
-        var result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-    }
+  const onChangeEndTime = (event, selectedDate) => {
+    setBookingEndTime(selectedDate);
+  };
 
-    return (
+  const addDays = (date, days) => {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
+
+  const roundDateByMinutes = (date, minutes) => {
+
+    let ms = 1000 * 60 * minutes; // convert minutes to ms
+    let roundedDate = new Date(Math.ceil(date.getTime() / ms) * ms);
+  
+    return roundedDate
+  }
+
+
+  return (
+    <SafeAreaView style={{flex:1}}>
+
+      <View 
+        style={localStyles.topContainer}
+      >
         <View>
-        <Text>You can only book from {currentDate.toTimeString()} onwards</Text>
+          <Text>Current time: {currentDate.toLocaleTimeString()}</Text>
+        </View>
 
-        <Text>You want to book from {bookingStartTime.toTimeString()}</Text>
-        <Text>You want to book to {bookingEndTime.toTimeString()}</Text>
-
-        <RNDateTimePicker
-            display='calendar'
+        <View style={{alignContent:'center', justifyContent:'center'}}>
+            <RNDateTimePicker
+            display="calendar"
             value={bookingStartTime}
             onChange={onChangeDate}
             minimumDate={currentDate}
             maximumDate={maxDate}
-        />
-
-        <Text>Start time</Text>
-        <RNDateTimePicker
-            mode='time'
-            display='spinner'
-            value={bookingStartTime}
-            minimumDate={currentDate}
-            onChange={onChangeStartTime}
-            minuteInterval={5}
-        />
-
-
-        <Text>End time</Text>
-        <RNDateTimePicker
-            mode='time'
-            display='spinner'
-            value={bookingEndTime}
-            minimumDate={(bookingStartTime < currentDate ? currentDate : bookingStartTime)}
-            onChange={onChangeEndTime}
-            minuteInterval={5}
-        />
-
-        <Button
-            title="confirm"
-            onPress={() => {
-                if (bookingStartTime < currentDate) {
-                    setBookingStartTime(currentDate)
-                }
-
-                if (bookingEndTime <= bookingStartTime) {
-                    console.log("You cannot book")
-                } else {
-                    console.log("Success")
-                    navigation.pop()
-                }
-
-            }}
-        />
-
-
-
+            />
         </View>
-    );
-}
+
+        <Text>Hours: {diffHours(bookingStartTime, bookingEndTime)}</Text>
+        <Text>Minutes: {diffMinutes(bookingStartTime, bookingEndTime)}</Text>
+
+
+        <Text>Start time {bookingStartTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
+        <RNDateTimePicker
+          mode="time"
+          display="spinner"
+          value={bookingStartTime}
+          minimumDate={currentDate}
+          onChange={onChangeStartTime}
+          minuteInterval={5}
+        />
+
+        <Text>End time {bookingEndTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
+        <RNDateTimePicker
+          mode="time"
+          display="spinner"
+          value={bookingEndTime}
+          minimumDate={
+            bookingStartTime
+          }
+          onChange={onChangeEndTime}
+          minuteInterval={5}
+        />
+      </View>
+
+      <View
+        style={localStyles.bottomContainer}
+        >
+        <CustomLongButton
+          title="Find available stations"
+          onPress={() => {
+            if (bookingStartTime < currentDate) {
+              setBookingStartTime(currentDate);
+            }
+
+            if (bookingEndTime <= bookingStartTime) {
+              Alert.alert(
+                "Invalid timings",
+                "Please select appropriate timings",
+                [
+                  {
+                    text: "Got it",
+                    onPress: () => {},
+                  },
+                ]
+              );
+            } else {
+              navigation.pop();
+            }
+          }}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const localStyles = StyleSheet.create({
+    topContainer: {
+        flex: 9
+    },
+    bottomContainer: {
+        flex: 1
+    }
+})
