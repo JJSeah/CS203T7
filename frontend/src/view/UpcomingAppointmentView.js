@@ -3,13 +3,14 @@ import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { UserContext } from '../model/User';
 // import { styles } from '../components/Design';
 import { BarCodeScanner } from 'expo-barcode-scanner'; 
-import { Camera } from 'expo-camera';
+import UpcomingAppointmentViewController from '../viewController/UpcomingAppointmentViewController';
 
 export default UpcomingAppointmentView = ({ navigation }) => {
  
   const [ hasPermission, setHasPermission ] = useState(null); 
   const [ scanned, setScanned ] = useState(false);
   const { upcomingAppointmentDetails } = useContext(UserContext);
+  const { testButtonPressed } = UpcomingAppointmentViewController({ navigation })
 
   useEffect(() => {
     (async() => {
@@ -69,6 +70,11 @@ export default UpcomingAppointmentView = ({ navigation }) => {
       >
         <Text>Scan QR</Text>
       </TouchableOpacity>
+
+      <Button 
+      title='scanned qr code'
+      onPress={testButtonPressed}
+      />
     </View>
   );
 }; 
