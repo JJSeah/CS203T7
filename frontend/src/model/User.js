@@ -149,12 +149,8 @@ export const UserProvider = ( { children } ) => {
         }
     }
 
-
-
-
-    // Edit profile
     // const updateProfile = async(newFirstName, newLastName, newEmail) => {
-    //     let url = `${BASE_URL}/api/user/${userId}`
+    //     let url = `${BASE_URL}/api/user/${id}`
 
     //     axios.put(url, {
     //         "firstName": newFirstName,
@@ -171,6 +167,8 @@ export const UserProvider = ( { children } ) => {
     //         reload()
     //     })
     // }
+
+
 
     const getAllStations = async() => {
         axios.get(`${BASE_URL}/api/stations/all`, 

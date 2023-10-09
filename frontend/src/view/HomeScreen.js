@@ -53,7 +53,7 @@ export default HomeScreen = ({ navigation }) => {
             <Text style = {localStyles.subHeaderText}>
               {currentCar.nickname}
               </Text>
-              {/* <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text> */}
+              <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text>
           </>
         ) : (
           <>
