@@ -2,15 +2,15 @@ package com.example.electric.service;
 
 import com.example.electric.model.Station;
 import com.example.electric.respository.StationRepository;
+import com.example.electric.service.inter.StationServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StationService {
+public class StationService implements StationServiceInter {
 
     private final StationRepository stationRepository;
 

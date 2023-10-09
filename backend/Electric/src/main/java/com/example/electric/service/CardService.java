@@ -1,8 +1,8 @@
 package com.example.electric.service;
 
-import com.example.electric.model.Appointment;
 import com.example.electric.model.Card;
 import com.example.electric.respository.CardRepository;
+import com.example.electric.service.inter.CardServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CardService {
+public class CardService implements CardServiceInter {
     @Autowired
     private CardRepository cardRepository;
 

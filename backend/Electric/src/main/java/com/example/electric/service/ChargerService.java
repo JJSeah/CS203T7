@@ -1,19 +1,19 @@
 package com.example.electric.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Charger;
 import com.example.electric.respository.ChargerRepository;
 import com.example.electric.respository.StationRepository;
-import com.example.electric.error.ErrorCode;
+import com.example.electric.service.inter.ChargerServiceInter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ChargerService {
+public class ChargerService implements ChargerServiceInter {
     @Autowired
     private ChargerRepository chargerRepository;
 

@@ -1,6 +1,7 @@
 package com.example.electric.service;
 
 import com.example.electric.model.*;
+import com.example.electric.service.inter.VoronoiServiceInter;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
@@ -15,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class VoronoiService {
+public class  VoronoiService implements VoronoiServiceInter {
     @Autowired
     private StationService stationService;
 

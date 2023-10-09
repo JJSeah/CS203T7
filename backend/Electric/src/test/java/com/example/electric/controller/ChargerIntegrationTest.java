@@ -1,9 +1,9 @@
 package com.example.electric.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.net.URI;
-
+import com.example.electric.model.Charger;
+import com.example.electric.model.Station;
+import com.example.electric.respository.ChargerRepository;
+import com.example.electric.respository.StationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.electric.model.Charger;
-import com.example.electric.model.Station;
-import com.example.electric.respository.ChargerRepository;
-import com.example.electric.respository.StationRepository;
+import java.net.URI;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -99,6 +98,8 @@ public class ChargerIntegrationTest {
 
         ResponseEntity<Charger> result = restTemplate.getForEntity(url, Charger.class);
         Charger resultCharger = result.getBody();
+        System.out.println(result);
+        System.out.println(resultCharger);
 
         assertEquals(200, result.getStatusCode().value());
         assertEquals(testCharger, resultCharger);

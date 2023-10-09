@@ -3,6 +3,7 @@ package com.example.electric.service;
 import com.example.electric.model.Role;
 import com.example.electric.model.User;
 import com.example.electric.respository.UserRepository;
+import com.example.electric.service.inter.UserServiceInter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService{
+public class UserService implements UserServiceInter {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -69,9 +70,6 @@ public class UserService{
             if(updatedUser.getCard() != null){
                 user.setCard(updatedUser.getCard());
             }
-//            if(updatedUser.getAuthorities() != null){
-//                user.setAuthorities(updatedUser.getAuthority());
-//            }
             return userRepository.save(user);
         } else {
             return null; // User not found

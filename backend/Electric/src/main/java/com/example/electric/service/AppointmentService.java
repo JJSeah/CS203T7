@@ -1,12 +1,13 @@
 package com.example.electric.service;
 
-import com.example.electric.model.*;
+import com.example.electric.exception.ExceedMaxManualApptException;
+import com.example.electric.model.Appointment;
+import com.example.electric.model.Station;
 import com.example.electric.respository.AppointmentRepository;
 import com.example.electric.respository.UserRepository;
+import com.example.electric.service.inter.AppointmentServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.electric.exception.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AppointmentService {
+public class AppointmentService implements AppointmentServiceInter {
     @Autowired
     private AppointmentRepository appointmentRepository;
 

@@ -3,6 +3,7 @@ package com.example.electric.service;
 import com.example.electric.model.Car;
 import com.example.electric.model.Station;
 import com.example.electric.respository.StationRepository;
+import com.example.electric.service.inter.DistanceMatrixServiceInter;
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.DistanceMatrix;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class DistanceMatrixService {
+public class DistanceMatrixService implements DistanceMatrixServiceInter {
     @Value("${google.maps.api.key}")
     private String apiKey;
 
