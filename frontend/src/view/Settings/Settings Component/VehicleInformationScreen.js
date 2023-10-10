@@ -9,18 +9,18 @@ import DeleteCarViewController from "../../../viewController/DeleteCarViewContro
 
 export default VehicleInformationScreen = () => {
 
-  const { userCars } = useContext(UserContext);
+  const { userData, userCars, setCurrentCar, currentCar } =
+  useContext(UserContext);
 
   const { deleteCarButtonPressed } = DeleteCarViewController();
 
   return (
     <View style = {localStyles.container}>
 
-
-{Array.isArray(userCars) && userCars.length > 0 ? (
+    {Array.isArray(userCars) && userCars.length > 0 ? (
        userCars.map((car) => (
           <View key={car.id} style = {localStyles.sectionContainer}>
-
+            <View key={car.id} style = {localStyles.informationContainer}>
             <CarInformation
             title = "Car Nickname"
             value = {car.nickname}
@@ -29,6 +29,8 @@ export default VehicleInformationScreen = () => {
             title = "BatteryCapacity"
             value = {car.batteryCapacity}
             />
+            </View>
+
             <CustomLongButton
             title= "delete car"
             onPress={() => deleteCarButtonPressed(car.id)}
@@ -36,7 +38,7 @@ export default VehicleInformationScreen = () => {
           </View>
         ))
       ) : (
-        <Text>NO car loading hehe</Text>
+        <Text>NO cars loaded</Text>
       )}
       
     </View>
@@ -54,6 +56,22 @@ const localStyles = StyleSheet.create ({
     borderColor: '#ccc',
     backgroundColor: '#f9f9', 
   },
+  informationContainer: {
+
+  },
+  buttonContainer: {
+
+  },
+
 
 });
+
+{/*<CarInformation
+title = "Model"
+value = {car.model}
+/>
+<CarInformation
+title = "Plate"
+value = {car.plate}
+/>*/}
 
