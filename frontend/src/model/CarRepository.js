@@ -46,6 +46,8 @@ export const CarRepository = () => {
       .then((res) => {
         let data = res.data;
 
+        data = data.reverse();
+
         setUserCars(data);
 
         if (data.length > 0) {
