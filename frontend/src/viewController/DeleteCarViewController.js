@@ -5,10 +5,12 @@ import { UserContext } from "../model/User";
 
 
 export default DeleteCarViewController = () => {
-
+    
+    const { setUserCars } = useContext(UserContext);
     const { deleteCar } = CarRepository();
 
     const deleteCarButtonPressed = (id) => {
+        setUserCars(null)
         deleteCar(id);
         console.log("succesfully deleted a car");
     }

@@ -39,7 +39,7 @@ export const CarRepository = () => {
   const loadCarsData = async () => {
     let url = `${BASE_URL}/api/car/user/${userId}`;
 
-    setUserCars([{nickname: "dummy", id: -1}])
+    setUserCars(null)
 
     axios
       .get(url)
@@ -62,8 +62,6 @@ export const CarRepository = () => {
   // delete car method
   const deleteCar = async( id ) => {
     let url = `${BASE_URL}/api/car/${id}`;
-    console.log(url)
-
     axios.delete(url)
     .then((res) => {
       let data = res.data;
