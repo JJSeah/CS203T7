@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default CarInformation = ( {title, value} ) => {
+
+
     return (
         <View style = {localStyles.container}>
             <Text style = {localStyles.titleText}>{title}</Text>
@@ -15,6 +17,8 @@ const localStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginLeft: 10,
+        marginRight: 10,
     },
 
     titleText: {
