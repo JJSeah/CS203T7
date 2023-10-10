@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, View, ActivityIndicator, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator, SafeAreaView, Alert } from "react-native";
 import { UserContext } from "../../../model/User";
 import CarInformation from "../../../components/CarInformation";
 import CustomLongButton from "../../../components/CustomLongButton";
@@ -31,7 +31,23 @@ export default VehicleInformationScreen = () => {
 
             <CustomLongButton
               title="delete car"
-              onPress={() => deleteCarButtonPressed(car.id)}
+              onPress={() => {
+                Alert.alert(
+                "Delete car",
+                "Are you sure you want to delete " + car.nickname, 
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                  },
+                  {
+                    text: "Delete",
+                    onPress: () => {deleteCarButtonPressed(car.id)},
+                    style:'destructive'
+                  }
+                ]
+              )}
+            }
             />
           </View>
         ))
