@@ -15,7 +15,7 @@ export default ProfileScreen = ( { navigation } ) => {
       editProfileButtonPressed, } = SettingsScreenViewController( { navigation } );
 
   return (
-    <View>
+    <View style = {localStyles.container}>
 
       {/* Username can't be edited */}
 
@@ -47,6 +47,13 @@ export default ProfileScreen = ( { navigation } ) => {
     </View>
   );
 }
+
+const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#141414",
+  },
+});
 
 
 
