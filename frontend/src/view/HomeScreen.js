@@ -106,6 +106,15 @@ export default HomeScreen = ({ navigation }) => {
         }
       </View>
 
+      <View>
+        <ScrollView>
+          <CustomLongButton
+            title="appointment 1"
+            onPress={() => { navigation.navigate("", {id: 1})}}
+          />
+        </ScrollView>
+      </View>
+
       <View style={localStyles.bottomContainer}>
         <CustomLongButton title="Add car" onPress={addCarButtonPressed} />
 
@@ -117,6 +126,11 @@ export default HomeScreen = ({ navigation }) => {
         <CustomLongButton
           title="Automate booking"
           onPress={automateBookingButtonPressed}
+        />
+
+        <CustomLongButton
+          title="Scan QR"
+          onPress={() => {navigation.navigate("UpcomingAppointmentView")}}
         />
       </View>
     </SafeAreaView>
