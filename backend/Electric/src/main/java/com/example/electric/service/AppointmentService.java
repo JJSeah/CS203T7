@@ -170,6 +170,9 @@ public class AppointmentService implements AppointmentServiceInter {
     // Update the appointment
     Appointment completedAppointment = updateAppointment(updatedAppointment, id);
 
+
+
     return completedAppointment;
     }
+
 }

@@ -32,6 +32,8 @@ public class Appointment {
     private double cost;
     @Column(name="status")
     private String status;
+    @Column(name="transaction_id")
+    private String transactionId;
 
     // Link to station
     @ManyToOne
