@@ -4,7 +4,7 @@ import * as Location from 'expo-location'
 
 export default HomeScreenViewController = ( { navigation } ) => {
     
-    const { setUserCoordinates } = useContext(UserContext);
+    const { setUserCoordinates, currentCar } = useContext(UserContext);
 
     const addCarButtonPressed = () => {
         console.log("Add car button pressed")
@@ -33,7 +33,7 @@ export default HomeScreenViewController = ( { navigation } ) => {
     }
 
     const manualBookingButtonPressed = () => {
-        navigation.navigate("ManualBookingScreen")
+        navigation.navigate("ManualBookingScreen", {currentCar: currentCar})
     }
 
 

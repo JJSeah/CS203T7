@@ -10,10 +10,11 @@ import {
 import { UserContext } from "../../../model/User";
 import CarInformation from "../../../components/CarInformation";
 import CustomLongButton from "../../../components/CustomLongButton";
-
+import AddCarScreen from "../../AddCarScreen";
 import DeleteCarViewController from "../../../viewController/DeleteCarViewController";
+import AddCarScreenViewController from "../../../viewController/AddCarScreenViewController";
 
-export default VehicleInformationScreen = () => {
+export default VehicleInformationScreen = ( {navigation} ) => {
   const { userData, userCars, setCurrentCar, currentCar } =
     useContext(UserContext);
 
@@ -21,6 +22,8 @@ export default VehicleInformationScreen = () => {
 
   return (
     <SafeAreaView style={localStyles.container}>
+
+      <View style={{flex:9}}>
       {userCars === null ? (
         <View>
           <ActivityIndicator />
@@ -65,6 +68,17 @@ export default VehicleInformationScreen = () => {
       ) : (
         <Text>NO cars loaded</Text>
       )}
+      </View>
+
+      <View style={{flex:1}}>
+        <CustomLongButton
+          title="Add car"
+          onPress={() => navigation.navigate("AddCarScreen")}
+        />
+
+      </View>
+
+
     </SafeAreaView>
   );
 };

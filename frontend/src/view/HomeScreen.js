@@ -20,7 +20,6 @@ import { emptyCarIcon } from "../../assets/images/index";
 
 export default HomeScreen = ({ navigation }) => {
   const {
-    addCarButtonPressed,
     manualBookingButtonPressed,
     automateBookingButtonPressed,
   } = HomeScreenViewController({ navigation });
@@ -108,15 +107,10 @@ export default HomeScreen = ({ navigation }) => {
 
       <View>
         <ScrollView>
-          <CustomLongButton
-            title="appointment 1"
-            onPress={() => { navigation.navigate("", {id: 1})}}
-          />
         </ScrollView>
       </View>
 
       <View style={localStyles.bottomContainer}>
-        <CustomLongButton title="Add car" onPress={addCarButtonPressed} />
 
         <CustomLongButton
           title="Manual booking"
