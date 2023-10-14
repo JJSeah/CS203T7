@@ -149,25 +149,21 @@ export const UserProvider = ( { children } ) => {
         }
     }
 
-    // const updateProfile = async(newFirstName, newLastName, newEmail) => {
-    //     let url = `${BASE_URL}/api/user/${id}`
+    const updateProfile = async(newFirstName, newLastName, newEmail) => {
+        let url = `${BASE_URL}/api/user/${id}`
 
-    //     axios.put(url, {
-    //         "firstName": newFirstName,
-    //         "lastName": newLastName,
-    //         "email": newEmail,
-    //     })
-    //     .then( res => {
-    //         console.log("Successfully updated backend")
-
-    //         let reload = async() => {
-    //             loadUserData()
-    //         }
-
-    //         reload()
-    //     })
-    // }
-
+        axios.put(url, {
+            "firstName": newFirstName,
+            "lastName": newLastName,
+            "email": newEmail,
+        })
+        .then(() => {
+            console.log("Successfully updated profile in backend")
+            loadUserData()
+        }).catch((e) => {
+            console.log(`Error updating profile ${e}`);
+        });
+    };
 
 
     const getAllStations = async() => {

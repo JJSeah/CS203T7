@@ -12,7 +12,7 @@ export default DeleteCarViewController = () => {
     const deleteCarButtonPressed = (id) => {
         setUserCars(null)
         deleteCar(id);
-        console.log("succesfully deleted a car");
+       
     }
 
     return {

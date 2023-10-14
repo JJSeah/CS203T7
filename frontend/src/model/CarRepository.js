@@ -65,14 +65,9 @@ export const CarRepository = () => {
   const deleteCar = async( id ) => {
     let url = `${BASE_URL}/api/car/${id}`;
     axios.delete(url)
-    .then((res) => {
-      let data = res.data;
+    .then(() => {
       loadCarsData()
-      if (data.length > 0) {
-        setCurrentCar(data[0])
-      } else {
-        setCurrentCar(null)
-      }
+      console.log("succesfully deleted a car");
     })
     .catch((e) => {
       console.log(`Error deleting car ${e}`);

@@ -1,5 +1,12 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, View, ActivityIndicator, SafeAreaView, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  SafeAreaView,
+  Alert,
+} from "react-native";
 import { UserContext } from "../../../model/User";
 import CarInformation from "../../../components/CarInformation";
 import CustomLongButton from "../../../components/CustomLongButton";
@@ -21,33 +28,37 @@ export default VehicleInformationScreen = () => {
       ) : Array.isArray(userCars) && userCars.length > 0 ? (
         userCars.map((car) => (
           <View key={car.id} style={localStyles.sectionContainer}>
-            <View key={car.id} style={localStyles.informationContainer}>
+            <View style={localStyles.informationContainer}>
               <CarInformation title="Car Nickname" value={car.nickname} />
               <CarInformation
                 title="BatteryCapacity"
                 value={car.batteryCapacity}
               />
+              <CarInformation title="Model" value={car.model} />
+              <CarInformation title="Plate" value={car.plate} />
             </View>
 
             <CustomLongButton
               title="delete car"
               onPress={() => {
                 Alert.alert(
-                "Delete car",
-                "Are you sure you want to delete " + car.nickname, 
-                [
-                  {
-                    text: "Cancel",
-                    onPress: () => {},
-                  },
-                  {
-                    text: "Delete",
-                    onPress: () => {deleteCarButtonPressed(car.id)},
-                    style:'destructive'
-                  }
-                ]
-              )}
-            }
+                  "Delete car",
+                  "Are you sure you want to delete " + car.nickname,
+                  [
+                    {
+                      text: "Cancel",
+                      onPress: () => {},
+                    },
+                    {
+                      text: "Delete",
+                      onPress: () => {
+                        deleteCarButtonPressed(car.id);
+                      },
+                      style: "destructive",
+                    },
+                  ]
+                );
+              }}
             />
           </View>
         ))
@@ -72,14 +83,3 @@ const localStyles = StyleSheet.create({
   informationContainer: {},
   buttonContainer: {},
 });
-
-{
-  /*<CarInformation
-title = "Model"
-value = {car.model}
-/>
-<CarInformation
-title = "Plate"
-value = {car.plate}
-/>*/
-}

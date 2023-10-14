@@ -5,14 +5,13 @@ export default EditProfileViewController = ( { navigation } ) => {
 
     const { updateProfile } = useContext(UserContext);
 
-    const editProfileButtonPressed = (newFirstName, newLastName, newEmail) => {
-        console.log("Edit Profile button pressed");
+    const confirmEditProfileButtonPressed = (newFirstName, newLastName, newEmail) => {
         updateProfile(newFirstName, newLastName, newEmail);
         navigation.pop();
     }
 
     return {
-        editProfileButtonPressed;
+        confirmEditProfileButtonPressed;
     };
 
 }
