@@ -211,10 +211,11 @@ public class AppointmentController {
 
     @PostMapping ("/available")
     @Operation(summary = "Get Available Stations", description = "Get a list of available stations",tags = {"Appointment"})
-    public List<Station> getAvailableStations(@RequestBody String test) {
-        String start = "07:00:00";
-        String end = "08:00:00";
-        String date = "2023-10-10";
-        return appointmentService.getAvailableStationsAndChargers(start, end, date);
+    public List<Station> getAvailableStations(@RequestBody Appointment appointment) {
+        String startTime = appointment.getStartTime().toString();
+        String endTime = appointment.getEndTime().toString();
+        String date = appointment.getDate().toString();
+
+        return appointmentService.getAvailableStationsAndChargers(startTime, endTime, date);
     }
 }
