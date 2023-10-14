@@ -1,15 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { View, SafeAreaView, StyleSheet, Text, ScrollView, TouchableOpacity} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import MapView, { Callout, Marker } from "react-native-maps";
 import SelectStationScreenViewController from "../../viewController/SelectStationScreenViewController";
 import CustomLongButton from "../../components/CustomLongButton";
+import { Ionicons } from "@expo/vector-icons";
+
 
 export default SelectStationScreen = ({ navigation }) => {
   const route = useRoute();
   const stations = route.params?.stations;
+  const currentCar = route.params?.currentCar;
 
-  const { selectedChargers, markerPressed, selectedStation, selectFinalCharger, finalCharger } =
+  const mapViewRef = useRef(null);
+
+  const { selectedChargers, markerPressed, selectedStation, selectFinalCharger, finalCharger, confirmBookingButtonPressed} =
     SelectStationScreenViewController({ navigation }, stations);
 
   return (
@@ -17,10 +22,11 @@ export default SelectStationScreen = ({ navigation }) => {
       <View style={localStyles.topContainer}>
         <View style={localStyles.titleContainer}>
           <Text>Click on one of the stations to find available chargers</Text>
+          <Text>For {currentCar.nickname}</Text>
         </View>
 
         <View style={localStyles.mapContainer}>
-          <MapView style={localStyles.map}>
+          <MapView style={localStyles.map} ref={mapViewRef}>
             {stations.map((station) => (
               <Marker
                 key={station.chargerId}
@@ -28,8 +34,17 @@ export default SelectStationScreen = ({ navigation }) => {
                   latitude: station.latitude,
                   longitude: station.longitude,
                 }}
-                onPress={() =>
+                onPress={() => {
                   markerPressed(station.latitude, station.longitude)
+                  if (mapViewRef.current) {
+                    mapViewRef.current.animateToRegion({
+                      latitude: station.latitude,
+                      longitude: station.longitude,
+                      latitudeDelta: 0.04,
+                      longitudeDelta: 0.04,
+                    });
+                    }
+                  }
                 }
               ></Marker>
             ))}
@@ -51,19 +66,20 @@ export default SelectStationScreen = ({ navigation }) => {
                   {selectedChargers.map((charger) => {
                     return (
                       <TouchableOpacity 
+                        key={charger.chargerId}
                         onPress={() => { selectFinalCharger(charger) }}
                       >
-                        <View style={localStyles.selectChargerContainer}>
-                          <View key={charger.chargerId}>
-                            <Text>{charger.chargerId}</Text>
-                            <Text>{charger.chargingRate}</Text>
+                        <View 
+                        style={localStyles.selectChargerContainer}
+                        >
+                          <View>
+                            <Text>Charger ID: {charger.chargerId}</Text>
+                            <Text>Charging Rate: {charger.chargingRate}</Text>
                           </View>
 
-                          <View>
+                          <View style={localStyles.iconContainer}>
                             {charger.chargerId === finalCharger.chargerId ?
-                            (<Text>
-                              Selected this
-                            </Text>)
+                              <Ionicons name="checkmark-circle" size={24} color="green"/>
                             :
                             <></>
                             }
@@ -83,7 +99,7 @@ export default SelectStationScreen = ({ navigation }) => {
         <CustomLongButton
           title="Confirm booking"
           onPress={() => {
-            console.log("haha");
+            confirmBookingButtonPressed()
           }}
         />
       </View>
@@ -103,7 +119,7 @@ const localStyles = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    flex: 1,
+    flex: 2,
   },
   mapContainer: {
     flex: 10,
@@ -112,6 +128,11 @@ const localStyles = StyleSheet.create({
     flex: 10,
   },
   selectChargerContainer: {
-    alignContent: 'stretch'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  iconContainer: {
+    justifyContent:'center',
+
   }
 });

@@ -9,7 +9,6 @@ import ClosestStationView from "./ClosestStationView";
 import GrantLocationScreen from "./GrantLocationScreen";
 import UpcomingAppointmentView from "./UpcomingAppointmentView";
 import ReminderToAddCarScreen from "./ReminderToAddCarScreen";
-// import { styles } from "../components/Design"
 import MapView, { Marker } from "react-native-maps";
 
 export default AutomateBookingScreen = ({ navigation }) => {

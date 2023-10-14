@@ -8,7 +8,7 @@ export default ManualBookingScreenViewController = ( { navigation } ) => {
 
   const { userToken } = useContext(UserContext)
 
-  const findAvailableStationsButtonPressed = async(startTime, endTime) => {
+  const findAvailableStationsButtonPressed = async(currentCar, startTime, endTime) => {
 
     const dateString =
       startTime.getFullYear() + "-" +
@@ -40,7 +40,7 @@ export default ManualBookingScreenViewController = ( { navigation } ) => {
       .then((res) => {
         let data = res.data
         data = data.filter((station) => (station.address !== null))
-        navigation.navigate("SelectStationScreen", { stations: data } )
+        navigation.navigate("SelectStationScreen", { stations: data, currentCar: currentCar} )
       })
       .catch((e) => {
         console.log(`Error finding available stations within ${startTimeString} and ${endTimeString} on ${dateString} ${e}`);

@@ -12,7 +12,7 @@ export default EditProfileViewController = ( { navigation } ) => {
     }
 
     return {
-        editProfileButtonPressed;
+        editProfileButtonPressed
     };
 
 }

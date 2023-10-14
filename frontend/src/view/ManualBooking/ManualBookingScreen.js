@@ -10,10 +10,14 @@ import {
 import { UserContext } from "..//../model/User";
 import ManualBookingScreenViewController from "../../viewController/ManualBookingScreenViewController";
 import CustomLongButton from "../../components/CustomLongButton";
-
+import { useRoute } from "@react-navigation/native";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 export default ManualBookingScreen = ({ navigation }) => {
+
+  const route = useRoute();
+  const currentCar = route.params?.currentCar;
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const [maxDate, setMaxDate] = useState(new Date());
 
@@ -92,6 +96,7 @@ export default ManualBookingScreen = ({ navigation }) => {
       <View style={localStyles.topContainer}>
         <View>
           <Text>Current time: {currentDate.toLocaleTimeString()}</Text>
+          <Text>Booking for: {currentCar.nickname}</Text>
         </View>
 
         <View style={{ alignContent: "center", justifyContent: "center" }}>
@@ -161,6 +166,7 @@ export default ManualBookingScreen = ({ navigation }) => {
               );
             } else {
               findAvailableStationsButtonPressed(
+                currentCar,
                 bookingStartTime,
                 bookingEndTime
               );

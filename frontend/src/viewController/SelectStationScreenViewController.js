@@ -6,6 +6,8 @@ import axios from "axios";
 
 export default SelectStationScreenViewController = ( { navigation }, stations ) => {
 
+  const { currentCar } = useContext(UserContext);
+
   const [ selectedChargers, setSelectedChargers ] = useState(null);
   const [ selectedStation, setSelectedStation ] = useState(null);
 
@@ -28,50 +30,13 @@ export default SelectStationScreenViewController = ( { navigation }, stations ) 
     setFinalCharger(charger)
   }
 
-  const findAvailableStationsButtonPressed = async (startTime, endTime) => {
-    const dateString =
-      startTime.getFullYear() +
-      "-" +
-      ("0" + (startTime.getMonth() + 1)).slice(-2) +
-      "-" +
-      ("0" + startTime.getDate()).slice(-2);
 
-    const startTimeString = startTime.toLocaleTimeString("en-us", {
-      hour12: false,
-    });
-
-    const endTimeString = endTime.toLocaleTimeString("en-us", {
-      hour12: false,
-    });
-
-    let url = `${BASE_URL}/api/appointment/available`;
-
-    axios
-      .post(
-        url,
-        {
-          startTime: startTimeString,
-          endTime: endTimeString,
-          date: dateString,
-        }
-        // {
-        //   headers: { Authorization: `Bearer ${userToken}` },
-        // }
-      )
-      .then((res) => {
-        let data = res.data;
-        data = data.filter((station) => station.address !== null);
-        navigation.navigate("SelectStationScreen", { stations: data });
-      })
-      .catch((e) => {
-        console.log(
-          `Error finding available stations within ${startTimeString} and ${endTimeString} on ${dateString} ${e}`
-        );
-      });
+  const confirmBookingButtonPressed = async () => {
+    navigation.navigate("HomeNavigator");
   };
 
   return {
-    findAvailableStationsButtonPressed,
+    confirmBookingButtonPressed,
     selectedChargers,
     markerPressed,
     selectedStation,
