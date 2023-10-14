@@ -1,8 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Text, View, Alert, SafeAreaView, StyleSheet } from "react-native";
-import { UserContext } from "../model/User";
-import ManualBookingScreenViewController from "../viewController/ManualBookingScreenViewController";
-import CustomLongButton from "../components/CustomLongButton";
+import {
+  Button,
+  Text,
+  View,
+  Alert,
+  SafeAreaView,
+  StyleSheet,
+} from "react-native";
+import { UserContext } from "..//../model/User";
+import ManualBookingScreenViewController from "../../viewController/ManualBookingScreenViewController";
+import CustomLongButton from "../../components/CustomLongButton";
 
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 
@@ -13,6 +20,8 @@ export default ManualBookingScreen = ({ navigation }) => {
   const [bookingStartTime, setBookingStartTime] = useState(new Date());
   const [bookingEndTime, setBookingEndTime] = useState(new Date());
 
+  const { findAvailableStationsButtonPressed } = ManualBookingScreenViewController( {navigation} );
+
   const diffHours = (start, end) => {
     var diff = end.getTime() - start.getTime();
     var hours = Math.floor(diff / 1000 / 60 / 60);
@@ -20,13 +29,12 @@ export default ManualBookingScreen = ({ navigation }) => {
     diff -= hours * 1000 * 60 * 60;
 
     var minutes = Math.floor(diff / 1000 / 60);
-    if (hours < 0)
-       hours = hours + 24;
+    if (hours < 0) hours = hours + 24;
 
     return hours;
-}
+  };
 
-const diffMinutes = (start, end) => {
+  const diffMinutes = (start, end) => {
     var diff = end.getTime() - start.getTime();
     var hours = Math.floor(diff / 1000 / 60 / 60);
 
@@ -36,7 +44,7 @@ const diffMinutes = (start, end) => {
     // If using time pickers with 24 hours format, add the below line get exact hours
 
     return (minutes <= 9 ? "0" : "") + minutes;
-}
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,8 +52,8 @@ const diffMinutes = (start, end) => {
       setMaxDate(addDays(new Date(), 2));
     }, 1000);
 
-    setBookingStartTime(roundDateByMinutes(bookingStartTime, 5))
-    setBookingEndTime(roundDateByMinutes(bookingEndTime, 5))
+    setBookingStartTime(roundDateByMinutes(bookingStartTime, 5));
+    setBookingEndTime(roundDateByMinutes(bookingEndTime, 5));
 
     return () => {
       clearInterval(interval);
@@ -73,39 +81,39 @@ const diffMinutes = (start, end) => {
   };
 
   const roundDateByMinutes = (date, minutes) => {
-
     let ms = 1000 * 60 * minutes; // convert minutes to ms
     let roundedDate = new Date(Math.ceil(date.getTime() / ms) * ms);
-  
-    return roundedDate
-  }
 
+    return roundedDate;
+  };
 
   return (
-    <SafeAreaView style={{flex:1}}>
-
-      <View 
-        style={localStyles.topContainer}
-      >
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={localStyles.topContainer}>
         <View>
           <Text>Current time: {currentDate.toLocaleTimeString()}</Text>
         </View>
 
-        <View style={{alignContent:'center', justifyContent:'center'}}>
-            <RNDateTimePicker
+        <View style={{ alignContent: "center", justifyContent: "center" }}>
+          <RNDateTimePicker
             display="calendar"
             value={bookingStartTime}
             onChange={onChangeDate}
             minimumDate={currentDate}
             maximumDate={maxDate}
-            />
+          />
         </View>
 
         <Text>Hours: {diffHours(bookingStartTime, bookingEndTime)}</Text>
         <Text>Minutes: {diffMinutes(bookingStartTime, bookingEndTime)}</Text>
 
-
-        <Text>Start time {bookingStartTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
+        <Text>
+          Start time{" "}
+          {bookingStartTime.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </Text>
         <RNDateTimePicker
           mode="time"
           display="spinner"
@@ -115,22 +123,24 @@ const diffMinutes = (start, end) => {
           minuteInterval={5}
         />
 
-        <Text>End time {bookingEndTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
+        <Text>
+          End time{" "}
+          {bookingEndTime.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </Text>
         <RNDateTimePicker
           mode="time"
           display="spinner"
           value={bookingEndTime}
-          minimumDate={
-            bookingStartTime
-          }
+          minimumDate={bookingStartTime}
           onChange={onChangeEndTime}
           minuteInterval={5}
         />
       </View>
 
-      <View
-        style={localStyles.bottomContainer}
-        >
+      <View style={localStyles.bottomContainer}>
         <CustomLongButton
           title="Find available stations"
           onPress={() => {
@@ -150,7 +160,10 @@ const diffMinutes = (start, end) => {
                 ]
               );
             } else {
-              navigation.pop();
+              findAvailableStationsButtonPressed(
+                bookingStartTime,
+                bookingEndTime
+              );
             }
           }}
         />
@@ -160,10 +173,10 @@ const diffMinutes = (start, end) => {
 };
 
 const localStyles = StyleSheet.create({
-    topContainer: {
-        flex: 9
-    },
-    bottomContainer: {
-        flex: 1
-    }
-})
+  topContainer: {
+    flex: 9,
+  },
+  bottomContainer: {
+    flex: 1,
+  },
+});

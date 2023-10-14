@@ -16,8 +16,9 @@ import GetHelpScreen from '../view/Settings/Settings Component/GetHelpScreen';
 import PrivacyPolicyScreen from '../view/Settings/Settings Component/PrivacyPolicyScreen';
 import AboutScreen from '../view/Settings/Settings Component/AboutScreen';
 import EditProfileScreen from '../view/Settings/Settings Component/EditProfileScreen';
-import ManualBookingScreen from '../view/ManualBookingScreen';
+import ManualBookingScreen from '../view/ManualBooking/ManualBookingScreen';
 import UpcomingAppointmentView from '../view/UpcomingAppointmentView';
+import SelectStationScreen from '../view/ManualBooking/SelectStationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +79,11 @@ export default AppStack = () => {
                     >
                         <Stack.Screen name="AddCarScreen"
                             component={AddCarScreen}
+                            // options={{headerShown:false}}
+                        />
+
+                        <Stack.Screen name="SelectStationScreen"
+                            component={SelectStationScreen}
                             // options={{headerShown:false}}
                         />
                     </Stack.Group>
