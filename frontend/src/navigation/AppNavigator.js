@@ -69,17 +69,21 @@ export default AppStack = () => {
                     />
 
                     <Stack.Screen
-                        name="UpcomingAppointmentView"
-                        component={UpcomingAppointmentView}
-                        options={{headerShown:true}}
-                    />
-
-                    <Stack.Screen
                         name="ChargingCarView"
                         component={ChargingCarView}
                         options={{headerShown:true}}
                     />
 
+                    <Stack.Screen
+                        name="UpcomingAppointmentView"
+                        component={UpcomingAppointmentView}
+                        options={{headerShown:true}}
+                    />
+                    <Stack.Screen
+                        name="HistoryScreen"
+                        component={HistoryScreen}
+                        options={{headerShown:true}}
+                    />           
 
                     <Stack.Group
                         screenOptions={{presentation: 'modal'}}

@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "../view/HomeScreen";
-import HistoryScreen from "../view/HistoryScreen";
 import MapScreen from "../view/MapScreen";
 import SettingsScreen from "../view/Settings/SettingsScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import ActivityScreen from '../view/ActivityScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +14,7 @@ export default MyTabs = () => {
         <Tab.Navigator>
 
             <Tab.Screen 
-                name="HomeScreen"     
+                name="Home"     
                 component={HomeScreen}  
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
@@ -25,19 +25,8 @@ export default MyTabs = () => {
             />
 
             <Tab.Screen 
-                name="MapScreen"     
-                component={MapScreen}
-                options={{
-                    tabBarIcon: ( {focused, color, size} ) => {
-                        return <Ionicons name="map"/>
-                    },
-                    headerShown:false
-                }}
-            />
-
-            <Tab.Screen 
-                name="HistoryScreen"     
-                component={HistoryScreen}
+                name="Activity"     
+                component={ActivityScreen}
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {
                         return <FontAwesome5 name="clipboard-list"/>
@@ -46,8 +35,20 @@ export default MyTabs = () => {
                 }}
             />
 
+
             <Tab.Screen 
-                name="SettingsScreen"     
+                name="Map"     
+                component={MapScreen}
+                options={{
+                    tabBarIcon: ( {focused, color, size} ) => {
+                        return <Ionicons name="map"/>
+                    },
+                    headerShown:false
+                }}
+            />
+       
+            <Tab.Screen 
+                name="Settings"     
                 component={SettingsScreen}
                 options={{
                     tabBarIcon: ( {focused, color, size} ) => {

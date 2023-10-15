@@ -51,7 +51,6 @@ export default UpcomingAppointmentView = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Appointment details: </Text>
       {/* <Text>The cost of charging is ${upcomingAppointmentDetails.costOfCharging}</Text> */}
       {/* <Text>The distance to stations is {upcomingAppointmentDetails.distance} m</Text>
       <Text>The estimated time of charging is {upcomingAppointmentDetails.estimateTimeOfCharging} hours</Text>
