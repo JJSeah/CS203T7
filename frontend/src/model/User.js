@@ -149,7 +149,7 @@ export const UserProvider = ( { children } ) => {
         }
     }
 
-    const updateProfile = async(newFirstName, newLastName, newEmail) => {
+    const updateProfile = async(newFirstName, newLastName, newEmail, id) => {
         let url = `${BASE_URL}/api/user/${id}`
 
         axios.put(url, {
@@ -192,7 +192,7 @@ export const UserProvider = ( { children } ) => {
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
                 currentAppointment, setCurrentAppointment,
-                currentCar, setCurrentCar
+                currentCar, setCurrentCar, updateProfile
             }}
         >
             { children }

@@ -3,7 +3,7 @@ import { UserContext } from "../model/User";
 
 
 export default RegisterViewController = ( { navigation } ) => {
-    const [ isReady, setIsReady ] = useState(false);      
+    const [ isReady, setIsReady ] = useState(false);
     const { signUp } = useContext(UserContext);
 
     const signUpButtonPressed = (firstName, lastName, username, email, password) => {

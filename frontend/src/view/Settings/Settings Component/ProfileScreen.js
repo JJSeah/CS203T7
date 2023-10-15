@@ -39,6 +39,11 @@ export default ProfileScreen = ( { navigation } ) => {
       title="Email"
       value={userData.email}
       />
+
+      <InBetweenSpace
+      title="userID"
+      value={userData.id}
+      />
       </View>
 
       <View style = {localStyles.buttonContainer}>
@@ -60,7 +65,7 @@ const localStyles = StyleSheet.create({
   },
   informationContainer: {
     flex: 9,
-    backgroundColor: "#fefe",
+    backgroundColor: "blue",
   },
   buttonContainer: {
     flex: 1,
