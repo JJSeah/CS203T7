@@ -78,7 +78,7 @@ public class StationController {
      */
     @PostMapping("/closest")
     @Operation(summary = "Get Closest Station", description = "Get Closest Station by long and lat",tags = {"Algorithm"})
-    public Station slgetClosestStation(@RequestBody Station station) {
+    public Station getClosestStation(@RequestBody Station station) {
         double latitude = station.getLatitude();
         double longitude = station.getLongitude();
         return voronoiService.findClosestStation(latitude, longitude);
