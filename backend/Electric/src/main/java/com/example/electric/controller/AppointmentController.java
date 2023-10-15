@@ -6,14 +6,19 @@ import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Appointment;
 import com.example.electric.model.Car;
 import com.example.electric.model.Station;
+import com.example.electric.model.User;
 import com.example.electric.service.AppointmentService;
 import com.example.electric.service.CarService;
 import com.example.electric.service.VoronoiService;
+import com.example.electric.service.*;
+
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/appointment")
@@ -26,6 +31,9 @@ public class AppointmentController {
 
     @Autowired
     private CarService carService;
+
+    @Autowired
+    private CardService cardService;
 
     /**
      * Retrieve a list of all appointments.
@@ -182,11 +190,17 @@ public class AppointmentController {
      */
     @PutMapping("/completed/{id}")
     @Operation(summary = "complete Appointment", description = "complete Appointment using ID",tags = {"Appointment"})
-    public Appointment completeAppointment(@RequestBody Appointment completedAppointment, @PathVariable("id") long id) {
+//    public Appointment completeAppointment(@RequestBody Appointment completedAppointment, @PathVariable("id") long id) {
+    public Appointment completeAppointment(@PathVariable("id") long id) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        return appointmentService.completedAppointment(completedAppointment, id);
+        Optional<Appointment> completedAppointment = appointmentService.getAppointmentById(id);
+        double cost = 22.2;
+        completedAppointment.get().setCost(cost);
+        String res = cardService.processPayment(completedAppointment.get().getUser().getId(), cost);
+        completedAppointment.get().setTransactionId(res);
+        return appointmentService.completedAppointment(completedAppointment.get(), id);
     }
 
 
@@ -209,6 +223,26 @@ public class AppointmentController {
         appointmentService.deleteAppointment(id);
     }
 
+    @PutMapping("/cancel/{id}")
+    @Operation(summary = "Cancel Appointment", description = "Cancel Appointment using ID",tags = {"Appointment"})
+    public String cancelAppointment(@PathVariable("id") long id) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        else {
+            Appointment appointment = appointmentService.getAppointmentById(id).get();
+            appointment.setStatus("cancelled");
+            String transactionId = appointment.getTransactionId();
+
+            String URL = "http://localhost:9090/payment/cancel/" + transactionId;
+            String obj =  new RestTemplate().getForObject(URL, String.class);
+            appointmentService.updateAppointment(appointment, id);
+            return obj;
+
+        }
+
+    }
+
     @PostMapping ("/available")
     @Operation(summary = "Get Available Stations", description = "Get a list of available stations",tags = {"Appointment"})
     public List<Station> getAvailableStations(@RequestBody Appointment appointment) {
@@ -218,4 +252,14 @@ public class AppointmentController {
 
         return appointmentService.getAvailableStationsAndChargers(startTime, endTime, date);
     }
+
+    @GetMapping("/checkComingAppt")
+    @Operation(summary = "QR code checker", description = "Verfied user has appointment with charger, else if no appt in upcoming 20 mins, allow user to create appointment, else return cannotBookAppoinment", tags = {"Appointment"})
+    public Appointment checkUpcomingAppointment(@RequestBody User user){
+        long stationId = 1;
+        long chargerId = 1;
+        return appointmentService.checkUpcomingAppointment(stationId, chargerId, user);
+    }
+
+    
 }

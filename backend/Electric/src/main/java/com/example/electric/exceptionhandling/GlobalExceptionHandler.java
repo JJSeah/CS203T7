@@ -1,7 +1,7 @@
 package com.example.electric.exceptionhandling;
 
 import com.example.electric.dto.ErrorResponse;
-import com.example.electric.exception.ObjectNotFoundException;
+import com.example.electric.exception.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -82,6 +82,16 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(ExceedMaxManualApptException.class)
     public ResponseEntity<String> handleMaxManualException(ExceedMaxManualApptException e) {
+        return e.toResponseEntity();
+    }
+
+    @ExceptionHandler(CanCreateBookingException.class)
+        public ResponseEntity<String> handleCanCreateBookingException(CanCreateBookingException e) {
+        return e.toResponseEntity();
+    }
+
+        @ExceptionHandler(CannotCreateBookingException.class)
+        public ResponseEntity<String> handleCannotCreateBookingException(CannotCreateBookingException e) {
         return e.toResponseEntity();
     }
 }

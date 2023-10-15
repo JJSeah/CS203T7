@@ -73,19 +73,15 @@ public class StationController {
      * This endpoint calculates and returns the closest station to a given latitude and longitude.
      * The provided 'station' object should contain the latitude and longitude coordinates.
      *
-     * @param appointment An appointment object with start time, end time, date and station latitude and longitude.
+     * @param station A station object with latitude and longitude coordinates.
      * @return The closest station to the provided coordinates.
      */
     @PostMapping("/closest")
     @Operation(summary = "Get Closest Station", description = "Get Closest Station by long and lat",tags = {"Algorithm"})
-    public Station slgetClosestStation(@RequestBody Appointment appointment) {
-        double latitude = appointment.getStation().getLatitude();
-        double longitude = appointment.getStation().getLongitude();
-        String startTime = appointment.getStartTime().toString();
-        String endTime = appointment.getEndTime().toString();
-        String date = appointment.getDate().toString();
-
-        return voronoiService.findClosestStation(latitude, longitude,startTime,endTime,date);
+    public Station getClosestStation(@RequestBody Station station) {
+        double latitude = station.getLatitude();
+        double longitude = station.getLongitude();
+        return voronoiService.findClosestStation(latitude, longitude);
     }
     /**
      * Create a new station in the system.

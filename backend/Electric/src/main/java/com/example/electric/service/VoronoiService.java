@@ -7,16 +7,21 @@ import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
 import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class  VoronoiService implements VoronoiServiceInter {
+public class VoronoiService implements VoronoiServiceInter {
     @Autowired
     private StationService stationService;
 
@@ -30,9 +35,26 @@ public class  VoronoiService implements VoronoiServiceInter {
     private UserService userService;
 
 
-    public Station findClosestStation(double latitude, double longitude, String startTime, String endTime, String dateNow) {
-//        Station[] stations = stationService.getAllStations().toArray(new Station[0]);
-        List<Station> availableStations = appointmentService.getAvailableStationsAndChargers(startTime,endTime,dateNow);
+    public Station findClosestStation(double latitude, double longitude) {
+        //Get current time rounded to 5 minutes
+        LocalTime currentTime = LocalTime.now();
+        int minute = currentTime.getMinute();
+        int roundedMinute = (minute / 5) * 5;
+
+        LocalTime roundedStartTime = currentTime.withMinute(roundedMinute).withSecond(00);
+        String startTime = roundedStartTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        //Calculate end time
+        LocalTime start = LocalTime.parse(startTime);
+        LocalTime end = start.plus(3, ChronoUnit.HOURS);
+        String endTime = end.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        //Get current date
+        LocalDate currentDate = LocalDate.now();
+        String date = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        //Use Voronoi Diagrams to find closest station
+        List<Station> availableStations = appointmentService.getAvailableStationsAndChargers(startTime,endTime,date);
         Coordinate[] stationCoordinates = new Coordinate[availableStations.size()];
         //Mapped into stationCoordinates
         for (int i = 0; i < availableStations.size(); i++) {
@@ -60,24 +82,9 @@ public class  VoronoiService implements VoronoiServiceInter {
 
         try {
             closestStation = stationService.getStationByCoordinate(closestStationCoordinates.getX(), closestStationCoordinates.getY());
-
-//            LocalTime start = LocalTime.parse(startTime);
-//            LocalTime end = LocalTime.parse(endTime);
-//            Duration duration = Duration.between(start,end);
-//            LocalTime timeBetween = LocalTime.MIDNIGHT
-//                    .plusHours(duration.toHours())
-//                    .plusMinutes(duration.toMinutesPart())
-//                    .plusSeconds(duration.toSecondsPart());
-//
-//            Appointment appointment = new Appointment(1,
-//                    Time.valueOf(timeBetween),
-//                    Time.valueOf(start),
-//                    Time.valueOf(end),
-//                    java.sql.Date.valueOf(dateNow),);
         } catch (NullPointerException e) {
             System.out.println("No stations available, should return null");
         } finally {
-
             return closestStation;
         }
     }
@@ -131,7 +138,7 @@ public class  VoronoiService implements VoronoiServiceInter {
 
     public Appointment autobookAppointment(double latitude, double longitude, String startTime, String endTime, String dateNow, Car car, String userEmail) {
         //Find station
-        Station closestStation = this.findClosestStation(latitude,longitude,startTime,endTime,dateNow);
+        Station closestStation = this.findClosestStation(latitude,longitude);
 
         //Find date and time
         LocalTime start = LocalTime.parse(startTime);

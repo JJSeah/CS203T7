@@ -52,17 +52,36 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
         long timeInMinutes = timeInSeconds / 60;
 
         return (int)(timeInMinutes / 5) * 5;
-
     }
 
     public String calculateEstimateTimeOfCharging(Car car) {
-        double time = (car.getBatteryCapacity() * (100 - car.getBatteryPercentage())) / (60 * 60);
+        //Car parameters
+        double batteryCapacity = car.getBatteryCapacity();
+        double batteryPercentage = car.getBatteryPercentage();
+        double currentStateOfCharge = batteryCapacity * batteryPercentage / 100;
+
+        //Standardise charging power at chargers since this represents the most common charging speed - level 2
+        //with a range from 11kW to 19kW in the new models, hence choosing the average of 15kW
+        double chargingPower = 15;
+
+        //Calculate time
+        double time = (batteryCapacity - currentStateOfCharge) / chargingPower;
 
         return "" + time;
     }
 
     public String calculateCostOfCharging(Car car) {
-        double cost = (car.getBatteryCapacity() * (100.0 - car.getBatteryPercentage())) / 1 * 0.12;
+        //Car parameters
+        double batteryCapacity = car.getBatteryCapacity();
+        double batteryPercentage = car.getBatteryPercentage();
+        double batteryToCharge = batteryCapacity * (1 - batteryPercentage / 100);
+
+        //Based on research, most charging rate in Singapore ranges from $0.40 to $0.60
+        //Hence we will choose the average of $0.50
+        double chargingCost = 0.50;
+
+        //Calculate cost
+        double cost = batteryToCharge / chargingCost;
 
         return "" + cost;
     }

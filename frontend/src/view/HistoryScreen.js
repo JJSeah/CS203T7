@@ -164,19 +164,6 @@ export default HistoryScreen = ({navigation}) => {
         </View>
       </View>
 
-      {/* <ScrollView>
-        {filteredData.map((item) => {
-          return(
-            <View key={item.key} style={historyStyles.recordContainer}>
-              <Text style={styles.bodyText}>
-                station: {item.station}, 
-                date: {item.date}, 
-                cost: {item.cost}
-              </Text> 
-              </View>
-          );
-        })}
-      </ScrollView> */}
 
       {monthValue && yearValue && filteredRecords.length === 0 && (
         <View>
@@ -225,8 +212,6 @@ export default HistoryScreen = ({navigation}) => {
         />
       )}      
 
-      <Button title='test upcoming appointment screen'
-      onPress={testButtonPressed}/>
     </SafeAreaView> 
   )
 }
