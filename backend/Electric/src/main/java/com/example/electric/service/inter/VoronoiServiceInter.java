@@ -8,7 +8,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 
 public interface VoronoiServiceInter {
-    Station findClosestStation(double latitude, double longitude, String startTime, String endTime, String dateNow)
+    Station findClosestStation(double latitude, double longitude)
             throws Exception;
     Polygon findCell(Geometry diagram, Coordinate stationCoordinate);
     Coordinate findWithinCell(Polygon cell, Coordinate[] coordinates);
