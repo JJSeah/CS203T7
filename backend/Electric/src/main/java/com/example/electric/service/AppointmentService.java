@@ -1,16 +1,22 @@
 package com.example.electric.service;
 
-import com.example.electric.exception.ExceedMaxManualApptException;
+import com.example.electric.exception.*;
 import com.example.electric.model.Appointment;
+import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
+import com.example.electric.model.User;
 import com.example.electric.respository.AppointmentRepository;
 import com.example.electric.respository.UserRepository;
 import com.example.electric.service.inter.AppointmentServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -171,5 +177,40 @@ public class AppointmentService implements AppointmentServiceInter {
     Appointment completedAppointment = updateAppointment(updatedAppointment, id);
 
     return completedAppointment;
+    }
+
+    public Appointment checkUpcomingAppointment(long stationId, long chargerId, User user){
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        //return list of active appointment at charger 
+        List<Appointment> upcomingAppointment = appointmentRepository.findAppointmentsByStationIdAndChargerIdAndStatus(stationId, chargerId, "Active", currentDate);
+        if(upcomingAppointment == null){
+            throw new CanCreateBookingException();
+        }
+        upcomingAppointment.sort((appointment1, appointment2) -> appointment1.getStartTime().compareTo(appointment2.getStartTime()));
+
+        Appointment firstAppointment = upcomingAppointment.get(0);
+        LocalDate firstApptDate = firstAppointment.getDate().toLocalDate();
+        LocalTime firstApptTime = firstAppointment.getStartTime().toLocalTime();
+
+        //Check if User has an appointment in the next 15 minute, if yes return the appointment
+        if(firstApptDate.equals(currentDate) && firstAppointment.getUser().getId() == user.getId()){
+            return firstAppointment;
+        }
+        // //check if 
+        // else if(firstApptDate == currentDate && firstAppointment.getUser().getId() != user.getId() && currentTime.until(firstApptTime, ChronoUnit.MINUTES) < 15){
+        //         throw new CannotCreateBookingException(firstApptTime);
+        // }
+
+        //else if next appointment has no booking booking in next 30 mins, return canCreatebooking exception, but need to leave
+        //within time to next appointment. 
+        else if (firstApptDate.equals(currentDate)&& currentTime.until(firstApptTime, ChronoUnit.MINUTES) >= 20){
+            throw new CanCreateBookingException(firstApptTime);
+        }
+        //else return CanCreateBookingException.
+        else {
+            throw new CannotCreateBookingException(firstApptTime);
+        }
     }
 }

@@ -77,4 +77,6 @@ public class ChargerService implements ChargerServiceInter {
         chargerRepository.deleteById(chargerId);
         return deleted;
     }
+
+
 }

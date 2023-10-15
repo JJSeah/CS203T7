@@ -6,6 +6,7 @@ import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Appointment;
 import com.example.electric.model.Car;
 import com.example.electric.model.Station;
+import com.example.electric.model.User;
 import com.example.electric.service.AppointmentService;
 import com.example.electric.service.CarService;
 import com.example.electric.service.VoronoiService;
@@ -218,4 +219,14 @@ public class AppointmentController {
 
         return appointmentService.getAvailableStationsAndChargers(startTime, endTime, date);
     }
+
+    @GetMapping("/checkComingAppt")
+    @Operation(summary = "QR code checker", description = "Verfied user has appointment with charger, else if no appt in upcoming 20 mins, allow user to create appointment, else return cannotBookAppoinment", tags = {"Appointment"})
+    public Appointment checkUpcomingAppointment(@RequestBody User user){
+        long stationId = 1;
+        long chargerId = 1;
+        return appointmentService.checkUpcomingAppointment(stationId, chargerId, user);
+    }
+
+    
 }
