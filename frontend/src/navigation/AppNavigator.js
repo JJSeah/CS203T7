@@ -19,6 +19,7 @@ import EditProfileScreen from '../view/Settings/Settings Component/EditProfileSc
 import ManualBookingScreen from '../view/ManualBooking/ManualBookingScreen';
 import UpcomingAppointmentView from '../view/UpcomingAppointmentView';
 import SelectStationScreen from '../view/ManualBooking/SelectStationScreen';
+import ChargingCarView from '../view/ChargingCarView';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,6 +71,12 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="UpcomingAppointmentView"
                         component={UpcomingAppointmentView}
+                        options={{headerShown:true}}
+                    />
+
+                    <Stack.Screen
+                        name="ChargingCarView"
+                        component={ChargingCarView}
                         options={{headerShown:true}}
                     />
 
