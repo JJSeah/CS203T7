@@ -22,7 +22,7 @@ public class Card {
     @Column(name="name")
     private String name;
     @Column(name="number")
-    private long number;
+    private String number;
     @Column(name="expiry")
     private Date expiry;
 
@@ -34,7 +34,7 @@ public class Card {
     public Card(long l, String johnDoe, String number, String s)  {
         this.id = l;
         this.name = johnDoe;
-        this.number = Long.parseLong(number);
+        this.number = number;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Date date = Date.valueOf(LocalDate.parse(s, formatter));
         this.expiry = date;

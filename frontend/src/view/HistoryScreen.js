@@ -225,8 +225,6 @@ export default HistoryScreen = ({navigation}) => {
         />
       )}      
 
-      <Button title='test upcoming appointment screen'
-      onPress={testButtonPressed}/>
     </SafeAreaView> 
   )
 }

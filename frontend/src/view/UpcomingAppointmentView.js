@@ -4,12 +4,15 @@ import { UserContext } from '../model/User';
 // import { styles } from '../components/Design';
 import { BarCodeScanner } from 'expo-barcode-scanner'; 
 import { Camera } from 'expo-camera';
+import UpcomingAppointmentViewController from '../viewController/UpcomingAppointmentViewController';
 
 export default UpcomingAppointmentView = ({ navigation }) => {
  
   const [ hasPermission, setHasPermission ] = useState(null); 
   const [ scanned, setScanned ] = useState(false);
   const { upcomingAppointmentDetails } = useContext(UserContext);
+
+  const {chargingProgressButtonPressed} = UpcomingAppointmentViewController({navigation})
 
   useEffect(() => {
     (async() => {
@@ -67,7 +70,8 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         onPress={() => setScanned(false)}
         disabled={scanned}
       >
-        <Text>Scan QR</Text>
+        <Button title="Scan QR"
+         onPress={chargingProgressButtonPressed}/>
       </TouchableOpacity>
     </View>
   );

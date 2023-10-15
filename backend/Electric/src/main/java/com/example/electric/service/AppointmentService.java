@@ -176,8 +176,11 @@ public class AppointmentService implements AppointmentServiceInter {
     // Update the appointment
     Appointment completedAppointment = updateAppointment(updatedAppointment, id);
 
+
+
     return completedAppointment;
     }
+
 
     public Appointment checkUpcomingAppointment(long stationId, long chargerId, User user){
         LocalDate currentDate = LocalDate.now();
@@ -213,4 +216,5 @@ public class AppointmentService implements AppointmentServiceInter {
             throw new CannotCreateBookingException(firstApptTime);
         }
     }
+
 }
