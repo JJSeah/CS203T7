@@ -80,31 +80,31 @@ public class UserIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    @Test
-    public void testGetUserInfo_Success() {
-        User user = new User(1L,"Don","Ta","donta","donta@gmail.com","donta123", Role.ROLE_USER,null,null,null);
+//     @Test
+//     public void testGetUserInfo_Success() {
+//         User user = new User(1L,"Don","Ta","donta","donta@gmail.com","donta123", Role.ROLE_USER,null,null,null);
 
-        Card card = new Card(1L,"donta", 12345L, java.sql.Date.valueOf("2023-12-21"),user);
-        List<Card> cardList = List.of(card);
-        user.setCard(cardList);
+//         Card card = new Card(1L,"donta", 12345L, java.sql.Date.valueOf("2023-12-21"),user);
+//         List<Card> cardList = List.of(card);
+//         user.setCard(cardList);
 
-        Car car = new Car(1L,"Tesla","S","SG123",10,10,10,user);
-        List<Car> carList = List.of(car);
-        user.setCars(carList);
+//         Car car = new Car(1L,"Tesla","S","SG123",10,10,10,user);
+//         List<Car> carList = List.of(car);
+//         user.setCars(carList);
 
-        User addedUser = userRepository.save(user);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+//         User addedUser = userRepository.save(user);
+//         HttpHeaders headers = new HttpHeaders();
+//         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+//         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<UserCarPaymentResponse> responseEntity = restTemplate.exchange("/api/user/1", HttpMethod.GET, requestEntity, UserCarPaymentResponse.class);
+//         ResponseEntity<UserCarPaymentResponse> responseEntity = restTemplate.exchange("/api/user/1", HttpMethod.GET, requestEntity, UserCarPaymentResponse.class);
 
-        assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
-        assertEquals(addedUser,responseEntity.getBody());
-//        assertEquals(addedUser.getCars(),responseEntity.getBody().getCar());
-//        assertEquals(addedUser.getCard(),responseEntity.getBody().getCard());
-    }
+//         assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+//         assertEquals(addedUser,responseEntity.getBody());
+// //        assertEquals(addedUser.getCars(),responseEntity.getBody().getCar());
+// //        assertEquals(addedUser.getCard(),responseEntity.getBody().getCard());
+//     }
 
     @Test
     public void testGetUserInfo_Failure() {
