@@ -128,10 +128,10 @@ public class DistanceMatrixServiceTest {
         Car car = new Car(1L,"name","Tesla","GH123",80,40,60,null);
 
         // Calculate estimated time for charging
-        String estimatedTime = distanceMatrixService.calculateEstimateTimeOfCharging(car);
+        int estimatedTime = distanceMatrixService.calculateEstimateTimeOfCharging(car);
 
         // Expected result: (60 * (100 - 20)) / (60 * 60) = 1 hour
-        String expectedTime = "1.0";
+        int expectedTime = 60;
 
         // Assert that the calculated estimated time matches the expected time
         assertEquals(expectedTime, estimatedTime);
@@ -142,10 +142,10 @@ public class DistanceMatrixServiceTest {
         Car car = new Car(1L,"name","Tesla","GH123",80,40,60,null);
 
         // Calculate estimated time for charging
-        String estimatedCost = distanceMatrixService.calculateCostOfCharging(car);
+        double estimatedCost = distanceMatrixService.calculateCostOfCharging(car);
 
-        // Expected result: (60 * (100 - 40)) / 1000 * 0.12 = 0.432 USD
-        String expectedCost = "0.432";
+        // Expected result: (60 * (100 - 40) / 100) / 15 * 10 = 0.432 USD
+        double expectedCost = 24;
 
         // Assert that the calculated estimated time matches the expected time
         assertEquals(expectedCost, estimatedCost);

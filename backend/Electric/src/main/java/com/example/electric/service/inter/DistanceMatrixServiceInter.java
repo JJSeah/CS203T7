@@ -12,7 +12,7 @@ public interface DistanceMatrixServiceInter {
 
     int getDurationByID(Station station) throws Exception;
 
-    String calculateEstimateTimeOfCharging(Car car);
+    int calculateEstimateTimeOfCharging(Car car);
 
-    String calculateCostOfCharging(Car car);
+    double calculateCostOfCharging(Car car);
 }
