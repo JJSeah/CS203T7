@@ -4,6 +4,7 @@ import { UserContext } from "../model/User";
 
 export default ChargingCarViewController = ( { navigation } ) => {
     // const [ isReady, setIsReady ] = useState(false);      
+    const [ buttonState, setButtonState ] = useState("STOP");
 
     //test 
     const stopButtonPressed = () => {
@@ -18,6 +19,8 @@ export default ChargingCarViewController = ( { navigation } ) => {
     
 
     return {
+        buttonState, 
+        setButtonState, 
         stopButtonPressed, 
         finishButtonPressed
     };
