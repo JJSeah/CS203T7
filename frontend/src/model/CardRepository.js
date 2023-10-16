@@ -5,7 +5,7 @@ import { BASE_URL } from "../constants/Config";
 import { UserContext } from "./User";
 
 export const CardRepository = () => {
-    const{userToken, userId, userCards, setUserCards, setCurrentCard } = 
+    const{userToken, userId, setUserCard, } = 
     useContext(UserContext);
 
 
@@ -22,7 +22,7 @@ const addCardToBackend = async(newCard, { navigation }) => {
         }
         )
         .then((res) => {
-            loadCardsData()
+            loadCardData()
             console.log(res.data)
             navigation.pop()
         })
@@ -31,28 +31,22 @@ const addCardToBackend = async(newCard, { navigation }) => {
         });
     }
 
-    const loadCardsData = async() => {
+    const loadCardData = async() => {
         let url = `${BASE_URL}/api/card/user/${userId}`;
         
-        setUserCards(null)
+        setUserCard(null)
 
         axios.get(url)
         .then((res) => {
             let data = res.data;
 
             data = data.reverse();
-            setUserCards(data);
-
-            if (data.length > 0) {
-                setCurrentCard(data[0])
-            } else {
-                setCurrentCard(null)
-            }
+            setUserCard(data);
         })
         .catch((e) => {
             console.log(`Error adding card to back end ${e}`);
         })
     }
 
-    return { addCardToBackend, loadCardsData };
+    return { addCardToBackend, loadCardData };
 };
