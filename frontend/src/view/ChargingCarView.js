@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Dimensions, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Circle, Text as SvgText} from 'react-native-svg';
 // import { styles } from "../components/Design";
-import Animated, { withTiming, useSharedValue, useAnimatedProps, useDerivedValue, Easing } from 'react-native-reanimated'; 
+import Animated, { withTiming, useSharedValue, useAnimatedProps, useDerivedValue, Easing, runOnJS } from 'react-native-reanimated'; 
 import { ReText } from 'react-native-redash';
 import ChargingCarViewController from "../viewController/ChargingCarViewController";
 
@@ -18,30 +18,34 @@ const radius = circleLength / ( 2 * Math.PI);
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export default ChargingCarView = ( { navigation } ) => {
-    const { stopButtonPressed, finishButtonPressed } = ChargingCarViewController({ navigation })
-    const [ buttonState, setButtonState ] = useState('STOP');
+    const { stopButtonPressed, finishButtonPressed, buttonState, setButtonState } = ChargingCarViewController({ navigation })
+    // const [ buttonState, setButtonState ] = useState('STOP');
     const progress = useSharedValue(0);
 
     useEffect(() => {
-        progress.value = withTiming(1, {duration:2000, easing: Easing.linear })
+        progress.value = withTiming(1, {duration:4000, easing: Easing.linear }, () => {
+        if (progress.value >= 1){
+            runOnJS(setButtonState)('FINISH');
+        }
+        });
     }, []);
 
-    useEffect(() => {
-        if(progress.value >= 0.99){
-            setButtonState('FINISH');
-        }
-    }, [progress.value]);
+    // useEffect(() => {
+    //     if(progress.value >= 0.99){
+    //         setButtonState('FINISH');
+    //     }
+    // }, [progress.value]);
 
     const animatedProps = useAnimatedProps(() => ({
         strokeDashoffset: circleLength * (1-progress.value)
     }));
 
     const progressText = useDerivedValue(() => {
-        return `${Math.floor(progress.value * 100)}`; 
+        return `${Math.floor(progress.value * 100)}%`; 
     });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={chargingStyles.container}>
         {/* <ReText style={styles.progressText} text={progressText}/> */}
       <Svg>
         <Circle 
@@ -70,7 +74,7 @@ export default ChargingCarView = ( { navigation } ) => {
             fontSize={20}
             fill="white" 
             >
-            <ReText text={progressText}/>
+            <ReText style={chargingStyles.progressText} text={progressText}/>
                
         </SvgText>
         </Svg>
@@ -82,20 +86,23 @@ export default ChargingCarView = ( { navigation } ) => {
         } else if (buttonState === 'FINISH'){
             finishButtonPressed();
         }
-        }}/>
+        }}
+        color={buttonState === 'STOP' ? 'red' : 'green'}/>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
+const chargingStyles = StyleSheet.create({
     container:{
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center', 
     }, 
     progressText: {
-        fontSize: 80, 
+        fontSize: 70, 
         color: 'white', 
-        textAlign: 'center'
+        textAlign: 'center', 
+        margin: 165, 
+        marginHorizontal: 30, 
     }
 })
