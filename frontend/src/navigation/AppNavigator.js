@@ -20,6 +20,7 @@ import ManualBookingScreen from '../view/ManualBooking/ManualBookingScreen';
 import UpcomingAppointmentView from '../view/UpcomingAppointmentView';
 import SelectStationScreen from '../view/ManualBooking/SelectStationScreen';
 import ChargingCarView from '../view/ChargingCarView';
+import HistoryScreen from '../view/HistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,6 +80,7 @@ export default AppStack = () => {
                         component={UpcomingAppointmentView}
                         options={{headerShown:true}}
                     />
+
                     <Stack.Screen
                         name="HistoryScreen"
                         component={HistoryScreen}
