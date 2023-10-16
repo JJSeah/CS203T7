@@ -14,6 +14,7 @@ export const UserProvider = ( { children } ) => {
     const [ userId, setUserId ] = useState(null);
     const [ userData, setUserData ] = useState(null);
     const [ userCars, setUserCars ] = useState([]);
+    const [ userCard, setUserCard] = useState(null);
 
     const [ currentCar, setCurrentCar ] = useState(null);
 
@@ -111,6 +112,7 @@ export const UserProvider = ( { children } ) => {
             }
             setUserData(userData)
             setUserCars(userCars)
+            setUserCard(userCard)
 
             getAllStations()
         })
@@ -163,7 +165,7 @@ export const UserProvider = ( { children } ) => {
         }).catch((e) => {
             console.log(`Error updating profile ${e}`);
         });
-    };
+    }
 
 
     const getAllStations = async() => {
@@ -186,8 +188,8 @@ export const UserProvider = ( { children } ) => {
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, userCars, allStations, 
-                logIn, logOut, signUp, setUserCars, 
+            value={{ userToken, userId, userData, userCars, userCard, allStations, 
+                logIn, logOut, signUp, setUserCars, setUserCard,
                 userCoordinates, setUserCoordinates,
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,

@@ -105,7 +105,7 @@ export default EditProfileScreen = ( { navigation } ) => {
       <View style={{margin: 40, marginBottom: 35}}>
         <CustomLongButton
         title="Confirm"
-        onPress={() => { confirmEditProfileButtonPressed(values.firstName, values.lastName, values.username, userData.id)}}
+        onPress={() => { confirmEditProfileButtonPressed(values.firstName, values.lastName, values.email, userData.id)}}
         disabled={!isValid}
         />
       </View>
