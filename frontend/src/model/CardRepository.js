@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import * as SecureStore from "expo-secure-store";
+
 import axios from "axios";
 import { BASE_URL } from "../constants/Config";
 import { UserContext } from "./User";
@@ -14,8 +14,8 @@ const addCardToBackend = async(newCard, { navigation }) => {
 
     axios.post(url, {
         name: newCard.name,
-        number = newCard.number,
-        expiry = newCard.expiry,
+        number: newCard.number,
+        expiry: newCard.expiry,
         }, 
         {
         headers: { Authorization: `Bearer ${userToken}` },

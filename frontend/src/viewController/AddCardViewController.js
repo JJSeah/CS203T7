@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
-import { CardRepository } from "../model/CardRepository"
-import { UserContext } from "../model/User";
+import { CardRepository } from "../model/CardRepository";
 
 export default AddCardViewController = ( { navigation }) => {
     const { addCardToBackend } = CardRepository();
@@ -18,7 +17,7 @@ export default AddCardViewController = ( { navigation }) => {
         const newCard = {
             "name" : name,
             "number": number,
-            "expiry": expiryDateString
+            "expiry": expiryDateString,
         }
         addCardToBackend(newCard, { navigation } );
     }

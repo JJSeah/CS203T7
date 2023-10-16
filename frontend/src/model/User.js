@@ -14,10 +14,9 @@ export const UserProvider = ( { children } ) => {
     const [ userId, setUserId ] = useState(null);
     const [ userData, setUserData ] = useState(null);
     const [ userCars, setUserCars ] = useState([]);
-    const [ userCards, setUserCards] = useState([]);
+    const [ userCard, setUserCard] = useState(null);
 
     const [ currentCar, setCurrentCar ] = useState(null);
-    const[ currentCard, setCurrentCard ] = useState(null);
 
     const [ allStations, setAllStations ] = useState([]);
     const [ userCoordinates, setUserCoordinates ] = useState (null);
@@ -104,19 +103,16 @@ export const UserProvider = ( { children } ) => {
             let data = res.data
             let userData = data.user
             let userCars = data.car
-            let userCards = data.card
+            let userCard = data.card
 
             console.log(data)
 
             if (userCars.length > 0) {
                 setCurrentCar(userCars[0])
             }
-            if (userCards.length > 0) {
-                setUserCards(userCards[0])
-            }
             setUserData(userData)
             setUserCars(userCars)
-            setUserCards(userCards)
+            setUserCard(userCard)
 
             getAllStations()
         })
@@ -131,7 +127,6 @@ export const UserProvider = ( { children } ) => {
         setUserId(null);
         setUserData(null);
         setCurrentCar(null);
-        setCurrentCard(null)
 
         SecureStore.deleteItemAsync(userTokenString);
         SecureStore.deleteItemAsync(userIdString);
@@ -193,13 +188,13 @@ export const UserProvider = ( { children } ) => {
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, userCars, userCards, allStations, 
-                logIn, logOut, signUp, setUserCars, setUserCards,
+            value={{ userToken, userId, userData, userCars, userCard, allStations, 
+                logIn, logOut, signUp, setUserCars, setUserCard,
                 userCoordinates, setUserCoordinates,
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
                 currentAppointment, setCurrentAppointment,
-                currentCar, setCurrentCar, currentCard, setCurrentCard, updateProfile
+                currentCar, setCurrentCar, updateProfile
             }}
         >
             { children }
