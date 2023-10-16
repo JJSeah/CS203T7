@@ -55,8 +55,8 @@ public class UserService implements UserServiceInter {
             if(updatedUser.getLastName() != null){
              user.setLastName(updatedUser.getLastName());
             }
-            if(updatedUser.getUsername() != null){
-            user.setUsernames(updatedUser.getUsername());
+            if(updatedUser.getUsernames() != null){
+            user.setUsernames(updatedUser.getUsernames());
             }
             if(updatedUser.getEmail() != null){
                 user.setEmail(updatedUser.getEmail());
