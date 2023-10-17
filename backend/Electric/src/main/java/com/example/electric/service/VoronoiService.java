@@ -150,7 +150,7 @@ public class VoronoiService implements VoronoiServiceInter {
                 .plusSeconds(duration.toSecondsPart());
 
         //Find cost
-        Double cost = Double.parseDouble(distanceMatrixService.calculateCostOfCharging(car));
+        double cost = distanceMatrixService.calculateCostOfCharging(car);
 
         //Find user
         User user = userService.getUserByEmail(userEmail);

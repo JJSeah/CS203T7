@@ -54,7 +54,7 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
         return (int)(timeInMinutes / 5) * 5;
     }
 
-    public String calculateEstimateTimeOfCharging(Car car) {
+    public int calculateEstimateTimeOfCharging(Car car) {
         //Car parameters
         double batteryCapacity = car.getBatteryCapacity();
         double batteryPercentage = car.getBatteryPercentage();
@@ -67,23 +67,25 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
         //Calculate time
         double time = (batteryCapacity - currentStateOfCharge) / chargingPower;
 
-        return "" + time;
+        double timeInMinutes = time * 60;
+
+        return (int)(timeInMinutes / 5) * 5;
     }
 
-    public String calculateCostOfCharging(Car car) {
+    public double calculateCostOfCharging(Car car) {
         //Car parameters
-        double batteryCapacity = car.getBatteryCapacity();
-        double batteryPercentage = car.getBatteryPercentage();
-        double batteryToCharge = batteryCapacity * (1 - batteryPercentage / 100);
+        int timeOfCharging = this.calculateEstimateTimeOfCharging(car);
+        double timeOfChargingInHour = timeOfCharging / 60;
 
-        //Based on research, most charging rate in Singapore ranges from $0.40 to $0.60
-        //Hence we will choose the average of $0.50
-        double chargingCost = 0.50;
+        //Based on research, charging rate is around $3 per hour for overnight slow charging
+        //and $25 for rapid charging. Due to the choice of moderate level of charging rate at level 2,
+        //and to encourage the use of EV in Singapore, we have decided to choose the charging cost
+        //per hour to be at $10.
+
+        double chargingCostRate = 10;
 
         //Calculate cost
-        double cost = batteryToCharge / chargingCost;
-
-        return "" + cost;
+        return chargingCostRate * timeOfChargingInHour;
     }
 
 //    public long getDistanceByName(String latitude,String longitude, String station2) throws Exception {

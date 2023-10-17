@@ -1,5 +1,6 @@
 package com.example.electric.controller;
 
+import com.example.electric.model.Car;
 import com.example.electric.model.Station;
 import com.example.electric.service.CarService;
 import com.example.electric.service.DistanceMatrixService;
@@ -76,8 +77,8 @@ public class DistanceMatrixController {
         // Calculate time to arrive, distance, cost, and estimate time of charging
         String timeToArrive = String.valueOf(distanceMatrixService.getDurationByID(station));
         String distance = String.valueOf(distanceMatrixService.getDistanceByID(station));
-        String costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUserId(userId, carId));
-        String estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));
+        double costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUserId(userId, carId));
+        int estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));
 
         // Create a Map to return the information in JSON format
         Map<String, Object> response = new HashMap<>();
@@ -127,6 +128,33 @@ public class DistanceMatrixController {
             "Algorithm" })
     public long getDurationByID(@RequestBody Station station) throws Exception {
         return distanceMatrixService.getDurationByID(station);
+    }
+
+    /**
+     * Calculate and retrieve the duration of charging.
+     *
+     * This endpoint calculates and returns the duration (time) it takes to travel
+     * the time needed to fully charge the car.
+     *
+     * @param car A car object containing battery capacity and percentage.
+     * @return The calculated duration (time) to charge.
+     */
+    @PostMapping("/charging/time")
+    public int getChargingTime(@RequestBody Car car) {
+        return distanceMatrixService.calculateEstimateTimeOfCharging(car);
+    }
+
+    /**
+     * Calculate and retrieve the cost of charging.
+     *
+     * This endpoint calculates and returns the cost to fully charge the car.
+     *
+     * @param car A car object containing battery capacity and percentage.
+     * @return The calculated cost to charge.
+     */
+    @PostMapping("/charging/cost")
+    public double getChargingCost(@RequestBody Car car) {
+        return distanceMatrixService.calculateCostOfCharging(car);
     }
 
     // @GetMapping("/distance/{latitude}/{longitude}/{destination}")
