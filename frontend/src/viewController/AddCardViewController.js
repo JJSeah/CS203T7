@@ -10,6 +10,7 @@ export default AddCardViewController = ( { navigation }) => {
 
     const addCardButtonPressed = () => {
         const expiryDateString =
+      startTime.getFullYear() + "-" +
       ("0" + (startTime.getMonth() + 1)).slice(-2) + "-" +
       ("0" + startTime.getDate()).slice(-2);
 

@@ -16,7 +16,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 SplashScreen.preventAutoHideAsync();
 
-const SignupSchema = Yup.object().shape({
+const EditSchema = Yup.object().shape({
 
   firstName: Yup.string()
     .required('Please enter your first name.'),
@@ -53,7 +53,7 @@ export default EditProfileScreen = ( { navigation } ) => {
       lastName:'',
       email:'', 
   }}
-  validationSchema={SignupSchema}
+  validationSchema={EditSchema}
   validateOnMount={true}
   onSubmit={values => console.log(values)}
   > 
