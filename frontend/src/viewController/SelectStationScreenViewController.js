@@ -32,6 +32,7 @@ export default SelectStationScreenViewController = ( { navigation }, stations ) 
 
 
   const confirmBookingButtonPressed = async () => {
+    console.log()
     navigation.navigate("HomeNavigator");
   };
 

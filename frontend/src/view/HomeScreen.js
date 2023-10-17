@@ -122,10 +122,6 @@ export default HomeScreen = ({ navigation }) => {
           onPress={automateBookingButtonPressed}
         />
 
-        <CustomLongButton
-          title="Scan QR"
-          onPress={() => {navigation.navigate("UpcomingAppointmentView")}}
-        />
       </View>
     </SafeAreaView>
   );

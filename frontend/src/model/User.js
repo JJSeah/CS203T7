@@ -151,13 +151,13 @@ export const UserProvider = ( { children } ) => {
         }
     }
 
-    const updateProfile = async(newFirstName, newLastName, newEmail, id) => {
+    const updateProfile = async(newFirstName, newLastName, newUsername, id) => {
         let url = `${BASE_URL}/api/user/${id}`
 
         axios.put(url, {
             "firstName": newFirstName,
             "lastName": newLastName,
-            "email": newEmail,
+            "usernames": newUsername,
         })
         .then(() => {
             console.log("Successfully updated profile in backend")

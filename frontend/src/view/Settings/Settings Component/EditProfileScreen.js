@@ -24,10 +24,8 @@ const EditSchema = Yup.object().shape({
   lastName: Yup.string()
     .required('Please enter your last name.'),
 
-  email: Yup.string()
-    .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, 
-    'Invalid email format.')
-    .required('Please enter your email address.'),
+  username: Yup.string()
+    .required('Please enter your username.'),
 });
 
 
@@ -51,7 +49,7 @@ export default EditProfileScreen = ( { navigation } ) => {
   <Formik initialValues ={{
       firstName:'', 
       lastName:'',
-      email:'', 
+      username:'', 
   }}
   validationSchema={EditSchema}
   validateOnMount={true}
@@ -92,20 +90,20 @@ export default EditProfileScreen = ( { navigation } ) => {
          
 
         <CustomTextField
-          placeholder = 'Email'
-          values ={values.email}
-          onChangeText={handleChange('email')}
-          onBlur={() => setFieldTouched('email')}/>  
+          placeholder = 'Username'
+          values ={values.username}
+          onChangeText={handleChange('username')}
+          onBlur={() => setFieldTouched('username')}/>  
 
-        {errors.email && touched.email && (
-          <Text style={registerStyle.textFailed}>{errors.email}</Text>
+        {errors.username && touched.username && (
+          <Text style={registerStyle.textFailed}>{errors.username}</Text>
         )}
       </View> 
 
       <View style={{margin: 40, marginBottom: 35}}>
         <CustomLongButton
         title="Confirm"
-        onPress={() => { confirmEditProfileButtonPressed(values.firstName, values.lastName, values.email, userData.id)}}
+        onPress={() => { confirmEditProfileButtonPressed(values.firstName, values.lastName, values.username, userData.id)}}
         disabled={!isValid}
         />
       </View>
