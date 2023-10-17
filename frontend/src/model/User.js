@@ -43,6 +43,10 @@ export const UserProvider = ( { children } ) => {
         })
     }
 
+    const getAppointment = async() => {
+        console.log("Getting appointment from backend")
+    }
+
     // const confirmAppointment = async() => {
 
     // }
@@ -194,7 +198,7 @@ export const UserProvider = ( { children } ) => {
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
                 currentAppointment, setCurrentAppointment,
-                currentCar, setCurrentCar, updateProfile
+                currentCar, setCurrentCar, updateProfile, getAppointment
             }}
         >
             { children }

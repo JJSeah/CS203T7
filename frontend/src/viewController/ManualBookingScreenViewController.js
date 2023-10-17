@@ -33,14 +33,22 @@ export default ManualBookingScreenViewController = ( { navigation } ) => {
             "endTime": endTimeString,
             "date": dateString
         },
-        // {
-        //   headers: { Authorization: `Bearer ${userToken}` },
-        // }
+        {
+          headers: { Authorization: `Bearer ${userToken}` },
+        }
       )
       .then((res) => {
         let data = res.data
         data = data.filter((station) => (station.address !== null))
-        navigation.navigate("SelectStationScreen", { stations: data, currentCar: currentCar} )
+        navigation.navigate("SelectStationScreen", { 
+          stations: data, 
+          currentCar: currentCar,
+          timings: {
+            dateString,
+            startTimeString,
+            endTimeString
+          }
+        })
       })
       .catch((e) => {
         console.log(`Error finding available stations within ${startTimeString} and ${endTimeString} on ${dateString} ${e}`);
