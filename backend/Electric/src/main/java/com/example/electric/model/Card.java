@@ -40,4 +40,7 @@ public class Card {
         this.expiry = date;
 
     }
+
+    public Card(long l, String string, long m, Date valueOf, User user2) {
+    }
 }
