@@ -1,5 +1,6 @@
 package com.example.electric.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Charger {
     private double chargingRate;
 
     //Link to Station
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="station_id")
     private Station station;

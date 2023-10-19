@@ -13,6 +13,7 @@ import com.example.electric.service.VoronoiService;
 import com.example.electric.service.*;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -61,7 +62,7 @@ public class AppointmentController {
      */
     @GetMapping("/{appointmentId}")
     @Operation(summary = "Get Appointment", description = "Get Appointment using ID", tags = {"Appointment"})
-    public Appointment getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
+    public Appointment getAppointmentById(@PathVariable("appointmentId") @NotNull long appointmentId) {
         return appointmentService.getAppointmentById(appointmentId)
                 .orElseThrow(() -> new ObjectNotFoundException(ErrorCode.E1002));
     }
@@ -77,13 +78,13 @@ public class AppointmentController {
      */
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get User's Appointments", description = "Get a list of User's Appointment from UserID",tags = {"Appointment"})
-    public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") long userId) {
+    public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") @NotNull long userId) {
         return appointmentService.getAllAppointmentsByUser(userId);
     }
 
     @GetMapping("/manual/user/{userId}")
     @Operation(summary = "Get User's Manual Active Appointments", description = "Get a list of User's Manual Active Appointment from UserID",tags = {"Manual Active Appointment"})
-    public List<Appointment> getActiveManualAppointmentByUser(@PathVariable("userId") long userId) {
+    public List<Appointment> getActiveManualAppointmentByUser(@PathVariable("userId") @NotNull long userId) {
         return appointmentService.getAllActiveManualAppointmentByUser(userId);
     }
 
@@ -100,7 +101,7 @@ public class AppointmentController {
      */
     @GetMapping("/station/{stationId}")
     @Operation(summary = "Get Stations' Appointment", description = "Get a list of stations' Appointment using StationID",tags = {"Appointment"})
-    public List<Appointment> getAllAppointmentsAtStation(@PathVariable("stationId") long stationId) {
+    public List<Appointment> getAllAppointmentsAtStation(@PathVariable("stationId") @NotNull long stationId) {
         return appointmentService.getAllAppointmentsAtStation(stationId);
     }
 
@@ -191,16 +192,25 @@ public class AppointmentController {
     @PutMapping("/completed/{id}")
     @Operation(summary = "complete Appointment", description = "complete Appointment using ID",tags = {"Appointment"})
 //    public Appointment completeAppointment(@RequestBody Appointment completedAppointment, @PathVariable("id") long id) {
-    public Appointment completeAppointment(@PathVariable("id") long id) {
+    public Appointment completeAppointment(@PathVariable("id") long id, @RequestBody Appointment completedAppointment) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        Optional<Appointment> completedAppointment = appointmentService.getAppointmentById(id);
-        double cost = 22.2;
-        completedAppointment.get().setCost(cost);
-        String res = cardService.processPayment(completedAppointment.get().getUser().getId(), cost);
-        completedAppointment.get().setTransactionId(res);
-        return appointmentService.completedAppointment(completedAppointment.get(), id);
+        else {
+            Optional<Appointment> appointment = appointmentService.getAppointmentById(id);
+            //updating end time
+            appointment.get().setEndTime(completedAppointment.getEndTime());
+
+//            Get duration of charging in minutes
+            long duration = (appointment.get().getEndTime().getTime() - appointment.get().getStartTime().getTime())/(60 * 1000);
+
+            double cost = DistanceMatrixService.calculateCostOfCharging(duration);
+            appointment.get().setCost(cost);
+            String res = cardService.processPayment(appointment.get().getUser().getId(), cost);
+            appointment.get().setTransactionId(res);
+            return appointmentService.completedAppointment(appointment.get(), id);
+        }
+
     }
 
 

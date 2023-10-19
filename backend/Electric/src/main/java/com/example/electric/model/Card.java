@@ -1,6 +1,7 @@
 package com.example.electric.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,11 @@ public class Card {
     private long id;
     @Column(name="name")
     private String name;
+
+    @Pattern(regexp = "^[0-9]{16}$", flags = Pattern.Flag.UNICODE_CASE)
     @Column(name="number")
     private String number;
+
     @Column(name="expiry")
     private Date expiry;
 
@@ -39,5 +43,8 @@ public class Card {
         Date date = Date.valueOf(LocalDate.parse(s, formatter));
         this.expiry = date;
 
+    }
+
+    public Card(long l, String string, long m, Date valueOf, User user2) {
     }
 }

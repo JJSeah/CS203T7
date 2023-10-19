@@ -1,6 +1,5 @@
 package com.example.electric.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +30,7 @@ public class Station {
     private boolean avail;
 
     //link to charger
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany (mappedBy = "station", cascade = CascadeType.ALL)
     private List<Charger> chargers;
 

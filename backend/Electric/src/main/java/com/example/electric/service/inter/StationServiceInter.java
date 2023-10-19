@@ -1,5 +1,6 @@
 package com.example.electric.service.inter;
 
+import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface StationServiceInter {
     Station updateStation(Long id, Station updatedStation);
     void deleteStation(Long id);
     Station getStationByName(String name);
+    Charger getSlowestAndAvailableCharger(Station station);
 }

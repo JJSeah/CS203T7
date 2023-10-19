@@ -1,5 +1,7 @@
 package com.example.electric.service;
 
+import ch.qos.logback.core.model.INamedModel;
+import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
 import com.example.electric.respository.StationRepository;
 import com.example.electric.service.inter.StationServiceInter;
@@ -33,6 +35,23 @@ public class StationService implements StationServiceInter {
         Optional<Station> optionalStation = stationRepository.findStationByLatitudeAndLongitude(latitude, longitude);
         return optionalStation.orElse(null);
     }
+
+    public Charger getSlowestAndAvailableCharger(Station station) {
+        List<Charger> chargerList = station.getChargers();
+
+        Charger result = null;
+        double slowestChargingRate = Double.MAX_VALUE;
+
+        for (Charger charger : chargerList) {
+            if (charger.getChargingRate() < slowestChargingRate && charger.getAvail()) {
+                slowestChargingRate = charger.getChargingRate();
+                result = charger;
+            }
+        }
+
+        return result;
+    }
+
     public Station createStation(Station station) {
         return stationRepository.save(station);
     }

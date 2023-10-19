@@ -88,6 +88,21 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
         return chargingCostRate * timeOfChargingInHour;
     }
 
+    public static double calculateCostOfCharging(long duration) {
+
+        double timeOfChargingInHour = (double) duration / 60;
+
+        //Based on research, charging rate is around $3 per hour for overnight slow charging
+        //and $25 for rapid charging. Due to the choice of moderate level of charging rate at level 2,
+        //and to encourage the use of EV in Singapore, we have decided to choose the charging cost
+        //per hour to be at $10.
+
+        double chargingCostRate = 10;
+
+        //Calculate cost
+        return chargingCostRate * timeOfChargingInHour;
+    }
+
 //    public long getDistanceByName(String latitude,String longitude, String station2) throws Exception {
 ////        Station s1 = stationRepository.findStationByName(station1).orElse(null);
 //        Station s2 = stationRepository.findStationByName(station2).orElse(null);
