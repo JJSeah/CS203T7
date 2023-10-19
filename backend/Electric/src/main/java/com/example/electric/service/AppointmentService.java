@@ -43,6 +43,7 @@ public class AppointmentService implements AppointmentServiceInter {
     public Appointment addAppointment(Appointment appointment) throws ExceedMaxManualApptException {
 
         appointment.setStatus("Active");
+        appointment.getCharger().setAvail(false);
         appointmentRepository.save(appointment);
 
         return appointment;
