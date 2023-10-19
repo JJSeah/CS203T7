@@ -27,10 +27,10 @@ List<Appointment> findActiveManualApptByUserId(
     
     @Query("SELECT new com.example.electric.model.Station(s.id, c.id, s.name, c.chargingRate, s.latitude, s.longitude, s.address) FROM Station s " +
     "JOIN Charger c ON s.id = c.station.id " +
-    "WHERE NOT EXISTS (" +
-    "    SELECT 1 FROM Appointment a " +
-    "    WHERE a.station.id = s.id AND a.charger.id = c.id AND a.status = 'Active'" +
-    "    AND (a.startTime <= :startTime OR a.endTime >= :endTime) AND  a.date >= :date" +
+    "WHERE c.id NOT IN (" +
+    "    SELECT a.charger.id FROM Appointment a " +
+    "    WHERE a.status = 'Active'" +
+    "    AND (a.startTime <= :startTime OR a.endTime >= :endTime) AND  a.date = :date" +
     ")")
 List<Station> findAvailableStationsAndChargers(
     @Param("startTime") LocalTime startTime,
