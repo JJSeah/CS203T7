@@ -47,6 +47,7 @@ export default AutomateBookingScreen = ({ navigation }) => {
 
         <CustomLongButton
           title="Confirm"
+          disabled={upcomingAppointmentDetails === null}
           onPress={() => {
             navigation.pop();
           }}

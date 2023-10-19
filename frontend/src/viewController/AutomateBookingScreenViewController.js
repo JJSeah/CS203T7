@@ -22,7 +22,6 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         setClosestStation(null)
         setUpcomingAppointmentDetails(null)
 
-
         let url = `${BASE_URL}/api/stations/closest`
 
         axios.post(url, {
@@ -30,9 +29,9 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
             longitude
         }, 
         {
-            headers : { Authorization : `Bearer ${userToken}` }
-        }        
-        ).then(res => {
+            headers: { Authorization: `Bearer ${userToken}` },
+        }
+        ).then((res) => {
             let data = res.data
             setClosestStation(data)
         }).catch(e => {
