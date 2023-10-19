@@ -3,10 +3,7 @@ package com.example.electric.controller;
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ObjectNotFoundException;
-import com.example.electric.model.Appointment;
-import com.example.electric.model.Car;
-import com.example.electric.model.Station;
-import com.example.electric.model.User;
+import com.example.electric.model.*;
 import com.example.electric.service.AppointmentService;
 import com.example.electric.service.CarService;
 import com.example.electric.service.VoronoiService;
@@ -35,6 +32,15 @@ public class AppointmentController {
 
     @Autowired
     private CardService cardService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private StationService stationService;
+
+    @Autowired
+    private ChargerService chargerService;
 
     /**
      * Retrieve a list of all appointments.
@@ -118,8 +124,24 @@ public class AppointmentController {
     @PostMapping
     @Operation(summary = "Add Manual Appointment", description = "Add Manual Appointment",tags = {"Appointment"})
     public Appointment addAppointment(@RequestBody Appointment appointment){
+        //Find id for station and charger
+        long userId = appointment.getUser().getId();
+        long stationId = appointment.getStation().getId();
+        long chargerId = appointment.getCharger().getId();
+        //Find user, station, charger
+        User user = userService.getUserById(userId);
+        Station station = stationService.getStationById(stationId);
+        Charger charger = chargerService.getChargerById(chargerId).orElse(null);
+
+        if (user == null || station == null || charger == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         // Check if current Number of manual appointments exceeded allowed manualAppointment
         appointment.setManualAppointment(true);
+        appointment.setUser(user);
+        appointment.setStation(station);
+        appointment.setCharger(charger);
+
         int numOfExistingManualAppt = appointmentService.checkManualAppointment(appointment);
         if(numOfExistingManualAppt >= 0){
             throw new ExceedMaxManualApptException(numOfExistingManualAppt, Appointment.MAX_MANUALAPPT_ALLOWED);
