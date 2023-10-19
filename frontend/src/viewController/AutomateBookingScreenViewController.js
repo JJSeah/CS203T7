@@ -46,6 +46,8 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
 
         let url = `${BASE_URL}/api/stationCheck/${userId}/${currentCar.id}`
 
+        console.log(stationId)
+
         axios.post(url, {
             "latitude": userCoordinates.latitude,
             "longitude": userCoordinates.longitude,
