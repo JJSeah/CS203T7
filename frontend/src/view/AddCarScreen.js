@@ -27,7 +27,7 @@ export default AddCarScreen = ({ navigation }) => {
 
   const pickerValues = Array.from({ length: 101 }, (_, i) => i);
 
-  useEffect( () => {
+  useEffect(() => {
 
   }, [carPlate])
 
