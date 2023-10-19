@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default SelectStationScreenViewController = ( { navigation }, stations ) => {
 
-  const { currentCar, userToken, userId, getAppointment } = useContext(UserContext);
+  const { currentCar, userToken, userId, getAllAppointments } = useContext(UserContext);
 
   const [ selectedChargers, setSelectedChargers ] = useState(null);
   const [ selectedStation, setSelectedStation ] = useState(null);
@@ -56,7 +56,7 @@ export default SelectStationScreenViewController = ( { navigation }, stations ) 
       }
     )
     .then((res)=> {
-      getAppointment();
+      getAllAppointments();
       navigation.navigate("HomeNavigator");
     })
     .catch((e) => {

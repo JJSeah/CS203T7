@@ -23,6 +23,8 @@ export const UserProvider = ( { children } ) => {
     const [ closestStation, setClosestStation ] = useState(null);
     const [ upcomingAppointmentDetails, setUpcomingAppointmentDetails ] = useState(null);
     const [ currentAppointment, setCurrentAppointment ] = useState(null);
+
+    const [ allAppointments, setAllAppointments ] = useState(null);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
     
@@ -43,8 +45,18 @@ export const UserProvider = ( { children } ) => {
         })
     }
 
-    const getAppointment = async() => {
-        console.log("Getting appointment from backend")
+    const getAllAppointments = async() => {
+        let url = `${BASE_URL}/api/appointment/user/${userId}`
+
+        axios.get(url)
+        .then (res => { 
+            let data = res.data
+            console.log(data)
+            setAllAppointments(data)
+        })
+        .catch (e => {
+            console.log(`Get all appointment error ${e}`)
+        })
     }
 
     // const confirmAppointment = async() => {
@@ -117,7 +129,8 @@ export const UserProvider = ( { children } ) => {
             setUserData(userData)
             setUserCars(userCars)
             setUserCard(userCard)
-
+            getAllAppointments()
+            
             getAllStations()
         })
         .catch(e => {
@@ -198,7 +211,7 @@ export const UserProvider = ( { children } ) => {
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
                 currentAppointment, setCurrentAppointment,
-                currentCar, setCurrentCar, updateProfile, getAppointment
+                currentCar, setCurrentCar, updateProfile, getAllAppointments
             }}
         >
             { children }

@@ -15,7 +15,7 @@ export default AutomateBookingScreen = ({ navigation }) => {
   const { userCoordinates, closestStation, upcomingAppointmentDetails, userCars } =
     useContext(UserContext);
 
-  const { findClosestStation } = AutomateBookingScreenViewController({
+  const { findClosestStation, confirmButtonPressed } = AutomateBookingScreenViewController({
     navigation,
   });
 
@@ -49,7 +49,7 @@ export default AutomateBookingScreen = ({ navigation }) => {
           title="Confirm"
           disabled={upcomingAppointmentDetails === null}
           onPress={() => {
-            navigation.pop();
+            confirmButtonPressed();
           }}
         />
       </View>
