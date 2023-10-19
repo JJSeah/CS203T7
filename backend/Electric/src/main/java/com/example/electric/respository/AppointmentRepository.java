@@ -21,9 +21,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     "WHERE a.user.id = :user_id " + 
     "AND a.manualAppointment = true " + 
     "AND a.status = 'Active'")
-List<Appointment> findActiveManualApptByUserId(
- @Param("user_id") long user_id
-);
+    List<Appointment> findActiveManualApptByUserId(
+     @Param("user_id") long user_id
+    );
     
     @Query("SELECT new com.example.electric.model.Station(s.id, c.id, s.name, c.chargingRate, s.latitude, s.longitude, s.address) FROM Station s " +
     "JOIN Charger c ON s.id = c.station.id " +
@@ -32,17 +32,17 @@ List<Appointment> findActiveManualApptByUserId(
     "    WHERE a.status = 'Active'" +
     "    AND (a.startTime <= :startTime OR a.endTime >= :endTime) AND  a.date = :date" +
     ")")
-List<Station> findAvailableStationsAndChargers(
-    @Param("startTime") LocalTime startTime,
-    @Param("endTime") LocalTime endTime,
-    @Param("date") LocalDate date
-);
+    List<Station> findAvailableStationsAndChargers(
+        @Param("startTime") LocalTime startTime,
+        @Param("endTime") LocalTime endTime,
+        @Param("date") LocalDate date
+    );
 
-    @Query("SELECT a FROM Appointment a " + 
-    "WHERE a.station.id = :station_id " + 
-    "AND a.charger.id = :charger_id " + 
+    @Query("SELECT a FROM Appointment a " +
+    "WHERE a.station.id = :station_id " +
+    "AND a.charger.id = :charger_id " +
     "AND a.status = :status " +
     "AND a.date = :date ")
-List<Appointment> findAppointmentsByStationIdAndChargerIdAndStatus(@Param("station_id")long stationid, @Param("charger_id") long chargerId, @Param("status")String status, @Param("date")LocalDate date);
-}
+    List<Appointment> findAppointmentsByStationIdAndChargerIdAndStatus(@Param("station_id")long stationid, @Param("charger_id") long chargerId, @Param("status")String status, @Param("date")LocalDate date);
+    }
  
