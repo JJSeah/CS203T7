@@ -28,7 +28,7 @@ public class CardService implements CardServiceInter {
         return cardRepository.findById(id);
     }
 
-    public Optional<Card> getCardByUserId(long userId) {
+    public List<Card> getCardByUserId(long userId) {
         return cardRepository.findCardByUserId(userId);
     }
 
@@ -70,14 +70,21 @@ public class CardService implements CardServiceInter {
         return true;
     }
 
-    public String processPayment(long id, double orderValue) {
-        Optional<Card> card = getCardByUserId(id);
-        if (card.isPresent()) {
-            if (!checkCardNumber(card.get().getNumber())) {
-                throw new ObjectNotFoundException(ErrorCode.E1002);
+    public String processPayment(long id, double orderValue, long cardId) {
+
+        List<Card> card = getCardByUserId(id);
+        PaymentCard paymentCard = new PaymentCard();
+        for (Card c : card) {
+            if (c.getId() == cardId) {
+                if (c.getNumber().length() != 16) {
+                    throw new ObjectNotFoundException(ErrorCode.E2002);
+                }
+                paymentCard.setCardNumber(c.getNumber());
+                paymentCard.setExpiryMonth(c.getExpiry().getMonth());
+                paymentCard.setExpiryYear(c.getExpiry().getYear());
+                paymentCard.setHolderName(c.getName());
             }
         }
-        PaymentCard paymentCard = new PaymentCard(card.get().getNumber(),card.get().getName(),card.get().getExpiry().getMonth(),card.get().getExpiry().getYear());
 
         Payment payment = new Payment(orderValue,"CREDIT_CARD",paymentCard);
         System.out.println(payment.getCardDetails().getCardNumber());

@@ -10,7 +10,7 @@ public interface CardServiceInter {
 
     Optional<Card> getCardById(long id);
 
-    Optional<Card> getCardByUserId(long userId);
+    List<Card> getCardByUserId(long userId);
 
     Card addCard(Card card);
 
