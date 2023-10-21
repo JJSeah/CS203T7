@@ -4,17 +4,14 @@ import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.*;
-import com.example.electric.service.AppointmentService;
-import com.example.electric.service.CarService;
-import com.example.electric.service.VoronoiService;
 import com.example.electric.service.*;
-
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -211,26 +208,31 @@ public class AppointmentController {
      * @return The completed appointment.
      * @throws ObjectNotFoundException If no appointment with the given ID is found.
      */
-    @PutMapping("/completed/{id}")
+    @PutMapping("/completed/{id}/{carId}/{cardId}")
     @Operation(summary = "complete Appointment", description = "complete Appointment using ID",tags = {"Appointment"})
 //    public Appointment completeAppointment(@RequestBody Appointment completedAppointment, @PathVariable("id") long id) {
-    public Appointment completeAppointment(@PathVariable("id") long id, @RequestBody Appointment completedAppointment) {
+    public Appointment completeAppointment(@PathVariable("id") long id, @PathVariable("carId") long carId, @PathVariable("cardId") long cardId, @RequestBody Appointment completedAppointment) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         else {
             Optional<Appointment> appointment = appointmentService.getAppointmentById(id);
             //updating end time
-            appointment.get().setEndTime(completedAppointment.getEndTime());
+            appointment.get().setEndTime(Time.valueOf(LocalTime.now()));
 
 //            Get duration of charging in minutes
             long duration = (appointment.get().getEndTime().getTime() - appointment.get().getStartTime().getTime())/(60 * 1000);
 
             double cost = DistanceMatrixService.calculateCostOfCharging(duration);
             appointment.get().setCost(cost);
-            String res = cardService.processPayment(appointment.get().getUser().getId(), cost);
-            appointment.get().setTransactionId(res);
-            return appointmentService.completedAppointment(appointment.get(), id);
+            try {
+                String res = cardService.processPayment(appointment.get().getUser().getId(), cost, cardId);
+                appointment.get().setTransactionId(res);
+            } catch (Exception e) {
+                throw new ObjectNotFoundException(ErrorCode.E2002);
+            }
+
+            return appointmentService.completedAppointment(appointment.get(), id, carId);
         }
 
     }
@@ -263,14 +265,7 @@ public class AppointmentController {
         }
         else {
             Appointment appointment = appointmentService.getAppointmentById(id).get();
-            appointment.setStatus("cancelled");
-            String transactionId = appointment.getTransactionId();
-
-            String URL = "http://localhost:9090/payment/cancel/" + transactionId;
-            String obj =  new RestTemplate().getForObject(URL, String.class);
-            appointmentService.updateAppointment(appointment, id);
-            return obj;
-
+            return appointmentService.cancelAppointment(appointment, id);
         }
 
     }
@@ -291,6 +286,19 @@ public class AppointmentController {
         long stationId = 1;
         long chargerId = 1;
         return appointmentService.checkUpcomingAppointment(stationId, chargerId, user);
+    }
+
+    // Start Appointment to charging
+    @GetMapping("/start/{id}/{carId}")
+    @Operation(summary = "Start Appointment", description = "Start Appointment using ID",tags = {"Appointment"})
+    public String startAppointment(@PathVariable("id") long id, @PathVariable("carId") long carId) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        else {
+            Appointment appointment = appointmentService.getAppointmentById(id).get();
+            return appointmentService.startAppointment(appointment, id, carId);
+        }
     }
 
     

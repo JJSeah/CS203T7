@@ -14,6 +14,10 @@ public class PaymentCard {
         this.expiryYear = expiryYear;
     }
 
+    public PaymentCard() {
+
+    }
+
     public String getCardNumber() {
         return cardNumber;
     }
@@ -45,4 +49,5 @@ public class PaymentCard {
     public void setExpiryYear(int expiryYear) {
         this.expiryYear = expiryYear;
     }
+
 }

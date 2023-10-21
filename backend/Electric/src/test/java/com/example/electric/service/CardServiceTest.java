@@ -62,19 +62,21 @@ public class CardServiceTest {
     public void testGetCardByUserId() {
         long userId = 1L;
         Card card = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
-        when(cardRepository.findCardByUserId(userId)).thenReturn(Optional.of(card));
+        List<Card> listcard = new ArrayList<>();
+        listcard.add(card);
+        when(cardRepository.findCardByUserId(userId)).thenReturn(listcard);
 
-        Optional<Card> result = cardService.getCardByUserId(userId);
+        List<Card> result = cardService.getCardByUserId(userId);
 
-        assertEquals(Optional.of(card), result);
+        assertEquals(listcard, result);
     }
 
     @Test
     public void testGetCardByUserIdNonExistent() {
         long userId = 1L;
-        when(cardRepository.findCardByUserId(userId)).thenReturn(Optional.empty());
+        when(cardRepository.findCardByUserId(userId)).thenReturn(null);
 
-        Optional<Card> result = cardService.getCardByUserId(userId);
+        List<Card> result = cardService.getCardByUserId(userId);
 
         assertEquals(Optional.empty(), result);
 
