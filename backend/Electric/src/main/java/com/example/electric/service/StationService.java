@@ -8,6 +8,8 @@ import com.example.electric.service.inter.StationServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,21 +38,27 @@ public class StationService implements StationServiceInter {
         return optionalStation.orElse(null);
     }
 
-    public Charger getSlowestAndAvailableCharger(Station station) {
-        List<Charger> chargerList = station.getChargers();
-
-        Charger result = null;
-        double slowestChargingRate = Double.MAX_VALUE;
-
-        for (Charger charger : chargerList) {
-            if (charger.getChargingRate() < slowestChargingRate && charger.getAvail()) {
-                slowestChargingRate = charger.getChargingRate();
-                result = charger;
-            }
-        }
-
-        return result;
+    public Charger getSlowestAndAvailableCharger(Station station, LocalTime startTime,
+                                                 LocalTime endTime, LocalDate date) {
+        return stationRepository.findSlowestAvailableChargerForStation(station, startTime, endTime, date);
     }
+
+//
+//    public Charger getSlowestAndAvailableCharger(Station station) {
+//        List<Charger> chargerList = station.getChargers();
+//
+//        Charger result = null;
+//        double slowestChargingRate = Double.MAX_VALUE;
+//
+//        for (Charger charger : chargerList) {
+//            if (charger.getChargingRate() < slowestChargingRate) {
+//                slowestChargingRate = charger.getChargingRate();
+//                result = charger;
+//            }
+//        }
+//
+//        return result;
+//    }
 
     public Station createStation(Station station) {
         return stationRepository.save(station);
