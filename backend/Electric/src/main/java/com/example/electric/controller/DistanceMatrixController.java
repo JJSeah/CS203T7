@@ -87,10 +87,6 @@ public class DistanceMatrixController {
         double costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUserId(userId, carId));
         int estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));
 
-        //Get available charger
-        Station obj = stationService.getStationById(station.getId());
-        Charger charger = stationService.getSlowestAndAvailableCharger(obj);
-
         //Get start time
         LocalTime currentTime = LocalTime.now();
         int minute = currentTime.getMinute();
@@ -107,6 +103,10 @@ public class DistanceMatrixController {
         //Get date
         LocalDate currentDate = LocalDate.now();
         String date = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        //Get available charger
+        Station obj = stationService.getStationById(station.getId());
+        Charger charger = stationService.getSlowestAndAvailableCharger(obj, roundedStartTime, end, currentDate);
 
 
         // Create a Map to return the information in JSON format
