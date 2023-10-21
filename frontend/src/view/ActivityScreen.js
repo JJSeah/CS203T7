@@ -5,36 +5,37 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ActivityViewController from '../viewController/ActivityViewController';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const fakeData = [
-    {
-      "station": "Shell Recharge", 
-      "address": "80 upper thomson",
-      "date": "2023-10-15", 
-      "time": "13:05:35",
-      "cost": 23.5, 
-      key: 1
-    },
-    {
-      "station": "SP Mobility ", 
-      "address": "50 toa payoh",
-      "date": "2023-10-30", 
-      "time": "09:15:05",
-      "cost": 9.2, 
-      key: 2
-    },
-    {
-        "station": "CHARGE+", 
-        "address": "60 orchard",
-        "date": "2023-011-20", 
-        "time": "20:40:45",
-        "cost": 20, 
-        key: 3
-      },
-  ]
+// const fakeData = [
+//     {
+//       "station": "Shell Recharge", 
+//       "address": "80 upper thomson",
+//       "date": "2023-10-15", 
+//       "time": "13:05:35",
+//       "cost": 23.5, 
+//       key: 1
+//     },
+//     {
+//       "station": "SP Mobility ", 
+//       "address": "50 toa payoh",
+//       "date": "2023-10-30", 
+//       "time": "09:15:05",
+//       "cost": 9.2, 
+//       key: 2
+//     },
+//     {
+//         "station": "CHARGE+", 
+//         "address": "60 orchard",
+//         "date": "2023-011-20", 
+//         "time": "20:40:45",
+//         "cost": 20, 
+//         key: 3
+//       },
+//   ]
 
 
 export default ActivityScreen = ({ navigation }) => {
   const { historyButtonPressed, scanQRButtonPressed } = ActivityViewController({ navigation });
+  const { allAppointments } = useContext(UserContext);
 
 
   const formatDate = (dateStr) => {
@@ -59,8 +60,11 @@ export default ActivityScreen = ({ navigation }) => {
     return `${formattedHours}:${mins.toString().padStart(2, '0')} ${ampm}`;
   }
 
-  const ongoingAppointments = fakeData.filter(appointment => new Date(appointment.date) <= new Date());
-  const upcomingAppointments = fakeData.filter(appointment => new Date(appointment.date) > new Date());
+  // const ongoingAppointments = fakeData.filter(appointment => new Date(appointment.date) <= new Date());
+  // const upcomingAppointments = fakeData.filter(appointment => new Date(appointment.date) > new Date());
+
+  const ongoingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'ongoing'})
+  const upcomingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'Active'})
 
 
   return (
@@ -71,21 +75,21 @@ export default ActivityScreen = ({ navigation }) => {
       <View style={activityStyles.halfContainer}>
         <View style={activityStyles.appointmentSection}>
           <Text style={activityStyles.sectionTitle}>ONGOING APPOINTMENT</Text>
-          {ongoingAppointments.length === 0 && (
+          {ongoingAppointment.length === 0 && (
             <View style={activityStyles.centeredContainer}>
             <Text>No activity at the moment</Text>
             </View>
           )}
           <FlatList
             keyExtractor={(item) => item.key.toString()}
-            data={ongoingAppointments}
+            data={ongoingAppointment}
             renderItem={({ item }) => (
               <View style={activityStyles.recordContainer}>
                 <View style={activityStyles.stationNameContainer}>
-                  <Text style={activityStyles.stationName}>{item.station}</Text>
-                  <Text style={activityStyles.address}>{item.address}</Text>
+                  <Text style={activityStyles.stationName}>{item.station.name}</Text>
+                  <Text style={activityStyles.address}>{item.station.address}</Text>
                   <Text style={activityStyles.dateTime}>
-                    {formatDate(item.date)}, {formatTime(item.time)}
+                    {formatDate(item.date)}, {formatTime(item.startTime)}
                   </Text>
                 </View>
                 <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"
@@ -95,22 +99,22 @@ export default ActivityScreen = ({ navigation }) => {
           />
         </View>
         <View style={activityStyles.appointmentSection}>
-          <Text style={activityStyles.sectionTitle}>UPCOMING APPOINTMENTS</Text>
-          {upcomingAppointments.length === 0 && (
+          <Text style={activityStyles.sectionTitle}>UPCOMING APPOINTMENT</Text>
+          {upcomingAppointment.length === 0 && (
             <View style={activityStyles.centeredContainer}>
-            <Text>No upcoming appointments</Text>
+            <Text>No upcoming appointment</Text>
             </View>
           )}
           <FlatList
-            keyExtractor={(item) => item.key.toString()}
-            data={upcomingAppointments}
+            keyExtractor={(item) => item.id.toString()}
+            data={upcomingAppointment}
             renderItem={({ item }) => (
               <View style={activityStyles.recordContainer}>
                 <View style={activityStyles.stationNameContainer}>
-                  <Text style={activityStyles.stationName}>{item.station}</Text>
-                  <Text style={activityStyles.address}>{item.address}</Text>
+                  <Text style={activityStyles.stationName}>{item.station.name}</Text>
+                  <Text style={activityStyles.address}>{item.station.address}</Text>
                   <Text style={activityStyles.dateTime}>
-                    {formatDate(item.date)}, {formatTime(item.time)}
+                    {formatDate(item.date)}, {formatTime(item.startTime)}
                   </Text>
                 </View>
                 <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"

@@ -32,38 +32,11 @@ const year =[
   {label: '2024', value: '3'}
 ]
 
-// const fakeData = [
-//   {
-//     "station": "Shell Recharge", 
-//     "address": "80 upper thomson",
-//     "date": "2023-09-25", 
-//     "time": "13:05:35",
-//     "cost": 23.5, 
-//     key: 1
-//   },
-//   {
-//     "station": "SP Mobility ", 
-//     "address": "50 toa payoh",
-//     "date": "2023-02-25", 
-//     "time": "09:15:05",
-//     "cost": 9.2, 
-//     key: 2
-//   },
-//   {
-//     "station": "CHARGE+", 
-//     "address": "60 orchard",
-//     "date": "2023-09-20", 
-//     "time": "20:40:45",
-//     "cost": 20, 
-//     key: 3
-//   },
-// ]
 
 export default HistoryScreen = ({navigation}) => {
 
   const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
   const { allAppointments } = useContext(UserContext);
-  // const [ originalData ] = useState(fakeData);
   const [ filteredAppointments, setFilteredAppointments ] = useState([]);
 
   useEffect(() => {
@@ -107,12 +80,15 @@ export default HistoryScreen = ({navigation}) => {
           const monthNo = parseInt(dateParts[1]);
           const yearNo = parseInt(dateParts[0]);
           
-          return String(monthNo) ===  monthValue && String(yearNo) === yearValue;
+          return String(monthNo) ===  monthValue && String(yearNo) === yearValue && appointment.status === 'completed';
         }), 'date').reverse();
         
         setFilteredAppointments(filtered);
       } else if (allAppointments) {
-        const allRecords = sortBy(allAppointments, 'date').reverse();
+          const allRecords = sortBy(allAppointments.filter((appointment) => {
+          return appointment.status === 'completed'
+          }), 'date').reverse();
+
         setFilteredAppointments(allRecords);
       }
     };

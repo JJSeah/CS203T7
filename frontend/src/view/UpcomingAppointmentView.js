@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { UserContext } from '../model/User';
 // import { styles } from '../components/Design';
 import { BarCodeScanner } from 'expo-barcode-scanner'; 
-import { Camera } from 'expo-camera';
 import UpcomingAppointmentViewController from '../viewController/UpcomingAppointmentViewController';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -15,6 +14,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
 
   const {chargingProgressButtonPressed} = UpcomingAppointmentViewController({navigation})
 
+
   useEffect(() => {
     (async() => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -23,7 +23,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    // setScanned(true); 
+    setScanned(true); 
     alert(`Barcode type: ${type} and data: ${data}`);
   }; 
 

@@ -14,7 +14,6 @@ import { useRoute } from "@react-navigation/native";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 export default ManualBookingScreen = ({ navigation }) => {
-
   const route = useRoute();
   const currentCar = route.params?.currentCar;
 
@@ -24,7 +23,10 @@ export default ManualBookingScreen = ({ navigation }) => {
   const [bookingStartTime, setBookingStartTime] = useState(new Date());
   const [bookingEndTime, setBookingEndTime] = useState(new Date());
 
-  const { findAvailableStationsButtonPressed } = ManualBookingScreenViewController( {navigation} );
+  const { findAvailableStationsButtonPressed } =
+    ManualBookingScreenViewController({ navigation });
+
+  const { userCars } = useContext(UserContext);
 
   const diffHours = (start, end) => {
     var diff = end.getTime() - start.getTime();
@@ -93,87 +95,97 @@ export default ManualBookingScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={localStyles.topContainer}>
+      {userCars.length === 0 ? (
         <View>
-          <Text>Current time: {currentDate.toLocaleTimeString()}</Text>
-          <Text>Booking for: {currentCar.nickname}</Text>
+          <Text>Please add a car</Text>
         </View>
+      ) : (
+        <View>
+          <View style={localStyles.topContainer}>
+            <View>
+              <Text>Current time: {currentDate.toLocaleTimeString()}</Text>
+              <Text>Booking for: {currentCar.nickname}</Text>
+            </View>
 
-        <View style={{ alignContent: "center", justifyContent: "center" }}>
-          <RNDateTimePicker
-            display="calendar"
-            value={bookingStartTime}
-            onChange={onChangeDate}
-            minimumDate={currentDate}
-            maximumDate={maxDate}
-          />
+            <View style={{ alignContent: "center", justifyContent: "center" }}>
+              <RNDateTimePicker
+                display="calendar"
+                value={bookingStartTime}
+                onChange={onChangeDate}
+                minimumDate={currentDate}
+                maximumDate={maxDate}
+              />
+            </View>
+
+            <Text>Hours: {diffHours(bookingStartTime, bookingEndTime)}</Text>
+            <Text>
+              Minutes: {diffMinutes(bookingStartTime, bookingEndTime)}
+            </Text>
+
+            <Text>
+              Start time{" "}
+              {bookingStartTime.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </Text>
+            <RNDateTimePicker
+              mode="time"
+              display="spinner"
+              value={bookingStartTime}
+              minimumDate={currentDate}
+              onChange={onChangeStartTime}
+              minuteInterval={5}
+            />
+
+            <Text>
+              End time{" "}
+              {bookingEndTime.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </Text>
+            <RNDateTimePicker
+              mode="time"
+              display="spinner"
+              value={bookingEndTime}
+              minimumDate={bookingStartTime}
+              onChange={onChangeEndTime}
+              minuteInterval={5}
+            />
+          </View>
+
+          <View style={localStyles.bottomContainer}>
+            <CustomLongButton
+              title="Find available stations"
+              onPress={() => {
+                if (bookingStartTime < currentDate) {
+                  setBookingStartTime(currentDate);
+                }
+
+                if (bookingEndTime <= bookingStartTime) {
+                  Alert.alert(
+                    "Invalid timings",
+                    "Please select appropriate timings",
+                    [
+                      {
+                        text: "Got it",
+                        onPress: () => {},
+                      },
+                    ]
+                  );
+                } else {
+                  findAvailableStationsButtonPressed(
+                    currentCar,
+                    bookingStartTime,
+                    bookingEndTime
+                  );
+                }
+              }}
+            />
+          </View>
         </View>
-
-        <Text>Hours: {diffHours(bookingStartTime, bookingEndTime)}</Text>
-        <Text>Minutes: {diffMinutes(bookingStartTime, bookingEndTime)}</Text>
-
-        <Text>
-          Start time{" "}
-          {bookingStartTime.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </Text>
-        <RNDateTimePicker
-          mode="time"
-          display="spinner"
-          value={bookingStartTime}
-          minimumDate={currentDate}
-          onChange={onChangeStartTime}
-          minuteInterval={5}
-        />
-
-        <Text>
-          End time{" "}
-          {bookingEndTime.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </Text>
-        <RNDateTimePicker
-          mode="time"
-          display="spinner"
-          value={bookingEndTime}
-          minimumDate={bookingStartTime}
-          onChange={onChangeEndTime}
-          minuteInterval={5}
-        />
-      </View>
-
-      <View style={localStyles.bottomContainer}>
-        <CustomLongButton
-          title="Find available stations"
-          onPress={() => {
-            if (bookingStartTime < currentDate) {
-              setBookingStartTime(currentDate);
-            }
-
-            if (bookingEndTime <= bookingStartTime) {
-              Alert.alert(
-                "Invalid timings",
-                "Please select appropriate timings",
-                [
-                  {
-                    text: "Got it",
-                    onPress: () => {},
-                  },
-                ]
-              );
-            } else {
-              findAvailableStationsButtonPressed(
-                currentCar,
-                bookingStartTime,
-                bookingEndTime
-              );
-            }
-          }}
-        />
-      </View>
+      )}
     </SafeAreaView>
   );
 };
