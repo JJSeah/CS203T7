@@ -5,6 +5,7 @@ import { UserContext } from '../model/User';
 import { BarCodeScanner } from 'expo-barcode-scanner'; 
 import { Camera } from 'expo-camera';
 import UpcomingAppointmentViewController from '../viewController/UpcomingAppointmentViewController';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default UpcomingAppointmentView = ({ navigation }) => {
  
@@ -69,7 +70,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         onPress={() => setScanned(false)}
         disabled={scanned}
       >
-        <Button title="Scan QR"
+        <MaterialCommunityIcons name="qrcode-scan" size={24} color="black"
          onPress={chargingProgressButtonPressed}/>
       </TouchableOpacity>
     </View>

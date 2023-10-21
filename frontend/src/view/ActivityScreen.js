@@ -3,6 +3,7 @@ import { Text, View, Button, FlatList, StyleSheet } from 'react-native';
 import { UserContext } from '../model/User';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ActivityViewController from '../viewController/ActivityViewController';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const fakeData = [
     {
@@ -87,8 +88,8 @@ export default ActivityScreen = ({ navigation }) => {
                     {formatDate(item.date)}, {formatTime(item.time)}
                   </Text>
                 </View>
-                <Button title="SCAN QR"
-                onPress={scanQRButtonPressed}/>
+                <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"
+                onPress={scanQRButtonPressed} />
               </View>
             )}
           />
@@ -112,7 +113,7 @@ export default ActivityScreen = ({ navigation }) => {
                     {formatDate(item.date)}, {formatTime(item.time)}
                   </Text>
                 </View>
-                <Button title="SCAN QR"
+                <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"
                 onPress={scanQRButtonPressed} />
               </View>
             )}
