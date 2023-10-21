@@ -24,7 +24,7 @@ export const UserProvider = ( { children } ) => {
     const [ upcomingAppointmentDetails, setUpcomingAppointmentDetails ] = useState(null);
     const [ currentAppointment, setCurrentAppointment ] = useState(null);
 
-    const [ allAppointments, setAllAppointments ] = useState(null);
+    const [ allAppointments, setAllAppointments ] = useState([]);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
     
@@ -211,7 +211,7 @@ export const UserProvider = ( { children } ) => {
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
                 currentAppointment, setCurrentAppointment,
-                currentCar, setCurrentCar, updateProfile, getAllAppointments
+                currentCar, setCurrentCar, updateProfile, getAllAppointments, allAppointments
             }}
         >
             { children }
