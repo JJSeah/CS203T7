@@ -1,6 +1,6 @@
 package com.example.electric.controller;
 
-import com.example.electric.dto.AppointmentDto;
+//import com.example.electric.dto.AppointmentDto;
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ObjectNotFoundException;
@@ -120,25 +120,28 @@ public class AppointmentController {
      * @throws ExceedMaxManualApptException
      */
     @PostMapping
-    @Operation(summary = "Add Manual Appointment", description = "Add Manual Appointment",tags = {"Appointment"})
+    @Operation(summary = "Add  Appointment", description = "Add  Appointment",tags = {"Appointment"})
     public Appointment addAppointment(@RequestBody Appointment appointment){
         //Find id for station and charger
         long userId = appointment.getUser().getId();
         long stationId = appointment.getStation().getId();
         long chargerId = appointment.getCharger().getId();
+        long carId = appointment.getCar().getId();
+
         //Find user, station, charger
         User user = userService.getUserById(userId);
         Station station = stationService.getStationById(stationId);
         Charger charger = chargerService.getChargerById(chargerId).orElse(null);
+        Car car = carService.getCarById(carId).orElse(null);
 
-        if (user == null || station == null || charger == null) {
+        if (user == null || station == null || charger == null || car == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         // Check if current Number of manual appointments exceeded allowed manualAppointment
-        appointment.setManualAppointment(true);
         appointment.setUser(user);
         appointment.setStation(station);
         appointment.setCharger(charger);
+        appointment.setCar(car);
 
         int numOfExistingManualAppt = appointmentService.checkManualAppointment(appointment);
         if(numOfExistingManualAppt >= 0){
@@ -205,19 +208,20 @@ public class AppointmentController {
      * an ObjectNotFoundException.
      *
      * @param id The unique identifier of the appointment to update.
-     * @param completedAppointment The updated appointment object containing new information.
      * @return The completed appointment.
      * @throws ObjectNotFoundException If no appointment with the given ID is found.
      */
-    @PutMapping("/completed/{id}/{carId}/{cardId}")
-    @Operation(summary = "complete Appointment", description = "complete Appointment using ID",tags = {"Appointment"})
-//    public Appointment completeAppointment(@RequestBody Appointment completedAppointment, @PathVariable("id") long id) {
-    public Appointment completeAppointment(@PathVariable("id") long id, @PathVariable("carId") long carId, @PathVariable("cardId") long cardId, @RequestBody Appointment completedAppointment) {
+    @PutMapping("/completed/{id}/{cardId}")
+    @Operation(summary = "Complete Appointment", description = "Complete Appointment using ID",tags = {"Appointment"})
+    public Appointment completeAppointment(@PathVariable("id") long id, @PathVariable("cardId") long cardId) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         else {
             Optional<Appointment> appointment = appointmentService.getAppointmentById(id);
+            if (!appointment.get().getStatus().equals("charging")) {
+                throw new ObjectNotFoundException(ErrorCode.E1002);
+            }
             //updating end time
             appointment.get().setEndTime(Time.valueOf(LocalTime.now()));
 
@@ -233,7 +237,7 @@ public class AppointmentController {
                 throw new ObjectNotFoundException(ErrorCode.E2002);
             }
 
-            return appointmentService.completedAppointment(appointment.get(), id, carId);
+            return appointmentService.completedAppointment(appointment.get(), id, appointment.get().getCar().getId());
         }
 
     }
@@ -255,7 +259,26 @@ public class AppointmentController {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
+        if (appointmentService.getAppointmentById(id).get().getStatus().equals("Active")) {
+            throw new ObjectNotFoundException(ErrorCode.E1001);
+        }
         appointmentService.deleteAppointment(id);
+    }
+
+    // Start Appointment to charging
+    @GetMapping("/start/{id}")
+    @Operation(summary = "Start Appointment", description = "Start Appointment using ID",tags = {"Appointment"})
+    public String startAppointment(@PathVariable("id") long id) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        if (!appointmentService.getAppointmentById(id).get().getStatus().equals("Active")) {
+            throw new ObjectNotFoundException(ErrorCode.E1001);
+        }
+        else {
+            Appointment appointment = appointmentService.getAppointmentById(id).get();
+            return appointmentService.startAppointment(appointment, id, appointment.getCar().getId());
+        }
     }
 
     @PutMapping("/cancel/{id}")
@@ -266,6 +289,9 @@ public class AppointmentController {
         }
         else {
             Appointment appointment = appointmentService.getAppointmentById(id).get();
+            if (!appointment.getStatus().equals("Active")) {
+                throw new ObjectNotFoundException(ErrorCode.E1001);
+            }
             return appointmentService.cancelAppointment(appointment, id);
         }
 
@@ -289,18 +315,7 @@ public class AppointmentController {
         return appointmentService.checkUpcomingAppointment(stationId, chargerId, userId);
     }
 
-    // Start Appointment to charging
-    @GetMapping("/start/{id}/{carId}")
-    @Operation(summary = "Start Appointment", description = "Start Appointment using ID",tags = {"Appointment"})
-    public String startAppointment(@PathVariable("id") long id, @PathVariable("carId") long carId) {
-        if (!appointmentService.getAppointmentById(id).isPresent()) {
-            throw new ObjectNotFoundException(ErrorCode.E1002);
-        }
-        else {
-            Appointment appointment = appointmentService.getAppointmentById(id).get();
-            return appointmentService.startAppointment(appointment, id, carId);
-        }
-    }
+
 
     
 }

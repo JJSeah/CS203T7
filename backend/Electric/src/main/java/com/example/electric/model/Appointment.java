@@ -54,6 +54,10 @@ public class Appointment {
     @Column(name="manual_Appointment")
     private boolean manualAppointment;
 
+    @ManyToOne
+    @JoinColumn(name="car_id")
+    private Car car;
+
     public Appointment(long id, Time duration, Time startTime, Time endTime, Date date, User user, double cost) {
         this.id = id;
         this.duration = duration;
