@@ -15,7 +15,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
   const [ scanned, setScanned ] = useState(false);
   // const [ qrCodeData, setQRCodeData ] = useState(null);
   const { upcomingAppointmentDetails } = useContext(UserContext);
-  const { userToken } = useContext(UserContext);
+  const { userToken, userID } = useContext(UserContext);
   const { chargingProgressButtonPressed } = UpcomingAppointmentViewController({navigation});
 
   const askForCameraPermission = () => {
