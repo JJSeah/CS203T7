@@ -5,36 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ActivityViewController from '../viewController/ActivityViewController';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-// const fakeData = [
-//     {
-//       "station": "Shell Recharge", 
-//       "address": "80 upper thomson",
-//       "date": "2023-10-15", 
-//       "time": "13:05:35",
-//       "cost": 23.5, 
-//       key: 1
-//     },
-//     {
-//       "station": "SP Mobility ", 
-//       "address": "50 toa payoh",
-//       "date": "2023-10-30", 
-//       "time": "09:15:05",
-//       "cost": 9.2, 
-//       key: 2
-//     },
-//     {
-//         "station": "CHARGE+", 
-//         "address": "60 orchard",
-//         "date": "2023-011-20", 
-//         "time": "20:40:45",
-//         "cost": 20, 
-//         key: 3
-//       },
-//   ]
-
 
 export default ActivityScreen = ({ navigation }) => {
-  const { historyButtonPressed, scanQRButtonPressed } = ActivityViewController({ navigation });
+  const { historyButtonPressed, scanQRButtonPressed, cancelButtonPressed } = ActivityViewController({ navigation });
   const { allAppointments } = useContext(UserContext);
 
 
@@ -117,8 +90,11 @@ export default ActivityScreen = ({ navigation }) => {
                     {formatDate(item.date)}, {formatTime(item.startTime)}
                   </Text>
                 </View>
-                <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"
+                <View style={activityStyles.iconAndButton}>
+                <MaterialCommunityIcons name="qrcode-scan" size={35} color="black" style={activityStyles.icon}
                 onPress={scanQRButtonPressed} />
+                <Button title="CANCEL" color='red' onPress={cancelButtonPressed}/>
+                </View>
               </View>
             )}
           />
@@ -150,7 +126,7 @@ const activityStyles = StyleSheet.create({
       borderWidth: 1, 
       borderColor: 'black', 
       borderRadius: 10, 
-      padding: 30, 
+      padding: 25, 
       margin: 8,
       flexDirection: 'row', 
       justifyContent: 'space-between', 
@@ -187,4 +163,13 @@ const activityStyles = StyleSheet.create({
         right: 10,
         zIndex: 1,
     },
+    icon: {
+      marginBottom: 10,
+    },
+    iconAndButton: {
+      flexDirection: 'column', 
+      justifyContent: 'space-between',
+      marginTop: 10,
+      alignItems: 'center',
+    }
   })
