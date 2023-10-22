@@ -17,6 +17,32 @@ export default PaymentMethodsScreen = ( {navigation} ) => {
   return (
     <SafeAreaView style = {localStyles.container}>
       <View style = {localStyles.detailsContainer}>
+      <View style={{flex:9}}>
+      {userCard === null ? (
+        <View>
+          <ActivityIndicator />
+        </View>
+      ) : Array.isArray(userCard) && userCard.length > 0 ? (
+        userCard.map((card) => (
+          <View key={card.id} style={localStyles.sectionContainer}>
+            <View style={localStyles.informationContainer}>
+              <CarInformation 
+              title="Card Holder's Name" 
+              value={card.name}/>
+              <CarInformation 
+              title="Card Number" 
+              value={card.number}/>
+              <CarInformation 
+              title="Expiry Date" 
+              value={card.expiry}/>
+            </View>
+          </View>
+        ))
+      ) : (
+        <Text>No cards available</Text>
+      )}
+      </View>
+
       <CustomLongButton
           title="Add Card"
           onPress={addCardButtonPressed}
@@ -38,6 +64,9 @@ const localStyles = StyleSheet.create({
   },
   buttonContainer: {
     flex : 1
-  }
+  },
+  textContainer: {
+    color: 'white',
+  },
 
 });

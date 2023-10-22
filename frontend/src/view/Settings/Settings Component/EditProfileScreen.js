@@ -118,26 +118,7 @@ export default EditProfileScreen = ( { navigation } ) => {
   )
 }
 
-const registerStyle = StyleSheet.create({
-  body:{
-    // backgroundColor: '#fff', 
-    fontSize: 30, 
-    padding: 10,
-    marginVertical : 10,
-  }, 
-  text: {
-    color: 'white', 
-    fontFamily: 'Product-Sans-Regular', 
-    fontSize: 15, 
-    textAlign: 'center',
-  },
-  textFailed:{
-    color: 'red', 
-    fontSize: 13.5, 
-    fontWeight: 'bold', 
-    marginLeft: 20,
-  }, 
-})
+
 
 
 

@@ -9,8 +9,8 @@ export const CardRepository = () => {
     useContext(UserContext);
 
 
-const addCardToBackend = async(newCard, { navigation }) => {
-    let url = `${BASE_URL}/api/card/${userId}`;
+const addCardToBackend = async(newCard, userId, { navigation }) => {
+    let url = `${BASE_URL}/api/card/add/${userId}`;
 
     axios.post(url, {
         name: newCard.name,
