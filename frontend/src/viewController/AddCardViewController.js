@@ -8,7 +8,7 @@ export default AddCardViewController = ( { navigation }) => {
     const [ number, setNumber ] = useState(0)
     const [ expiry, setExpiry ] = useState(null)
 
-    const addCardButtonPressed = () => {
+    const confirmAddCardButtonPressed = () => {
         const expiryDateString =
       startTime.getFullYear() + "-" +
       ("0" + (startTime.getMonth() + 1)).slice(-2) + "-" +
@@ -26,6 +26,6 @@ export default AddCardViewController = ( { navigation }) => {
         name, setName,
         number, setNumber,
         expiry, setExpiry,
-        addCardButtonPressed,
+        confirmAddCardButtonPressed,
     };
 }

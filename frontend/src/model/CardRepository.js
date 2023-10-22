@@ -10,7 +10,7 @@ export const CardRepository = () => {
 
 
 const addCardToBackend = async(newCard, { navigation }) => {
-    let url = `${BASE_URL}/api/card`;
+    let url = `${BASE_URL}/api/card/${userId}`;
 
     axios.post(url, {
         name: newCard.name,
@@ -39,14 +39,14 @@ const addCardToBackend = async(newCard, { navigation }) => {
         axios.get(url)
         .then((res) => {
             let data = res.data;
-
-            data = data.reverse();
             setUserCard(data);
         })
         .catch((e) => {
             console.log(`Error adding card to back end ${e}`);
         })
     }
+
+    
 
     return { addCardToBackend, loadCardData };
 };

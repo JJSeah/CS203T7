@@ -5,8 +5,8 @@ export default EditProfileViewController = ( { navigation } ) => {
     const [ isReady, setIsReady ] = useState(false);
     const { updateProfile } = useContext(UserContext);
 
-    const confirmEditProfileButtonPressed = (newFirstName, newLastName, newUsername, id) => {
-        updateProfile(newFirstName, newLastName, newUsername, id);
+    const confirmEditProfileButtonPressed = async(newFirstName, newLastName, newUsername, id) => {
+        updateProfile(newFirstName, newLastName, newUsername, id) 
         navigation.pop();
     }
 
