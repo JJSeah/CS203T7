@@ -30,8 +30,8 @@ const AddCardSchema = Yup.object().shape({
 
     cardExpirationDate: Yup.string()
     .matches(/^\d{2}\/\d{2}$/, 'Invalid date format (MM/YY)')
-    // .test('valid-expiration', 'Expiration date is not valid', 
-    // value => valid.expirationDate(value).isValid)
+    .test('valid-expiration', 'Expiration date is not valid', 
+    value => valid.expirationDate(value).isValid)
     .required('Expiration date is required'),
 });
 

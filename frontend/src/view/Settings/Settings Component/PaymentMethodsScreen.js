@@ -3,7 +3,6 @@ import { Text, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { UserContext } from '../../../model/User';
-import AddCardViewController from '../../../viewController/AddCardViewController';
 import CustomLongButton from '../../../components/CustomLongButton';
 
 
@@ -32,6 +31,7 @@ export default PaymentMethodsScreen = ( {navigation} ) => {
               <CarInformation 
               title="Card Number" 
               value={card.number}/>
+
               <CarInformation 
               title="Expiry Date" 
               value={card.expiry}/>
@@ -47,7 +47,6 @@ export default PaymentMethodsScreen = ( {navigation} ) => {
           title="Add Card"
           onPress={addCardButtonPressed}
           />
-
       </View>
     </SafeAreaView>
   );
