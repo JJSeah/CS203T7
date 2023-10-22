@@ -1,22 +1,25 @@
 package com.example.electric.service;
 
-import com.example.electric.exception.*;
+import com.example.electric.dto.AppointmentDto;
+import com.example.electric.exception.CanCreateBookingException;
+import com.example.electric.exception.CannotCreateBookingException;
+import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.model.Appointment;
-import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
 import com.example.electric.model.User;
+import com.example.electric.dto.*;
 import com.example.electric.respository.AppointmentRepository;
 import com.example.electric.respository.UserRepository;
 import com.example.electric.service.inter.AppointmentServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
+import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -134,6 +137,18 @@ public class AppointmentService implements AppointmentServiceInter {
             return null; // Appointment not found
         }
     }
+    // public Appointment updateAppointment(AppointmentDto updatedAppointment, long id){
+    //     Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
+    //     if (optionalAppointment.isPresent()) {
+    //         Appointment appointment = optionalAppointment.get();
+    //         mapper.updateAppointmentFromDto(updatedAppointment, appointment);
+    //         return appointmentRepository.save(appointment);
+
+    //     }else{
+    //         //appointment not found
+    //         return null;
+    //     }
+    // }
 
     public void deleteAppointment(long appointmentId) {
         if (!appointmentRepository.existsById(appointmentId)) {
@@ -165,31 +180,64 @@ public class AppointmentService implements AppointmentServiceInter {
         return appointmentRepository.findAvailableStationsAndChargers(start, end, date);
     }
 
-    public Appointment completedAppointment(Appointment updatedAppointment, long id){
+
+    public Appointment completedAppointment(Appointment updatedAppointment, long id,long carId){
     // Check for null values
     if (updatedAppointment == null) {
         throw new IllegalArgumentException("Updated appointment cannot be null");
     }
 
+    String URL = "http://localhost:9091/car/stop/" + carId;
+    String obj =  new RestTemplate().getForObject(URL, String.class);
+
     // Set status to completed
     updatedAppointment.setStatus("completed");
-
     // Update the appointment
     Appointment completedAppointment = updateAppointment(updatedAppointment, id);
-
-
 
     return completedAppointment;
     }
 
+    public String cancelAppointment(Appointment appointment, long id){
+        // Check for null values
+        if (appointment == null) {
+            throw new IllegalArgumentException("Updated appointment cannot be null");
+        }
 
-    public Appointment checkUpcomingAppointment(long stationId, long chargerId, User user){
+        appointment.setStatus("cancelled");
+        String transactionId = appointment.getTransactionId();
+
+        String URL = "http://localhost:9090/payment/cancel/" + transactionId;
+        String obj =  new RestTemplate().getForObject(URL, String.class);
+        updateAppointment(appointment, id);
+
+        return obj;
+    }
+
+    public String startAppointment(Appointment appointment, long id, long carId){
+        // Check for null values
+        if (appointment == null) {
+            throw new IllegalArgumentException("Updated appointment cannot be null");
+        }
+
+        appointment.setStatus("charging");
+        appointment.setStartTime(Time.valueOf(LocalTime.now()));
+
+        String URL = "http://localhost:9091/car/start/" + carId;
+        String obj =  new RestTemplate().getForObject(URL, String.class);
+        updateAppointment(appointment, id);
+
+        return obj;
+    }
+
+
+    public Appointment checkUpcomingAppointment(long stationId, long chargerId, long userId){
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
         //return list of active appointment at charger 
         List<Appointment> upcomingAppointment = appointmentRepository.findAppointmentsByStationIdAndChargerIdAndStatus(stationId, chargerId, "Active", currentDate);
-        if(upcomingAppointment == null){
+        if(upcomingAppointment.size() == 0){
             throw new CanCreateBookingException();
         }
         upcomingAppointment.sort((appointment1, appointment2) -> appointment1.getStartTime().compareTo(appointment2.getStartTime()));
@@ -199,7 +247,7 @@ public class AppointmentService implements AppointmentServiceInter {
         LocalTime firstApptTime = firstAppointment.getStartTime().toLocalTime();
 
         //Check if User has an appointment in the next 15 minute, if yes return the appointment
-        if(firstApptDate.equals(currentDate) && firstAppointment.getUser().getId() == user.getId()){
+        if(firstApptDate.equals(currentDate) && firstAppointment.getUser().getId() == userId){
             return firstAppointment;
         }
         // //check if 

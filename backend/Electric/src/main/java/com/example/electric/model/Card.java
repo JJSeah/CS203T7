@@ -42,7 +42,6 @@ public class Card {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Date date = Date.valueOf(LocalDate.parse(s, formatter));
         this.expiry = date;
-
     }
 
     public Card(long l, String string, long m, Date valueOf, User user2) {

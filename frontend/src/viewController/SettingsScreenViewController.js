@@ -36,6 +36,10 @@ export default SettingsScreenViewController = ( { navigation } ) => {
         navigation.navigate("EditProfileScreen")
     }
 
+    const addCardButtonPressed = () => {
+        navigation.navigate("AddCardScreen")
+    }
+
     return {
         isReady, 
         setIsReady,
@@ -47,5 +51,6 @@ export default SettingsScreenViewController = ( { navigation } ) => {
         privacyPolicyButtonPressed,
         aboutButtonPressed,
         editProfileButtonPressed,
+        addCardButtonPressed,
     };
 }

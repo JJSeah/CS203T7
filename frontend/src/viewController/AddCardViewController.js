@@ -3,28 +3,29 @@ import { CardRepository } from "../model/CardRepository";
 
 export default AddCardViewController = ( { navigation }) => {
     const { addCardToBackend } = CardRepository();
+    const [ isReady, setIsReady ] = useState(false);
 
     const [ name, setName ] = useState("")
     const [ number, setNumber ] = useState(0)
     const [ expiry, setExpiry ] = useState(null)
 
-    const addCardButtonPressed = () => {
-        const expiryDateString =
-      ("0" + (startTime.getMonth() + 1)).slice(-2) + "-" +
-      ("0" + startTime.getDate()).slice(-2);
 
+    const confirmAddCardButtonPressed = async(cardHolderName, cardNumber, cardExpirationDate, id) => {
+        const [month, year] = cardExpirationDate.split('/');
+        const formattedExpirationDate = '20' + year + '-' + month + '-01';
         const newCard = {
-            "name" : name,
-            "number": number,
-            "expiry": expiryDateString,
+            "name" : cardHolderName,
+            "number": cardNumber,
+            "expiry": formattedExpirationDate,
         }
-        addCardToBackend(newCard, { navigation } );
+        addCardToBackend(newCard, id, { navigation } );
     }
 
     return {
+        isReady, setIsReady,
         name, setName,
         number, setNumber,
         expiry, setExpiry,
-        addCardButtonPressed,
+        confirmAddCardButtonPressed,
     };
 }

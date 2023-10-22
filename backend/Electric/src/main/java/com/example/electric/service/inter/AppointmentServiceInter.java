@@ -28,5 +28,5 @@ public interface AppointmentServiceInter {
 
     List<Station> getAvailableStationsAndChargers(String startTime, String endTime, String dateNow);
 
-    Appointment completedAppointment(Appointment updatedAppointment, long id);
+    Appointment completedAppointment(Appointment updatedAppointment, long id, long carId);
 }

@@ -8,7 +8,6 @@ import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
 import { set, sortBy } from 'lodash';
 
-//test 
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,38 +32,12 @@ const year =[
   {label: '2024', value: '3'}
 ]
 
-const fakeData = [
-  {
-    "station": "Shell Recharge", 
-    "address": "80 upper thomson",
-    "date": "2023-09-25", 
-    "time": "13:05:35",
-    "cost": 23.5, 
-    key: 1
-  },
-  {
-    "station": "SP Mobility ", 
-    "address": "50 toa payoh",
-    "date": "2023-02-25", 
-    "time": "09:15:05",
-    "cost": 9.2, 
-    key: 2
-  },
-  {
-    "station": "CHARGE+", 
-    "address": "60 orchard",
-    "date": "2023-09-20", 
-    "time": "20:40:45",
-    "cost": 20, 
-    key: 3
-  },
-]
 
 export default HistoryScreen = ({navigation}) => {
 
   const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
-  
-  const [ originalData ] = useState(fakeData);
+  const { allAppointments } = useContext(UserContext);
+  const [ filteredAppointments, setFilteredAppointments ] = useState([]);
 
   useEffect(() => {
     const loadFonts = async() => {
@@ -99,19 +72,24 @@ export default HistoryScreen = ({navigation}) => {
 
   useEffect(() => {
     const filterData = () => {
-      if (monthValue !== null && yearValue != null) {
-        const filtered = sortBy(fakeData.filter((item) => {
-          const dateParts = item.date.split('-');
+      if (monthValue !== null && yearValue != null && allAppointments) {
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          // appointment.status === "completed";
+          const dateParts = appointment.date.split('-');
           const monthNo = parseInt(dateParts[1]);
           const yearNo = parseInt(dateParts[0]);
           
-          return String(monthNo) ===  monthValue && String(yearNo) === yearValue;
+          return String(monthNo) ===  monthValue && String(yearNo) === yearValue && appointment.status === 'completed';
         }), 'date').reverse();
         
-        setFilteredRecords(filtered);
-      } else {
-        const allRecords = sortBy(fakeData, 'date').reverse();
-        setFilteredRecords(allRecords);
+        setFilteredAppointments(filtered);
+      } else if (allAppointments) {
+          const allRecords = sortBy(allAppointments.filter((appointment) => {
+          return appointment.status === 'completed'
+          }), 'date').reverse();
+
+        setFilteredAppointments(allRecords);
       }
     };
 
@@ -121,8 +99,8 @@ export default HistoryScreen = ({navigation}) => {
   
   let totalCost = 0; 
   if(filteredRecords){
-  filteredRecords.forEach((item) => {
-    totalCost += item.cost; 
+  filteredRecords.forEach((appointment) => {
+    totalCost += appointment.cost; 
   });
   }
   
@@ -165,13 +143,13 @@ export default HistoryScreen = ({navigation}) => {
       </View>
 
 
-      {monthValue && yearValue && filteredRecords.length === 0 && (
+      {monthValue && yearValue && filteredAppointments.length === 0 && (
         <View>
           <Text style={historyStyles.totalCost}>No record</Text>
         </View>
       )}
 
-      {monthValue && yearValue && filteredRecords.length > 0 && (
+      {monthValue && yearValue && filteredAppointments.length > 0 && (
         <View>
           <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
                 {year.find((y) => y.label === yearValue)?.label}: ${totalCost}
@@ -186,14 +164,14 @@ export default HistoryScreen = ({navigation}) => {
       )}
 
       <FlatList
-        data={filteredRecords}
-        keyExtractor={(item) => item.key.toString()}
+        data={filteredAppointments}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({item}) => (
           <View style={historyStyles.recordContainer}>
             <View style={historyStyles.stationNameContainer}>
-              <Text style={historyStyles.stationName}>{item.station}</Text>
-              <Text style={historyStyles.address}>{item.address}</Text>
-              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.time)}</Text>
+              <Text style={historyStyles.stationName}>{item.station.name}</Text>
+              <Text style={historyStyles.address}>{item.station.address}</Text>
+              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)}</Text>
             </View>
             <Text style={historyStyles.cost}>${item.cost}</Text>
           </View>
@@ -207,10 +185,10 @@ export default HistoryScreen = ({navigation}) => {
           setMonthValue(null); 
           setYearValue('2023');
           setShowAllRecords(true);
-          setFilteredRecords(originalData);
+          setFilteredAppointments(allAppointments);
          }}
         />
-      )}      
+      )}  
 
     </SafeAreaView> 
   )

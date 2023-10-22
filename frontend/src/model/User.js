@@ -24,7 +24,7 @@ export const UserProvider = ( { children } ) => {
     const [ upcomingAppointmentDetails, setUpcomingAppointmentDetails ] = useState(null);
     const [ currentAppointment, setCurrentAppointment ] = useState(null);
 
-    const [ allAppointments, setAllAppointments ] = useState(null);
+    const [ allAppointments, setAllAppointments ] = useState([]);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
     
@@ -101,6 +101,37 @@ export const UserProvider = ( { children } ) => {
 
     }
 
+    const checkPassword = async(email, password) => {
+
+        let url = `${BASE_URL}/auth/login`
+
+        axios.post(url, {
+            email, 
+            password 
+        })
+        .then(() => {
+            changePassword(password);
+        }
+        )
+        .catch(e => {
+            console.log(`Password doesn't match ${e}`)
+        })
+
+    }
+
+    const changePassword = async(password) => {
+        let url = `${BASE_URL}/api/user/${id}`
+
+        axios.put(url, {
+            "password": password
+        })
+        .then(() => {
+            console.log("Successfully change password in backend")
+            loadUserData()
+        }).catch((e) => {
+            console.log(`Error changing password ${e}`);
+        });
+    }
 
     const loadUserData = async() => {
         let url = `${BASE_URL}/api/user/${userId}`
@@ -127,6 +158,7 @@ export const UserProvider = ( { children } ) => {
             getAllAppointments()
             
             getAllStations()
+            return true
         })
         .catch(e => {
             console.log(`Load user data error ${e}`)
@@ -197,6 +229,8 @@ export const UserProvider = ( { children } ) => {
         })
     }
 
+    
+
 
     return (
         <UserContext.Provider 
@@ -206,7 +240,7 @@ export const UserProvider = ( { children } ) => {
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
                 currentAppointment, setCurrentAppointment,
-                currentCar, setCurrentCar, updateProfile, getAllAppointments
+                currentCar, setCurrentCar, updateProfile, checkPassword, allAppointments
             }}
         >
             { children }

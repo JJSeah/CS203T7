@@ -9,8 +9,8 @@ export const CardRepository = () => {
     useContext(UserContext);
 
 
-const addCardToBackend = async(newCard, { navigation }) => {
-    let url = `${BASE_URL}/api/card`;
+const addCardToBackend = async(newCard, userId, { navigation }) => {
+    let url = `${BASE_URL}/api/card/add/${userId}`;
 
     axios.post(url, {
         name: newCard.name,
@@ -39,14 +39,14 @@ const addCardToBackend = async(newCard, { navigation }) => {
         axios.get(url)
         .then((res) => {
             let data = res.data;
-
-            data = data.reverse();
             setUserCard(data);
         })
         .catch((e) => {
             console.log(`Error adding card to back end ${e}`);
         })
     }
+
+    
 
     return { addCardToBackend, loadCardData };
 };
