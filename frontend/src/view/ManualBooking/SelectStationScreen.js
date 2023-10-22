@@ -11,6 +11,7 @@ export default SelectStationScreen = ({ navigation }) => {
   const route = useRoute();
   const stations = route.params?.stations;
   const currentCar = route.params?.currentCar;
+  const timings = route.params?.timings;
 
   const mapViewRef = useRef(null);
 
@@ -23,6 +24,10 @@ export default SelectStationScreen = ({ navigation }) => {
         <View style={localStyles.titleContainer}>
           <Text>Click on one of the stations to find available chargers</Text>
           <Text>For {currentCar.nickname}</Text>
+          <Text>For {currentCar.id}</Text>
+          <Text>For {timings.dateString}</Text>
+          <Text>For {timings.startTimeString}</Text>
+          <Text>For {timings.endTimeString}</Text>
         </View>
 
         <View style={localStyles.mapContainer}>
@@ -98,8 +103,9 @@ export default SelectStationScreen = ({ navigation }) => {
       <View style={localStyles.bottomContainer}>
         <CustomLongButton
           title="Confirm booking"
+          disabled={selectedStation === null}
           onPress={() => {
-            confirmBookingButtonPressed()
+            confirmBookingButtonPressed(timings.dateString, timings.startTimeString, timings.endTimeString)
           }}
         />
       </View>
@@ -119,7 +125,7 @@ const localStyles = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    flex: 2,
+    flex: 4,
   },
   mapContainer: {
     flex: 10,

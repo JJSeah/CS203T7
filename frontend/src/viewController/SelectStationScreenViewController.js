@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default SelectStationScreenViewController = ( { navigation }, stations ) => {
 
-  const { currentCar } = useContext(UserContext);
+  const { currentCar, userToken, userId, getAllAppointments } = useContext(UserContext);
 
   const [ selectedChargers, setSelectedChargers ] = useState(null);
   const [ selectedStation, setSelectedStation ] = useState(null);
@@ -31,9 +31,40 @@ export default SelectStationScreenViewController = ( { navigation }, stations ) 
   }
 
 
-  const confirmBookingButtonPressed = async () => {
-    console.log()
-    navigation.navigate("HomeNavigator");
+  const confirmBookingButtonPressed = async (dateString, startTimeString, endTimeString) => {
+    let url = `${BASE_URL}/api/appointment`
+
+    axios.post(url, {
+        "startTime": startTimeString,
+        "endTime": endTimeString,
+        "date": dateString,
+        "station" : {
+          "id": selectedStation.id
+        }, 
+        "charger": {
+          "id": finalCharger.chargerId
+        },
+        "user": {
+          "id": userId,
+          "role": "ROLE_ADMIN"
+        }
+      },
+      {
+          headers: {
+              'Authorization': `Bearer ${userToken}`
+          }
+      }
+    )
+    .then((res)=> {
+      getAllAppointments();
+      navigation.navigate("HomeNavigator");
+    })
+    .catch((e) => {
+      console.log(`Error making manual appointment ${e}`)
+    }
+    )
+
+
   };
 
   return {

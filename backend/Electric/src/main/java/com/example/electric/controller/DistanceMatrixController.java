@@ -1,6 +1,7 @@
 package com.example.electric.controller;
 
 import com.example.electric.model.Car;
+import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
 import com.example.electric.service.CarService;
 import com.example.electric.service.DistanceMatrixService;
@@ -10,7 +11,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -80,14 +87,40 @@ public class DistanceMatrixController {
         double costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUserId(userId, carId));
         int estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));
 
+        //Get start time
+        LocalTime currentTime = LocalTime.now();
+        int minute = currentTime.getMinute();
+        int roundedMinute = (minute / 5) * 5;
+
+        LocalTime roundedStartTime = currentTime.withMinute(roundedMinute).withSecond(00);
+        String startTime = roundedStartTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        //Get end time
+        LocalTime start = LocalTime.parse(startTime);
+        LocalTime end = start.plus(3, ChronoUnit.HOURS);
+        String endTime = end.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        //Get date
+        LocalDate currentDate = LocalDate.now();
+        String date = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        //Get available charger
+        Station obj = stationService.getStationById(station.getId());
+        Charger charger = stationService.getSlowestAndAvailableCharger(obj, roundedStartTime, end, currentDate);
+
+
         // Create a Map to return the information in JSON format
         Map<String, Object> response = new HashMap<>();
-        response.put("latitude", station.getLatitude());
-        response.put("longitude", station.getLongitude());
+        response.put("stationId", station.getId());
+        response.put("chargerId", charger.getId());
+        response.put("startTime", startTime);
+        response.put("endTime", endTime);
+        response.put("date", date);
         response.put("timeToArrive", timeToArrive);
         response.put("distance", distance);
         response.put("costOfCharging", costOfCharging);
         response.put("estimateTimeOfCharging", estimateTimeOfCharging);
+        response.put("charger", charger);
 
         return response;
     }

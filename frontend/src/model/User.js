@@ -23,6 +23,8 @@ export const UserProvider = ( { children } ) => {
     const [ closestStation, setClosestStation ] = useState(null);
     const [ upcomingAppointmentDetails, setUpcomingAppointmentDetails ] = useState(null);
     const [ currentAppointment, setCurrentAppointment ] = useState(null);
+
+    const [ allAppointments, setAllAppointments ] = useState([]);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
     
@@ -40,6 +42,20 @@ export const UserProvider = ( { children } ) => {
         })
         .catch (e => {
             console.log(`Sign up error ${e}`)
+        })
+    }
+
+    const getAllAppointments = async() => {
+        let url = `${BASE_URL}/api/appointment/user/${userId}`
+
+        axios.get(url)
+        .then (res => { 
+            let data = res.data
+            console.log(data)
+            setAllAppointments(data)
+        })
+        .catch (e => {
+            console.log(`Get all appointment error ${e}`)
         })
     }
 
@@ -144,7 +160,8 @@ export const UserProvider = ( { children } ) => {
             setUserData(userData)
             setUserCars(userCars)
             setUserCard(userCard)
-
+            getAllAppointments()
+            
             getAllStations()
             return true
         })

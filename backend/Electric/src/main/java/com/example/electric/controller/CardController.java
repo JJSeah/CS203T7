@@ -46,12 +46,12 @@ public class CardController {
      * @param orderValue -> cost
      * @return -> transaction id
      */
-    @GetMapping("/process/{id}/{orderValue}")
-    public String process(@PathVariable("id") long id, @PathVariable("orderValue") double orderValue) {
+    @GetMapping("/process/{id}/{orderValue}/{cardId}")
+    public String process(@PathVariable("id") long id, @PathVariable("orderValue") double orderValue, @PathVariable("cardId") long cardId) {
         if (!cardService.getCardById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        return cardService.processPayment(id,orderValue);
+        return cardService.processPayment(id,orderValue,cardId);
     }
 
 
@@ -98,10 +98,7 @@ public class CardController {
      */
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get User's Card", description = "Get a list of User's Card from UserID",tags = {"Card"})
-    public Optional<Card> getCardByUser(@PathVariable("userId") long userId) {
-        if (!cardService.getCardById(userId).isPresent()) {
-            throw new ObjectNotFoundException(ErrorCode.E1002);
-        }
+    public List<Card> getCardByUser(@PathVariable("userId") long userId) {
         return cardService.getCardByUserId(userId);
     }
 

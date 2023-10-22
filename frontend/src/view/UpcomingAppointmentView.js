@@ -3,27 +3,33 @@ import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { UserContext } from '../model/User';
 // import { styles } from '../components/Design';
 import { BarCodeScanner } from 'expo-barcode-scanner'; 
-import { Camera } from 'expo-camera';
 import UpcomingAppointmentViewController from '../viewController/UpcomingAppointmentViewController';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default UpcomingAppointmentView = ({ navigation }) => {
  
   const [ hasPermission, setHasPermission ] = useState(null); 
   const [ scanned, setScanned ] = useState(false);
+  const [ text, setText ] = useState('not yet scanned');
   const { upcomingAppointmentDetails } = useContext(UserContext);
 
   const {chargingProgressButtonPressed} = UpcomingAppointmentViewController({navigation})
 
+  const askForCameraPermission = () => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync(); 
+      setHasPermission(status == 'granted'); 
+    })()
+  }
+
   useEffect(() => {
-    (async() => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
+    askForCameraPermission();
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    // setScanned(true); 
-    alert(`Barcode type: ${type} and data: ${data}`);
+    setScanned(true); 
+    setText(data);
+    console.log('Type: ' + type + '\nData: ' + data)
   }; 
 
   // const renderCamera = () => {
@@ -45,21 +51,18 @@ export default UpcomingAppointmentView = ({ navigation }) => {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Camera permission not granted</Text>
+        <Button title={'Allow camera'} onPress={() => askForCameraPermission()}/>
       </View>
     );
   };
 
   return (
     <View style={styles.container}>
-      {/* <Text>The cost of charging is ${upcomingAppointmentDetails.costOfCharging}</Text> */}
-      {/* <Text>The distance to stations is {upcomingAppointmentDetails.distance} m</Text>
-      <Text>The estimated time of charging is {upcomingAppointmentDetails.estimateTimeOfCharging} hours</Text>
-      <Text>The estimated time to arrive is {upcomingAppointmentDetails.timeToArrive} seconds</Text> */}
 
       <Text style={styles.text}>Scan the barcode to start charging.</Text>
       {/* {renderCamera()} */}
       <View style={styles.cameraContainer}>
-        <BarCodeScanner 
+        <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={styles.camera}
         />
@@ -69,7 +72,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         onPress={() => setScanned(false)}
         disabled={scanned}
       >
-        <Button title="Scan QR"
+        <Button title="scanned qr code"
          onPress={chargingProgressButtonPressed}/>
       </TouchableOpacity>
     </View>

@@ -12,4 +12,3 @@ export const BASE_URL = "http://10.85.10.106:8080"
 // for ios
 // export const BASE_URL = "http://localhost:8080"
 
-// testing again whether ignored

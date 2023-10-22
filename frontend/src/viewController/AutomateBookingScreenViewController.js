@@ -5,7 +5,8 @@ import { BASE_URL } from "../constants/Config";
 
 export default AutomateBookingScreenViewController = ( { navigation } ) => {
 
-    const { closestStation, setClosestStation, setUpcomingAppointmentDetails, userToken, userId, userCoordinates, currentCar } = useContext(UserContext);
+    const { closestStation, setClosestStation, setUpcomingAppointmentDetails, userToken, userId, userCoordinates, currentCar, getAllAppointments } = useContext(UserContext);
+    const [ bookingData, setBookingData ] = useState(null);
 
     useEffect(() => {
 
@@ -22,7 +23,6 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         setClosestStation(null)
         setUpcomingAppointmentDetails(null)
 
-
         let url = `${BASE_URL}/api/stations/closest`
 
         axios.post(url, {
@@ -30,9 +30,9 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
             longitude
         }, 
         {
-            headers : { Authorization : `Bearer ${userToken}` }
-        }        
-        ).then(res => {
+            headers: { Authorization: `Bearer ${userToken}` },
+        }
+        ).then((res) => {
             let data = res.data
             setClosestStation(data)
         }).catch(e => {
@@ -56,7 +56,31 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         }        
         ).then(res => {
             let data = res.data
-            console.log(`The car used to book is ${currentCar.id}, nickname ${currentCar.nickname}, id: ${currentCar.id}`)
+
+            let dateString = data.date
+            let chargerId = data.charger.id
+            let startTimeString = data.startTime
+            let endTimeString = data.endTime
+            let stationId = data.stationId
+
+            console.log("charger available is" + chargerId)
+
+            setBookingData({
+                "startTime": startTimeString,
+                "endTime": endTimeString,
+                "date": dateString,
+                "station" : {
+                "id": stationId
+                }, 
+                "charger": {
+                "id": chargerId
+                },
+                "user": {
+                "id": userId,
+                "role": "ROLE_ADMIN"
+                }
+            })
+
             setUpcomingAppointmentDetails(data)
         }).catch(e => {
             console.log(`Error loading details of upcoming appointment ${e}`)
@@ -65,11 +89,31 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
 
     const cancleButtonPressed = () => {
         navigation.pop();
-    } 
-
-    const confirmButtonPressed = () => {
-        console.log("making appointment")
+    
     }
+    
+    const confirmButtonPressed = async() => {
+
+        let url = `${BASE_URL}/api/appointment`
+    
+        axios.post(url, bookingData,
+          {
+              headers: {
+                  'Authorization': `Bearer ${userToken}`
+              }
+          }
+        )
+        .then((res)=> {
+          getAllAppointments();
+          navigation.pop();
+        })
+        .catch((e) => {
+          console.log(`Error making appointment in automate booking screen${e}`)
+        }
+    )
+    }
+
+ 
     
     return {
         cancleButtonPressed,

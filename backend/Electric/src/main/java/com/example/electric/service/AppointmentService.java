@@ -1,22 +1,22 @@
 package com.example.electric.service;
 
-import com.example.electric.exception.*;
+import com.example.electric.exception.CanCreateBookingException;
+import com.example.electric.exception.CannotCreateBookingException;
+import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.model.Appointment;
-import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
 import com.example.electric.model.User;
 import com.example.electric.respository.AppointmentRepository;
 import com.example.electric.respository.UserRepository;
 import com.example.electric.service.inter.AppointmentServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +43,7 @@ public class AppointmentService implements AppointmentServiceInter {
     public Appointment addAppointment(Appointment appointment) throws ExceedMaxManualApptException {
 
         appointment.setStatus("Active");
+//        appointment.getCharger().setAvail(false);
         appointmentRepository.save(appointment);
 
         return appointment;
@@ -164,21 +165,54 @@ public class AppointmentService implements AppointmentServiceInter {
         return appointmentRepository.findAvailableStationsAndChargers(start, end, date);
     }
 
-    public Appointment completedAppointment(Appointment updatedAppointment, long id){
+
+    public Appointment completedAppointment(Appointment updatedAppointment, long id,long carId){
     // Check for null values
     if (updatedAppointment == null) {
         throw new IllegalArgumentException("Updated appointment cannot be null");
     }
 
+    String URL = "http://localhost:9091/car/stop/" + carId;
+    String obj =  new RestTemplate().getForObject(URL, String.class);
+
     // Set status to completed
     updatedAppointment.setStatus("completed");
-
     // Update the appointment
     Appointment completedAppointment = updateAppointment(updatedAppointment, id);
 
-
-
     return completedAppointment;
+    }
+
+    public String cancelAppointment(Appointment appointment, long id){
+        // Check for null values
+        if (appointment == null) {
+            throw new IllegalArgumentException("Updated appointment cannot be null");
+        }
+
+        appointment.setStatus("cancelled");
+        String transactionId = appointment.getTransactionId();
+
+        String URL = "http://localhost:9090/payment/cancel/" + transactionId;
+        String obj =  new RestTemplate().getForObject(URL, String.class);
+        updateAppointment(appointment, id);
+
+        return obj;
+    }
+
+    public String startAppointment(Appointment appointment, long id, long carId){
+        // Check for null values
+        if (appointment == null) {
+            throw new IllegalArgumentException("Updated appointment cannot be null");
+        }
+
+        appointment.setStatus("charging");
+        appointment.setStartTime(Time.valueOf(LocalTime.now()));
+
+        String URL = "http://localhost:9091/car/start/" + carId;
+        String obj =  new RestTemplate().getForObject(URL, String.class);
+        updateAppointment(appointment, id);
+
+        return obj;
     }
 
 

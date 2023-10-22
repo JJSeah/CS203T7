@@ -3,20 +3,15 @@ package com.example.electric.controller;
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ObjectNotFoundException;
-import com.example.electric.model.Appointment;
-import com.example.electric.model.Car;
-import com.example.electric.model.Station;
-import com.example.electric.model.User;
-import com.example.electric.service.AppointmentService;
-import com.example.electric.service.CarService;
-import com.example.electric.service.VoronoiService;
+import com.example.electric.model.*;
 import com.example.electric.service.*;
-
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +29,15 @@ public class AppointmentController {
 
     @Autowired
     private CardService cardService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private StationService stationService;
+
+    @Autowired
+    private ChargerService chargerService;
 
     /**
      * Retrieve a list of all appointments.
@@ -61,7 +65,7 @@ public class AppointmentController {
      */
     @GetMapping("/{appointmentId}")
     @Operation(summary = "Get Appointment", description = "Get Appointment using ID", tags = {"Appointment"})
-    public Appointment getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
+    public Appointment getAppointmentById(@PathVariable("appointmentId") @NotNull long appointmentId) {
         return appointmentService.getAppointmentById(appointmentId)
                 .orElseThrow(() -> new ObjectNotFoundException(ErrorCode.E1002));
     }
@@ -77,13 +81,13 @@ public class AppointmentController {
      */
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get User's Appointments", description = "Get a list of User's Appointment from UserID",tags = {"Appointment"})
-    public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") long userId) {
+    public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") @NotNull long userId) {
         return appointmentService.getAllAppointmentsByUser(userId);
     }
 
     @GetMapping("/manual/user/{userId}")
     @Operation(summary = "Get User's Manual Active Appointments", description = "Get a list of User's Manual Active Appointment from UserID",tags = {"Manual Active Appointment"})
-    public List<Appointment> getActiveManualAppointmentByUser(@PathVariable("userId") long userId) {
+    public List<Appointment> getActiveManualAppointmentByUser(@PathVariable("userId") @NotNull long userId) {
         return appointmentService.getAllActiveManualAppointmentByUser(userId);
     }
 
@@ -100,7 +104,7 @@ public class AppointmentController {
      */
     @GetMapping("/station/{stationId}")
     @Operation(summary = "Get Stations' Appointment", description = "Get a list of stations' Appointment using StationID",tags = {"Appointment"})
-    public List<Appointment> getAllAppointmentsAtStation(@PathVariable("stationId") long stationId) {
+    public List<Appointment> getAllAppointmentsAtStation(@PathVariable("stationId") @NotNull long stationId) {
         return appointmentService.getAllAppointmentsAtStation(stationId);
     }
 
@@ -117,8 +121,24 @@ public class AppointmentController {
     @PostMapping
     @Operation(summary = "Add Manual Appointment", description = "Add Manual Appointment",tags = {"Appointment"})
     public Appointment addAppointment(@RequestBody Appointment appointment){
+        //Find id for station and charger
+        long userId = appointment.getUser().getId();
+        long stationId = appointment.getStation().getId();
+        long chargerId = appointment.getCharger().getId();
+        //Find user, station, charger
+        User user = userService.getUserById(userId);
+        Station station = stationService.getStationById(stationId);
+        Charger charger = chargerService.getChargerById(chargerId).orElse(null);
+
+        if (user == null || station == null || charger == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
         // Check if current Number of manual appointments exceeded allowed manualAppointment
         appointment.setManualAppointment(true);
+        appointment.setUser(user);
+        appointment.setStation(station);
+        appointment.setCharger(charger);
+
         int numOfExistingManualAppt = appointmentService.checkManualAppointment(appointment);
         if(numOfExistingManualAppt >= 0){
             throw new ExceedMaxManualApptException(numOfExistingManualAppt, Appointment.MAX_MANUALAPPT_ALLOWED);
@@ -188,19 +208,33 @@ public class AppointmentController {
      * @return The completed appointment.
      * @throws ObjectNotFoundException If no appointment with the given ID is found.
      */
-    @PutMapping("/completed/{id}")
+    @PutMapping("/completed/{id}/{carId}/{cardId}")
     @Operation(summary = "complete Appointment", description = "complete Appointment using ID",tags = {"Appointment"})
 //    public Appointment completeAppointment(@RequestBody Appointment completedAppointment, @PathVariable("id") long id) {
-    public Appointment completeAppointment(@PathVariable("id") long id) {
+    public Appointment completeAppointment(@PathVariable("id") long id, @PathVariable("carId") long carId, @PathVariable("cardId") long cardId, @RequestBody Appointment completedAppointment) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        Optional<Appointment> completedAppointment = appointmentService.getAppointmentById(id);
-        double cost = 22.2;
-        completedAppointment.get().setCost(cost);
-        String res = cardService.processPayment(completedAppointment.get().getUser().getId(), cost);
-        completedAppointment.get().setTransactionId(res);
-        return appointmentService.completedAppointment(completedAppointment.get(), id);
+        else {
+            Optional<Appointment> appointment = appointmentService.getAppointmentById(id);
+            //updating end time
+            appointment.get().setEndTime(Time.valueOf(LocalTime.now()));
+
+//            Get duration of charging in minutes
+            long duration = (appointment.get().getEndTime().getTime() - appointment.get().getStartTime().getTime())/(60 * 1000);
+
+            double cost = DistanceMatrixService.calculateCostOfCharging(duration);
+            appointment.get().setCost(cost);
+            try {
+                String res = cardService.processPayment(appointment.get().getUser().getId(), cost, cardId);
+                appointment.get().setTransactionId(res);
+            } catch (Exception e) {
+                throw new ObjectNotFoundException(ErrorCode.E2002);
+            }
+
+            return appointmentService.completedAppointment(appointment.get(), id, carId);
+        }
+
     }
 
 
@@ -231,14 +265,7 @@ public class AppointmentController {
         }
         else {
             Appointment appointment = appointmentService.getAppointmentById(id).get();
-            appointment.setStatus("cancelled");
-            String transactionId = appointment.getTransactionId();
-
-            String URL = "http://localhost:9090/payment/cancel/" + transactionId;
-            String obj =  new RestTemplate().getForObject(URL, String.class);
-            appointmentService.updateAppointment(appointment, id);
-            return obj;
-
+            return appointmentService.cancelAppointment(appointment, id);
         }
 
     }
@@ -259,6 +286,19 @@ public class AppointmentController {
         long stationId = 1;
         long chargerId = 1;
         return appointmentService.checkUpcomingAppointment(stationId, chargerId, user);
+    }
+
+    // Start Appointment to charging
+    @GetMapping("/start/{id}/{carId}")
+    @Operation(summary = "Start Appointment", description = "Start Appointment using ID",tags = {"Appointment"})
+    public String startAppointment(@PathVariable("id") long id, @PathVariable("carId") long carId) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        else {
+            Appointment appointment = appointmentService.getAppointmentById(id).get();
+            return appointmentService.startAppointment(appointment, id, carId);
+        }
     }
 
     
