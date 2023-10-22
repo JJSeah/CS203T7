@@ -111,11 +111,8 @@ export default AutomateBookingScreenViewController = ( { navigation } ) => {
         })
         .catch((e) => {
           console.log(`Error making appointment in automate booking screen${e}`)
-        }
-    )
+        })
     }
-
- 
     
     return {
         cancleButtonPressed,
