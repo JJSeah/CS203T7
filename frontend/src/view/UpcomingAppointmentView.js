@@ -9,13 +9,14 @@ import axios from "axios";
 import { BASE_URL } from '../constants/Config';
 
 
+
 export default UpcomingAppointmentView = ({ navigation }) => {
  
   const [ hasPermission, setHasPermission ] = useState(null); 
   const [ scanned, setScanned ] = useState(false);
   // const [ qrCodeData, setQRCodeData ] = useState(null);
   const { upcomingAppointmentDetails } = useContext(UserContext);
-  const { userToken, userID } = useContext(UserContext);
+  const { userToken, userId } = useContext(UserContext);
   const { chargingProgressButtonPressed } = UpcomingAppointmentViewController({navigation});
 
   const askForCameraPermission = () => {
@@ -36,7 +37,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
 
   const getQRCode = async() => {
     
-  axios.get(`${BASE_URL}/api/appointment/checkComingAppt/${userID}`,
+  axios.get(`${BASE_URL}/api/appointment/checkComingAppt/${userId}`,
    {
       headers: {
         'Authorization': `Bearer ${userToken}`
@@ -45,7 +46,13 @@ export default UpcomingAppointmentView = ({ navigation }) => {
    )
    .then (res => {
     let data = res.data
-    console.log(data);
+    if(data != "Cannot create a booking because there is an upcoming appointment."){
+      console.log(data);
+      setTimeout(() => {
+        navigation.navigate('ChargingCarView');
+      }, 500);  
+    }
+    
    })
    .catch (e => { 
     console.log(`catch exception: ${e}`)
@@ -88,7 +95,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         <Button title="Generate QR Code" onPress={getQRCode} />
       )}  */}
 
-    <Button title="Generate QR Code" onPress={getQRCode} />
+    <Button title="Scan QR Code" onPress={getQRCode} />
 {/* <Button title="Generate QR Code" onPress={getQRCode} />
 <Text>{qrCodeData}</Text> */}
 

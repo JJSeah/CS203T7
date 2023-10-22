@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Text, View, Button, FlatList, StyleSheet } from 'react-native';
 import { UserContext } from '../model/User';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,7 +9,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default ActivityScreen = ({ navigation }) => {
   const { historyButtonPressed, scanQRButtonPressed, cancelButtonPressed } = ActivityViewController({ navigation });
   const { allAppointments } = useContext(UserContext);
-
+  const [ ongoingAppointment, setOngoingAppointment ] = useState(allAppointments.filter((appointment) => {return appointment.status === 'ongoing'}));
+  const [ upcomingAppointment, setUpcomingAppointment ] = useState(allAppointments.filter((appointment) => {return appointment.status === 'Active'}))
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr); 
@@ -33,11 +34,19 @@ export default ActivityScreen = ({ navigation }) => {
     return `${formattedHours}:${mins.toString().padStart(2, '0')} ${ampm}`;
   }
 
-  // const ongoingAppointments = fakeData.filter(appointment => new Date(appointment.date) <= new Date());
-  // const upcomingAppointments = fakeData.filter(appointment => new Date(appointment.date) > new Date());
 
-  const ongoingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'ongoing'})
-  const upcomingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'Active'})
+  // const ongoingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'ongoing'})
+  // const upcomingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'Active'})
+
+  const cancelOngoingAppt = (itemId) => {
+    const updatedOngoingAppt = ongoingAppointment.filter(item => item.id !== itemId);
+    setOngoingAppointment(updatedOngoingAppt);
+  }
+
+  const cancelUpcomingAppt = (itemId) => {
+    const updatedUpcomingAppt = upcomingAppointment.filter(item => item.id !== itemId);
+    setUpcomingAppointment(updatedUpcomingAppt);
+  }
 
 
   return (
@@ -66,7 +75,8 @@ export default ActivityScreen = ({ navigation }) => {
                   </Text>
                 </View>
                 <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"
-                onPress={scanQRButtonPressed} />
+                onPress={scanQRButtonPressed}/>
+                <Button title="CANCEL" color='red' onPress={() => {cancelButtonPressed(item.id); cancelOngoingAppt(item.id)}}/>
               </View>
             )}
           />
@@ -93,7 +103,7 @@ export default ActivityScreen = ({ navigation }) => {
                 <View style={activityStyles.iconAndButton}>
                 <MaterialCommunityIcons name="qrcode-scan" size={35} color="black" style={activityStyles.icon}
                 onPress={scanQRButtonPressed} />
-                <Button title="CANCEL" color='red' onPress={cancelButtonPressed}/>
+                <Button title="CANCEL" color='red' onPress={() => {cancelButtonPressed(item.id); cancelUpcomingAppt(item.id)}}/>
                 </View>
               </View>
             )}

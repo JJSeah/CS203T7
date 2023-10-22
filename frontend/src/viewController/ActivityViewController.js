@@ -6,7 +6,7 @@ import { BASE_URL } from "../constants/Config";
 
 export default ActivityViewController = ( { navigation } ) => {
     // const [ isReady, setIsReady ] = useState(false);      
-    
+    const { userToken } = useContext(UserContext);
     //test 
     const historyButtonPressed = () => {
         console.log("history button pressed");
@@ -18,22 +18,22 @@ export default ActivityViewController = ( { navigation } ) => {
         navigation.navigate('UpcomingAppointmentView'); 
     }
 
-    const cancelButtonPressed = ( async ) => {
-        console.log("delete appointment");
-//      return axios.get(`${BASE_URL}/api/appointment/cencel/${apptId}`,
-//     {
-//       headers: {
-//         'Authorization': `Bearer ${userToken}`
-//       }
-//     }
-//     )
-//     .then ( res => {
-//      let data = res.data
-//      console.log(data);
-//    })
-//    .catch (e => {
-//     console.log(`catch exception: ${e}`)
-//     })
+    const cancelButtonPressed = ( apptId ) => {
+     console.log("delete appointment");
+     axios.delete(`${BASE_URL}/api/appointment/${apptId}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${userToken}`
+      }
+    }
+    )
+    .then ( res => {
+     let data = res.data
+     console.log("deleted appointment");
+   })
+   .catch (e => {
+    console.log(`catch exception: ${e}`)
+    })
     }
  
     return {
