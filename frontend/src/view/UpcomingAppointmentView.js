@@ -36,18 +36,18 @@ export default UpcomingAppointmentView = ({ navigation }) => {
 
   const getQRCode = async() => {
     
-  return axios.get(`${BASE_URL}/api/appointment/checkComingAppt`,
+  axios.get(`${BASE_URL}/api/appointment/checkComingAppt/${userID}`,
    {
       headers: {
         'Authorization': `Bearer ${userToken}`
       }
    }
    )
-   .then ( res => {
+   .then (res => {
     let data = res.data
     console.log(data);
    })
-   .catch (e => {
+   .catch (e => { 
     console.log(`catch exception: ${e}`)
    })
   };

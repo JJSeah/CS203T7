@@ -245,7 +245,7 @@ export const UserProvider = ( { children } ) => {
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
                 currentAppointment, setCurrentAppointment,
-                currentCar, setCurrentCar, updateProfile, checkPassword
+                currentCar, setCurrentCar, updateProfile, checkPassword, allAppointments
             }}
         >
             { children }
