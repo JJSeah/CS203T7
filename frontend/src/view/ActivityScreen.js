@@ -78,7 +78,7 @@ export default ActivityScreen = ({ navigation }) => {
                   </Text>
                 </View>
                 <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"
-                onPress={scanQRButtonPressed}/>
+                onPress={scanQRButtonPressed(item.id)}/>
                 <Button title="CANCEL" color='red' onPress={() => {cancelButtonPressed(item.id); cancelOngoingAppt(item.id)}}/>
               </View>
             )}
