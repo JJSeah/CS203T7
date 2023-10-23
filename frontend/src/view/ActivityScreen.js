@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, View, Button, FlatList, StyleSheet } from 'react-native';
 import { UserContext } from '../model/User';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -34,7 +34,10 @@ export default ActivityScreen = ({ navigation }) => {
     return `${formattedHours}:${mins.toString().padStart(2, '0')} ${ampm}`;
   }
 
-
+  useEffect(() => {
+    setOngoingAppointment(allAppointments.filter((appointment) => {return appointment.status === 'ongoing'}))
+    setUpcomingAppointment(allAppointments.filter((appointment) => {return appointment.status === 'Active'}))
+  }, [allAppointments])
   // const ongoingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'ongoing'})
   // const upcomingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'Active'})
 
