@@ -35,7 +35,7 @@ export default ActivityScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    setOngoingAppointment(allAppointments.filter((appointment) => {return appointment.status === 'ongoing'}))
+    setOngoingAppointment(allAppointments.filter((appointment) => {return appointment.status === "charging"}))
     setUpcomingAppointment(allAppointments.filter((appointment) => {return appointment.status === 'Active'}))
   }, [allAppointments])
   // const ongoingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'ongoing'})
@@ -66,7 +66,7 @@ export default ActivityScreen = ({ navigation }) => {
             </View>
           )}
           <FlatList
-            keyExtractor={(item) => item.key.toString()}
+            keyExtractor={(item) => item.id.toString()}
             data={ongoingAppointment}
             renderItem={({ item }) => (
               <View style={activityStyles.recordContainer}>
@@ -78,8 +78,10 @@ export default ActivityScreen = ({ navigation }) => {
                   </Text>
                 </View>
                 <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"
-                onPress={scanQRButtonPressed(item.id)}/>
-                <Button title="CANCEL" color='red' onPress={() => {cancelButtonPressed(item.id); cancelOngoingAppt(item.id)}}/>
+                onPress={() => {
+                  console.log(item)
+                  navigation.navigate("ChargingCarView", {apptId: item.id})}
+                }/>
               </View>
             )}
           />
@@ -105,7 +107,7 @@ export default ActivityScreen = ({ navigation }) => {
                 </View>
                 <View style={activityStyles.iconAndButton}>
                 <MaterialCommunityIcons name="qrcode-scan" size={35} color="black" style={activityStyles.icon}
-                onPress={scanQRButtonPressed} />
+                onPress={() => {scanQRButtonPressed(item.id)}} />
                 <Button title="CANCEL" color='red' onPress={() => {cancelButtonPressed(item.id); cancelUpcomingAppt(item.id)}}/>
                 </View>
               </View>

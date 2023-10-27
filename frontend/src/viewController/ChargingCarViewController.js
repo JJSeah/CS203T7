@@ -6,7 +6,7 @@ import { BASE_URL } from "../constants/Config";
 export default ChargingCarViewController = ( { navigation } ) => {
     // const [ isReady, setIsReady ] = useState(false);      
     const [ buttonState, setButtonState ] = useState("STOP");
-    const { userToken } = useContext(UserContext);
+    const { userToken, loadAllAppointments } = useContext(UserContext);
 
     //test 
     const stopButtonPressed = ( apptId ) => {
@@ -30,19 +30,8 @@ export default ChargingCarViewController = ( { navigation } ) => {
 
     const finishButtonPressed = ( apptId ) => {
         console.log("finish button pressed");
-        axios.put(`${BASE_URL}/api/appointment/complete/${apptId}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${userToken}`
-          }
-        })
-        .then(res => {
-         console.log("finished charging")
-        })
-        .catch (e => {
-         console.log(`failed to finish charging: ${e}`)
-         })
-        navigation.navigate('HomeNavigator');
+        console.log(apptId)
+        navigation.navigate("MakePaymentScreen", {apptId})
     }
     
 

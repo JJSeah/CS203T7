@@ -23,9 +23,9 @@ export default AddCarScreen = ({ navigation }) => {
     setBatteryPercentage,
     setCarPlate,
     clearAllFieldsPressed,
+    picker
   } = AddCarScreenViewController({ navigation });
 
-  const pickerValues = Array.from({ length: 101 }, (_, i) => i);
 
   useEffect(() => {
 
@@ -64,19 +64,29 @@ export default AddCarScreen = ({ navigation }) => {
               onChangeText={setNickname}
             />
 
-            <Text 
-              // style={{ color: "white" }}
-            >{batteryPercentage}</Text>
-
-            <CustomTextField
-              placeholder="Battery"
-              onChangeText={setBatteryPercentage}
-            />
-
             <CustomTextField
               placeholder="Car Plate"
               onChangeText={setCarPlate}
             />
+
+            <Text 
+            style={{color: "white"}}>
+              Battery percentage: {batteryPercentage}
+            </Text>
+
+            <Picker
+              selectedValue={batteryPercentage}
+              onValueChange={(itemValue, itemIndex) => setBatteryPercentage(itemValue)}
+            >
+              {[...Array(100).keys()].map((value) => (
+                <Picker.Item 
+                key={value} 
+                color="white" 
+                label={value.toString()} 
+                value={value}/>
+              ))}
+            </Picker>
+
           </View>
         </View>
       </View>
@@ -112,8 +122,8 @@ const localStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "stretch",
-    margin: 10,
-    // backgroundColor: "black",
+    // margin: 10,
+    backgroundColor: "black",
   },
   topContainer: {
     flex: 9,

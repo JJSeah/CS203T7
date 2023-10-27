@@ -4,6 +4,7 @@ import { UserContext } from '../model/User';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LogInScreen from '../view/LogInScreen';
+import PaymentScreen from '../view/MakePaymentScreen';
 import RegisterScreen from '../view/RegisterScreen';
 import HomeNavigator from './HomeNavigator';
 import AutomateBookingScreen from '../view/AutomateBookingScreen';
@@ -22,6 +23,7 @@ import SelectStationScreen from '../view/ManualBooking/SelectStationScreen';
 import ChargingCarView from '../view/ChargingCarView';
 import HistoryScreen from '../view/HistoryScreen';
 import AddCardScreen from '../view/Settings/Settings Component/AddCardScreen';
+import MakePaymentScreen from '../view/MakePaymentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -112,6 +114,11 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="ProfileScreen"
                         component={ProfileScreen}
+                    />
+
+                    <Stack.Screen
+                        name="MakePaymentScreen"
+                        component={MakePaymentScreen}
                     />
 
                     <Stack.Screen
