@@ -8,11 +8,11 @@ import AutomateBookingScreenViewController from "../viewController/AutomateBooki
 import ClosestStationView from "./ClosestStationView";
 import GrantLocationScreen from "./GrantLocationScreen";
 import UpcomingAppointmentView from "./UpcomingAppointmentView";
-import ReminderToAddCarScreen from "./ReminderToAddCarScreen";
+import ReminderScreen from "./ReminderScreen"
 import MapView, { Marker } from "react-native-maps";
 
 export default AutomateBookingScreen = ({ navigation }) => {
-  const { userCoordinates, closestStation, upcomingAppointmentDetails, userCars } =
+  const { userCoordinates, closestStation, upcomingAppointmentDetails, userCars, userCards} =
     useContext(UserContext);
 
   const { findClosestStation, confirmButtonPressed } = AutomateBookingScreenViewController({
@@ -29,8 +29,8 @@ export default AutomateBookingScreen = ({ navigation }) => {
 
   return userCoordinates === null ? (
     <GrantLocationScreen />
-  ) : userCars.length === 0 ? (
-    <ReminderToAddCarScreen />
+  ) : userCars.length === 0 || userCards.length === 0? (
+    <ReminderScreen/>
   ) : closestStation !== null ? (
     <SafeAreaView style={localStyles.container}>
       <View style={localStyles.infoContainer}>

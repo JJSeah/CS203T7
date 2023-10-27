@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { CarRepository } from "../model/CarRepository";
 import { CarModelsData } from "../constants/CarModels";
 import { UserContext } from "../model/User";
+import { Picker } from "@react-native-picker/picker";
 
 export default AddCarScreenViewController = ( { navigation } ) => {
 
@@ -43,6 +44,18 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         setChargingRate(selectedCar.chargingRate)
         setBatteryCapacity(selectedCar.batteryCapacity)
     }
+
+    const picker = () => {
+        return (
+            <Picker>
+              selectedValue={batteryPercentage}
+              onValueChange={(itemValue, itemIndex) => setBatteryPercentage(itemValue)}
+              {[...Array(100).keys()].map((value) => {
+                <Picker.Item key={value} label={value.toString()} value={value}/>
+              })}
+            </Picker>
+        )
+    }
     
     return {
         nickname,
@@ -60,7 +73,8 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         addCarButtonPressed,
         clearAllFieldsPressed,
         CarModelsData,
-        dropdownSelectListPressed
+        dropdownSelectListPressed,
+        picker
     };
 
 }
