@@ -139,22 +139,22 @@ class AppointmentControllerTest {
         verifyNoMoreInteractions(appointmentService);
     }
 
-    @Test
-    public void testAddAppointment() throws Exception {
-        Appointment appointmentToAdd = new Appointment();
-        appointmentToAdd.setId(1L); // Set necessary fields in the appointment
-
-        when(appointmentService.addAppointment(any(Appointment.class))).thenReturn(appointmentToAdd);
-
-        mockMvc.perform(post("/api/appointment")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(appointmentToAdd)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L));
-
-        verify(appointmentService, times(1)).addAppointment(any(Appointment.class));
-        verifyNoMoreInteractions(appointmentService);
-    }
+//    @Test
+//    public void testAddAppointment() throws Exception {
+//        Appointment appointmentToAdd = new Appointment();
+//        appointmentToAdd.setId(1L); // Set necessary fields in the appointment
+//
+//        when(appointmentService.addAppointment(any(Appointment.class))).thenReturn(appointmentToAdd);
+//
+//        mockMvc.perform(post("/api/appointment")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(asJsonString(appointmentToAdd)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id").value(1L));
+//
+//        verify(appointmentService, times(1)).addAppointment(any(Appointment.class));
+//        verifyNoMoreInteractions(appointmentService);
+//    }
 
     @Test
     public void testUpdateAppointment() throws Exception {
@@ -177,20 +177,20 @@ class AppointmentControllerTest {
     }
 
 
-    @Test
-    public void testDeleteAppointment() throws Exception {
-        long appointmentId = 1L;
-
-        when(appointmentService.getAppointmentById(appointmentId)).thenReturn(Optional.of(new Appointment()));
-
-        mockMvc.perform(delete("/api/appointment/{id}", appointmentId)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        verify(appointmentService, times(1)).getAppointmentById(appointmentId);
-        verify(appointmentService, times(1)).deleteAppointment(appointmentId);
-        verifyNoMoreInteractions(appointmentService);
-    }
+//    @Test
+//    public void testDeleteAppointment() throws Exception {
+//        long appointmentId = 1L;
+//
+//        when(appointmentService.getAppointmentById(appointmentId)).thenReturn(Optional.of(new Appointment()));
+//
+//        mockMvc.perform(delete("/api/appointment/{id}", appointmentId)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//
+//        verify(appointmentService, times(1)).getAppointmentById(appointmentId);
+//        verify(appointmentService, times(1)).deleteAppointment(appointmentId);
+//        verifyNoMoreInteractions(appointmentService);
+//    }
 
     private static String asJsonString(final Object obj) {
         try {

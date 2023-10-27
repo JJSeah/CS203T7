@@ -40,7 +40,7 @@ public class CarService implements CarServiceInter {
     public Car addCar(Car car) {
 
         Car newcar = carRepository.save(car);
-        String URL = "http://localhost:9091/car/add";
+        String URL = "http://13.236.9.86:9091/car/add";
         CarDetails carDetails = new CarDetails(newcar.getId(), newcar.getModel(),newcar.getBatteryPercentage(),"off");
         Map<String, Object> response = new RestTemplate().postForObject(URL, carDetails, Map.class);
 
