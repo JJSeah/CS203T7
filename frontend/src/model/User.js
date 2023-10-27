@@ -14,7 +14,7 @@ export const UserProvider = ( { children } ) => {
     const [ userId, setUserId ] = useState(null);
     const [ userData, setUserData ] = useState(null);
     const [ userCars, setUserCars ] = useState([]);
-    const [ userCard, setUserCard] = useState(null);
+    const [ userCards, setUserCards ] = useState([]);
 
     const [ currentCar, setCurrentCar ] = useState(null);
 
@@ -147,14 +147,16 @@ export const UserProvider = ( { children } ) => {
             let data = res.data
             let userData = data.user
             let userCars = data.car
-            let userCard = data.card
+            let userCards = data.card
+
+            console.log(userCards)
 
             if (userCars.length > 0) {
                 setCurrentCar(userCars[0])
             }
             setUserData(userData)
             setUserCars(userCars)
-            setUserCard(userCard)
+            setUserCards(userCards)
             getAllAppointments()
             
             getAllStations()
@@ -234,8 +236,8 @@ export const UserProvider = ( { children } ) => {
 
     return (
         <UserContext.Provider 
-            value={{ userToken, userId, userData, userCars, userCard, allStations, 
-                logIn, logOut, signUp, setUserCars, setUserCard,
+            value={{ userToken, userId, userData, userCars, userCards, allStations, 
+                logIn, logOut, signUp, setUserCars, setUserCards,
                 userCoordinates, setUserCoordinates,
                 closestStation, setClosestStation,
                 upcomingAppointmentDetails, setUpcomingAppointmentDetails,
