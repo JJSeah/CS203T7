@@ -7,7 +7,7 @@ import UpcomingAppointmentViewController from '../viewController/UpcomingAppoint
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from "axios";
 import { BASE_URL } from '../constants/Config';
-
+import { useRoute } from "@react-navigation/native";
 
 
 export default UpcomingAppointmentView = ({ navigation }) => {
@@ -18,6 +18,8 @@ export default UpcomingAppointmentView = ({ navigation }) => {
   const { upcomingAppointmentDetails } = useContext(UserContext);
   const { userToken, userId } = useContext(UserContext);
   const { chargingProgressButtonPressed } = UpcomingAppointmentViewController({navigation});
+  const route = useRoute();
+  const apptId = route.params?.apptId;
 
   const askForCameraPermission = () => {
     (async () => {
@@ -49,7 +51,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
     if(data != "Cannot create a booking because there is an upcoming appointment."){
       console.log(data);
       setTimeout(() => {
-        navigation.navigate('ChargingCarView');
+        navigation.navigate('ChargingCarView', {apptId});
       }, 500);  
     }
     
@@ -57,6 +59,24 @@ export default UpcomingAppointmentView = ({ navigation }) => {
    .catch (e => { 
     console.log(`catch exception: ${e}`)
    })
+  };
+
+  const startAppointment = ( apptId ) => {
+    axios.get(`${BASE_URL}/api/appointment/start/${apptId}`, 
+    {
+      headers: {
+        'Authorization': `Bearer ${userToken}`
+      }
+   })
+   .then (res => {
+    let data = res.data;
+    console.log(data);
+    }
+    )
+   .catch (e => { 
+    console.log(`error starting appointment: ${e}`)
+   })
+
   };
 
   const resetQRCode = () => {
@@ -95,7 +115,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         <Button title="Generate QR Code" onPress={getQRCode} />
       )}  */}
 
-    <Button title="Scan QR Code" onPress={getQRCode} />
+    <Button title="Scan QR Code" onPress={() => {getQRCode(), startAppointment(apptId)}} />
 {/* <Button title="Generate QR Code" onPress={getQRCode} />
 <Text>{qrCodeData}</Text> */}
 

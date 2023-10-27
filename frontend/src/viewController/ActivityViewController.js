@@ -13,9 +13,9 @@ export default ActivityViewController = ( { navigation } ) => {
         navigation.navigate('HistoryScreen');
     }
 
-    const scanQRButtonPressed = () => {
+    const scanQRButtonPressed = ( apptId ) => {
         console.log("history button pressed");
-        navigation.navigate('UpcomingAppointmentView'); 
+        navigation.navigate('UpcomingAppointmentView', {apptId}); 
     }
 
     const cancelButtonPressed = ( apptId ) => {
