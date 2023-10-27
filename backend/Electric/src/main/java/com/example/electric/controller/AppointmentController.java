@@ -265,7 +265,16 @@ public class AppointmentController {
         appointmentService.deleteAppointment(id);
     }
 
-    // Start Appointment to charging
+    /**
+     * Start Appointment to Charging
+     *
+     * This endpoint allows the initiation of an appointment for charging. It is designed to be used by
+     * authorized users to activate an appointment by specifying its unique identifier (ID).
+     *
+     * @param id The unique identifier of the appointment to start.
+     * @return A message indicating the success of the appointment activation.
+     * @throws ObjectNotFoundException If no appointment with the given ID is found or if the appointment is not in an 'Active' state.
+     */
     @GetMapping("/start/{id}")
     @Operation(summary = "Start Appointment", description = "Start Appointment using ID",tags = {"Appointment"})
     public String startAppointment(@PathVariable("id") long id) {
@@ -281,6 +290,16 @@ public class AppointmentController {
         }
     }
 
+    /**
+     * Cancel Appointment
+     *
+     * This endpoint allows the cancellation of an existing appointment. Authorized users can use this
+     * operation by specifying the unique identifier (ID) of the appointment they wish to cancel.
+     *
+     * @param id The unique identifier of the appointment to cancel.
+     * @return A message indicating the success of the appointment cancellation.
+     * @throws ObjectNotFoundException If no appointment with the given ID is found or if the appointment is not in an 'Active' state.
+     */
     @PutMapping("/cancel/{id}")
     @Operation(summary = "Cancel Appointment", description = "Cancel Appointment using ID",tags = {"Appointment"})
     public String cancelAppointment(@PathVariable("id") long id) {
@@ -297,6 +316,16 @@ public class AppointmentController {
 
     }
 
+    /**
+     * Get Available Stations
+     *
+     * This endpoint retrieves a list of available charging stations for a specified appointment based on the
+     * provided appointment details, including start time, end time, and date.
+     *
+     * @param appointment The appointment details, including start time, end time, and date.
+     * @return A list of available charging stations.
+     */
+
     @PostMapping ("/available")
     @Operation(summary = "Get Available Stations", description = "Get a list of available stations",tags = {"Appointment"})
     public List<Station> getAvailableStations(@RequestBody Appointment appointment) {
@@ -306,6 +335,18 @@ public class AppointmentController {
 
         return appointmentService.getAvailableStationsAndChargers(startTime, endTime, date);
     }
+
+    /**
+     * QR Code Checker
+     *
+     * This endpoint checks for the upcoming appointment status for a user at a specified station and charger.
+     * If the user has a valid appointment within the next 20 minutes, it returns the appointment details.
+     * If the user doesn't have an appointment in the upcoming 20 minutes, they are allowed to create a new appointment.
+     * If none of these conditions are met, it returns a "cannotBookAppointment" response.
+     *
+     * @param userId The unique identifier of the user.
+     * @return The upcoming appointment details or a "cannotBookAppointment" response.
+     */
 
     @GetMapping("/checkComingAppt/{userID}")
     @Operation(summary = "QR code checker", description = "Verfied user has appointment with charger, else if no appt in upcoming 20 mins, allow user to create appointment, else return cannotBookAppoinment", tags = {"Appointment"})

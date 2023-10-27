@@ -7,13 +7,11 @@ import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
 import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -34,7 +32,24 @@ public class VoronoiService implements VoronoiServiceInter {
     @Autowired
     private UserService userService;
 
-
+    /**
+     * Find Closest Charging Station
+     *
+     * This method determines the closest available charging station based on a specified location
+     * (latitude and longitude) using Voronoi Diagrams. The function first calculates the current time
+     * rounded to the nearest 5-minute interval and defines a time window for station availability.
+     * It then retrieves a list of stations available during this time period and extracts their
+     * coordinates.
+     *
+     * Next, it uses Delaunay triangulation to create a Voronoi diagram based on the station coordinates.
+     * The method calculates the Voronoi cell associated with the input location and identifies the
+     * station closest to this cell.
+     *
+     * @param latitude The latitude coordinate of the user's location.
+     * @param longitude The longitude coordinate of the user's location.
+     * @return The Station object representing the closest available charging station or null if no
+     * stations are available.
+     */
     public Station findClosestStation(double latitude, double longitude) {
         //Get current time rounded to 5 minutes
         LocalTime currentTime = LocalTime.now();
@@ -89,6 +104,15 @@ public class VoronoiService implements VoronoiServiceInter {
         }
     }
 
+    /**
+     * Find Cell
+     *
+     * Finds the Voronoi cell associated with a specific station coordinate in the Voronoi diagram.
+     *
+     * @param diagram The Voronoi diagram as a Geometry object.
+     * @param stationCoordinate The coordinate of the station for which to find the cell.
+     * @return The Polygon representing the Voronoi cell associated with the station.
+     */
     public Polygon findCell(Geometry diagram, Coordinate stationCoordinate) {
         GeometryFactory factory = new GeometryFactory();
 //        Coordinate[] coords = new Coordinate[]{stationCoordinate};
@@ -117,6 +141,15 @@ public class VoronoiService implements VoronoiServiceInter {
         return nearestCell;
     }
 
+    /**
+     * Find Within Cell
+     *
+     * Finds the coordinate within a Voronoi cell that is closest to the given coordinates.
+     *
+     * @param cell The Voronoi cell represented as a Polygon.
+     * @param coordinates An array of coordinates to search for within the cell.
+     * @return The Coordinate within the cell that is closest to the given coordinates.
+     */
     public Coordinate findWithinCell(Polygon cell, Coordinate[] coordinates) {
         Coordinate nearestStation = null;
         double minDistance = Double.MAX_VALUE;
@@ -135,6 +168,21 @@ public class VoronoiService implements VoronoiServiceInter {
 
         return nearestStation;
     }
+
+    /**
+     * Auto-book Appointment
+     *
+     * Automatically books a charging appointment for a user based on location, time, and car details.
+     *
+     * @param latitude The latitude coordinate of the location.
+     * @param longitude The longitude coordinate of the location.
+     * @param startTime The start time of the appointment.
+     * @param endTime The end time of the appointment.
+     * @param dateNow The current date.
+     * @param car The Car object for which the appointment is made.
+     * @param userEmail The email address of the user making the appointment.
+     * @return The Appointment object representing the booked appointment.
+     */
 
     public Appointment autobookAppointment(double latitude, double longitude, String startTime, String endTime, String dateNow, Car car, String userEmail) {
         //Find station

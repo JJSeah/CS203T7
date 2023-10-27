@@ -90,45 +90,55 @@ class CarServiceTest {
         assertNull(result);
     }
 
-//    @Test
-//    public void testAddCar() {
-//        Car carToAdd = new Car();
-//        when(carRepository.save(carToAdd)).thenReturn(carToAdd);
-//
-//        Car result = carService.addCar(carToAdd);
-//
-//        verify(carRepository, times(1)).save(carToAdd);
-//        assertSame(carToAdd, result);
-//    }
+    @Test
+    public void testAddCar() {
+        long carId = 1L;
+        Car carToAdd = new Car(carId, "Tesla", "Model S");
+        when(carRepository.save(carToAdd)).thenReturn(new Car(carId, "Tesla", "Model S"));
 
-//    @Test
-//    public void testUpdateCar() {
-//        long carId = 1L;
-//        Car updatedCar = new Car();
-//        updatedCar.setId(carId);
-//        when(carRepository.existsById(carId)).thenReturn(true);
-//        when(carRepository.save(updatedCar)).thenReturn(updatedCar);
-//
-//        Car result = carService.updateCar(updatedCar, carId);
-//
-//        verify(carRepository, times(1)).existsById(carId);
-//        verify(carRepository, times(1)).save(updatedCar);
-//        assertSame(updatedCar, result);
-//    }
+        Car result = carService.addCar(carToAdd);
 
-//    @Test
-//    public void testUpdateCarNonExistent() {
-//        long carId = 1L;
-//        Car updatedCar = new Car();
-//        updatedCar.setId(carId);
-//        when(carRepository.existsById(carId)).thenReturn(false);
-//
-//        Car result = carService.updateCar(updatedCar, carId);
-//
-//        verify(carRepository, times(1)).existsById(carId);
-//        verify(carRepository, never()).save(updatedCar);
-//        assertNull(result);
-//    }
+        verify(carRepository, times(1)).save(carToAdd);
+        assertSame(carToAdd, result);
+    }
+
+    @Test
+    public void testUpdateCar() {
+        long carId = 1L;
+        Car newCar = new Car(carId, "Tesla", "Model S");
+
+        when(carRepository.findById(carId)).thenReturn(Optional.of(newCar));
+
+        newCar.setModel("Model X");
+        Car result = carService.updateCar(newCar, carId);
+
+        verify(carRepository, times(1)).save(newCar);
+
+        assertEquals(newCar.getModel(), result.getModel());
+
+    }
+
+    @Test
+    public void testUpdateCarNonExistent() {
+        // Create a sample card for testing
+        long nonExistentCarId = 999L;
+
+        // Mock the repository's findById method for a non-existent card
+        when(carRepository.findById(nonExistentCarId)).thenReturn(Optional.empty());
+
+        // Call the updateCard method with a card that doesn't exist
+        Car updatedCar = new Car();
+        updatedCar.setModel("Updated Model");
+
+        // Invoke the updateCard method
+        Car result = carService.updateCar(updatedCar, nonExistentCarId);
+
+        // Verify that the repository's save method is not called
+        verify(carRepository, never()).save(updatedCar);
+
+        // Check if the result is null as the card doesn't exist
+        assertNull(result);
+    }
 
     @Test
     public void testDeleteCar() {

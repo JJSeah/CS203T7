@@ -23,15 +23,6 @@ public class CardController {
     @Autowired
     private UserService userService;
 
-    /**
-     * Payment Details with Card Details
-     *
-     * @param _txId
-     * @param _txDate
-     * @param _orderValue
-     * @param _payType
-     * @param _card
-     */
 
     @GetMapping("/status")
     public String status() {

@@ -12,11 +12,8 @@ import com.example.electric.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -78,14 +75,6 @@ public class UserController {
 
         return response;
     }
-
-//    @GetMapping("/{id}")
-//    public User getUserById(@PathVariable Long id) {
-//        if (userService.getUserById(id) == null) {
-//            throw new ObjectNotFoundException(ErrorCode.E1002);
-//        }
-//        return userService.getUserById(id);
-//    }
 
     @PostMapping("/")
     public User createUser(@RequestBody User user) {
