@@ -32,20 +32,6 @@ export default ChargingCarViewController = ( { navigation } ) => {
         console.log("finish button pressed");
         console.log(apptId)
         navigation.navigate("MakePaymentScreen", {apptId})
-        // axios.put(`${BASE_URL}/api/appointment/complete/${apptId}`,
-        // {
-        //   headers: {
-        //     'Authorization': `Bearer ${userToken}`
-        //   }
-        // })
-        // .then(res => {
-        //  console.log("finished charging")
-        //  loadAllAppointments()
-        //  navigation.navigate('HomeNavigator');
-        // })
-        // .catch (e => {
-        //  console.log(`failed to finish charging: ${e}`)
-        //  })
     }
     
 
