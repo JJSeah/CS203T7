@@ -20,11 +20,9 @@ export default AutomateBookingScreen = ({ navigation }) => {
   });
 
   useEffect(() => {
-    if (userCoordinates === null || userCars.length === 0) {
-      return;
+    if (userCoordinates !== null && userCars.length !== 0 && userCards.length !== 0) {
+      findClosestStation(userCoordinates.latitude, userCoordinates.longitude);
     }
-
-    findClosestStation(userCoordinates.latitude, userCoordinates.longitude);
   }, []);
 
   return userCoordinates === null ? (

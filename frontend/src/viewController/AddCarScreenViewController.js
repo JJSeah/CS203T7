@@ -11,7 +11,7 @@ export default AddCarScreenViewController = ( { navigation } ) => {
     const [ nickname, setNickname ] = useState("")
     const [ model, setModel ] = useState("")
     const [ chargingRate, setChargingRate ] = useState(100)
-    const [ batteryPercentage, setBatteryPercentage ] = useState(100)
+    const [ batteryPercentage, setBatteryPercentage ] = useState(0)
     const [ batteryCapacity, setBatteryCapacity ] = useState(100)
     const [ carPlate, setCarPlate ] = useState("")
     const [ selectedCar, setSelectedCar] = useState(null)

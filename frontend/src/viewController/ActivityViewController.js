@@ -19,21 +19,21 @@ export default ActivityViewController = ( { navigation } ) => {
     }
 
     const cancelButtonPressed = ( apptId ) => {
-     console.log("delete appointment");
-     axios.delete(`${BASE_URL}/api/appointment/${apptId}`,
-    {
-      headers: {
-        'Authorization': `Bearer ${userToken}`
+      console.log("delete appointment");
+      axios.delete(`${BASE_URL}/api/appointment/${apptId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${userToken}`
+        }
       }
-    }
-    )
-    .then ( res => {
-     let data = res.data
-     console.log("deleted appointment");
-   })
-   .catch (e => {
-    console.log(`catch exception: ${e}`)
+      )
+      .then ( res => {
+      let data = res.data
+      console.log("deleted appointment");
     })
+    .catch (e => {
+      console.log(`catch exception: ${e}`)
+      })
     }
  
     return {

@@ -1,111 +1,118 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Button, Image } from 'react-native';
-import { UserContext } from '../model/User';
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+  Image,
+} from "react-native";
+import { UserContext } from "../model/User";
 // import { styles } from '../components/Design';
-import { BarCodeScanner } from 'expo-barcode-scanner'; 
-import UpcomingAppointmentViewController from '../viewController/UpcomingAppointmentViewController';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { BarCodeScanner } from "expo-barcode-scanner";
+import UpcomingAppointmentViewController from "../viewController/UpcomingAppointmentViewController";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
-import { BASE_URL } from '../constants/Config';
+import { BASE_URL } from "../constants/Config";
 import { useRoute } from "@react-navigation/native";
 
-
 export default UpcomingAppointmentView = ({ navigation }) => {
- 
-  const [ hasPermission, setHasPermission ] = useState(null); 
-  const [ scanned, setScanned ] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
   // const [ qrCodeData, setQRCodeData ] = useState(null);
   const { upcomingAppointmentDetails } = useContext(UserContext);
-  const { userToken, userId } = useContext(UserContext);
-  const { chargingProgressButtonPressed } = UpcomingAppointmentViewController({navigation});
+  const { userToken, userId, getAllAppointments } = useContext(UserContext);
+  const { chargingProgressButtonPressed } = UpcomingAppointmentViewController({
+    navigation,
+  });
   const route = useRoute();
   const apptId = route.params?.apptId;
 
   const askForCameraPermission = () => {
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync(); 
-      setHasPermission(status == 'granted'); 
-    })()
-  }
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status == "granted");
+    })();
+  };
 
   useEffect(() => {
     askForCameraPermission();
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true); 
-    console.log('Type: ' + type + '\nData: ' + data)
-  }; 
-
-  const getQRCode = async() => {
-    
-  axios.get(`${BASE_URL}/api/appointment/checkComingAppt/${userId}`,
-   {
-      headers: {
-        'Authorization': `Bearer ${userToken}`
-      }
-   }
-   )
-   .then (res => {
-    let data = res.data
-    if(data != "Cannot create a booking because there is an upcoming appointment."){
-      console.log(data);
-      setTimeout(() => {
-        navigation.navigate('ChargingCarView', {apptId});
-      }, 500);  
-    }
-    
-   })
-   .catch (e => { 
-    console.log(`catch exception: ${e}`)
-   })
+    setScanned(true);
+    console.log("Type: " + type + "\nData: " + data);
   };
 
-  const startAppointment = ( apptId ) => {
-    axios.get(`${BASE_URL}/api/appointment/start/${apptId}`, 
-    {
-      headers: {
-        'Authorization': `Bearer ${userToken}`
-      }
-   })
-   .then (res => {
-    let data = res.data;
-    console.log(data);
-    }
-    )
-   .catch (e => { 
-    console.log(`error starting appointment: ${e}`)
-   })
+  const getQRCode = async () => {
+    axios
+      .get(`${BASE_URL}/api/appointment/checkComingAppt/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((res) => {
+        let data = res.data;
+        if (
+          data !=
+          "Cannot create a booking because there is an upcoming appointment."
+        ) {
+          console.log(data);
+          setTimeout(() => {}, 500);
+        }
+      })
+      .catch((e) => {
+        console.log(`catch exception: ${e}`);
+      });
+  };
 
+  const startAppointment = (apptId) => {
+    axios
+      .get(`${BASE_URL}/api/appointment/start/${apptId}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((res) => {
+        let data = res.data;
+        console.log(data);
+        getAllAppointments();
+        navigation.navigate("ChargingCarView", { apptId });
+      })
+      .catch((e) => {
+        console.log(`error starting appointment: ${e}`);
+      });
   };
 
   const resetQRCode = () => {
     setQRCodeData(null);
     setScanned(false);
-  }
+  };
 
-  if(hasPermission === null){
+  if (hasPermission === null) {
     return <View />;
   }
 
-  if(hasPermission === false){
+  if (hasPermission === false) {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Camera permission not granted</Text>
-        <Button title={'Allow camera'} onPress={() => askForCameraPermission()}/>
+        <Button
+          title={"Allow camera"}
+          onPress={() => askForCameraPermission()}
+        />
       </View>
     );
-  };
+  }
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.text}>Scan the barcode to start charging.</Text>
       {/* {renderCamera()} */}
       <View style={styles.cameraContainer}>
         <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={styles.camera}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={styles.camera}
         />
       </View>
 
@@ -115,14 +122,19 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         <Button title="Generate QR Code" onPress={getQRCode} />
       )}  */}
 
-    <Button title="Scan QR Code" onPress={() => {getQRCode(), startAppointment(apptId)}} />
-{/* <Button title="Generate QR Code" onPress={getQRCode} />
+      <Button
+        title="Scan QR Code"
+        onPress={() => {
+          getQRCode(), startAppointment(apptId);
+        }}
+      />
+      {/* <Button title="Generate QR Code" onPress={getQRCode} />
 <Text>{qrCodeData}</Text> */}
 
       {/* {qrCodeData && (
         <Button title="reset" onPress={resetQRCode} />
       )} */}
-{/* 
+      {/* 
       <Button title="reset" onPress={() => setScanned(false)} disabled={!scanned} /> */}
       {/* <TouchableOpacity 
         style={styles.button}
@@ -134,36 +146,36 @@ export default UpcomingAppointmentView = ({ navigation }) => {
       </TouchableOpacity> */}
     </View>
   );
-}; 
+};
 
 const styles = StyleSheet.create({
-  container: { 
+  container: {
     flex: 1,
-    alignItems: 'center', 
-    justifyContent: 'center',
-  }, 
+    alignItems: "center",
+    justifyContent: "center",
+  },
   text: {
-    fontSize: 14, 
-    marginBottom: 20, 
+    fontSize: 14,
+    marginBottom: 20,
   },
   cameraContainer: {
-    width: '80%', 
-    aspectRatio: 1, 
+    width: "80%",
+    aspectRatio: 1,
     height: 300,
-    overflow: 'hidden', 
-    borderRadius: 10, 
-    marginBottom: 40, 
-  }, 
+    overflow: "hidden",
+    borderRadius: 10,
+    marginBottom: 40,
+  },
   camera: {
-    flex: 1, 
-  }, 
+    flex: 1,
+  },
   button: {
-    padding: 10, 
-    borderRadius: 5, 
-  }, 
+    padding: 10,
+    borderRadius: 5,
+  },
   qrCode: {
-    width: 350, 
-    height: 350, 
-    marginBottom: 20, 
-  }
-})
+    width: 350,
+    height: 350,
+    marginBottom: 20,
+  },
+});
