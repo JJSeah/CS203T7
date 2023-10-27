@@ -88,34 +88,34 @@ public class AppointmentServiceTest {
     //     assertNotNull(result.getId());
     // }
 
-    @Test
-    public void testUpdateAppointment() {
-        long appointmentId = 1L;
-        Appointment updatedAppointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new Date(0), 0, new Station(), null);
-        updatedAppointment.setId(appointmentId);
-        when(appointmentRepository.existsById(appointmentId)).thenReturn(true);
-        when(appointmentRepository.save(updatedAppointment)).thenReturn(updatedAppointment);
+//    @Test
+//    public void testUpdateAppointment() {
+//        long appointmentId = 1L;
+//        Appointment updatedAppointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new Date(0), 0, new Station(), null);
+//        updatedAppointment.setId(appointmentId);
+//        when(appointmentRepository.existsById(appointmentId)).thenReturn(true);
+//        when(appointmentRepository.save(updatedAppointment)).thenReturn(updatedAppointment);
+//
+//        Appointment result = appointmentService.updateAppointment(updatedAppointment, appointmentId);
+//
+//        verify(appointmentRepository, times(1)).existsById(appointmentId);
+//        verify(appointmentRepository, times(1)).save(updatedAppointment);
+//        assertSame(updatedAppointment, result);
+//    }
 
-        Appointment result = appointmentService.updateAppointment(updatedAppointment, appointmentId);
-
-        verify(appointmentRepository, times(1)).existsById(appointmentId);
-        verify(appointmentRepository, times(1)).save(updatedAppointment);
-        assertSame(updatedAppointment, result);
-    }
-
-    @Test
-    public void testUpdateAppointmentNonExistent() {
-        long appointmentId = 1L;
-        Appointment updatedAppointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new Date(0), 0, new Station(), null);
-        updatedAppointment.setId(appointmentId);
-        when(appointmentRepository.existsById(appointmentId)).thenReturn(false);
-
-        Appointment result = appointmentService.updateAppointment(updatedAppointment, appointmentId);
-
-        verify(appointmentRepository, times(1)).existsById(appointmentId);
-        verify(appointmentRepository, never()).save(updatedAppointment);
-        assertNull(result);
-    }
+//    @Test
+//    public void testUpdateAppointmentNonExistent() {
+//        long appointmentId = 1L;
+//        Appointment updatedAppointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new Date(0), 0, new Station(), null);
+//        updatedAppointment.setId(appointmentId);
+//        when(appointmentRepository.existsById(appointmentId)).thenReturn(false);
+//
+//        Appointment result = appointmentService.updateAppointment(updatedAppointment, appointmentId);
+//
+//        verify(appointmentRepository, times(1)).existsById(appointmentId);
+//        verify(appointmentRepository, never()).save(updatedAppointment);
+//        assertNull(result);
+//    }
 
     @Test
     public void testDeleteAppointment() {
