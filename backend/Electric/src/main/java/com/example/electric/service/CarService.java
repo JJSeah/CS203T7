@@ -98,24 +98,12 @@ public class CarService implements CarServiceInter {
             Car existingCar = optionalExistingCar.get();
 
             // Step 2: Update only the non-null fields of the existing car with the new values
-            if (updatedCar.getNickname() != null) {
-                existingCar.setNickname(updatedCar.getNickname());
-            }
-            if (updatedCar.getModel() != null) {
-                existingCar.setModel(updatedCar.getModel());
-            }
-            if (updatedCar.getPlate() != null) {
-                existingCar.setPlate(updatedCar.getPlate());
-            }
-            if (updatedCar.getChargingRate() != 0) {
-                existingCar.setChargingRate(updatedCar.getChargingRate());
-            }
-            if (updatedCar.getBatteryPercentage() != 0.0) {
-                existingCar.setBatteryPercentage(updatedCar.getBatteryPercentage());
-            }
-            if (updatedCar.getBatteryCapacity() != 0) {
-                existingCar.setBatteryCapacity(updatedCar.getBatteryCapacity());
-            }
+            if (updatedCar.getNickname() != null) existingCar.setNickname(updatedCar.getNickname());
+            if (updatedCar.getModel() != null) existingCar.setModel(updatedCar.getModel());
+            if (updatedCar.getPlate() != null) existingCar.setPlate(updatedCar.getPlate());
+            if (updatedCar.getChargingRate() != 0) existingCar.setChargingRate(updatedCar.getChargingRate());
+            if (updatedCar.getBatteryPercentage() != 0.0) existingCar.setBatteryPercentage(updatedCar.getBatteryPercentage());
+            if (updatedCar.getBatteryCapacity() != 0) existingCar.setBatteryCapacity(updatedCar.getBatteryCapacity());
             carRepository.save(existingCar);
             return existingCar;
         } else {

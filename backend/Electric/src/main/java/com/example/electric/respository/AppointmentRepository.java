@@ -94,10 +94,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
      * @return A list of Appointment objects based on the specified station, charger, status, and date.
      */
     @Query("SELECT a FROM Appointment a " +
-    "WHERE a.station.id = :station_id " +
-    "AND a.charger.id = :charger_id " +
+    "WHERE a.charger.id = :charger_id " +
     "AND a.status = :status " +
     "AND a.date = :date ")
-    List<Appointment> findAppointmentsByStationIdAndChargerIdAndStatus(@Param("station_id")long stationid, @Param("charger_id") long chargerId, @Param("status")String status, @Param("date")LocalDate date);
+    List<Appointment> findAppointmentsByChargerIdAndStatus(@Param("charger_id") long chargerId, @Param("status")String status, @Param("date")LocalDate date);
     }
  

@@ -348,12 +348,11 @@ public class AppointmentController {
      * @return The upcoming appointment details or a "cannotBookAppointment" response.
      */
 
-    @GetMapping("/checkComingAppt/{userID}")
+    @GetMapping("/checkComingAppt/charger1/{userID}")
     @Operation(summary = "QR code checker", description = "Verfied user has appointment with charger, else if no appt in upcoming 20 mins, allow user to create appointment, else return cannotBookAppoinment", tags = {"Appointment"})
     public Appointment checkUpcomingAppointment(@PathVariable("userID") long userId){
-        long stationId = 1;
         long chargerId = 1;
-        return appointmentService.checkUpcomingAppointment(stationId, chargerId, userId);
+        return appointmentService.checkUpcomingAppointment(chargerId, userId);
     }
 
 

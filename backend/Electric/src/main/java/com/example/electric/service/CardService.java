@@ -82,18 +82,10 @@ public class CardService implements CardServiceInter {
         if (optionalCard.isPresent()) {
             Card card = optionalCard.get();
             // Update the appointment fields as needed
-            if (updatedCard.getName() != null) {
-                card.setName(updatedCard.getName());
-            }
-            if (updatedCard.getNumber() != null) {
-                card.setNumber(updatedCard.getNumber());
-            }
-            if (updatedCard.getExpiry() != null) {
-                card.setExpiry(updatedCard.getExpiry());
-            }
-            if (updatedCard.getUser() != null) {
-                card.setUser(updatedCard.getUser());
-            }
+            if (updatedCard.getName() != null) card.setName(updatedCard.getName());
+            if (updatedCard.getNumber() != null)card.setNumber(updatedCard.getNumber());
+            if (updatedCard.getExpiry() != null) card.setExpiry(updatedCard.getExpiry());
+            if (updatedCard.getUser() != null)card.setUser(updatedCard.getUser());
             cardRepository.save(card);
             return card;
         } else {

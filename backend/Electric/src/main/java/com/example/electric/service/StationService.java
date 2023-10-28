@@ -134,22 +134,11 @@ public class StationService implements StationServiceInter {
             Station station = optionalStation.get();
     
             // Update the station fields only if they are not null or have non-default values
-            if (updatedStation.getName() != null) {
-                station.setName(updatedStation.getName());
-            }
-            if (updatedStation.getLatitude() != 0.0) {
-                station.setLatitude(updatedStation.getLatitude());
-            }
-            if (updatedStation.getLongitude() != 0.0) {
-                station.setLongitude(updatedStation.getLongitude());
-            }
-            if (updatedStation.getChargers() != null) {
-                station.setChargers(updatedStation.getChargers());
-            }
-            if (updatedStation.isAvail() != false) {
-                station.setAvail(updatedStation.isAvail());
-            }
-    
+            if (updatedStation.getName() != null) station.setName(updatedStation.getName());
+            if (updatedStation.getLatitude() != 0.0) station.setLongitude(updatedStation.getLongitude());
+            if (updatedStation.getChargers() != null) station.setChargers(updatedStation.getChargers());
+            if (updatedStation.isAvail() != false) station.setAvail(updatedStation.isAvail());
+            
             // Save the updated station entity
             return stationRepository.save(station);
         } else {

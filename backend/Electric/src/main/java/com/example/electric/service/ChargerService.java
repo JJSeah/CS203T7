@@ -89,24 +89,12 @@ public class ChargerService implements ChargerServiceInter {
 
         if (OptionalCharger.isPresent()) {
             Charger exisitinCharger = OptionalCharger.get();
-            if(updatedCharger.getCharId() != null){
-                exisitinCharger.setCharId(updatedCharger.getCharId());
-            }
-            if(updatedCharger.getName() != null){
-                exisitinCharger.setName(updatedCharger.getName());
-            }
-            if(updatedCharger.getAvail() != exisitinCharger.getAvail()){
-                exisitinCharger.setCharId(updatedCharger.getCharId());
-            }
-            if(updatedCharger.getType() != null){
-                exisitinCharger.setType(updatedCharger.getType());
-            }            
-            if(updatedCharger.getChargingRate() != 0.0){
-                exisitinCharger.setChargingRate(updatedCharger.getChargingRate());
-            }
-            if(updatedCharger.getStation() != null){
-                exisitinCharger.setStation(updatedCharger.getStation());
-            }
+            if(updatedCharger.getCharId() != null) exisitinCharger.setCharId(updatedCharger.getCharId());
+            if(updatedCharger.getName() != null) exisitinCharger.setName(updatedCharger.getName());
+            if(updatedCharger.getAvail() != exisitinCharger.getAvail()) exisitinCharger.setCharId(updatedCharger.getCharId());
+            if(updatedCharger.getType() != null) exisitinCharger.setType(updatedCharger.getType());
+            if(updatedCharger.getChargingRate() != 0.0) exisitinCharger.setChargingRate(updatedCharger.getChargingRate());
+            if(updatedCharger.getStation() != null) exisitinCharger.setStation(updatedCharger.getStation());
             chargerRepository.save(exisitinCharger);
             return exisitinCharger;
         } else {
