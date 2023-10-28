@@ -107,7 +107,8 @@ public class ChargerService implements ChargerServiceInter {
             if(updatedCharger.getStation() != null){
                 exisitinCharger.setStation(updatedCharger.getStation());
             }
-            return chargerRepository.save(exisitinCharger);
+            chargerRepository.save(exisitinCharger);
+            return exisitinCharger;
         } else {
             return null; // charger not found
         }

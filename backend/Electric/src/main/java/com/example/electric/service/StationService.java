@@ -64,7 +64,12 @@ public class StationService implements StationServiceInter {
      */
     public Station getStationByCoordinate(double latitude, double longitude) {
         Optional<Station> optionalStation = stationRepository.findStationByLatitudeAndLongitude(latitude, longitude);
-        return optionalStation.orElse(null);
+        if (optionalStation.isPresent()) {
+            return optionalStation.get();
+        } else {
+            return null;
+        }
+//        return optionalStation.orElse(null);
     }
 
     /**

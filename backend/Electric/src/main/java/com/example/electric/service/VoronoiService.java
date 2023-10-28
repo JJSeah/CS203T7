@@ -99,9 +99,8 @@ public class VoronoiService implements VoronoiServiceInter {
             closestStation = stationService.getStationByCoordinate(closestStationCoordinates.getX(), closestStationCoordinates.getY());
         } catch (NullPointerException e) {
             System.out.println("No stations available, should return null");
-        } finally {
-            return closestStation;
         }
+        return closestStation;
     }
 
     /**

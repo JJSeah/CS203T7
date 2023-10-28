@@ -1,30 +1,26 @@
 package com.example.electric.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
 import com.example.electric.respository.ChargerRepository;
 import com.example.electric.respository.StationRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ChargerServiceTest {
@@ -155,35 +151,41 @@ public class ChargerServiceTest {
 
 
     //Something werid with chargerService.updateChargerMethod!
-    // @Test
-    // void testUpdateChargerExistID() {
-    //     Charger updatedCharger = new Charger((long)2, "ChargerHappy");
+    @Test
+    public void testUpdateCharger() {
+        // Create a sample Charger object
+        Charger existingCharger = new Charger(1L,"1",  "Charger A", true, "Type A", 10.0, new Station());
 
+        // Mock the chargerRepository to return the existing charger when findById is called
+        Mockito.when(chargerRepository.findById(1L)).thenReturn(Optional.of(existingCharger));
 
-    //     when(chargerRepository.existsById((long)1)).thenReturn(true);
-    //     when(chargerRepository.save(updatedCharger)).thenReturn(updatedCharger);
+        // Create an updated Charger object with changes
+        Charger updatedCharger = new Charger(1L, "1","Updated Charger", true, "Type B", 12.0, new Station());
 
+        // Call the updateCharger method
+        Charger result = chargerService.updateCharger(updatedCharger, 1L);
 
-    //     Optional<Charger> result = ChargerService.updateCharger(updatedCharger, (long)1);
-    //     assertEquals(updatedCharger, result);
-    //     verify(chargerRepository).existsById((long)2);
-    //     verify(updatedCharger).setId((long)1);
-    //     verify(chargerRepository).save(updatedCharger);
-    // }
-    // @Test
-    // void testUpdateChargerNotxistID() {
-    //     Charger updatedCharger = new Charger((long)1, "ChargerHappy");
+        // Assert that the result is not null
+        assertNotNull(result);
 
+        // Assert that the Charger's attributes have been updated
+        assertEquals(updatedCharger, result);
+    }
 
-    //     when(chargerRepository.existsById(anyLong())).thenReturn(false);
-    //     when(chargerRepository.save(updatedCharger)).thenReturn(updatedCharger);
+    @Test
+    public void testUpdateChargerChargerNotFound() {
+        // Mock the chargerRepository to return an empty Optional when findById is called
+        Mockito.when(chargerRepository.findById(1L)).thenReturn(Optional.empty());
 
+        // Create an updated Charger object
+        Charger updatedCharger = new Charger(1L, "Updated Charger", false, "Type B", 12.0, new Station());
 
-    //     Optional<Charger> result = ChargerService.updateCharger(updatedCharger, (long)1);
-    //     assertNull(result);
-    //     verify(chargerRepository).existsById((long)2);
-    //     verify(chargerRepository, never()).save(updatedCharger);
-    // }
+        // Call the updateCharger method
+        Charger result = chargerService.updateCharger(updatedCharger, 1L);
+
+        // Assert that the result is null, indicating that the charger was not found
+        assertNull(result);
+    }
     }
 
 
