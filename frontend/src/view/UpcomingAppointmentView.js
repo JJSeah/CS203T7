@@ -26,7 +26,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
     navigation,
   });
   const route = useRoute();
-  const apptId = route.params?.apptId;
+  const appt = route.params;
 
   const askForCameraPermission = () => {
     (async () => {
@@ -77,7 +77,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         let data = res.data;
         console.log(data);
         getAllAppointments();
-        navigation.navigate("ChargingCarView", { apptId });
+        navigation.navigate("ChargingCarView", appt);
       })
       .catch((e) => {
         console.log(`error starting appointment: ${e}`);
@@ -107,6 +107,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Text>{appt.id}</Text>
       <Text style={styles.text}>Scan the barcode to start charging.</Text>
       {/* {renderCamera()} */}
       <View style={styles.cameraContainer}>
@@ -125,7 +126,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
       <Button
         title="Scan QR Code"
         onPress={() => {
-          getQRCode(), startAppointment(apptId);
+          getQRCode(), startAppointment(appt.id);
         }}
       />
       {/* <Button title="Generate QR Code" onPress={getQRCode} />

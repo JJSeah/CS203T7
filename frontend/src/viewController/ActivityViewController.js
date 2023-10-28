@@ -13,27 +13,29 @@ export default ActivityViewController = ( { navigation } ) => {
         navigation.navigate('HistoryScreen');
     }
 
-    const scanQRButtonPressed = ( apptId ) => {
+    const scanQRButtonPressed = ( appt ) => {
         console.log("history button pressed");
-        navigation.navigate('UpcomingAppointmentView', {apptId}); 
+        navigation.navigate('UpcomingAppointmentView', appt); 
     }
 
-    const cancelButtonPressed = ( apptId ) => {
-      console.log("delete appointment");
-      axios.delete(`${BASE_URL}/api/appointment/${apptId}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${userToken}`
-        }
-      }
-      )
-      .then ( res => {
-      let data = res.data
-      console.log("deleted appointment");
-    })
-    .catch (e => {
-      console.log(`catch exception: ${e}`)
-      })
+    const cancelButtonPressed = ( appt ) => {
+      console.log(appt.id)
+      console.log(appt)
+    //   console.log("delete appointment");
+    //   axios.delete(`${BASE_URL}/api/appointment/${appt.id}`,
+    //   {
+    //     headers: {
+    //       'Authorization': `Bearer ${userToken}`
+    //     }
+    //   }
+    //   )
+    //   .then ( res => {
+    //   let data = res.data
+    //   console.log("deleted appointment");
+    // })
+    // .catch (e => {
+    //   console.log(`catch exception: ${e}`)
+    //   })
     }
  
     return {

@@ -99,7 +99,9 @@ export default ManualBookingScreen = ({ navigation }) => {
       {(userCars.length === 0 || userCards.length === 0) ? (
         <ReminderScreen/>
       ) : (
-        <View>
+        <View
+        style={{flex: 1}}
+        >
           <View style={localStyles.topContainer}>
             <View>
               <Text>Current time: {currentDate.toLocaleTimeString()}</Text>

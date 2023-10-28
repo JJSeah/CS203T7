@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../model/User";
 import axios from "axios";
 import { BASE_URL } from "../constants/Config";
@@ -9,29 +9,32 @@ export default ChargingCarViewController = ( { navigation } ) => {
     const { userToken, loadAllAppointments } = useContext(UserContext);
 
     //test 
-    const stopButtonPressed = ( apptId ) => {
-        console.log("stop button pressed");
-        axios.put(`${BASE_URL}/api/appointment/cancel/${apptId}`,
-       {
-         headers: {
-           'Authorization': `Bearer ${userToken}`
-         }
-       })
-       .then(res => {
-        console.log("stop charging")
-       })
-       .catch (e => {
-        console.log(`failed to stop charging: ${e}`)
-        })
+    const stopButtonPressed = ( appt ) => {
+      //   console.log("stop button pressed");
+      //   axios.put(`${BASE_URL}/api/appointment/cancel/${apptId}`,
+      //  {
+      //    headers: {
+      //      'Authorization': `Bearer ${userToken}`
+      //    }
+      //  })
+      //  .then(res => {
+      //   console.log("stop charging")
+      //  })
+      //  .catch (e => {
+      //   console.log(`failed to stop charging: ${e}`)
+      //   })
+        navigation.navigate("MakePaymentScreen", appt)
+    }
 
-        navigation.navigate('HomeNavigator');
+    const checkCarBatteryStatus = async(carId) => {
+        console.log(`Checking car with id ${carId}'s battery percentage`)
     }
 
 
-    const finishButtonPressed = ( apptId ) => {
+    const finishButtonPressed = ( appt) => {
         console.log("finish button pressed");
-        console.log(apptId)
-        navigation.navigate("MakePaymentScreen", {apptId})
+        console.log(appt.id)
+        navigation.navigate("MakePaymentScreen", appt)
     }
     
 
@@ -39,6 +42,7 @@ export default ChargingCarViewController = ( { navigation } ) => {
         buttonState, 
         setButtonState, 
         stopButtonPressed, 
-        finishButtonPressed
+        finishButtonPressed,
+        checkCarBatteryStatus,
     };
 }
