@@ -6,6 +6,7 @@ import Svg, { Circle, Text as SvgText} from 'react-native-svg';
 import Animated, { withTiming, useSharedValue, useAnimatedProps, useDerivedValue, Easing, runOnJS } from 'react-native-reanimated'; 
 import { ReText } from 'react-native-redash';
 import ChargingCarViewController from "../viewController/ChargingCarViewController";
+import { useRoute } from "@react-navigation/native";
 
 
 const backgroundStrokeColor = 'black';
@@ -18,6 +19,10 @@ const radius = circleLength / ( 2 * Math.PI);
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export default ChargingCarView = ( { navigation } ) => {
+
+    const route = useRoute()
+    const apptId = route.params?.apptId
+
     const { stopButtonPressed, finishButtonPressed, buttonState, setButtonState } = ChargingCarViewController({ navigation })
     // const [ buttonState, setButtonState ] = useState('STOP');
     const progress = useSharedValue(0);
@@ -84,7 +89,7 @@ export default ChargingCarView = ( { navigation } ) => {
         if (buttonState === 'STOP'){
             stopButtonPressed();
         } else if (buttonState === 'FINISH'){
-            finishButtonPressed();
+            finishButtonPressed(apptId);
         }
         }}
         color={buttonState === 'STOP' ? 'red' : 'green'}/>

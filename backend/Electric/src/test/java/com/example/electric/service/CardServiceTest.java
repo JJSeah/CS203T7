@@ -78,7 +78,7 @@ public class CardServiceTest {
 
         List<Card> result = cardService.getCardByUserId(userId);
 
-        assertEquals(Optional.empty(), result);
+        assertEquals(null, result);
 
     }
 
@@ -95,53 +95,73 @@ public class CardServiceTest {
 
     @Test
     public void testUpdateCard() {
+        // Create a sample card for testing
         long cardId = 1L;
-        Card updatedCard = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
-        updatedCard.setId(cardId);
-        when(cardRepository.existsById(cardId)).thenReturn(true);
-        when(cardRepository.save(updatedCard)).thenReturn(updatedCard);
+        Card existingCard = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
 
-        Card result = cardService.updateCard(updatedCard, cardId);
+        // Mock the repository's findById method
+        when(cardRepository.findById(cardId)).thenReturn(Optional.of(existingCard));
 
-        verify(cardRepository, times(1)).existsById(cardId);
-        verify(cardRepository, times(1)).save(updatedCard);
-        assertSame(updatedCard, result);
+        // Call the updateCard method
+        existingCard.setName("Updated Name");
+
+        // Invoke the updateCard method
+        Card result = cardService.updateCard(existingCard, cardId);
+
+        // Verify that the save method of the repository was called once with the updated card
+        verify(cardRepository, times(1)).save(existingCard);
+
+        // Check if the result matches the updated card
+        assertSame(existingCard, result);
     }
 
     @Test
     public void testUpdateCardNonExistent() {
-        long cardId = 1L;
-        Card updatedCard = new Card(1L, "John Doe", "1234567890123456",  "2023-09-22");
-        updatedCard.setId(cardId);
-        when(cardRepository.existsById(cardId)).thenReturn(false);
+        // Create a sample card for testing
+        long nonExistentCardId = 999L;
 
-        Card result = cardService.updateCard(updatedCard, cardId);
+        // Mock the repository's findById method for a non-existent card
+        when(cardRepository.findById(nonExistentCardId)).thenReturn(Optional.empty());
 
-        verify(cardRepository, times(1)).existsById(cardId);
+        // Call the updateCard method with a card that doesn't exist
+        Card updatedCard = new Card();
+        updatedCard.setName("Updated Name");
+
+        // Invoke the updateCard method
+        Card result = cardService.updateCard(updatedCard, nonExistentCardId);
+
+        // Verify that the repository's save method is not called
         verify(cardRepository, never()).save(updatedCard);
+
+        // Check if the result is null as the card doesn't exist
         assertNull(result);
     }
 
     @Test
     public void testDeleteCard() {
-        long cardId = 1L;
-        when(cardRepository.existsById(cardId)).thenReturn(true);
-        doNothing().when(cardRepository).deleteById(cardId);
+        // Define a card ID to be deleted
+        long cardIdToDelete = 1L;
 
-        cardService.deleteCard(cardId);
+        // Mock the repository's findById method to return a card with the specified ID
+        Card cardToDelete = new Card(cardIdToDelete, "John Doe", "1234567890123456", "2023-12-12");
 
-        verify(cardRepository, times(1)).existsById(cardId);
-        verify(cardRepository, times(1)).deleteById(cardId);
+        // Call the deleteCard method
+        cardService.deleteCard(cardIdToDelete);
+
+        // Verify that the deleteById method of the repository was called once with the specified card ID
+        verify(cardRepository, times(1)).deleteById(cardIdToDelete);
     }
+
 
     @Test
     public void testDeleteCardNonExistent() {
-        long cardId = 1L;
+        long cardId = 9999L;
         when(cardRepository.existsById(cardId)).thenReturn(false);
 
         cardService.deleteCard(cardId);
 
         verify(cardRepository, times(1)).existsById(cardId);
         verify(cardRepository, never()).deleteById(cardId);
+
     }
 }

@@ -12,6 +12,7 @@ import ManualBookingScreenViewController from "../../viewController/ManualBookin
 import CustomLongButton from "../../components/CustomLongButton";
 import { useRoute } from "@react-navigation/native";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
+import ReminderScreen from "../ReminderScreen";
 
 export default ManualBookingScreen = ({ navigation }) => {
   const route = useRoute();
@@ -26,7 +27,7 @@ export default ManualBookingScreen = ({ navigation }) => {
   const { findAvailableStationsButtonPressed } =
     ManualBookingScreenViewController({ navigation });
 
-  const { userCars } = useContext(UserContext);
+  const { userCars, userCards } = useContext(UserContext);
 
   const diffHours = (start, end) => {
     var diff = end.getTime() - start.getTime();
@@ -95,10 +96,8 @@ export default ManualBookingScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {userCars.length === 0 ? (
-        <View>
-          <Text>Please add a car</Text>
-        </View>
+      {(userCars.length === 0 || userCards.length === 0) ? (
+        <ReminderScreen/>
       ) : (
         <View>
           <View style={localStyles.topContainer}>

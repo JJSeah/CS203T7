@@ -8,7 +8,7 @@ import CustomLongButton from '../../../components/CustomLongButton';
 
 export default PaymentMethodsScreen = ( {navigation} ) => {
 
-    const { userCard } = useContext(UserContext);
+    const { userCards } = useContext(UserContext);
     const { 
       addCardButtonPressed, } = SettingsScreenViewController( { navigation } );
 
@@ -17,12 +17,12 @@ export default PaymentMethodsScreen = ( {navigation} ) => {
     <SafeAreaView style = {localStyles.container}>
       <View style = {localStyles.detailsContainer}>
       <View style={{flex:9}}>
-      {userCard === null ? (
+      {userCards === null ? (
         <View>
           <ActivityIndicator />
         </View>
-      ) : Array.isArray(userCard) && userCard.length > 0 ? (
-        userCard.map((card) => (
+      ) : Array.isArray(userCards) && userCards.length > 0 ? (
+        userCards.map((card) => (
           <View key={card.id} style={localStyles.sectionContainer}>
             <View style={localStyles.informationContainer}>
               <CarInformation 

@@ -46,14 +46,19 @@ export default SelectStationScreenViewController = ( { navigation }, stations ) 
         },
         "user": {
           "id": userId,
-          "role": "ROLE_ADMIN"
+          // "role": "ROLE_ADMIN"
+        },
+        "manualAppointment": true,
+        "car": {
+          "id": currentCar.id
         }
       },
       {
           headers: {
               'Authorization': `Bearer ${userToken}`
           }
-      }
+      },
+
     )
     .then((res)=> {
       getAllAppointments();

@@ -13,6 +13,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserServiceDetailsInter {
     private final UserRepository userRepository;
+
+    /**
+     * User Details Service
+     *
+     * This method creates a custom UserDetailsService, which is used to load user details by their username.
+     * It attempts to find a user in the system by their email (username) and returns the corresponding UserDetails.
+     *
+     * @return A UserDetailsService implementation that loads user details by their username (email).
+     * @throws UsernameNotFoundException If the user with the specified email (username) is not found.
+     */
     @Override
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {

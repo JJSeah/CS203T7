@@ -15,6 +15,15 @@ public class QRCodeController {
 	
 	private static final String QR_CODE_IMAGE_PATH = "./src/main/resources/QR_images/testing1.png";
 
+	/**
+	 * Generate QR Code
+	 *
+	 * This endpoint generates a QR code image based on the provided width and height dimensions.
+	 *
+	 * @param width The width of the QR code image.
+	 * @param height The height of the QR code image.
+	 * @throws Exception If there are any issues during QR code generation.
+	 */
     @GetMapping("/generateQRCodeNow/{width}/{height}")
 		public void download(
 				// @PathVariable("codeText") String codeText,
@@ -24,6 +33,18 @@ public class QRCodeController {
 			        QRCodeGenerator.generateQRCodeImage("www.google.com", width, height, QR_CODE_IMAGE_PATH);
 			    }
 
+
+	/**
+	 * Generate QR Code
+	 *
+	 * This endpoint generates a QR code image based on the provided code text, width, and height dimensions.
+	 *
+	 * @param codeText The text or data to encode in the QR code.
+	 * @param width The width of the QR code image.
+	 * @param height The height of the QR code image.
+	 * @return A ResponseEntity containing the QR code image data.
+	 * @throws Exception If there are any issues during QR code generation.
+	 */
     @GetMapping("/genrateQRCode/{codeText}/{width}/{height}")
    	public ResponseEntity<byte[]> generateQRCode(
    			@PathVariable("codeText") String codeText,

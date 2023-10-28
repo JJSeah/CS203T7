@@ -23,19 +23,10 @@ public class CardController {
     @Autowired
     private UserService userService;
 
-    /**
-     * Payment Details with Card Details
-     *
-     * @param _txId
-     * @param _txDate
-     * @param _orderValue
-     * @param _payType
-     * @param _card
-     */
 
     @GetMapping("/status")
     public String status() {
-        String URL = "http://localhost:9090/payment/status";
+        String URL = "http://3.26.230.241:9090/payment/status";
         String obj=  new RestTemplate().getForObject(URL, String.class);
         return obj;
     }

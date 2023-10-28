@@ -94,7 +94,7 @@ export default HistoryScreen = ({navigation}) => {
     };
 
     filterData();
-  }, [monthValue, showAllRecords]);
+  }, [monthValue, showAllRecords, allAppointments]);
 
   
   let totalCost = 0; 

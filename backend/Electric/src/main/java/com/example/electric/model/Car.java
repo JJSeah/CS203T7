@@ -33,6 +33,7 @@ public class Car {
     @JoinColumn(name="user_id")
     private User user;
 
+
     public Car(long id, String tesla, String modelS) {
         this.id = id;
         this.nickname = tesla;
