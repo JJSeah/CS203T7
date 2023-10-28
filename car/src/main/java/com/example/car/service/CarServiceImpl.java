@@ -49,7 +49,10 @@ public class CarServiceImpl implements CarService {
     }
 
     private void updateBatteryForCar(CarDetails car) {
-        if (car.getStatus().equals("charging")) {
+        if (car.getBattery() == 100.0 || car.getBattery() == 0.0) {
+            return;
+        }
+        else if (car.getStatus().equals("charging")) {
             car.setBattery(car.getBattery() + 4.0);
         } else if (car.getStatus().equals("driving")) {
             car.setBattery(car.getBattery() - 2.0);

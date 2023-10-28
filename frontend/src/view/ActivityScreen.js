@@ -77,10 +77,9 @@ export default ActivityScreen = ({ navigation }) => {
                     {formatDate(item.date)}, {formatTime(item.startTime)}
                   </Text>
                 </View>
-                <MaterialCommunityIcons name="qrcode-scan" size={30} color="black"
+                <MaterialCommunityIcons name="fuel-cell" size={30} color="black"
                 onPress={() => {
-                  console.log(item)
-                  navigation.navigate("ChargingCarView", {apptId: item.id})}
+                  navigation.navigate("ChargingCarView", item)}
                 }/>
               </View>
             )}
@@ -107,8 +106,11 @@ export default ActivityScreen = ({ navigation }) => {
                 </View>
                 <View style={activityStyles.iconAndButton}>
                 <MaterialCommunityIcons name="qrcode-scan" size={35} color="black" style={activityStyles.icon}
-                onPress={() => {scanQRButtonPressed(item.id)}} />
-                <Button title="CANCEL" color='red' onPress={() => {cancelButtonPressed(item.id); cancelUpcomingAppt(item.id)}}/>
+                onPress={() => {scanQRButtonPressed(item)}} />
+                <Button title="CANCEL" color='red' onPress={() => {
+                  cancelButtonPressed(item); 
+                  // cancelUpcomingAppt(item.id)
+                  }}/>
                 </View>
               </View>
             )}

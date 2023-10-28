@@ -35,7 +35,7 @@ export const CardRepository = () => {
   const loadCardData = async () => {
     let url = `${BASE_URL}/api/card/user/${userId}`;
 
-    setUserCard(null);
+    setUserCards(null);
 
     axios
       .get(url)
