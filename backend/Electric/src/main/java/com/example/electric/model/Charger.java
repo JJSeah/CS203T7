@@ -35,6 +35,15 @@ public class Charger {
     @JoinColumn(name="station_id")
     private Station station;
 
+    public Charger(long l, String chargerA, boolean b, String typeA, double v, Station stationA) {
+        this.id = l;
+        this.charId = chargerA;
+        this.avail = b;
+        this.type = typeA;
+        this.chargingRate = v;
+        this.station = stationA;
+    }
+
     public boolean getAvail(){
         return this.avail;
     }

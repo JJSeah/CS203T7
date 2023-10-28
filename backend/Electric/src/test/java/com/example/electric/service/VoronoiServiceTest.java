@@ -1,27 +1,75 @@
 package com.example.electric.service;
 
-import com.example.electric.model.Station;
-import org.junit.jupiter.api.Test;
+import com.example.electric.respository.StationRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.locationtech.jts.geom.*;
-import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 public class VoronoiServiceTest {
-    // @InjectMocks
-    // private  VoronoiService voronoiService;
+     @InjectMocks
+     private  VoronoiService voronoiService;
 
-    // @Mock
-    // private StationService stationService;
+     @Mock
+     private StationService stationService;
+
+     @Mock
+     private AppointmentService appointmentService;
+
+
+     @Mock
+     private StationRepository stationRepository;
+     @Mock
+        private AppointmentService appointmentRepository;
+
+//    @Test
+//    public void testFindClosestStation() {
+//        // Create some sample stations
+//        Station station1 = new Station(1L,"Station A", 1.2851899088339263, 103.85175465425507);
+//        Station station2 = new Station(2L,"Station B", 1.2868078503897311, 103.827125448267);
+//        Station station3 = new Station(3L,"Station C", 1.2818433518638552, 103.84478091081829);
+//
+//
+//        // Mock the stationRepository to return these stations when findAll is called
+//        Mockito.when(stationRepository.findAll()).thenReturn(List.of(station1, station2, station3));
+//
+//        LocalTime currentTime = LocalTime.now();
+//        int minute = currentTime.getMinute();
+//        int roundedMinute = (minute / 5) * 5;
+//
+//        LocalTime roundedStartTime = currentTime.withMinute(roundedMinute).withSecond(00);
+//        String startTime = roundedStartTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+//
+//        //Calculate end time
+//        LocalTime start = LocalTime.parse(startTime);
+//        LocalTime end = start.plusHours(3);
+//        String endTime = end.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+//
+//        //Get current date
+//        LocalDate currentDate = LocalDate.now();
+//        String date = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//
+//        // Define the latitude and longitude for which you want to find the closest station
+//        double targetLatitude = 1.2868078503897311;
+//        double targetLongitude = 103.827125448267;
+//
+//        Mockito.when(appointmentRepository.getAvailableStationsAndChargers(startTime, endTime, date)).thenReturn(List.of(station1, station2, station3));
+//
+//        Mockito.when(stationRepository.findStationByLatitudeAndLongitude(targetLatitude, targetLongitude))
+//                .thenReturn(Optional.of(station2));
+//
+//        Mockito.when(stationService.getStationByCoordinate(targetLatitude, targetLongitude))
+//                .thenReturn(station2);
+//
+//        // Call the findClosestStation method
+//        Station closestStation = voronoiService.findClosestStation(targetLatitude, targetLongitude);
+//        // Assert that the result is not null
+//        assertNotNull(closestStation);
+//
+//        // Assert that the closest station is the expected one (in this case, station2)
+//        assertEquals("Station B", closestStation.getName());
+//    }
 
     // @Test
     // public void testFindClosestStation() {

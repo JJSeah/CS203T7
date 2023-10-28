@@ -22,6 +22,16 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
     private StationRepository stationRepository;
 
     //JSON File includes distance, time taken
+    /**
+     * Get Distance Matrix
+     *
+     * This method retrieves the distance matrix between two locations using the Google Maps Distance Matrix API.
+     *
+     * @param origin The origin location (e.g., coordinates or address).
+     * @param destination The destination location (e.g., coordinates or address).
+     * @return A DistanceMatrix containing distance and duration information between the origin and destination.
+     * @throws Exception If an error occurs during the API request.
+     */
     public DistanceMatrix getDistanceMatrix(String origin, String destination) throws Exception {
         GeoApiContext context = new GeoApiContext.Builder().apiKey(apiKey).build();
         return DistanceMatrixApi.newRequest(context)
@@ -30,6 +40,15 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
                 .await(); // This will make the API request and return the result.
     }
 
+    /**
+     * Get Distance by Station ID
+     *
+     * This method calculates the distance in meters between a given station and another station using their coordinates.
+     *
+     * @param station The source station for distance calculation.
+     * @return The distance in meters to the specified destination station.
+     * @throws Exception If an error occurs during the distance calculation.
+     */
     public long getDistanceByID(Station station) throws Exception{
         Station dest = stationRepository.findById(station.getId()).orElse(null);
         String location1 = Double.toString(station.getLatitude()) + "," + Double.toString(station.getLongitude());
@@ -41,6 +60,15 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
 
     }
 
+    /**
+     * Get Duration by Station ID
+     *
+     * This method calculates the estimated travel duration in minutes between a given station and another station using their coordinates.
+     *
+     * @param station The source station for duration calculation.
+     * @return The estimated travel duration in minutes to the specified destination station, rounded to the nearest multiple of 5 minutes.
+     * @throws Exception If an error occurs during the duration calculation.
+     */
     public int getDurationByID(Station station) throws Exception {
         Station dest = stationRepository.findById(station.getId()).orElse(null);
         String location1 = Double.toString(station.getLatitude()) + "," + Double.toString(station.getLongitude());
@@ -54,6 +82,14 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
         return (int)(timeInMinutes / 5) * 5;
     }
 
+    /**
+     * Calculate Estimate Time of Charging
+     *
+     * This method estimates the time required to charge a car based on its parameters and a standard charging power.
+     *
+     * @param car The car for which the charging time estimate is calculated.
+     * @return The estimated time in minutes required to charge the car, rounded to the nearest multiple of 5 minutes.
+     */
     public int calculateEstimateTimeOfCharging(Car car) {
         //Car parameters
         double batteryCapacity = car.getBatteryCapacity();
@@ -72,6 +108,14 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
         return (int)(timeInMinutes / 5) * 5;
     }
 
+    /**
+     * Calculate Cost of Charging for a Car
+     *
+     * This method calculates the cost of charging a car based on the estimated time of charging.
+     *
+     * @param car The car for which the charging cost is calculated.
+     * @return The estimated cost of charging the car.
+     */
     public double calculateCostOfCharging(Car car) {
         //Car parameters
         int timeOfCharging = this.calculateEstimateTimeOfCharging(car);
@@ -88,6 +132,14 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
         return chargingCostRate * timeOfChargingInHour;
     }
 
+    /**
+     * Calculate Cost of Charging by Duration
+     *
+     * This method calculates the cost of charging based on a given duration.
+     *
+     * @param duration The duration of charging in minutes.
+     * @return The estimated cost of charging based on the provided duration.
+     */
     public static double calculateCostOfCharging(long duration) {
 
         double timeOfChargingInHour = (double) duration / 60;
