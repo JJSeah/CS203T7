@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 export default ActivityScreen = ({ navigation }) => {
-  const { historyButtonPressed, scanQRButtonPressed, cancelButtonPressed } = ActivityViewController({ navigation });
+  const { sortAppointment, historyButtonPressed, scanQRButtonPressed, cancelButtonPressed } = ActivityViewController({ navigation });
   const { allAppointments } = useContext(UserContext);
   const [ ongoingAppointment, setOngoingAppointment ] = useState(allAppointments.filter((appointment) => {return appointment.status === 'ongoing'}));
   const [ upcomingAppointment, setUpcomingAppointment ] = useState(allAppointments.filter((appointment) => {return appointment.status === 'Active'}))
@@ -37,16 +37,12 @@ export default ActivityScreen = ({ navigation }) => {
   useEffect(() => {
     setOngoingAppointment(
       allAppointments.filter((appointment) => {return appointment.status === "charging"})
-      .sort(
-
-      )
+      .sort(sortAppointment)
     )
 
     setUpcomingAppointment(
       allAppointments.filter((appointment) => {return appointment.status === 'Active'})
-      .sort(
-
-      )
+      .sort(sortAppointment)
     )
   }, [allAppointments])
   // const ongoingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'ongoing'})

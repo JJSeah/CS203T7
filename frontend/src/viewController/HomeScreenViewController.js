@@ -14,7 +14,7 @@ export default HomeScreenViewController = ( { navigation } ) => {
 
     const automateBookingButtonPressed = () => {
         const automateVerAppt = allAppointments.filter((appt) => {return appt.manualAppointment === false})
-        const unfinished = automateVerAppt.filter((appt) => {return appt.status !== "completed"})
+        const unfinished = automateVerAppt.filter((appt) => {return (appt.status !== "completed" && appt.status !== "cancelled")})
         if (unfinished.length !== 0) {
           Alert.alert(
             "Unable to make booking",
@@ -48,7 +48,7 @@ export default HomeScreenViewController = ( { navigation } ) => {
 
     const manualBookingButtonPressed = () => {
         const manualVerAppt = allAppointments.filter((appt) => {return appt.manualAppointment === true})
-        const unfinished = manualVerAppt.filter((appt) => {return appt.status !== "completed"})
+        const unfinished = manualVerAppt.filter((appt) => {return (appt.status !== "completed" && appt.status !== "cancelled")})
         if (unfinished.length === 2) {
           Alert.alert(
             "Unable to make booking",

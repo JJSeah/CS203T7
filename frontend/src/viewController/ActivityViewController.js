@@ -64,6 +64,28 @@ export default ActivityViewController = ({ navigation }) => {
     );
   };
 
+  const sortAppointment = (a, b) => {
+    const aStart = new Date(`${a.date}`);
+    const ahours = parseInt(a.startTime.slice(0, 2));
+    const aminutes = parseInt(a.startTime.slice(3, 5));
+    const aseconds = parseInt(a.startTime.slice(6));
+    aStart.setHours(ahours, aminutes, aseconds);
+
+    const bStart = new Date(`${b.date}`);
+    const bhours = parseInt(b.startTime.slice(0, 2));
+    const bminutes = parseInt(b.startTime.slice(3, 5));
+    const bseconds = parseInt(b.startTime.slice(6));
+    bStart.setHours(bhours, bminutes, bseconds);
+
+    if (aStart < bStart) {
+      return -1;
+    } else if (aStart > bStart) {
+      return 1;
+    }
+
+    return 0
+  }
+
   const cancelAppointment = async (appt) => {
     let url = `${BASE_URL}/api/appointment/cancel/${appt.id}`;
     axios
@@ -84,5 +106,6 @@ export default ActivityViewController = ({ navigation }) => {
     historyButtonPressed,
     scanQRButtonPressed,
     cancelButtonPressed,
+    sortAppointment
   };
 };
