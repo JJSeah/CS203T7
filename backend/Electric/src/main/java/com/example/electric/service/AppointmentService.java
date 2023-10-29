@@ -143,30 +143,14 @@ public class AppointmentService implements AppointmentServiceInter {
         if (optionalAppointment.isPresent()) {
             Appointment appointment = optionalAppointment.get();
             // Update the appointment fields as needed
-            if (updatedAppointment.getUser() != null) {
-                appointment.setUser(updatedAppointment.getUser());
-            }
-            if (updatedAppointment.getDuration() != null) {
-                appointment.setDuration(updatedAppointment.getDuration());
-            }
-            if (updatedAppointment.getStartTime() != null) {
-                appointment.setStartTime(updatedAppointment.getStartTime());
-            }
-            if (updatedAppointment.getEndTime() != null) {
-                appointment.setEndTime(updatedAppointment.getEndTime());
-            }
-            if (updatedAppointment.getDate() != null) {
-                appointment.setDate(updatedAppointment.getDate());
-            }
-            if (updatedAppointment.getStation() != null) {
-                appointment.setStation(updatedAppointment.getStation());
-            }
-            if (updatedAppointment.getUser() != null) {
-                appointment.setUser(updatedAppointment.getUser());
-            }
-            if (updatedAppointment.getStatus() != null) {
-                appointment.setStatus(updatedAppointment.getStatus());
-            }
+            if (updatedAppointment.getUser() != null) appointment.setUser(updatedAppointment.getUser());
+            if (updatedAppointment.getDuration() != null)appointment.setDuration(updatedAppointment.getDuration());
+            if (updatedAppointment.getStartTime() != null) appointment.setStartTime(updatedAppointment.getStartTime());
+            if (updatedAppointment.getEndTime() != null) appointment.setEndTime(updatedAppointment.getEndTime());
+            if (updatedAppointment.getDate() != null) appointment.setDate(updatedAppointment.getDate());
+            if (updatedAppointment.getStation() != null) appointment.setStation(updatedAppointment.getStation());
+            if (updatedAppointment.getUser() != null) appointment.setUser(updatedAppointment.getUser());
+            if (updatedAppointment.getStatus() != null) appointment.setStatus(updatedAppointment.getStatus());
             if(updatedAppointment.isManualAppointment() != appointment.isManualAppointment()){
                 appointment.setManualAppointment(updatedAppointment.isManualAppointment());
             }
@@ -175,18 +159,6 @@ public class AppointmentService implements AppointmentServiceInter {
             return null; // Appointment not found
         }
     }
-    // public Appointment updateAppointment(AppointmentDto updatedAppointment, long id){
-    //     Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
-    //     if (optionalAppointment.isPresent()) {
-    //         Appointment appointment = optionalAppointment.get();
-    //         mapper.updateAppointmentFromDto(updatedAppointment, appointment);
-    //         return appointmentRepository.save(appointment);
-
-    //     }else{
-    //         //appointment not found
-    //         return null;
-    //     }
-    // }
 
     /**
      * Delete Appointment
@@ -297,20 +269,19 @@ public class AppointmentService implements AppointmentServiceInter {
      * @throws IllegalArgumentException If the provided appointment is null.
      */
 
-    public String cancelAppointment(Appointment appointment, long id){
+    public Appointment cancelAppointment(Appointment appointment, long id){
         // Check for null values
         if (appointment == null) {
             throw new IllegalArgumentException("Updated appointment cannot be null");
         }
 
         appointment.setStatus("cancelled");
-        String transactionId = appointment.getTransactionId();
+//        String transactionId = appointment.getTransactionId();
 
-        String URL = "http://3.26.230.241:9090/payment/cancel/" + transactionId;
-        String obj =  new RestTemplate().getForObject(URL, String.class);
-        updateAppointment(appointment, id);
-
-        return obj;
+//        String URL = "http://3.26.230.241:9090/payment/cancel/" + transactionId;
+//        String obj =  new RestTemplate().getForObject(URL, String.class);
+//        updateAppointment(appointment, id);
+        return updateAppointment(appointment, id);
     }
 
     /**
@@ -357,12 +328,12 @@ public class AppointmentService implements AppointmentServiceInter {
      * @throws CanCreateBookingException If the user is eligible to create a booking.
      * @throws CannotCreateBookingException If the user is ineligible to create a booking.
      */
-    public Appointment checkUpcomingAppointment(long stationId, long chargerId, long userId){
+    public Appointment checkUpcomingAppointment(long chargerId, long userId){
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
         //return list of active appointment at charger 
-        List<Appointment> upcomingAppointment = appointmentRepository.findAppointmentsByStationIdAndChargerIdAndStatus(stationId, chargerId, "Active", currentDate);
+        List<Appointment> upcomingAppointment = appointmentRepository.findAppointmentsByChargerIdAndStatus(chargerId, "Active", currentDate);
         if(upcomingAppointment.size() == 0){
             throw new CanCreateBookingException();
         }

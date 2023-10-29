@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { Ionicons } from "@expo/vector-icons";
 import { UserContext } from '../../../model/User';
 import CustomLongButton from '../../../components/CustomLongButton';
 

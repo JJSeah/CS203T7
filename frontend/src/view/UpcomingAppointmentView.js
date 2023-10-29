@@ -20,13 +20,12 @@ export default UpcomingAppointmentView = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   // const [ qrCodeData, setQRCodeData ] = useState(null);
-  const { upcomingAppointmentDetails } = useContext(UserContext);
   const { userToken, userId, getAllAppointments } = useContext(UserContext);
-  const { chargingProgressButtonPressed } = UpcomingAppointmentViewController({
+  const { chargingProgressButtonPressed, startAppointment } = UpcomingAppointmentViewController({
     navigation,
   });
   const route = useRoute();
-  const apptId = route.params?.apptId;
+  const appt = route.params;
 
   const askForCameraPermission = () => {
     (async () => {
@@ -62,27 +61,10 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         }
       })
       .catch((e) => {
-        console.log(`catch exception: ${e}`);
+        console.log(`QR code error catch exception: ${e}`);
       });
   };
 
-  const startAppointment = (apptId) => {
-    axios
-      .get(`${BASE_URL}/api/appointment/start/${apptId}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
-      .then((res) => {
-        let data = res.data;
-        console.log(data);
-        getAllAppointments();
-        navigation.navigate("ChargingCarView", { apptId });
-      })
-      .catch((e) => {
-        console.log(`error starting appointment: ${e}`);
-      });
-  };
 
   const resetQRCode = () => {
     setQRCodeData(null);
@@ -107,6 +89,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Text>{appt.id}</Text>
       <Text style={styles.text}>Scan the barcode to start charging.</Text>
       {/* {renderCamera()} */}
       <View style={styles.cameraContainer}>
@@ -125,7 +108,8 @@ export default UpcomingAppointmentView = ({ navigation }) => {
       <Button
         title="Scan QR Code"
         onPress={() => {
-          getQRCode(), startAppointment(apptId);
+          getQRCode()
+          startAppointment(appt)
         }}
       />
       {/* <Button title="Generate QR Code" onPress={getQRCode} />

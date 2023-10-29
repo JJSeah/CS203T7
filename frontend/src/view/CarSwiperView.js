@@ -43,8 +43,9 @@ export default CarSwiperView = ({ userCars, setCurrentCar }) => {
           <View>
             <Swiper
               key={userCars.length}
-              stackScale={userCars.length}
+              stackSize={userCars.length}
               cards={userCars}
+              verticalSwipe={false}
               infinite={true}
               cardStyle={localStyles.cardStyle}
               onSwiped={(index) => {

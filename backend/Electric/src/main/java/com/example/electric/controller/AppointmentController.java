@@ -222,16 +222,8 @@ public class AppointmentController {
             if (!appointment.get().getStatus().equals("charging")) {
                 throw new ObjectNotFoundException(ErrorCode.E1002);
             }
-            //updating end time
-            appointment.get().setEndTime(Time.valueOf(LocalTime.now()));
-
-//            Get duration of charging in minutes
-            long duration = (appointment.get().getEndTime().getTime() - appointment.get().getStartTime().getTime())/(60 * 1000);
-
-            double cost = DistanceMatrixService.calculateCostOfCharging(duration);
-            appointment.get().setCost(cost);
             try {
-                String res = cardService.processPayment(appointment.get().getUser().getId(), cost, cardId);
+                String res = cardService.processPayment(appointment.get().getUser().getId(), appointment.get().getCost(), cardId);
                 appointment.get().setTransactionId(res);
             } catch (Exception e) {
                 throw new ObjectNotFoundException(ErrorCode.E2002);
@@ -239,7 +231,55 @@ public class AppointmentController {
 
             return appointmentService.completedAppointment(appointment.get(), id, appointment.get().getCar().getId());
         }
+    }
 
+    /**
+     * Calculate and retrieve the cost of an existing charging appointment.
+     *
+     * This endpoint allows you to calculate and retrieve the cost of a charging appointment using its unique ID.
+     * If the specified appointment is not found or is not in the 'charging' status, it will result in an ObjectNotFoundException.
+     *
+     * @param id The unique identifier of the charging appointment for cost calculation.
+     * @return The calculated cost of the charging appointment.
+     * @throws ObjectNotFoundException If no charging appointment with the given ID is found.
+     *
+     * @operation GET /cost/{id}
+     * @summary Get Cost of Charging Appointment
+     * @description Retrieve the cost of an existing charging appointment using its unique ID.
+     * @tags Appointment
+     *
+     * @param id The ID of the charging appointment for which cost is calculated.
+     * @response 200 OK - The cost of the charging appointment is successfully calculated and returned.
+     * @response 404 Not Found - If the charging appointment is not found or is not in the 'charging' status.
+     */
+
+    @GetMapping("/cost/{id}")
+    @Operation(summary = "Get Cost of Appointment", description = "Get Cost of Appointment using ID",tags = {"Appointment"})
+    public double getCostOfAppointment(@PathVariable("id") long id) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        else {
+            Appointment appointment = appointmentService.getAppointmentById(id).get();
+            if (!appointment.getStatus().equals("charging")) {
+                throw new ObjectNotFoundException(ErrorCode.E1002);
+            }
+            //updating end time
+            appointment.setEndTime(Time.valueOf(LocalTime.now()));
+            //Get duration of charging in minutes
+            long duration = (appointment.getEndTime().getTime() - appointment.getStartTime().getTime())/(60 * 1000);
+
+            //update duration of appointment
+            Time duration_time = new Time(duration);
+            appointment.setDuration(duration_time);
+
+            double cost = DistanceMatrixService.calculateCostOfCharging(duration);
+            appointment.setCost(cost);
+
+            appointmentService.updateAppointment(appointment, id);
+
+            return cost;
+        }
     }
 
 
@@ -302,7 +342,7 @@ public class AppointmentController {
      */
     @PutMapping("/cancel/{id}")
     @Operation(summary = "Cancel Appointment", description = "Cancel Appointment using ID",tags = {"Appointment"})
-    public String cancelAppointment(@PathVariable("id") long id) {
+    public Appointment cancelAppointment(@PathVariable("id") long id) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
@@ -348,12 +388,11 @@ public class AppointmentController {
      * @return The upcoming appointment details or a "cannotBookAppointment" response.
      */
 
-    @GetMapping("/checkComingAppt/{userID}")
+    @GetMapping("/checkComingAppt/charger1/{userID}")
     @Operation(summary = "QR code checker", description = "Verfied user has appointment with charger, else if no appt in upcoming 20 mins, allow user to create appointment, else return cannotBookAppoinment", tags = {"Appointment"})
     public Appointment checkUpcomingAppointment(@PathVariable("userID") long userId){
-        long stationId = 1;
         long chargerId = 1;
-        return appointmentService.checkUpcomingAppointment(stationId, chargerId, userId);
+        return appointmentService.checkUpcomingAppointment(chargerId, userId);
     }
 
 
