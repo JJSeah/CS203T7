@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Text,
   View,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import { UserContext } from "../model/User";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,7 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default PaymentScreen = ({ navigation }) => {
   const { userCards, userCars } = useContext(UserContext);
-  const { paymentCard, setPaymentCard, makePayment } =
+  const { paymentCard, checkPaymentAmount, amount, setPaymentCard, makePayment } =
     MakePaymentViewController({
       navigation,
     });
@@ -23,16 +24,34 @@ export default PaymentScreen = ({ navigation }) => {
   const appt = route.params;
   const station = route.params.station;
 
+  useEffect(() => {
+    checkPaymentAmount(appt.id)
+  }, [])
+
   return (
     <SafeAreaView style={localStyles.safeArea}>
       <View style={localStyles.topContainer}>
         <View>
-          <Text>{appt.id}</Text>
-          <Text>{appt.id}</Text>
-
+          <Text>appointment id is{appt.id}</Text>
         </View>
 
         <View>
+          <Text>For car {appt.car.nickname}</Text>
+        </View>
+
+        <View>
+          {amount === null ?
+          (
+            <View>
+              <ActivityIndicator/>
+            </View>
+          ):
+            <View>
+              <Text>
+                The total cost is ${amount}
+              </Text>
+            </View>
+          }
           <Text>For car {appt.car.nickname}</Text>
         </View>
 
@@ -78,6 +97,7 @@ export default PaymentScreen = ({ navigation }) => {
           onPress={() => {
             makePayment(appt.id, paymentCard.id);
           }}
+          disabled={amount === null}
         />
       </View>
     </SafeAreaView>

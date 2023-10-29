@@ -35,8 +35,19 @@ export default ActivityScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    setOngoingAppointment(allAppointments.filter((appointment) => {return appointment.status === "charging"}))
-    setUpcomingAppointment(allAppointments.filter((appointment) => {return appointment.status === 'Active'}))
+    setOngoingAppointment(
+      allAppointments.filter((appointment) => {return appointment.status === "charging"})
+      .sort(
+
+      )
+    )
+
+    setUpcomingAppointment(
+      allAppointments.filter((appointment) => {return appointment.status === 'Active'})
+      .sort(
+
+      )
+    )
   }, [allAppointments])
   // const ongoingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'ongoing'})
   // const upcomingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'Active'})
@@ -106,7 +117,9 @@ export default ActivityScreen = ({ navigation }) => {
                 </View>
                 <View style={activityStyles.iconAndButton}>
                 <MaterialCommunityIcons name="qrcode-scan" size={35} color="black" style={activityStyles.icon}
-                onPress={() => {scanQRButtonPressed(item)}} />
+                onPress={() => {
+                  scanQRButtonPressed(item)}
+                  } />
                 <Button title="CANCEL" color='red' onPress={() => {
                   cancelButtonPressed(item); 
                   // cancelUpcomingAppt(item.id)

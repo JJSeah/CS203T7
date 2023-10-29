@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import {Button, Text, View, ScrollView, TextBase, StyleSheet, Image,} from "react-native";
+import {Button, Text, View, ScrollView, TextBase, StyleSheet, Image, Alert} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CustomLongButton from "../components/CustomLongButton";
@@ -24,7 +24,7 @@ export default HomeScreen = ({ navigation }) => {
     automateBookingButtonPressed,
   } = HomeScreenViewController({ navigation });
 
-  const { userData, userCars, setCurrentCar, currentCar } =
+  const { userData, userCars, setCurrentCar, currentCar, allAppointments } =
     useContext(UserContext);
 
   const { loadCarsData } = CarRepository();
@@ -119,13 +119,18 @@ export default HomeScreen = ({ navigation }) => {
 
         <CustomLongButton
           title="Automate booking"
-          onPress={automateBookingButtonPressed}
+          onPress={() => {
+            automateBookingButtonPressed()
+          }}
         />
 
       </View>
     </SafeAreaView>
   );
 };
+
+
+
 
 const localStyles = StyleSheet.create({
   container: {

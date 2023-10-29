@@ -6,13 +6,32 @@ import axios from "axios";
 
 export default MakePaymentViewController = ({ navigation }) => {
   const [paymentCard, setPaymentCard] = useState({ id: -1 });
-  const { userCards, loadAllAppointments, userToken } = useContext(UserContext);
+  const { userCards, getAllAppointments, userToken } = useContext(UserContext);
+  const [ amount, setAmount ] = useState(null);
 
   useEffect(() => {
     if (userCards.length > 0) {
       setPaymentCard(userCards[0]);
     }
   }, []);
+
+  const checkPaymentAmount = async (apptId) => {
+    let url = `${BASE_URL}/api/appointment/cost/${apptId}`;
+
+    axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((res) => {
+        let data = res.data
+        setAmount(data)
+      })
+      .catch((e) => {
+        console.log(`failed to load cost : ${e}`);
+      });
+  }
 
   const makePayment = async (apptId, paymentCardId) => {
     let url = `${BASE_URL}/api/appointment/completed/${apptId}/${paymentCardId}`;
@@ -24,8 +43,7 @@ export default MakePaymentViewController = ({ navigation }) => {
         },
       })
       .then((res) => {
-        console.log(res)
-        loadAllAppointments();
+        getAllAppointments();
         navigation.navigate("HomeNavigator");
       })
       .catch((e) => {
@@ -37,5 +55,7 @@ export default MakePaymentViewController = ({ navigation }) => {
     paymentCard,
     setPaymentCard,
     makePayment,
+    checkPaymentAmount,
+    amount
   };
 };
