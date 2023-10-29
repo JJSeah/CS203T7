@@ -342,7 +342,7 @@ public class AppointmentController {
      */
     @PutMapping("/cancel/{id}")
     @Operation(summary = "Cancel Appointment", description = "Cancel Appointment using ID",tags = {"Appointment"})
-    public String cancelAppointment(@PathVariable("id") long id) {
+    public Appointment cancelAppointment(@PathVariable("id") long id) {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }

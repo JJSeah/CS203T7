@@ -269,20 +269,19 @@ public class AppointmentService implements AppointmentServiceInter {
      * @throws IllegalArgumentException If the provided appointment is null.
      */
 
-    public String cancelAppointment(Appointment appointment, long id){
+    public Appointment cancelAppointment(Appointment appointment, long id){
         // Check for null values
         if (appointment == null) {
             throw new IllegalArgumentException("Updated appointment cannot be null");
         }
 
         appointment.setStatus("cancelled");
-        String transactionId = appointment.getTransactionId();
+//        String transactionId = appointment.getTransactionId();
 
-        String URL = "http://3.26.230.241:9090/payment/cancel/" + transactionId;
-        String obj =  new RestTemplate().getForObject(URL, String.class);
-        updateAppointment(appointment, id);
-
-        return obj;
+//        String URL = "http://3.26.230.241:9090/payment/cancel/" + transactionId;
+//        String obj =  new RestTemplate().getForObject(URL, String.class);
+//        updateAppointment(appointment, id);
+        return updateAppointment(appointment, id);
     }
 
     /**
