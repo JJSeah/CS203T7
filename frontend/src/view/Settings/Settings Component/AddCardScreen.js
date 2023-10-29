@@ -101,7 +101,7 @@ export default AddCardScreen = ( {navigation} ) => {
                 placeholder = 'Expiration Date'
                 values ={values.cardExpirationDate}
                 onChangeText={handleChange('cardExpirationDate')}
-                onBlur={() => setFieldTouched('cardExpirationDate')}/>  
+                onBlur={() => setFieldTouched('cardExpirationDate')}/>
       
               {errors.cardExpirationDate && touched.cardExpirationDate && (
                 <Text style={registerStyle.textFailed}>{errors.cardExpirationDate}</Text>

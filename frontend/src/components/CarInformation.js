@@ -23,15 +23,16 @@ const localStyles = StyleSheet.create({
 
     titleText: {
         fontFamily: "Product-Sans-Regular",
-        fontSize: 14,
-        color: "white",
+        fontSize: 16,
         fontWeight: 'bold',
+        marginBottom: 10,
+        marginTop: 10,
       },
 
         valueText: {
         fontFamily: "Product-Sans-Regular",
-        fontSize: 14,
-        color: "white",
+        fontSize: 16,
         marginBottom: 10,
+        marginTop: 10,
       },
 });

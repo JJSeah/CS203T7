@@ -29,64 +29,62 @@ export default SettingsScreen = ( { navigation } ) => {
 
     // Account Section and Records Section
     
-    <SafeAreaView 
-      style={{flex:1}} 
-    >
+    <SafeAreaView style={localStyles.container}>
+      <View style = {localStyles.sectionContainer}>
 
-      <View style={styles.sectionContainer}>
-        <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Account</Text>
-        </View>
+      <View style={localStyles.sectionInformation}>
+
+        <View style={localStyles.sectionHeader}>
+          <Text style = {localStyles.headerText}>Account</Text>
+          </View>
 
         <SettingsButton
           title="Profile"
           onPress={profileButtonPressed}
-        />
+          />
 
         <SettingsButton
           title="Vehicle Information"
           onPress={vehicleInformationButtonPressed}
-        />
+          />
 
         <SettingsButton
           title="Payment Methods"
           onPress={paymentMethodsButtonPressed}
-        />
+          />
 
         <SettingsButton
           title="Notification"
           onPress={notificationButtonPressed}
-        />
+          />
       </View>
 
       {/* This is records container*/}
 
 
-      <View style={styles.sectionContainer}>
-        <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Support & Legal</Text>
+      <View style={localStyles.sectionInformation}>
+        <View style={localStyles.sectionHeader}>
+          <Text style = {localStyles.headerText}>Support & Legal</Text>
         </View>
 
         <SettingsButton
         title="Get Help"
         onPress={getHelpButtonPressed}
         />
-
         <SettingsButton
         title="Privacy Policy"
         onPress={privacyPolicyButtonPressed}
         />
-
         <SettingsButton
         title="About"
         onPress={aboutButtonPressed}
         />
-
       </View>
-
       <View>
-
+        </View>
+            <View style = {localStyles.buttonContainer}>
           <CustomLongButton title="Log out user" onPress={logOut} />
+            </View>
 
       </View>
     </SafeAreaView>
@@ -94,26 +92,37 @@ export default SettingsScreen = ( { navigation } ) => {
   );
 };
 
- const styles = StyleSheet.create({
+ const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#141414",
+  },
   sectionContainer: {
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    backgroundColor: '#f9f9f9', 
-    flex: 8
+    flex: 9,
   },
-  section: {
-    backgroundColor: '#ADD8E6', 
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-  },
-  sectionHeader: {
-    fontSize: 20, // Account and Records
-    fontWeight: 'bold',
-    marginBottom: 8,
+  
+  buttonContainer: {
+    flex: 1,
   },
 
+  sectionHeader: {
+    backgroundColor: '#808080',
+    borderTopLeftRadius: 9,
+    borderTopRightRadius: 9,
+  },
+  sectionInformation: {
+    marginBottom: 24,
+    borderWidth: 1,
+    borderRadius: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  headerText: {
+    fontFamily: "Product-Sans-Regular",
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  
 });
