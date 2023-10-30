@@ -48,5 +48,17 @@ export const CardRepository = () => {
       });
   };
 
-  return { addCardToBackend, loadCardData };
+  const deleteCard = async( id ) => {
+    let url = `${BASE_URL}/api/card/${id}`;
+    axios.delete(url)
+    .then(() => {
+      loadCardData()
+      console.log("succesfully deleted a card");
+    })
+    .catch((e) => {
+      console.log(`Error deleting card${e}`);
+    });
+};
+
+  return { addCardToBackend, loadCardData, deleteCard };
 };

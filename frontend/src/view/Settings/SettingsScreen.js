@@ -83,7 +83,7 @@ export default SettingsScreen = ( { navigation } ) => {
       <View>
         </View>
             <View style = {localStyles.buttonContainer}>
-          <CustomLongButton title="Log out user" onPress={logOut} />
+          <CustomLongButton title="Log Out" onPress={logOut} />
             </View>
 
       </View>

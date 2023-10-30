@@ -4,3 +4,4 @@ export const carPlateIcon = require('./LicensePlateIcon.png');
 export const batteryIcon = require('./BatteryIcon.png'); 
 export const emptyCarIcon = require('./EmptyCar2.png'); 
 export const trashIcon = require('./trash.png');
+export const creditCardIcon = require('./CreditCard.png');

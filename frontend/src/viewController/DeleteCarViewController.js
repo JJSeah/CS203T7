@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { CarRepository } from "../model/CarRepository";
-import { CarModelsData } from "../constants/CarModels";
 import { UserContext } from "../model/User";
 
 
