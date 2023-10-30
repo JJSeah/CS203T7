@@ -24,10 +24,24 @@ export default HomeScreenViewController = ( { navigation } ) => {
               onPress: () => {}
             }
           )
-        } else {
-            console.log("Automate booking button pressed")
-            getCurrentLocation()
-        }
+          return;
+        } 
+
+        if (currentCar.batteryPercentage >= 80) {
+          Alert.alert(
+            "Current car battery percentage too high",
+            "Please select another car or wait until your battery is at the right percentage",
+            {
+              text: "Got it",
+              onPress: () => {}
+            }
+          )
+
+          return;
+        } 
+
+        console.log("Automate booking button pressed")
+        getCurrentLocation()
     }
     
     const getCurrentLocation = async() => {
