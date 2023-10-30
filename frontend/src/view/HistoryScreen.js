@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, FlatList, Button } from 'react-native';
 import HistoryScreenViewController from '../viewController/HistoryScreenViewController';
 import { UserContext } from '../model/User';
@@ -38,6 +38,7 @@ export default HistoryScreen = ({navigation}) => {
   const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
   const { allAppointments } = useContext(UserContext);
   const [ filteredAppointments, setFilteredAppointments ] = useState([]);
+  const [ totalCost, setTotalCost ] = useState(0);
 
   useEffect(() => {
     const loadFonts = async() => {
@@ -96,19 +97,23 @@ export default HistoryScreen = ({navigation}) => {
     filterData();
   }, [monthValue, showAllRecords, allAppointments]);
 
-  
-  let totalCost = 0; 
-  if(filteredRecords){
-  filteredRecords.forEach((appointment) => {
-    totalCost += appointment.cost; 
-  });
-  }
-  
-  // let totalFilteredCost = 0; 
-  // filteredData.forEach((item) => {
-  //   totalFilteredCost += item.cost;
-  // });
+  useEffect(() => {
+    if(filteredAppointments){
+      let updatedTotalCost = 0; 
+      filteredAppointments.forEach((appointment) => {
+        updatedTotalCost += appointment.cost;
+      });
+      setTotalCost(updatedTotalCost);
+    }
+  }, [filteredAppointments]);
 
+  // let totalCost = 0; 
+  // if(filteredRecords){
+  // filteredRecords.forEach((appointment) => {
+  //   totalCost += appointment.cost; 
+  // });
+  // }
+  
   return (
     <SafeAreaView>
       <View>
@@ -141,8 +146,7 @@ export default HistoryScreen = ({navigation}) => {
             } } />
         </View>
       </View>
-
-
+      
       {monthValue && yearValue && filteredAppointments.length === 0 && (
         <View>
           <Text style={historyStyles.totalCost}>No record</Text>
@@ -163,6 +167,7 @@ export default HistoryScreen = ({navigation}) => {
       </View>
       )}
 
+
       <FlatList
         data={filteredAppointments}
         keyExtractor={(item) => item.id.toString()}
@@ -177,7 +182,7 @@ export default HistoryScreen = ({navigation}) => {
           </View>
         )}
         />
-
+     
       {monthValue && yearValue && !showAllRecords && (
         <Button
          title='show all records'
@@ -189,7 +194,7 @@ export default HistoryScreen = ({navigation}) => {
          }}
         />
       )}  
-
+  
     </SafeAreaView> 
   )
 }
