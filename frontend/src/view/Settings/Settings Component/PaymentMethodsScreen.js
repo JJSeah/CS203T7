@@ -48,7 +48,7 @@ export default PaymentMethodsScreen = ( {navigation} ) => {
               iconName="trashIcon"
               onPress={() => {
                 Alert.alert(
-                  "Delete car",
+                  "Delete card",
                   "Are you sure you want to delete " + card.name,
                   [
                     {
