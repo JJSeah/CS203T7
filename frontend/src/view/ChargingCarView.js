@@ -49,15 +49,21 @@ export default ChargingCarView = ({ navigation }) => {
     chargingCar,
   } = ChargingCarViewController({ navigation });
   // const [ buttonState, setButtonState ] = useState('STOP');
+
+  const batteryPercentage = chargingCar?.batteryPercentage || 0;
   const progress = useSharedValue(0);
 
   useEffect(() => {
 
     checkCarBatteryStatus(passedInCar.id);
 
+  }, []);
+
+  useEffect(() => {
+
     progress.value = withTiming(
-      1,
-      { duration: 4000, easing: Easing.linear },
+      batteryPercentage / 100,
+      { duration: 1000, easing: Easing.linear },
       () => {
         if (progress.value >= 1) {
           runOnJS(setButtonState)("FINISH");
@@ -74,7 +80,7 @@ export default ChargingCarView = ({ navigation }) => {
       clearInterval(interval);
       loadCarsData();
     };
-  }, []);
+  }, [chargingCar, batteryPercentage]);
 
   // useEffect(() => {
   //     if(progress.value >= 0.99){
@@ -87,7 +93,7 @@ export default ChargingCarView = ({ navigation }) => {
   }));
 
   const progressText = useDerivedValue(() => {
-    return `${Math.floor(progress.value * 100)}%`;
+    return `${Math.floor(batteryPercentage)}%`;
   });
 
   return (
@@ -99,17 +105,15 @@ export default ChargingCarView = ({ navigation }) => {
           <Text>Loading charging car</Text>
         </View>
       ) : (
-        <View
-          style={{flex:1}} 
-        >
-          <View style={{ flex: 3 }}>
+        <View style={{ flex: 1}}>
+          <View>
             <Text>The car that is charging is</Text>
             <Text>{chargingCar.nickname}</Text>
             <Text>The battery percentage is</Text>
             <Text>{chargingCar.batteryPercentage}%</Text>
           </View>
 
-          <View style={{ flex: 5 }}>
+          <View style={{ flex: 2 }}>
             <Svg>
               <Circle
                 cx={width / 2}
@@ -145,7 +149,7 @@ export default ChargingCarView = ({ navigation }) => {
             </Svg>
           </View>
 
-          <View style={{ flex: 3 }}>
+          <View style={{ flex: 1 }}>
             <Button
               title={buttonState}
               onPress={() => {
@@ -176,7 +180,7 @@ const chargingStyles = StyleSheet.create({
     fontSize: 70,
     color: "white",
     textAlign: "center",
-    margin: 165,
-    marginHorizontal: 30,
+    margin: 160,
+    marginHorizontal: 35,
   },
 });
