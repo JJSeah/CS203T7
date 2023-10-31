@@ -48,7 +48,7 @@ export default PaymentScreen = ({ navigation }) => {
           ):
             <View>
               <Text>
-                The total cost is ${amount}
+                The total cost is ${amount} 
               </Text>
             </View>
           }

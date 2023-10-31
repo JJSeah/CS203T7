@@ -19,9 +19,8 @@ import { useRoute } from "@react-navigation/native";
 export default UpcomingAppointmentView = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  // const [ qrCodeData, setQRCodeData ] = useState(null);
   const { userToken, userId, getAllAppointments } = useContext(UserContext);
-  const { chargingProgressButtonPressed, startAppointment } = UpcomingAppointmentViewController({
+  const { chargingProgressButtonPressed, scanQrCodeCorrectCharger, scanQrCodeIncorrectCharger } = UpcomingAppointmentViewController({
     navigation,
   });
   const route = useRoute();
@@ -38,41 +37,9 @@ export default UpcomingAppointmentView = ({ navigation }) => {
     askForCameraPermission();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    console.log("Type: " + type + "\nData: " + data);
-  };
-
-  const getQRCode = async () => {
-    axios
-      .get(`${BASE_URL}/api/appointment/checkComingAppt/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
-      .then((res) => {
-        let data = res.data;
-        if (
-          data !=
-          "Cannot create a booking because there is an upcoming appointment."
-        ) {
-          console.log(data);
-          setTimeout(() => {}, 500);
-        }
-      })
-      .catch((e) => {
-        console.log(`QR code error catch exception: ${e}`);
-      });
-  };
-
-
-  const resetQRCode = () => {
-    setQRCodeData(null);
-    setScanned(false);
-  };
 
   if (hasPermission === null) {
-    return <View />;
+    return <View/>;
   }
 
   if (hasPermission === false) {
@@ -91,43 +58,28 @@ export default UpcomingAppointmentView = ({ navigation }) => {
     <View style={styles.container}>
       <Text>{appt.id}</Text>
       <Text style={styles.text}>Scan the barcode to start charging.</Text>
-      {/* {renderCamera()} */}
       <View style={styles.cameraContainer}>
         <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          onBarCodeScanned={()=>{}}
           style={styles.camera}
         />
       </View>
 
-      {/* {qrCodeData ? (
-        <Image source={{ uri: qrCodeData }} style={styles.qrCode} />
-      ): (
-        <Button title="Generate QR Code" onPress={getQRCode} />
-      )}  */}
-
       <Button
-        title="Scan QR Code"
+        title="Scan QR Code (Correct charger)"
         onPress={() => {
-          getQRCode()
-          startAppointment(appt)
+          scanQrCodeCorrectCharger(appt)
+          // startAppointment(appt)
         }}
       />
-      {/* <Button title="Generate QR Code" onPress={getQRCode} />
-<Text>{qrCodeData}</Text> */}
 
-      {/* {qrCodeData && (
-        <Button title="reset" onPress={resetQRCode} />
-      )} */}
-      {/* 
-      <Button title="reset" onPress={() => setScanned(false)} disabled={!scanned} /> */}
-      {/* <TouchableOpacity 
-        style={styles.button}
-        onPress={() => setScanned(false)}
-        disabled={scanned}
-      >
-        <Button title="scanned qr code"
-         onPress={chargingProgressButtonPressed}/>
-      </TouchableOpacity> */}
+      <Button
+        title="Scan QR Code (Incorrect charger)"
+        onPress={() => {
+          scanQrCodeIncorrectCharger(appt)
+          // startAppointment(appt)
+        }}
+      />
     </View>
   );
 };

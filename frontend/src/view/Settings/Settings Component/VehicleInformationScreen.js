@@ -58,7 +58,7 @@ export default VehicleInformationScreen = ( {navigation} ) => {
             />
             </View>
             
-              <CarInformation title="BatteryCapacity" value={car.batteryCapacity}/>
+              <CarInformation title="BatteryCapacity" value={`${car.batteryCapacity}/kwh`}/>
               <CarInformation title="Model" value={car.model}/>
               <CarInformation title="Plate" value={car.plate}/>
                 </View>

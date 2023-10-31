@@ -26,8 +26,7 @@ export default HomeScreenViewController = ( { navigation } ) => {
           )
           return;
         } 
-
-        if (currentCar.batteryPercentage >= 80) {
+        if (currentCar.batteryPercentage === 100) {
           Alert.alert(
             "Current car battery percentage too high",
             "Please select another car or wait until your battery is at the right percentage",

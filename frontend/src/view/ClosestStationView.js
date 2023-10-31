@@ -55,9 +55,9 @@ export default ClosestStationView = () => {
                             <ActivityIndicator /> :
                             <View>
                                 <Text>The cost of charging is ${upcomingAppointmentDetails.costOfCharging}</Text>
-                                <Text>The distance to stations is {upcomingAppointmentDetails.distance} m</Text>
-                                <Text>The estimated time of charging is {upcomingAppointmentDetails.estimateTimeOfCharging} hours</Text>
-                                <Text>The estimated time to arrive is {upcomingAppointmentDetails.timeToArrive} seconds</Text>  
+                                <Text>The distance to stations is {upcomingAppointmentDetails.distance/1000} km</Text>
+                                <Text>The estimated time of charging is {upcomingAppointmentDetails.estimateTimeOfCharging} minutes</Text>
+                                <Text>The estimated time to arrive is {upcomingAppointmentDetails.timeToArrive} minutes</Text>  
                             </View>
                     }
             </View>
