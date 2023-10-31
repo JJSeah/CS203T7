@@ -3,51 +3,57 @@ import { UserContext } from "../model/User";
 import * as SecureStore from "expo-secure-store"
 import axios from "axios";
 import { BASE_URL } from '../constants/Config';
-
-
+import { Alert } from "react-native"
 
 export default UpcomingAppointmentViewController = ( { navigation } ) => {
-    // const [ isReady, setIsReady ] = useState(false);     
     const {userId, userToken, getAllAppointments} = useContext(UserContext)
-    //test 
-    const chargingProgressButtonPressed = () => {
-        console.log("check car charging progress");
-        navigation.navigate('ChargingCarView');
-    }
 
     const scanQrCodeCorrectCharger = async(appt) => {
       const chargerId = appt.charger.id;
       let url = `${BASE_URL}/api/QrCode/checkComingAppt/charger${chargerId}/${userId}`
-      axios.get(`${BASE_URL}/api/appointment/checkComingAppt/${userId}`, {
+
+      axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((res) => {
+        startAppointment(appt);
+      })
+      .catch((e) => {
+        console.log(`Scan QR code correct charger exception: ${e}`);
+      });
+    }
+
+    const scanQrCodeIncorrectCharger = async(appt) => {
+      const correctChargerId = appt.charger.id;
+      const incorrectchargerId = correctChargerId + 1;
+
+      let url = `${BASE_URL}/api/QrCode/checkComingAppt/charger${incorrectchargerId}/${userId}`
+
+      axios.get(url, {
         headers: {
           Authorization: `Bearer ${userToken}`,
         },
       })
       .then((res) => {
         let data = res.data;
+        console.log(data)
       })
       .catch((e) => {
-        console.log(`QR code error catch exception: ${e}`);
+        console.log(`QR code error incorrect charger exception: ${e}`);
       });
-    }
 
-    const scanQrCodeIncorrectCharger = async(appt) => {
-      const incorrectchargerId = appt.charger.id + 1;
+      Alert.alert(
+        "Incorrect charger",
+        `Please go to charger ${correctChargerId}`,[
+          {
+            text: "Got it",
+            onPress: () => {}
+          }
+        ]
+      )
 
-      let url = `${BASE_URL}/api/QrCode/checkComingAppt/charger${incorrectchargerId}/${userId}`
-
-      console.log(url)
-      // axios.get(`${BASE_URL}/api/appointment/checkComingAppt/${userId}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${userToken}`,
-      //   },
-      // })
-      // .then((res) => {
-      //   let data = res.data;
-      // })
-      // .catch((e) => {
-      //   console.log(`QR code error catch exception: ${e}`);
-      // });
     }
     
 
@@ -71,7 +77,6 @@ export default UpcomingAppointmentViewController = ( { navigation } ) => {
     
 
     return {
-        chargingProgressButtonPressed,
         startAppointment,
         scanQrCodeCorrectCharger,
         scanQrCodeIncorrectCharger

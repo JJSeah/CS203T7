@@ -20,7 +20,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const { userToken, userId, getAllAppointments } = useContext(UserContext);
-  const { chargingProgressButtonPressed, scanQrCodeCorrectCharger, scanQrCodeIncorrectCharger } = UpcomingAppointmentViewController({
+  const { scanQrCodeCorrectCharger, scanQrCodeIncorrectCharger } = UpcomingAppointmentViewController({
     navigation,
   });
   const route = useRoute();
