@@ -33,9 +33,7 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
 
     let url = `${BASE_URL}/api/stations/closest`;
 
-    axios
-      .post(
-        url,
+    axios.post(url,
         {
           latitude,
           longitude,
@@ -60,9 +58,7 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
 
     console.log(stationId);
 
-    axios
-      .post(
-        url,
+    axios.post(url,
         {
           latitude: userCoordinates.latitude,
           longitude: userCoordinates.longitude,

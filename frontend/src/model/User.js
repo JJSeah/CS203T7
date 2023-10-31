@@ -58,9 +58,6 @@ export const UserProvider = ( { children } ) => {
         })
     }
 
-    // const confirmAppointment = async() => {
-
-    // }
     
     useEffect(() => {
 

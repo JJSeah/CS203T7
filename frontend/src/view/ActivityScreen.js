@@ -45,18 +45,7 @@ export default ActivityScreen = ({ navigation }) => {
       .sort(sortAppointment)
     )
   }, [allAppointments])
-  // const ongoingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'ongoing'})
-  // const upcomingAppointment = allAppointments.filter((appointment) => {return appointment.status === 'Active'})
 
-  const cancelOngoingAppt = (itemId) => {
-    const updatedOngoingAppt = ongoingAppointment.filter(item => item.id !== itemId);
-    setOngoingAppointment(updatedOngoingAppt);
-  }
-
-  const cancelUpcomingAppt = (itemId) => {
-    const updatedUpcomingAppt = upcomingAppointment.filter(item => item.id !== itemId);
-    setUpcomingAppointment(updatedUpcomingAppt);
-  }
 
 
   return (
@@ -118,7 +107,6 @@ export default ActivityScreen = ({ navigation }) => {
                   } />
                 <Button title="CANCEL" color='red' onPress={() => {
                   cancelButtonPressed(item); 
-                  // cancelUpcomingAppt(item.id)
                   }}/>
                 </View>
               </View>

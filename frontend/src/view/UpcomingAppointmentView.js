@@ -18,8 +18,6 @@ import { useRoute } from "@react-navigation/native";
 
 export default UpcomingAppointmentView = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
-  const { userToken, userId, getAllAppointments } = useContext(UserContext);
   const { scanQrCodeCorrectCharger, scanQrCodeIncorrectCharger } = UpcomingAppointmentViewController({
     navigation,
   });
@@ -69,7 +67,6 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         title="Scan QR Code (Correct charger)"
         onPress={() => {
           scanQrCodeCorrectCharger(appt)
-          // startAppointment(appt)
         }}
       />
 
@@ -77,7 +74,6 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         title="Scan QR Code (Incorrect charger)"
         onPress={() => {
           scanQrCodeIncorrectCharger(appt)
-          // startAppointment(appt)
         }}
       />
     </View>

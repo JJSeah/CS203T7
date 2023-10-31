@@ -24,7 +24,6 @@ export default SelectStationScreen = ({ navigation }) => {
         <View style={localStyles.titleContainer}>
           <Text>Click on one of the stations to find available chargers</Text>
           <Text>For {currentCar.nickname}</Text>
-          <Text>For {currentCar.id}</Text>
           <Text>For {timings.dateString}</Text>
           <Text>For {timings.startTimeString}</Text>
           <Text>For {timings.endTimeString}</Text>

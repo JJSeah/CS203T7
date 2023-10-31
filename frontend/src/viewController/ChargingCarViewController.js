@@ -9,7 +9,8 @@ export default ChargingCarViewController = ({ navigation }) => {
   const [ buttonState, setButtonState ] = useState("STOP");
   const [ chargingCar, setChargingCar ] = useState(null)
   //test
-  const stopButtonPressed = (appt) => {
+  const completeChargingButtonPressed = (appt) => {
+    navigation.pop()
     navigation.navigate("MakePaymentScreen", appt);
   };
 
@@ -30,18 +31,12 @@ export default ChargingCarViewController = ({ navigation }) => {
     });
   };
 
-  const finishButtonPressed = (appt) => {
-    console.log("finish button pressed");
-    console.log(appt.id);
-    navigation.navigate("MakePaymentScreen", appt);
-  };
 
   return {
     buttonState,
     setButtonState,
-    stopButtonPressed,
-    finishButtonPressed,
     checkCarBatteryStatus,
+    completeChargingButtonPressed,
     chargingCar
   };
 };

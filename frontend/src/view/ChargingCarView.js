@@ -42,8 +42,7 @@ export default ChargingCarView = ({ navigation }) => {
 
   const {
     checkCarBatteryStatus,
-    stopButtonPressed,
-    finishButtonPressed,
+    completeChargingButtonPressed,
     buttonState,
     setButtonState,
     chargingCar,
@@ -55,21 +54,22 @@ export default ChargingCarView = ({ navigation }) => {
 
   useEffect(() => {
 
-    checkCarBatteryStatus(passedInCar.id);
-
-  }, []);
-
-  useEffect(() => {
-
     progress.value = withTiming(
       batteryPercentage / 100,
       { duration: 1000, easing: Easing.linear },
       () => {
         if (progress.value >= 1) {
           runOnJS(setButtonState)("FINISH");
+        } else {
+          runOnJS(setButtonState)("STOP")
         }
       }
     );
+
+  }, [batteryPercentage])
+
+  useEffect(() => {
+    checkCarBatteryStatus(passedInCar.id);
 
     const interval = setInterval(() => {
       checkCarBatteryStatus(passedInCar.id);
@@ -80,13 +80,8 @@ export default ChargingCarView = ({ navigation }) => {
       clearInterval(interval);
       loadCarsData();
     };
-  }, [chargingCar, batteryPercentage]);
+  }, []);
 
-  // useEffect(() => {
-  //     if(progress.value >= 0.99){
-  //         setButtonState('FINISH');
-  //     }
-  // }, [progress.value]);
 
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: circleLength * (1 - progress.value),
@@ -153,13 +148,7 @@ export default ChargingCarView = ({ navigation }) => {
             <Button
               title={buttonState}
               onPress={() => {
-                if (buttonState === "STOP") {
-                  navigation.pop();
-                  navigation.navigate("MakePaymentScreen", appt);
-                } else if (buttonState === "FINISH") {
-                  navigation.pop();
-                  navigation.navigate("MakePaymentScreen", appt);
-                }
+                completeChargingButtonPressed(appt)
               }}
               color={buttonState === "STOP" ? "red" : "green"}
             />

@@ -21,6 +21,7 @@ export default AutomateBookingScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (userCoordinates !== null && userCars.length !== 0 && userCards.length !== 0) {
+      console.log("finding closest station")
       findClosestStation(userCoordinates.latitude, userCoordinates.longitude);
     }
   }, []);

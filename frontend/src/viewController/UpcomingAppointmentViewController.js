@@ -18,6 +18,7 @@ export default UpcomingAppointmentViewController = ( { navigation } ) => {
         },
       })
       .then((res) => {
+        console.log(`There is an appointment for `)
         startAppointment(appt);
       })
       .catch((e) => {
@@ -37,23 +38,19 @@ export default UpcomingAppointmentViewController = ( { navigation } ) => {
         },
       })
       .then((res) => {
-        let data = res.data;
-        console.log(data)
+        Alert.alert(
+          "Incorrect charger",
+          `Please go to charger ${correctChargerId}`,[
+            {
+              text: "Got it",
+              onPress: () => {}
+            }
+          ]
+        )
       })
       .catch((e) => {
         console.log(`QR code error incorrect charger exception: ${e}`);
       });
-
-      Alert.alert(
-        "Incorrect charger",
-        `Please go to charger ${correctChargerId}`,[
-          {
-            text: "Got it",
-            onPress: () => {}
-          }
-        ]
-      )
-
     }
     
 
