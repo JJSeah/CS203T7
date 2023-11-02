@@ -7,7 +7,7 @@ import { styles } from "../components/Design";
 import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
 import { set, sortBy } from 'lodash';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,7 +35,7 @@ const year =[
 
 export default HistoryScreen = ({navigation}) => {
 
-  const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
+  const { isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
   const { allAppointments } = useContext(UserContext);
   const [ filteredAppointments, setFilteredAppointments ] = useState([]);
   const [ totalCost, setTotalCost ] = useState(0);
@@ -115,8 +115,20 @@ export default HistoryScreen = ({navigation}) => {
   // }
   
   return (
-    <SafeAreaView>
+    <SafeAreaView styles={historyStyles.container}>
       <View>
+
+      {monthValue && yearValue && !showAllRecords && (
+        <MaterialCommunityIcons name="filter-remove-outline" size={32} color="black" marginLeft={345} 
+         title='Clear filters'
+         onPress={() => {
+          setMonthValue(null); 
+          setYearValue('2023');
+          setShowAllRecords(true);
+          setFilteredAppointments(allAppointments);
+         }}
+        />
+      )}  
 
         <View style={historyStyles.dropDownContainer}>
           <Dropdown style={historyStyles.month}
@@ -156,14 +168,14 @@ export default HistoryScreen = ({navigation}) => {
       {monthValue && yearValue && filteredAppointments.length > 0 && (
         <View>
           <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
-                {year.find((y) => y.label === yearValue)?.label}: ${totalCost}
+                {year.find((y) => y.label === yearValue)?.label}: ${totalCost.toFixed(2)}
           </Text>
         </View> 
       )}
 
       {(!monthValue || !yearValue || showAllRecords) &&(
       <View> 
-        <Text style={historyStyles.totalCost}>Total cost: ${totalCost}</Text>
+        <Text style={historyStyles.totalCost}>Total cost: ${totalCost.toFixed(2)}</Text>
       </View>
       )}
 
@@ -178,33 +190,26 @@ export default HistoryScreen = ({navigation}) => {
               <Text style={historyStyles.address}>{item.station.address}</Text>
               <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)}</Text>
             </View>
-            <Text style={historyStyles.cost}>${item.cost}</Text>
+            <Text style={historyStyles.cost}>${item.cost.toFixed(2)}</Text>
           </View>
         )}
         />
-     
-      {monthValue && yearValue && !showAllRecords && (
-        <Button
-         title='show all records'
-         onPress={() => {
-          setMonthValue(null); 
-          setYearValue('2023');
-          setShowAllRecords(true);
-          setFilteredAppointments(allAppointments);
-         }}
-        />
-      )}  
-  
+       
     </SafeAreaView> 
   )
 }
 
 const historyStyles = StyleSheet.create({
+  container:{
+    flex: 1,
+    backgroundColor: "#141414",
+  },
   dropDownContainer:{
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', 
     padding: 16,
+    marginTop: 0,
   },
   month: {
     // flex: 1,

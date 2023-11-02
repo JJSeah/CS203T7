@@ -6,7 +6,8 @@ import axios from "axios";
 
 export default ManualBookingScreenViewController = ( { navigation } ) => {
 
-  const { userToken } = useContext(UserContext)
+  const { userToken } = useContext(UserContext);
+  const [ isReady, setIsReady ] = useState(false);   
 
   const findAvailableStationsButtonPressed = async(currentCar, startTime, endTime) => {
 
@@ -56,6 +57,8 @@ export default ManualBookingScreenViewController = ( { navigation } ) => {
   };
 
   return {
+    isReady, 
+    setIsReady,
     findAvailableStationsButtonPressed,
   };
 };

@@ -13,6 +13,10 @@ import CustomLongButton from "../../components/CustomLongButton";
 import { useRoute } from "@react-navigation/native";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import ReminderScreen from "../ReminderScreen";
+import FontLoader from '../../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default ManualBookingScreen = ({ navigation }) => {
   const route = useRoute();
@@ -24,10 +28,19 @@ export default ManualBookingScreen = ({ navigation }) => {
   const [bookingStartTime, setBookingStartTime] = useState(new Date());
   const [bookingEndTime, setBookingEndTime] = useState(new Date());
 
-  const { findAvailableStationsButtonPressed } =
+  const { isReady, setIsReady, findAvailableStationsButtonPressed } =
     ManualBookingScreenViewController({ navigation });
 
   const { userCars, userCards } = useContext(UserContext);
+
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+    loadFonts(); 
+  }, []);
 
   const diffHours = (start, end) => {
     var diff = end.getTime() - start.getTime();
