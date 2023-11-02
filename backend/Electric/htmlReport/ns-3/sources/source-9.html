@@ -1,0 +1,229 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UserController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: UserController (com.example.electric.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (2/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.controller;
+&nbsp;
+&nbsp;import com.example.electric.error.ErrorCode;
+&nbsp;import com.example.electric.exception.ObjectNotFoundException;
+&nbsp;import com.example.electric.model.Car;
+&nbsp;import com.example.electric.model.Card;
+&nbsp;import com.example.electric.model.User;
+&nbsp;import com.example.electric.model.response.UserCarPaymentResponse;
+&nbsp;import com.example.electric.service.CarService;
+&nbsp;import com.example.electric.service.CardService;
+&nbsp;import com.example.electric.service.UserService;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/user&quot;)
+&nbsp;public class UserController {
+&nbsp;    @Autowired
+&nbsp;    private UserService userService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private CarService carService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private CardService cardService;
+&nbsp;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public UserController(UserService userService) {</b>
+<b class="fc">&nbsp;        this.userService = userService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve a list of all users.
+&nbsp;     *
+&nbsp;     * This endpoint retrieves a list of all users currently registered in the system.
+&nbsp;     * If no users are registered, an empty list will be returned.
+&nbsp;     *
+&nbsp;     * @return A list of users, which may be empty if no users are found.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/all&quot;)
+&nbsp;    @Operation(summary = &quot;Get All Users&quot;, description = &quot;Get All Users&quot;,tags = {&quot;User&quot;})
+&nbsp;    public List&lt;User&gt; getAllUsers() {
+<b class="nc">&nbsp;        return userService.getAllUsers();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve a user by their unique identifier.
+&nbsp;     *
+&nbsp;     * This endpoint retrieves a user from the system based on their unique identifier (ID).
+&nbsp;     * If a user with the specified ID is not found, it will result in an ObjectNotFoundException.
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the user to retrieve.
+&nbsp;     * @return The retrieved user.
+&nbsp;     * @throws ObjectNotFoundException If no user with the given ID is found.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    @Operation(summary = &quot;Get User&quot;, description = &quot;Get User by ID&quot;,tags = {&quot;User&quot;})
+&nbsp;    public UserCarPaymentResponse getUserInfo(@PathVariable Long id) {
+<b class="nc">&nbsp;        User user = userService.getUserById(id);</b>
+<b class="nc">&nbsp;        List&lt;Car&gt; car = carService.getAllCarsByUser(id);</b>
+<b class="nc">&nbsp;        List&lt;Card&gt; card = cardService.getCardByUserId(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (user == null) {</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        UserCarPaymentResponse response = new UserCarPaymentResponse();</b>
+<b class="nc">&nbsp;        response.setUser(user);</b>
+<b class="nc">&nbsp;        response.setCar(car);</b>
+<b class="nc">&nbsp;        response.setCard(card);</b>
+&nbsp;
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/&quot;)
+&nbsp;    public User createUser(@RequestBody User user) {
+<b class="nc">&nbsp;        return userService.createUser(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Update an existing user with the provided information.
+&nbsp;     *
+&nbsp;     * This endpoint allows the update of an existing user identified by their unique
+&nbsp;     * identifier (ID). The provided updatedUser object should contain the updated details
+&nbsp;     * for the user. If a user with the specified ID is not found, it will result in an
+&nbsp;     * ObjectNotFoundException.
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the user to update.
+&nbsp;     * @param updatedUser The updated user object containing new information.
+&nbsp;     * @return The updated user.
+&nbsp;     * @throws ObjectNotFoundException If no user with the given ID is found.
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    @Operation(summary = &quot;Update User&quot;, description = &quot;Update User by ID&quot;,tags = {&quot;User&quot;})
+&nbsp;    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+<b class="nc">&nbsp;        if (userService.getUserById(id) == null) {</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return userService.updateUser(id, updatedUser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Delete a user by their unique identifier.
+&nbsp;     *
+&nbsp;     * This endpoint allows the deletion of a user from the system based on their unique
+&nbsp;     * identifier (ID). If a user with the specified ID is not found, it will result in an
+&nbsp;     * ObjectNotFoundException.
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the user to delete.
+&nbsp;     * @throws ObjectNotFoundException If no user with the given ID is found.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @Operation(summary = &quot;Delete User&quot;, description = &quot;Delete User by ID&quot;,tags = {&quot;User&quot;})
+&nbsp;    public void deleteUser(@PathVariable Long id) {
+<b class="nc">&nbsp;        if (userService.getUserById(id) == null) {</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        userService.deleteUser(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

@@ -101,14 +101,31 @@ public class CarService implements CarServiceInter {
             if (updatedCar.getNickname() != null) existingCar.setNickname(updatedCar.getNickname());
             if (updatedCar.getModel() != null) existingCar.setModel(updatedCar.getModel());
             if (updatedCar.getPlate() != null) existingCar.setPlate(updatedCar.getPlate());
-            if (updatedCar.getChargingRate() != 0) existingCar.setChargingRate(updatedCar.getChargingRate());
-            if (updatedCar.getBatteryPercentage() != 0.0) existingCar.setBatteryPercentage(updatedCar.getBatteryPercentage());
-            if (updatedCar.getBatteryCapacity() != 0) existingCar.setBatteryCapacity(updatedCar.getBatteryCapacity());
+            if (updatedCar.getChargingRate() >= 0) existingCar.setChargingRate(updatedCar.getChargingRate());
+            if (updatedCar.getBatteryPercentage() >= 0.0 || updatedCar.getBatteryPercentage() <= 100.0) existingCar.setBatteryPercentage(updatedCar.getBatteryPercentage());
+            if (updatedCar.getBatteryCapacity() >= 0) existingCar.setBatteryCapacity(updatedCar.getBatteryCapacity());
             carRepository.save(existingCar);
             return existingCar;
         } else {
             return null;
         }
+    }
+
+    /**
+     * Update the battery percentage of an existing car.
+     *
+     * This method updates the battery percentage of an existing car identified by its unique ID.
+     * The 'updatedCar' object should contain the new battery percentage value, which should be within
+     * the valid range of 0 to 100 (inclusive). If the 'updatedCar' battery percentage is within the
+     * valid range, it updates the car's battery percentage and saves it to the database.
+     *
+     * @param id         The unique identifier of the car to update.
+     * @param updatedCar The updated car object containing the new battery percentage value.
+     */
+    public void updateCarBattery(long id, Car updatedCar) {
+        Car car = carRepository.findById(id).get();
+        if (updatedCar.getBatteryPercentage() >= 0.0 || updatedCar.getBatteryPercentage() <= 100.0) car.setBatteryPercentage(updatedCar.getBatteryPercentage());
+        carRepository.save(car);
     }
 
     /**
@@ -142,4 +159,6 @@ public class CarService implements CarServiceInter {
         return carRepository.findCarByUserIdAndId(userId, carId);
 
     }
+
+
 }

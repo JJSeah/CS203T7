@@ -1,0 +1,249 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CarService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.service</a>
+</div>
+
+<h1>Coverage Summary for Class: CarService (com.example.electric.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CarService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    12.5%
+  </span>
+  <span class="absValue">
+    (1/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3.6%
+  </span>
+  <span class="absValue">
+    (1/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.service;
+&nbsp;
+&nbsp;import com.example.electric.dto.CarDetails;
+&nbsp;import com.example.electric.model.Car;
+&nbsp;import com.example.electric.respository.CarRepository;
+&nbsp;import com.example.electric.respository.UserRepository;
+&nbsp;import com.example.electric.service.inter.CarServiceInter;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.web.client.RestTemplate;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class CarService implements CarServiceInter {</b>
+&nbsp;    @Autowired
+&nbsp;    private CarRepository carRepository;
+&nbsp;    @Autowired
+&nbsp;    private UserRepository userRepository;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get All Cars
+&nbsp;     *
+&nbsp;     * This method retrieves a list of all cars stored in the system.
+&nbsp;     *
+&nbsp;     * @return A list of all cars in the system.
+&nbsp;     */
+&nbsp;    public List&lt;Car&gt; getAllCars() {
+<b class="nc">&nbsp;        return carRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get Car by ID
+&nbsp;     *
+&nbsp;     * This method retrieves a car by its unique identifier (ID).
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the car to retrieve.
+&nbsp;     * @return An optional containing the car, or empty if the car is not found.
+&nbsp;     */
+&nbsp;    public Optional&lt;Car&gt; getCarById(long id) {
+<b class="nc">&nbsp;        return carRepository.findById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get All Cars by User ID
+&nbsp;     *
+&nbsp;     * This method retrieves a list of cars associated with a specific user based on their unique user identifier.
+&nbsp;     * If the user with the given ID is not found, it returns null.
+&nbsp;     *
+&nbsp;     * @param userId The unique identifier of the user.
+&nbsp;     * @return A list of cars associated with the user or null if the user is not found.
+&nbsp;     */
+&nbsp;    public List&lt;Car&gt; getAllCarsByUser(long userId) {
+<b class="nc">&nbsp;        if (!userRepository.existsById(userId)) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return carRepository.findCarsByUserId(userId);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Add Car
+&nbsp;     *
+&nbsp;     * This method allows the addition of a new car to the system. It also triggers an external action to add
+&nbsp;     * the car using a REST API. The new car is then returned.
+&nbsp;     *
+&nbsp;     * @param car The car to be added to the system.
+&nbsp;     * @return The newly added car.
+&nbsp;     */
+&nbsp;    public Car addCar(Car car) {
+&nbsp;
+<b class="nc">&nbsp;        Car newcar = carRepository.save(car);</b>
+<b class="nc">&nbsp;        String URL = &quot;http://13.236.9.86:9091/car/add&quot;;</b>
+<b class="nc">&nbsp;        CarDetails carDetails = new CarDetails(newcar.getId(), newcar.getModel(),newcar.getBatteryPercentage(),&quot;off&quot;);</b>
+<b class="nc">&nbsp;        Map&lt;String, Object&gt; response = new RestTemplate().postForObject(URL, carDetails, Map.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        return car;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Update Car
+&nbsp;     *
+&nbsp;     * This method allows the update of an existing car based on the provided updated car details.
+&nbsp;     * It identifies the car by its unique identifier (ID) and updates its fields as needed.
+&nbsp;     *
+&nbsp;     * @param updatedCar The updated car details.
+&nbsp;     * @param carId The unique identifier of the car to update.
+&nbsp;     * @return The updated car after the changes are applied, or null if the car is not found.
+&nbsp;     */
+&nbsp;    public Car updateCar(Car updatedCar, Long carId) {
+&nbsp;        // Step 1: Retrieve the existing car from the database
+<b class="nc">&nbsp;        Optional&lt;Car&gt; optionalExistingCar = carRepository.findById(carId);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (optionalExistingCar.isPresent()) {</b>
+<b class="nc">&nbsp;            Car existingCar = optionalExistingCar.get();</b>
+&nbsp;
+&nbsp;            // Step 2: Update only the non-null fields of the existing car with the new values
+<b class="nc">&nbsp;            if (updatedCar.getNickname() != null) existingCar.setNickname(updatedCar.getNickname());</b>
+<b class="nc">&nbsp;            if (updatedCar.getModel() != null) existingCar.setModel(updatedCar.getModel());</b>
+<b class="nc">&nbsp;            if (updatedCar.getPlate() != null) existingCar.setPlate(updatedCar.getPlate());</b>
+<b class="nc">&nbsp;            if (updatedCar.getChargingRate() != 0) existingCar.setChargingRate(updatedCar.getChargingRate());</b>
+<b class="nc">&nbsp;            if (updatedCar.getBatteryPercentage() != 0.0) existingCar.setBatteryPercentage(updatedCar.getBatteryPercentage());</b>
+<b class="nc">&nbsp;            if (updatedCar.getBatteryCapacity() != 0) existingCar.setBatteryCapacity(updatedCar.getBatteryCapacity());</b>
+<b class="nc">&nbsp;            carRepository.save(existingCar);</b>
+<b class="nc">&nbsp;            return existingCar;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Delete Car
+&nbsp;     *
+&nbsp;     * This method allows the deletion of a car based on its unique identifier (ID).
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the car to delete.
+&nbsp;     */
+&nbsp;    public void deleteCar(long id) {
+<b class="nc">&nbsp;        if (!carRepository.existsById(id)) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        carRepository.deleteById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get Car by User ID and Car ID
+&nbsp;     *
+&nbsp;     * This method retrieves a car associated with a specific user based on their unique user identifier and the car&#39;s unique identifier.
+&nbsp;     * If the user with the given ID is not found, it returns null.
+&nbsp;     *
+&nbsp;     * @param userId The unique identifier of the user.
+&nbsp;     * @param carId The unique identifier of the car.
+&nbsp;     * @return The car associated with the user and car ID, or null if the user is not found.
+&nbsp;     */
+&nbsp;    public Car getCarByUserId(long userId, long carId){
+<b class="nc">&nbsp;        if (!userRepository.existsById(userId)) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return carRepository.findCarByUserIdAndId(userId, carId);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

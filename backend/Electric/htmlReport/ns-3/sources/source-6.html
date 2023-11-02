@@ -1,0 +1,310 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DistanceMatrixController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: DistanceMatrixController (com.example.electric.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DistanceMatrixController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2.9%
+  </span>
+  <span class="absValue">
+    (1/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.controller;
+&nbsp;
+&nbsp;import com.example.electric.model.Car;
+&nbsp;import com.example.electric.model.Charger;
+&nbsp;import com.example.electric.model.Station;
+&nbsp;import com.example.electric.service.CarService;
+&nbsp;import com.example.electric.service.DistanceMatrixService;
+&nbsp;import com.example.electric.service.StationService;
+&nbsp;import com.google.maps.model.DistanceMatrix;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalTime;
+&nbsp;import java.time.format.DateTimeFormatter;
+&nbsp;import java.time.temporal.ChronoUnit;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api&quot;)
+<b class="fc">&nbsp;public class DistanceMatrixController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private DistanceMatrixService distanceMatrixService;
+&nbsp;    @Autowired
+&nbsp;    private StationService stationService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private CarService carService;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate the distance matrix between two locations.
+&nbsp;     *
+&nbsp;     * This endpoint calculates the distance matrix between two locations (origin
+&nbsp;     * and destination).
+&nbsp;     * It takes two request parameters, &#39;origin&#39; and &#39;destination&#39;, representing the
+&nbsp;     * locations for which
+&nbsp;     * the distance matrix is to be calculated. The result is a DistanceMatrix
+&nbsp;     * object containing the distances
+&nbsp;     * and durations for different travel modes and routes between the specified
+&nbsp;     * locations.
+&nbsp;     *
+&nbsp;     * @param origin      The starting location for distance calculation.
+&nbsp;     * @param destination The destination location for distance calculation.
+&nbsp;     * @return A DistanceMatrix object representing distances and durations between
+&nbsp;     *         locations.
+&nbsp;     * @throws Exception If there is an issue with calculating the distance matrix.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/distanceMatrix&quot;)
+&nbsp;    @Operation(summary = &quot;Get Distance from 2 points&quot;, description = &quot;Calculate distance between origin and destination by lat and long.&quot;, tags = {
+&nbsp;            &quot;Algorithm&quot; })
+&nbsp;    public DistanceMatrix getDistance(
+&nbsp;            @RequestParam String origin,
+&nbsp;            @RequestParam String destination) throws Exception {
+<b class="nc">&nbsp;        return distanceMatrixService.getDistanceMatrix(origin, destination);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate and retrieve station information.
+&nbsp;     *
+&nbsp;     * This endpoint calculates various details such as time to arrive, distance,
+&nbsp;     * cost, and
+&nbsp;     * estimated time of charging between two points based on latitude and longitude
+&nbsp;     * coordinates.
+&nbsp;     * It provides valuable information for route planning and charging estimations.
+&nbsp;     *
+&nbsp;     * @param userId  The unique identifier (UserID) of the user.
+&nbsp;     * @param carId   The unique identifier (CarID) of the user&#39;s car.
+&nbsp;     * @param station Station object containing latitude and longitude
+&nbsp;     *                coordinates of the use&#39;s current location.
+&nbsp;     * @return A map containing information including latitude, longitude, time to
+&nbsp;     *         arrive, distance, cost of charging, and estimated time of charging.
+&nbsp;     * @throws Exception If there is an error during the calculation.
+&nbsp;     */
+&nbsp;    @PostMapping(&quot;/stationCheck/{userId}/{carId}&quot;)
+&nbsp;    @Operation(summary = &quot;Get Direction Calculation from 2 points&quot;, description = &quot;Calculate time,distance between origin and destination by lat and long. As well as cost,time of charging.&quot;, tags = {
+&nbsp;            &quot;Algorithm&quot; })
+&nbsp;    public Map&lt;String, Object&gt; getStationInfo(@PathVariable(&quot;userId&quot;) long userId, @PathVariable(&quot;carId&quot;) long carId,
+&nbsp;            @RequestBody Station station) throws Exception {
+&nbsp;        // Calculate time to arrive, distance, cost, and estimate time of charging
+<b class="nc">&nbsp;        String timeToArrive = String.valueOf(distanceMatrixService.getDurationByID(station));</b>
+<b class="nc">&nbsp;        String distance = String.valueOf(distanceMatrixService.getDistanceByID(station));</b>
+<b class="nc">&nbsp;        double costOfCharging = distanceMatrixService.calculateCostOfCharging(carService.getCarByUserId(userId, carId));</b>
+<b class="nc">&nbsp;        int estimateTimeOfCharging = distanceMatrixService.calculateEstimateTimeOfCharging(carService.getCarByUserId(userId, carId));</b>
+&nbsp;
+&nbsp;        //Get start time
+<b class="nc">&nbsp;        LocalTime currentTime = LocalTime.now();</b>
+<b class="nc">&nbsp;        int minute = currentTime.getMinute();</b>
+<b class="nc">&nbsp;        int roundedMinute = (minute / 5) * 5;</b>
+&nbsp;
+<b class="nc">&nbsp;        LocalTime roundedStartTime = currentTime.withMinute(roundedMinute).withSecond(00);</b>
+<b class="nc">&nbsp;        String startTime = roundedStartTime.format(DateTimeFormatter.ofPattern(&quot;HH:mm:ss&quot;));</b>
+&nbsp;
+&nbsp;        //Get end time
+<b class="nc">&nbsp;        LocalTime start = LocalTime.parse(startTime);</b>
+<b class="nc">&nbsp;        LocalTime end = start.plus(3, ChronoUnit.HOURS);</b>
+<b class="nc">&nbsp;        String endTime = end.format(DateTimeFormatter.ofPattern(&quot;HH:mm:ss&quot;));</b>
+&nbsp;
+&nbsp;        //Get date
+<b class="nc">&nbsp;        LocalDate currentDate = LocalDate.now();</b>
+<b class="nc">&nbsp;        String date = currentDate.format(DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;));</b>
+&nbsp;
+&nbsp;        //Get available charger
+<b class="nc">&nbsp;        Station obj = stationService.getStationById(station.getId());</b>
+<b class="nc">&nbsp;        Charger charger = stationService.getSlowestAndAvailableCharger(obj, roundedStartTime, end, currentDate);</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Create a Map to return the information in JSON format
+<b class="nc">&nbsp;        Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        response.put(&quot;stationId&quot;, station.getId());</b>
+<b class="nc">&nbsp;        response.put(&quot;chargerId&quot;, charger.getId());</b>
+<b class="nc">&nbsp;        response.put(&quot;startTime&quot;, startTime);</b>
+<b class="nc">&nbsp;        response.put(&quot;endTime&quot;, endTime);</b>
+<b class="nc">&nbsp;        response.put(&quot;date&quot;, date);</b>
+<b class="nc">&nbsp;        response.put(&quot;timeToArrive&quot;, timeToArrive);</b>
+<b class="nc">&nbsp;        response.put(&quot;distance&quot;, distance);</b>
+<b class="nc">&nbsp;        response.put(&quot;costOfCharging&quot;, costOfCharging);</b>
+<b class="nc">&nbsp;        response.put(&quot;estimateTimeOfCharging&quot;, estimateTimeOfCharging);</b>
+<b class="nc">&nbsp;        response.put(&quot;charger&quot;, charger);</b>
+&nbsp;
+<b class="nc">&nbsp;        return response;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate and retrieve the distance between two points.
+&nbsp;     *
+&nbsp;     * This endpoint calculates and returns the distance between two points based on
+&nbsp;     * latitude and longitude coordinates. It is useful for distance-related calculations.
+&nbsp;     *
+&nbsp;     * @param station A station object containing latitude and longitude
+&nbsp;     *                coordinates.
+&nbsp;     * @return The calculated distance between the two points.
+&nbsp;     * @throws Exception If there is an error during the calculation.
+&nbsp;     */
+&nbsp;    @PostMapping(&quot;/distance&quot;)
+&nbsp;    @Operation(summary = &quot;Get Distance from 2 points&quot;, description = &quot;Calculate distance between origin and destination by lat and long.&quot;, tags = {
+&nbsp;            &quot;Algorithm&quot; })
+&nbsp;    public long getDistanceByID(@RequestBody Station station) throws Exception {
+<b class="nc">&nbsp;        return distanceMatrixService.getDistanceByID(station);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate and retrieve the duration between two points.
+&nbsp;     *
+&nbsp;     * This endpoint calculates and returns the duration (time) it takes to travel
+&nbsp;     * between two points based on latitude and longitude coordinates. It is useful for
+&nbsp;     * time-related calculations.
+&nbsp;     *
+&nbsp;     * @param station A station object containing latitude and longitude
+&nbsp;     *                coordinates.
+&nbsp;     * @return The calculated duration (time) between the two points.
+&nbsp;     * @throws Exception If there is an error during the calculation.
+&nbsp;     */
+&nbsp;    @PostMapping(&quot;/time&quot;)
+&nbsp;    @Operation(summary = &quot;Get Time taken to travel between 2 points&quot;, description = &quot;Calculate duration between origin and destination by lat and long.&quot;, tags = {
+&nbsp;            &quot;Algorithm&quot; })
+&nbsp;    public long getDurationByID(@RequestBody Station station) throws Exception {
+<b class="nc">&nbsp;        return distanceMatrixService.getDurationByID(station);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate and retrieve the duration of charging.
+&nbsp;     *
+&nbsp;     * This endpoint calculates and returns the duration (time) it takes to travel
+&nbsp;     * the time needed to fully charge the car.
+&nbsp;     *
+&nbsp;     * @param car A car object containing battery capacity and percentage.
+&nbsp;     * @return The calculated duration (time) to charge.
+&nbsp;     */
+&nbsp;    @PostMapping(&quot;/charging/time&quot;)
+&nbsp;    public int getChargingTime(@RequestBody Car car) {
+<b class="nc">&nbsp;        return distanceMatrixService.calculateEstimateTimeOfCharging(car);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate and retrieve the cost of charging.
+&nbsp;     *
+&nbsp;     * This endpoint calculates and returns the cost to fully charge the car.
+&nbsp;     *
+&nbsp;     * @param car A car object containing battery capacity and percentage.
+&nbsp;     * @return The calculated cost to charge.
+&nbsp;     */
+&nbsp;    @PostMapping(&quot;/charging/cost&quot;)
+&nbsp;    public double getChargingCost(@RequestBody Car car) {
+<b class="nc">&nbsp;        return distanceMatrixService.calculateCostOfCharging(car);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // @GetMapping(&quot;/distance/{latitude}/{longitude}/{destination}&quot;)
+&nbsp;    // public long getDistanceByName(@PathVariable(&quot;latitude&quot;) String latitude,
+&nbsp;    // @PathVariable(&quot;longitude&quot;) String longitude,
+&nbsp;    // @PathVariable(&quot;destination&quot;) String station2) throws Exception {
+&nbsp;    // return distanceMatrixService.getDistanceByName(latitude,longitude, station2);
+&nbsp;    // }
+&nbsp;
+&nbsp;    // @GetMapping(&quot;/time/{origin}/{destination}&quot;)
+&nbsp;    // public long getDurationByName(@PathVariable(&quot;origin&quot;) String station1,
+&nbsp;    // @PathVariable(&quot;destination&quot;) String station2) throws Exception {
+&nbsp;    // return distanceMatrixService.getDurationByName(station1, station2);
+&nbsp;    // }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

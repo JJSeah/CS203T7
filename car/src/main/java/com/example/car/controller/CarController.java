@@ -20,6 +20,11 @@ public class CarController {
         return "OK it is working";
     }
 
+    @GetMapping("/battery/update/{id}")
+    public void updateBattery(@PathVariable("id") long id) {
+          carService.getCarStatus(id);
+    }
+
     @GetMapping("/all")
     public List<CarDetails> all() {
         return carService.getAllCars();

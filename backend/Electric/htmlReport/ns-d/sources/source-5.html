@@ -1,0 +1,121 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UserRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.respository</a>
+</div>
+
+<h1>Coverage Summary for Class: UserRepository (com.example.electric.respository)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">UserRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.respository;
+&nbsp;
+&nbsp;import com.example.electric.model.User;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Repository
+&nbsp;public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve User by Email
+&nbsp;     *
+&nbsp;     * This method retrieves a User entity by their email address.
+&nbsp;     *
+&nbsp;     * @param email The email address of the user to retrieve.
+&nbsp;     * @return The User object with the specified email, or null if not found.
+&nbsp;     */
+&nbsp;    User findUserByEmail(@Param(&quot;email&quot;) String email);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Find User by Email
+&nbsp;     *
+&nbsp;     * This method attempts to find a User entity by their email address.
+&nbsp;     *
+&nbsp;     * @param email The email address of the user to find.
+&nbsp;     * @return An Optional&lt;User&gt; object containing the User entity if found, otherwise it&#39;s empty.
+&nbsp;     */
+&nbsp;    Optional&lt;User&gt; findByEmail(String email);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Check User Existence by Email
+&nbsp;     *
+&nbsp;     * This method checks if a user with the specified email address exists.
+&nbsp;     *
+&nbsp;     * @param email The email address to check.
+&nbsp;     * @return true if a user with the email address exists, false otherwise.
+&nbsp;     */
+&nbsp;    boolean existsByEmail(String email);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve User by Email
+&nbsp;     *
+&nbsp;     * This method retrieves a User entity by their email address.
+&nbsp;     *
+&nbsp;     * @param email The email address of the user to retrieve.
+&nbsp;     * @return The User object with the specified email, or null if not found.
+&nbsp;     */
+&nbsp;    User getUserByEmail(@Param(&quot;email&quot;) String email);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

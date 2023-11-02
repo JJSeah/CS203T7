@@ -58,6 +58,7 @@ public class CarController {
         return carService.getAllCarsByUser(userId);
     }
 
+
     /**
      * Retrieve a car by its ID and associated user.
      *
@@ -131,6 +132,27 @@ public class CarController {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         return carService.updateCar(updatedCar, id);
+    }
+
+    /**
+     * Update an existing car's battery percentage with the provided information.
+     *
+     * This endpoint allows the update of an existing car's battery percentage
+     * identified by its unique identifier (ID). The provided 'updatedCar' object
+     * should contain the new battery percentage for the car. If a car with the specified
+     * ID is not found, it will result in an ObjectNotFoundException.
+     *
+     * @param id         The unique identifier of the car to update.
+     * @param updatedCar The updated car object containing the new battery percentage.
+     * @throws ObjectNotFoundException If no car with the given ID is found.
+     */
+    @PutMapping("/battery/{id}")
+    @Operation(summary = "Update Car Battery ", description = "Update Car Battery using ID", tags = { "Car" })
+    public void updateCarBattery(@PathVariable("id") long id,@RequestBody Car updatedCar) {
+        if (!carService.getCarById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        carService.updateCarBattery(id, updatedCar);
     }
 
     /**

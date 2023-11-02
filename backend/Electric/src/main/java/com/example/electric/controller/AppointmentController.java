@@ -86,6 +86,17 @@ public class AppointmentController {
         return appointmentService.getAllAppointmentsByUser(userId);
     }
 
+
+    /**
+     * Retrieve a list of a user's active manual appointments.
+     *
+     * This endpoint allows you to fetch a list of active manual appointments associated with a specific user
+     * identified by their unique 'userId'. Active appointments are those that are currently scheduled and
+     * have not yet been completed.
+     *
+     * @param userId The unique identifier of the user for whom to retrieve active manual appointments.
+     * @return A list of active manual appointments for the specified user.
+     */
     @GetMapping("/manual/user/{userId}")
     @Operation(summary = "Get User's Manual Active Appointments", description = "Get a list of User's Manual Active Appointment from UserID",tags = {"Manual Active Appointment"})
     public List<Appointment> getActiveManualAppointmentByUser(@PathVariable("userId") @NotNull long userId) {

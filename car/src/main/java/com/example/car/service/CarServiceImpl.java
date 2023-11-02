@@ -3,10 +3,17 @@ package com.example.car.service;
 import com.example.car.models.CarDetails;
 import com.example.car.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -34,8 +41,40 @@ public class CarServiceImpl implements CarService {
         carRepository.deleteById(id);
     }
 
+    public void getCarStatus(long id) {
+        CarDetails car = carRepository.findByCarId(id);
+
+        HashMap<String,Object> status = new HashMap<String,Object>();
+        status.put("batteryPercentage", car.getBattery());
+        System.out.println(status);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(status, headers);
+
+        String URL = "http://localhost:8080/api/car/battery/" + car.getCarId();
+        RestTemplate restTemplate = new RestTemplate();
+        System.out.println(requestEntity);
+        try {
+            ResponseEntity<Map> response = restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, Map.class);
+        } catch (HttpClientErrorException e) {
+            // Handle HTTP 4xx errors (e.g., 400 Bad Request, 404 Not Found, etc.)
+            HttpStatus statusCode = (HttpStatus) e.getStatusCode();
+            String responseBody = e.getResponseBodyAsString();
+        } catch (HttpServerErrorException e) {
+            // Handle HTTP 5xx errors (e.g., 500 Internal Server Error)
+            HttpStatus statusCode = (HttpStatus) e.getStatusCode();
+            String responseBody = e.getResponseBodyAsString();
+        } catch (RestClientException e) {
+        } catch (Exception e) {
+        }
+
+
+    }
+
     //    update battery as time passes
-    @Scheduled(fixedRate = 300000) // 300000 milliseconds = 5 minutes
+    @Scheduled(fixedRate = 60000) // 60000 milliseconds = 1 minute
     public void updateBattery() {
         try {
             List<CarDetails> cars = carRepository.findAll(); // Retrieve all cars or filter as needed
@@ -49,7 +88,7 @@ public class CarServiceImpl implements CarService {
     }
 
     private void updateBatteryForCar(CarDetails car) {
-        if (car.getBattery() == 100.0 || car.getBattery() == 0.0) {
+        if (car.getBattery() > 100.0 || car.getBattery() < 0.0) {
             return;
         }
         else if (car.getStatus().equals("charging")) {
@@ -61,7 +100,9 @@ public class CarServiceImpl implements CarService {
         }
         carRepository.save(car);
         // Optionally, log the update for monitoring and debugging
-        System.out.println("Updated battery for car: " + car.getId() + ", New Battery Level: " + car.getBattery());
+        System.out.println("Updated battery for car: " + car.getCarId() + ", New Battery Level: " + car.getBattery());
+        getCarStatus(car.getCarId());
+
     }
 
     //update car status

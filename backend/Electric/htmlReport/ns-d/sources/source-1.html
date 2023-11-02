@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AppointmentRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.respository</a>
+</div>
+
+<h1>Coverage Summary for Class: AppointmentRepository (com.example.electric.respository)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AppointmentRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.respository;
+&nbsp;
+&nbsp;import com.example.electric.model.Appointment;
+&nbsp;import com.example.electric.model.Station;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalTime;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Repository
+&nbsp;public interface AppointmentRepository extends JpaRepository&lt;Appointment, Long&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve Appointments by Station ID
+&nbsp;     *
+&nbsp;     * This method retrieves a list of appointments associated with a specific charging station
+&nbsp;     * identified by its unique ID.
+&nbsp;     *
+&nbsp;     * @param stationId The unique identifier of the charging station.
+&nbsp;     * @return A list of Appointment objects related to the specified station.
+&nbsp;     */
+&nbsp;    public List&lt;Appointment&gt; findAppointmentsByStationId(long stationId);
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve Appointments by User ID
+&nbsp;     *
+&nbsp;     * This method retrieves a list of appointments associated with a specific user identified by their
+&nbsp;     * unique ID.
+&nbsp;     *
+&nbsp;     * @param userId The unique identifier of the user.
+&nbsp;     * @return A list of Appointment objects related to the specified user.
+&nbsp;     */
+&nbsp;    List&lt;Appointment&gt; findAppointmentsByUserId(long userId);
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve Active Manual Appointments by User ID
+&nbsp;     *
+&nbsp;     * This method retrieves a list of active manual appointments associated with a specific user.
+&nbsp;     * Manual appointments are appointments created by the user. It filters appointments by user ID and
+&nbsp;     * status.
+&nbsp;     *
+&nbsp;     * @param user_id The unique identifier of the user.
+&nbsp;     * @return A list of active manual appointments for the specified user.
+&nbsp;     */
+&nbsp;    @Query(&quot;SELECT a FROM Appointment a &quot; + 
+&nbsp;    &quot;WHERE a.user.id = :user_id &quot; + 
+&nbsp;    &quot;AND a.manualAppointment = true &quot; + 
+&nbsp;    &quot;AND a.status = &#39;Active&#39;&quot;)
+&nbsp;    List&lt;Appointment&gt; findActiveManualApptByUserId(
+&nbsp;     @Param(&quot;user_id&quot;) long user_id
+&nbsp;    );
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve Available Charging Stations and Chargers
+&nbsp;     *
+&nbsp;     * This method retrieves a list of charging stations and their associated chargers that are available
+&nbsp;     * for booking within a specified time window. It excludes stations and chargers that have active
+&nbsp;     * appointments during the given time frame.
+&nbsp;     *
+&nbsp;     * @param startTime The start time of the booking window.
+&nbsp;     * @param endTime The end time of the booking window.
+&nbsp;     * @param date The date for which availability is checked.
+&nbsp;     * @return A list of Station objects with available chargers.
+&nbsp;     */
+&nbsp;    @Query(&quot;SELECT new com.example.electric.model.Station(s.id, c.id, s.name, c.chargingRate, s.latitude, s.longitude, s.address) FROM Station s &quot; +
+&nbsp;    &quot;JOIN Charger c ON s.id = c.station.id &quot; +
+&nbsp;    &quot;WHERE c.id NOT IN (&quot; +
+&nbsp;    &quot;    SELECT a.charger.id FROM Appointment a &quot; +
+&nbsp;    &quot;    WHERE a.status = &#39;Active&#39;&quot; +
+&nbsp;    &quot;    AND (a.startTime &lt;= :startTime OR a.endTime &gt;= :endTime) AND  a.date = :date&quot; +
+&nbsp;    &quot;)&quot;)
+&nbsp;    List&lt;Station&gt; findAvailableStationsAndChargers(
+&nbsp;        @Param(&quot;startTime&quot;) LocalTime startTime,
+&nbsp;        @Param(&quot;endTime&quot;) LocalTime endTime,
+&nbsp;        @Param(&quot;date&quot;) LocalDate date
+&nbsp;    );
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve Appointments by Station ID, Charger ID, and Status
+&nbsp;     *
+&nbsp;     * This method retrieves a list of appointments associated with a specific charging station, charger,
+&nbsp;     * and status on a given date.
+&nbsp;     *
+&nbsp;     * @param station_id The unique identifier of the charging station.
+&nbsp;     * @param charger_id The unique identifier of the charger.
+&nbsp;     * @param status The status of the appointment (e.g., &quot;Active&quot;).
+&nbsp;     * @param date The date for which appointments are retrieved.
+&nbsp;     * @return A list of Appointment objects based on the specified station, charger, status, and date.
+&nbsp;     */
+&nbsp;    @Query(&quot;SELECT a FROM Appointment a &quot; +
+&nbsp;    &quot;WHERE a.charger.id = :charger_id &quot; +
+&nbsp;    &quot;AND a.status = :status &quot; +
+&nbsp;    &quot;AND a.date = :date &quot;)
+&nbsp;    List&lt;Appointment&gt; findAppointmentsByChargerIdAndStatus(@Param(&quot;charger_id&quot;) long chargerId, @Param(&quot;status&quot;)String status, @Param(&quot;date&quot;)LocalDate date);
+&nbsp;    }
+&nbsp; 
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>
