@@ -35,8 +35,8 @@ const year =[
 
 export default HistoryScreen = ({navigation}) => {
 
-  const { isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
-  const { allAppointments } = useContext(UserContext);
+  const { isReady, setIsReady, selectedCar, setSelectedCar, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
+  const { userCars, allAppointments } = useContext(UserContext);
   const [ filteredAppointments, setFilteredAppointments ] = useState([]);
   const [ totalCost, setTotalCost ] = useState(0);
 
@@ -73,7 +73,26 @@ export default HistoryScreen = ({navigation}) => {
 
   useEffect(() => {
     const filterData = () => {
-      if (monthValue !== null && yearValue != null && allAppointments) {
+      if (selectedCar != null && monthValue !== null && yearValue != null && allAppointments){
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          const dateParts = appointment.date.split('-');
+          const monthNo = parseInt(dateParts[1]);
+          const yearNo = parseInt(dateParts[0]);
+
+          return appointment.car.nickname === selectedCar && String(monthNo) ===  monthValue && String(yearNo) === yearValue && appointment.status === 'completed';
+        }), 'date').reverse();
+
+        setFilteredAppointments(filtered);
+      }
+      else if (selectedCar != null && allAppointments){
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+          return appointment.car.nickname === selectedCar && appointment.status === 'completed';
+        }), 'date').reverse();
+
+        setFilteredAppointments(filtered);
+      }
+      else if (monthValue !== null && yearValue != null && allAppointments) {
         const filtered = sortBy(allAppointments.filter((appointment) => {
 
           // appointment.status === "completed";
@@ -95,7 +114,7 @@ export default HistoryScreen = ({navigation}) => {
     };
 
     filterData();
-  }, [monthValue, showAllRecords, allAppointments]);
+  }, [selectedCar, monthValue, showAllRecords, allAppointments]);
 
   useEffect(() => {
     if(filteredAppointments){
@@ -107,21 +126,17 @@ export default HistoryScreen = ({navigation}) => {
     }
   }, [filteredAppointments]);
 
-  // let totalCost = 0; 
-  // if(filteredRecords){
-  // filteredRecords.forEach((appointment) => {
-  //   totalCost += appointment.cost; 
-  // });
-  // }
   
   return (
     <SafeAreaView styles={historyStyles.container}>
       <View>
 
-      {monthValue && yearValue && !showAllRecords && (
-        <MaterialCommunityIcons name="filter-remove-outline" size={32} color="black" marginLeft={345} 
+      {((selectedCar && monthValue && yearValue && !showAllRecords) || (monthValue && yearValue && !showAllRecords) || 
+      (selectedCar && !showAllRecords)) && (
+        <Button
          title='Clear filters'
          onPress={() => {
+          setSelectedCar(null);
           setMonthValue(null); 
           setYearValue('2023');
           setShowAllRecords(true);
@@ -129,6 +144,24 @@ export default HistoryScreen = ({navigation}) => {
          }}
         />
       )}  
+
+         <View style={historyStyles.dropDownContainer}>
+          <Dropdown style={historyStyles.month}
+            data={userCars.map(car => ({ value: car.nickname, label: car.nickname }))}
+            placeholder="Car"
+            placeholderStyle={{color: 'black'}}
+            searchPlaceholder="Select Car"
+            value={selectedCar}
+            labelField="label"
+            valueField="value"
+            onChange={data => {
+              setSelectedCar(data.value);
+              setShowAllRecords(false);
+            }}
+          
+          />
+
+         </View>
 
         <View style={historyStyles.dropDownContainer}>
           <Dropdown style={historyStyles.month}
@@ -188,7 +221,8 @@ export default HistoryScreen = ({navigation}) => {
             <View style={historyStyles.stationNameContainer}>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
               <Text style={historyStyles.address}>{item.station.address}</Text>
-              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)}</Text>
+              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)} - {formatTime(item.endTime)}</Text>
+              <Text style={historyStyles.dateTime}>{item.car.nickname}</Text>
             </View>
             <Text style={historyStyles.cost}>${item.cost.toFixed(2)}</Text>
           </View>
