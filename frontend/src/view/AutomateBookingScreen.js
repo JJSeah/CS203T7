@@ -27,7 +27,7 @@ export default AutomateBookingScreen = ({ navigation }) => {
   }, []);
 
   return userCoordinates === null ? (
-    <GrantLocationScreen />
+    <GrantLocationScreen/>
   ) : userCars.length === 0 || userCards.length === 0? (
     <ReminderScreen/>
   ) : closestStation !== null ? (

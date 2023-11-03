@@ -69,7 +69,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="AutomateBookingScreen"
                         component={AutomateBookingScreen}
-                        // options={{headerShown:false}}
+                        options={{headerShown:false}}
                     />
 
                     <Stack.Screen
@@ -100,14 +100,14 @@ export default AppStack = () => {
 
                         <Stack.Screen name="SelectStationScreen"
                             component={SelectStationScreen}
-                            // options={{headerShown:false}}
+                            options={{headerShown:false}}
                         />
                     </Stack.Group>
         
                     <Stack.Screen
                             name="ManualBookingScreen"
                             component={ManualBookingScreen}
-                            // options={{headerShown:false}}
+                            options={{headerShown:false}}
                     />
         
 

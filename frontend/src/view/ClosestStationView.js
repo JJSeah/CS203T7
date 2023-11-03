@@ -70,27 +70,28 @@ const localStyles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'stretch',
+        backgroundColor: 'black'
     },
     carInfoContainer: {
         flex: 1,
         alignItems: 'center',
-        // backgroundColor: 'red',
+        backgroundColor: 'red',
         justifyContent: 'center'
     },
     stationInfoContainer: {
         flex: 3,
         alignItems: 'center',
-        // backgroundColor: 'blue',
+        backgroundColor: 'blue',
         justifyContent: 'center'
     },
     mapContainer: {
         flex: 4,
-        padding: 20,
+        padding: 30,
     },
     appointmentContainer: {
         flex: 4,
         alignItems: 'center',
-        // backgroundColor: 'green',
+        backgroundColor: 'green',
         justifyContent: 'center'
     },
     map: {
