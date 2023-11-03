@@ -32,7 +32,7 @@ export default SelectStationScreen = ({ navigation }) => {
   } = SelectStationScreenViewController({ navigation }, stations);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#141414"}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#141414" }}>
       <View style={localStyles.topContainer}>
         <View style={localStyles.titleContainer}>
           <View
@@ -54,12 +54,12 @@ export default SelectStationScreen = ({ navigation }) => {
                 alignItems: "center",
                 flexDirection: "row",
                 paddingHorizontal: 10,
-                paddingTop: 10
+                paddingTop: 10,
               }}
             >
               <Text
                 style={{
-                  textDecorationLine: "underline",
+                  // textDecorationLine: "underline",
                   fontSize: 22,
                   color: !selectedStation ? "teal" : "red",
                   fontWeight: "bold",
@@ -67,20 +67,17 @@ export default SelectStationScreen = ({ navigation }) => {
               >
                 {currentCar.nickname}
               </Text>
+
+              <MaterialCommunityIcons
+                name="car-sports"
+                size={25}
+                color={!selectedStation ? "teal" : "red"}
+                padding={10}
+              />
+
               <Text
                 style={{
-                  textDecorationLine: "underline",
-                  fontSize: 22,
-                  color: !selectedStation ? "teal" : "red",
-                  fontWeight: "bold",
-                }}
-              >
-                {" "}
-                |{" "}
-              </Text>
-              <Text
-                style={{
-                  textDecorationLine: "underline",
+                  // textDecorationLine: "underline",
                   fontSize: 22,
                   color: !selectedStation ? "teal" : "red",
                   fontWeight: "bold",

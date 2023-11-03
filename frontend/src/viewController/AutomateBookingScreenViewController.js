@@ -30,6 +30,37 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
   const findClosestStation = async (latitude, longitude) => {
     setClosestStation(null);
     setUpcomingAppointmentDetails(null);
+    
+    // const fakeData = {
+    //   "id": 19,
+    //   "name": "SP Mobility Charging Station",
+    //   "address": "39 Scotts Rd, Singapore",
+    //   "latitude": 1.311988,
+    //   "longitude": 103.8363423,
+    //   "avail": true,
+    //   "chargers": [
+    //       {
+    //           "id": 37,
+    //           "charId": "1",
+    //           "name": "AS1",
+    //           "avail": true,
+    //           "type": "CCS",
+    //           "chargingRate": 30.0
+    //       },
+    //       {
+    //           "id": 38,
+    //           "charId": "2",
+    //           "name": "AS2",
+    //           "avail": true,
+    //           "type": "CCS",
+    //           "chargingRate": 30.0
+    //       }
+    //   ],
+    //   "chargerId": null,
+    //   "chargingRate": 0.0
+    // }
+
+    // setClosestStation(fakeData)
 
     let url = `${BASE_URL}/api/stations/closest`;
 
@@ -58,6 +89,28 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
 
     console.log(stationId);
 
+    // let fakeData = {
+    //     "date": "2023-11-03",
+    //     "timeToArrive": "15",
+    //     "costOfCharging": 0.0,
+    //     "charger": {
+    //         "id": 37,
+    //         "charId": "1",
+    //         "name": "AS1",
+    //         "avail": true,
+    //         "type": "CCS",
+    //         "chargingRate": 30.0
+    //     },
+    //     "distance": "9178",
+    //     "chargerId": 37,
+    //     "startTime": "16:00:00",
+    //     "estimateTimeOfCharging": 0,
+    //     "endTime": "19:00:00",
+    //     "stationId": 19
+    // }
+
+    // setUpcomingAppointmentDetails(fakeData)
+
     axios.post(url,
         {
           latitude: userCoordinates.latitude,
@@ -78,26 +131,6 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
         let stationId = data.stationId;
 
         console.log("charger available is" + chargerId);
-
-        setBookingData({
-          startTime: startTimeString,
-          endTime: endTimeString,
-          date: dateString,
-          station: {
-            id: stationId,
-          },
-          charger: {
-            id: chargerId,
-          },
-          user: {
-            id: userId,
-            // "role": "ROLE_ADMIN"
-          },
-          car: {
-            id: currentCar.id
-          },
-          manualAppointment: false,
-        });
 
         setUpcomingAppointmentDetails(data);
       })

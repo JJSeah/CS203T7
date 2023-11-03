@@ -8,28 +8,38 @@ import AutomateBookingScreenViewController from "../viewController/AutomateBooki
 import ClosestStationView from "./ClosestStationView";
 import GrantLocationScreen from "./GrantLocationScreen";
 import UpcomingAppointmentView from "./UpcomingAppointmentView";
-import ReminderScreen from "./ReminderScreen"
+import ReminderScreen from "./ReminderScreen";
 import MapView, { Marker } from "react-native-maps";
 
 export default AutomateBookingScreen = ({ navigation }) => {
-  const { userCoordinates, closestStation, upcomingAppointmentDetails, userCars, userCards} =
-    useContext(UserContext);
+  const {
+    userCoordinates,
+    closestStation,
+    upcomingAppointmentDetails,
+    userCars,
+    userCards,
+  } = useContext(UserContext);
 
-  const { findClosestStation, confirmButtonPressed } = AutomateBookingScreenViewController({
-    navigation,
-  });
+  const { findClosestStation, confirmButtonPressed } =
+    AutomateBookingScreenViewController({
+      navigation
+    });
 
   useEffect(() => {
-    if (userCoordinates !== null && userCars.length !== 0 && userCards.length !== 0) {
-      console.log("finding closest station")
+    if (
+      userCoordinates !== null &&
+      userCars.length !== 0 &&
+      userCards.length !== 0
+    ) {
+      console.log("finding closest station");
       findClosestStation(userCoordinates.latitude, userCoordinates.longitude);
     }
   }, []);
 
   return userCoordinates === null ? (
-    <GrantLocationScreen/>
-  ) : userCars.length === 0 || userCards.length === 0? (
-    <ReminderScreen/>
+    <GrantLocationScreen />
+  ) : userCars.length === 0 || userCards.length === 0 ? (
+    <ReminderScreen />
   ) : closestStation !== null ? (
     <SafeAreaView style={localStyles.container}>
       <View style={localStyles.infoContainer}>
@@ -54,8 +64,18 @@ export default AutomateBookingScreen = ({ navigation }) => {
       </View>
     </SafeAreaView>
   ) : (
-    <SafeAreaView>
-      <ActivityIndicator />
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "#141414", justifyContent: "center" }}
+    >
+
+      <ActivityIndicator style={{ padding: 50 }} />
+      <View
+        style={{
+          alignItems:"center"
+        }}
+      >
+          <Text style={localStyles.label}>Finding closest station for you...</Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -65,6 +85,7 @@ const localStyles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "stretch",
+    backgroundColor: "#141414",
   },
   infoContainer: {
     flex: 9,
@@ -73,5 +94,10 @@ const localStyles = StyleSheet.create({
   buttonsContainer: {
     flex: 1,
     flexDirection: "row",
+  },
+  label: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

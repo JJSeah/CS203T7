@@ -141,12 +141,14 @@ export default ManualBookingScreen = ({ navigation }) => {
                   </Text>
                 </View>
 
-                <View>
+                <View
+                  style={{paddingEnd: 10}} 
+                >
                   <TouchableOpacity
                   onPress={() => {navigation.pop()}} 
                   >
                     <Text
-                    style={localStyles.label3} 
+                    style={localStyles.label4} 
                     >
                       Return
                     </Text>
@@ -203,11 +205,14 @@ export default ManualBookingScreen = ({ navigation }) => {
                     style={{
                       alignItems: "center",
                       justifyContent: "center",
-                      padding: 10,
+                      paddingHorizontal: 10
                     }}
                   >
                     <Text style={localStyles.label2}>Booking date</Text>
                   </View>
+                  <View
+                    style={{paddingHorizontal: 10, paddingTop: 12}}
+                  >
                   <RNDateTimePicker
                     display="calendar"
                     value={bookingStartTime}
@@ -216,6 +221,7 @@ export default ManualBookingScreen = ({ navigation }) => {
                     maximumDate={maxDate}
                     themeVariant="dark"
                   />
+                  </View>
                 </View>
               </View>
             </View>
@@ -337,6 +343,12 @@ const localStyles = StyleSheet.create({
     fontWeight: "bold",
   },
   label3: {
+    textDecorationLine: "underline",
+    color: "teal",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  label4: {
     color: "teal",
     fontSize: 18,
     fontWeight: "bold",
