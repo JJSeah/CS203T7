@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
+import { Alert } from "react-native"
 import * as SecureStore from "expo-secure-store"
 import axios from "axios";
 import { BASE_URL } from '../constants/Config';
@@ -94,6 +95,11 @@ export const UserProvider = ( { children } ) => {
             setUserId(JSON.stringify(id));
         })
         .catch(e => {
+
+            Alert.alert(
+                "Incorrect email or password",
+                "Please try again"
+            )
             console.log(`Log in error ${e}`)
         })
 

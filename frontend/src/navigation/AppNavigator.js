@@ -24,6 +24,7 @@ import ChargingCarView from '../view/ChargingCarView';
 import HistoryScreen from '../view/HistoryScreen';
 import AddCardScreen from '../view/Settings/Settings Component/AddCardScreen';
 import MakePaymentScreen from '../view/MakePaymentScreen';
+import ReminderScreen from '../view/ReminderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,7 +50,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="RegisterScreen"
                         component={RegisterScreen}
-                        options={{headerShown:false}}
+                        // options={{headerShown:false}}
                     />
 
                 </Stack.Group>) :
@@ -160,6 +161,13 @@ export default AppStack = () => {
                         name="AddCardScreen"
                         component={AddCardScreen}
                     />
+
+                    <Stack.Screen
+                        name="ReminderScreen"
+                        component={ReminderScreen}
+                        options={{headerShown:false}}
+                    />
+
 
                 </Stack.Group>)
             }
