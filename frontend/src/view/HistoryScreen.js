@@ -8,6 +8,7 @@ import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
 import { set, sortBy } from 'lodash';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -159,9 +160,7 @@ export default HistoryScreen = ({navigation}) => {
             onChange={data => {
               setSelectedCar(data.value);
               setShowAllRecords(false);
-            }}
-          
-          />
+            }} />
 
           <Dropdown style={historyStyles.month}
             data={month}
@@ -213,15 +212,20 @@ export default HistoryScreen = ({navigation}) => {
 
 
       <FlatList
+        style={historyStyles.flatListContainer}
         data={filteredAppointments}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({item}) => (
           <View style={historyStyles.recordContainer}>
             <View style={historyStyles.stationNameContainer}>
+              <View style={historyStyles.carContainer}>
+                <Ionicons name="car-sport-outline" size={24} color="black" />
+                <Text style={historyStyles.carNickname}>{item.car.nickname}</Text>
+              </View>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
               <Text style={historyStyles.address}>{item.station.address}</Text>
               <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)} - {formatTime(item.endTime)}</Text>
-              <Text style={historyStyles.dateTime}>{item.car.nickname}</Text>
+              
             </View>
             <Text style={historyStyles.cost}>${item.cost.toFixed(2)}</Text>
           </View>
@@ -234,8 +238,11 @@ export default HistoryScreen = ({navigation}) => {
 
 const historyStyles = StyleSheet.create({
   container:{
-    // flex: 1,
+    flex: 1,
     backgroundColor: "#141414",
+  },
+  flatListContainer:{
+    // flex: 1,
   },
   dropDownContainer:{
     flex: 1, 
@@ -243,7 +250,7 @@ const historyStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center', 
     padding: 16,
-    marginTop: 0,
+    marginTop: 10,
   },
   car: {
     height: 45, 
@@ -277,14 +284,17 @@ const historyStyles = StyleSheet.create({
     marginTop: 10, 
   }, 
   totalCostContainer:{
-    
+    flex: 0, 
+    marginTop: 20,
   },
   recordContainer: {   
+    // flex: 10, 
     borderWidth: 1, 
     borderColor: 'black', 
     borderRadius: 10, 
-    padding: 20, 
-    margin: 8,
+    padding: 16, 
+    margin: 10,
+    marginBottom: 3,
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     alignItems: 'center',
@@ -292,6 +302,15 @@ const historyStyles = StyleSheet.create({
   stationNameContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start', 
+  },
+  carContainer:{
+    flexDirection: 'row', 
+  },
+  carNickname: {
+    fontWeight: 'bold', 
+    fontSize: 18, 
+    fontFamily: 'Product-Sans-Regular', 
+    marginLeft: 12, 
   },
   stationName: {
     fontWeight: 'bold', 
