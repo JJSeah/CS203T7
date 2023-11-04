@@ -347,13 +347,6 @@ public class AppointmentService implements AppointmentServiceInter {
         if(firstApptDate.equals(currentDate) && firstAppointment.getUser().getId() == userId){
             return firstAppointment;
         }
-        // //check if 
-        // else if(firstApptDate == currentDate && firstAppointment.getUser().getId() != user.getId() && currentTime.until(firstApptTime, ChronoUnit.MINUTES) < 15){
-        //         throw new CannotCreateBookingException(firstApptTime);
-        // }
-
-        //else if next appointment has no booking booking in next 30 mins, return canCreatebooking exception, but need to leave
-        //within time to next appointment. 
         else if (firstApptDate.equals(currentDate)&& currentTime.until(firstApptTime, ChronoUnit.MINUTES) >= 20){
             throw new CanCreateBookingException(firstApptTime);
         }
@@ -362,5 +355,7 @@ public class AppointmentService implements AppointmentServiceInter {
             throw new CannotCreateBookingException(firstApptTime);
         }
     }
+
+    
 
 }
