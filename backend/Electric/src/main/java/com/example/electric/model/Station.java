@@ -62,6 +62,9 @@ public class Station {
     public Station(long l, String string, Object object, double d, double e, boolean b, Object object2) {
     }
 
+    public Station(String string) {
+    }
+
     
 
     
