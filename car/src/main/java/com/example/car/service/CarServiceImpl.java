@@ -37,8 +37,9 @@ public class CarServiceImpl implements CarService {
         return carRepository.save(car);
     }
 
-    public void deleteCar(long id) {
+    public ResponseEntity<String> deleteCar(long id) {
         carRepository.deleteById(id);
+        return new ResponseEntity<>("Car has been deleted!", HttpStatus.OK);
     }
 
     public void getCarStatus(long id) {

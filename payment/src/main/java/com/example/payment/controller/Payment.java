@@ -75,8 +75,10 @@ public class Payment {
         status.put("Message","Payment Cancelled.");
 
         PaymentDetails obj = paymentservice.getPaymentByTransactionId(_referenceNo);
-        obj.setPaymentStatus("Cancelled");
-        paymentservice.updatePayment(obj);
+        if (obj != null) {
+            obj.setPaymentStatus("Cancelled");
+            paymentservice.updatePayment(obj);
+        }
 
         return ResponseEntity.ok(status);
     }
@@ -89,9 +91,11 @@ public class Payment {
         status.put("Message","Payment Updated.");
 
         PaymentDetails obj = paymentservice.getPaymentByTransactionId(_referenceNo);
-        System.out.println(obj);
-        obj.setPaymentStatus("Updated");
-        paymentservice.updatePayment(obj);
+
+        if (obj != null) {
+            obj.setPaymentStatus("Updated");
+            paymentservice.updatePayment(obj);
+        }
 
         return ResponseEntity.ok(status);
     }

@@ -132,9 +132,7 @@ public class PaymentDetails {
 		this.paymentType = paymentType;
 	}
 
-//	public void setCardDetails(CardDetails cardDetails) {
-//		this.cardDetails = cardDetails;
-//	}
+
 
 	public void setId(Long id) {
 		this.id = id;
@@ -143,6 +141,5 @@ public class PaymentDetails {
 	public Long getId() {
 		return id;
 	}
-
 
 }
