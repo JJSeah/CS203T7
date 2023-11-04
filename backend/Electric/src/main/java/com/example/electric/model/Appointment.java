@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointment")
@@ -76,6 +77,9 @@ public class Appointment {
 
     public static int getMaxManualapptAllowed() {
         return MAX_MANUALAPPT_ALLOWED;
+    }
+
+    public Appointment(long l) {
     }
 
 
