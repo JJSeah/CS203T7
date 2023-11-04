@@ -24,7 +24,7 @@ export const UserProvider = ( { children } ) => {
     const [ upcomingAppointmentDetails, setUpcomingAppointmentDetails ] = useState(null);
     const [ currentAppointment, setCurrentAppointment ] = useState(null);
 
-    const [ allAppointments, setAllAppointments ] = useState([]);
+    const [ allAppointments, setAllAppointments ] = useState(null);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
     
@@ -46,6 +46,8 @@ export const UserProvider = ( { children } ) => {
     }
 
     const getAllAppointments = async() => {
+        setAllAppointments(null)
+
         let url = `${BASE_URL}/api/appointment/user/${userId}`
 
         axios.get(url)
