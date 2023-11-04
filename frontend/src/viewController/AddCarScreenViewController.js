@@ -10,11 +10,14 @@ export default AddCarScreenViewController = ( { navigation } ) => {
 
     const [ nickname, setNickname ] = useState("")
     const [ model, setModel ] = useState("")
-    const [ chargingRate, setChargingRate ] = useState(100)
+    const [ chargingRate, setChargingRate ] = useState(0)
     const [ batteryPercentage, setBatteryPercentage ] = useState(0)
-    const [ batteryCapacity, setBatteryCapacity ] = useState(100)
+    const [ batteryCapacity, setBatteryCapacity ] = useState(0)
     const [ carPlate, setCarPlate ] = useState("")
     const [ selectedCar, setSelectedCar] = useState(null)
+    const [ carPlateMessage, setCarPlateMessage ] = useState("")
+    const [ validInput, setValidInput ] = useState(false)
+
 
     const clearAllFieldsPressed = () => {
         setNickname("")
@@ -24,6 +27,11 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         setBatteryCapacity(80)
         setCarPlate("")
     }
+
+    const isSingaporeCarPlateNumber = (input) => {
+        const pattern = /^[A-Z]{2,3} \d{1,4}[A-Z]?$/;
+        return pattern.test(input);
+      };
     
     const addCarButtonPressed = () => {
         const newCar = {
@@ -45,18 +53,7 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         setBatteryCapacity(selectedCar.batteryCapacity)
     }
 
-    const picker = () => {
-        return (
-            <Picker>
-              selectedValue={batteryPercentage}
-              onValueChange={(itemValue, itemIndex) => setBatteryPercentage(itemValue)}
-              {[...Array(100).keys()].map((value) => {
-                <Picker.Item key={value} label={value.toString()} value={value}/>
-              })}
-            </Picker>
-        )
-    }
-    
+  
     return {
         nickname,
         setNickname,
@@ -74,7 +71,8 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         clearAllFieldsPressed,
         CarModelsData,
         dropdownSelectListPressed,
-        picker
+        isSingaporeCarPlateNumber,
+        validInput, setValidInput
     };
 
 }
