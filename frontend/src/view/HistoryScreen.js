@@ -9,6 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { set, sortBy } from 'lodash';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -129,15 +130,15 @@ export default HistoryScreen = ({navigation}) => {
 
   
   return (
-    <SafeAreaView styles={historyStyles.container}>
+    <SafeAreaView style={[historyStyles.container, {flex:1}]}>
       <ScrollView></ScrollView>
-      <View>
+      <View styles={historyStyles.container}>
 
-      <View style={historyStyles.filterButton}>
+      <View style={{marginLeft:240}}>
       {((selectedCar && monthValue && yearValue && !showAllRecords) || (monthValue && yearValue && !showAllRecords) || 
       (selectedCar && !showAllRecords)) && (
-        <Button 
-         title='Clear filters'
+        <TouchableOpacity
+        style={historyStyles.filterButton}
          onPress={() => {
           setSelectedCar(null);
           setMonthValue(null); 
@@ -145,14 +146,19 @@ export default HistoryScreen = ({navigation}) => {
           setShowAllRecords(true);
           setFilteredAppointments(allAppointments);
          }}
-        />
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+            <MaterialIcons name="clear" size={20} color="white" />
+            <Text style={historyStyles.filterText}>Clear filters</Text>
+          </View>
+          </TouchableOpacity>
        )}  
     </View>
         <View style={historyStyles.dropDownContainer}>
         <Dropdown style={historyStyles.car}
             data={userCars.map(car => ({ value: car.nickname, label: car.nickname }))}
             placeholder="Car"
-            placeholderStyle={{color: 'grey'}}
+            placeholderStyle={{color: '#D3D3D3'}}
             searchPlaceholder="Select Car"
             value={selectedCar}
             labelField="label"
@@ -160,12 +166,14 @@ export default HistoryScreen = ({navigation}) => {
             onChange={data => {
               setSelectedCar(data.value);
               setShowAllRecords(false);
-            }} />
+            }} 
+            textStyle={historyStyles.dropdownValueText} 
+            />
 
           <Dropdown style={historyStyles.month}
             data={month}
             placeholder="Month"
-            placeholderStyle={{color: 'grey'}}
+            placeholderStyle={{color: '#D3D3D3'}}
             searchPlaceholder="Select Month"
             value={monthValue}
             maxHeight={300}
@@ -179,7 +187,7 @@ export default HistoryScreen = ({navigation}) => {
           <Dropdown style={historyStyles.year}
             data={year}
             placeholder='2023'
-            placeholderStyle={{color: 'grey'}}
+            placeholderStyle={{color: '#D3D3D3'}}
             value={yearValue}
             labelField="label"
             valueField="value"
@@ -206,7 +214,7 @@ export default HistoryScreen = ({navigation}) => {
 
       {(!monthValue || !yearValue || showAllRecords) &&(
       <View style={historyStyles.totalCostContainer}> 
-        <Text style={historyStyles.totalCost}>Total cost: ${totalCost.toFixed(2)}</Text>
+        <Text style={historyStyles.totalCost}>Total cost : ${totalCost.toFixed(2)}</Text>
       </View>
       )}
 
@@ -219,7 +227,7 @@ export default HistoryScreen = ({navigation}) => {
           <View style={historyStyles.recordContainer}>
             <View style={historyStyles.stationNameContainer}>
               <View style={historyStyles.carContainer}>
-                <Ionicons name="car-sport-outline" size={24} color="black" />
+                <Ionicons name="car-sport-outline" size={21} color="white" />
                 <Text style={historyStyles.carNickname}>{item.car.nickname}</Text>
               </View>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
@@ -251,6 +259,9 @@ const historyStyles = StyleSheet.create({
     alignItems: 'center', 
     padding: 16,
     marginTop: 10,
+  },
+  dropdownValueText: {
+    color: 'white',
   },
   car: {
     height: 45, 
@@ -286,14 +297,15 @@ const historyStyles = StyleSheet.create({
   totalCostContainer:{
     flex: 0, 
     marginTop: 20,
+    marginLeft: 240,
   },
   recordContainer: {   
     // flex: 10, 
     borderWidth: 1, 
-    borderColor: 'black', 
+    borderColor: '#D3D3D3', 
     borderRadius: 10, 
     padding: 16, 
-    margin: 10,
+    margin: 15,
     marginBottom: 3,
     flexDirection: 'row', 
     justifyContent: 'space-between', 
@@ -308,43 +320,53 @@ const historyStyles = StyleSheet.create({
   },
   carNickname: {
     fontWeight: 'bold', 
-    fontSize: 18, 
+    fontSize: 16, 
     fontFamily: 'Product-Sans-Regular', 
     marginLeft: 12, 
+    color: 'white',
   },
   stationName: {
     fontWeight: 'bold', 
     fontSize: 20, 
     fontFamily: 'Product-Sans-Regular', 
+    color: 'white',
     // marginBottom: 8,
   },
   address: {
     fontSize: 13, 
-    color: 'gray',
-    fontFamily: 'Product-Sans-Regular'
+    color: '#808080',
+    fontFamily: 'Product-Sans-Regular',
   },
   dateTime: {
     fontSize: 15, 
-    fontFamily: 'Product-Sans-Regular'
+    fontFamily: 'Product-Sans-Regular',
+    color: 'white',
   }, 
   cost: {
     fontSize: 16,
     fontStyle: 'italic', 
-    fontFamily: 'Product-Sans-Regular'
+    fontFamily: 'Product-Sans-Regular',
+    color: 'white',
   }, 
   totalCost: {
     fontSize: 16, 
     fontWeight: 'bold', 
     fontFamily: 'Product-Sans-Regular', 
-    marginHorizontal: 10
+    color: 'white',
+    // marginRight: 30
   }, 
-  filterButton:{
-    // position: 'absolute',
-    // top: 0, 
-    // right: 0, 
-    // borderWidth: 1, 
-    // borderColor: 'black', 
-    // borderRadius: 0.5, 
-    // padding: 5
+  filterButton: {
+    borderRadius: 10, 
+    marginHorizontal: 10, 
+    borderColor: 'white',
+    borderWidth: 0.5,
+    padding: 10,
+  }, 
+  filterText: {
+    fontSize: 15, 
+    color: '#B2D3C2',
+    fontFamily: 'Product-Sans-Regular',
+    fontWeight: 'bold', 
+    marginLeft: 10, 
   }
 })
