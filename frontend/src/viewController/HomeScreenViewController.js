@@ -5,7 +5,7 @@ import {Alert} from "react-native";
 
 export default HomeScreenViewController = ( { navigation } ) => {
     
-    const { allAppointments, setUserCoordinates, currentCar } = useContext(UserContext);
+    const { allAppointments, setUserCoordinates, currentCar, userCards, userCars } = useContext(UserContext);
 
     const addCarButtonPressed = () => {
         console.log("Add car button pressed")
@@ -13,6 +13,13 @@ export default HomeScreenViewController = ( { navigation } ) => {
     } 
 
     const automateBookingButtonPressed = () => {
+
+        if (userCards.length === 0 || userCars.length === 0) {
+          navigation.navigate("ReminderScreen")
+          return;
+        }
+
+
         const automateVerAppt = allAppointments.filter((appt) => {return appt.manualAppointment === false})
         const unfinished = automateVerAppt.filter((appt) => {return (appt.status !== "completed" && appt.status !== "cancelled")})
         if (unfinished.length !== 0) {
@@ -60,6 +67,13 @@ export default HomeScreenViewController = ( { navigation } ) => {
     }
 
     const manualBookingButtonPressed = () => {
+
+
+      if (userCards.length === 0 || userCars.length === 0) {
+        navigation.navigate("ReminderScreen")
+        return;
+      }
+
         const manualVerAppt = allAppointments.filter((appt) => {return appt.manualAppointment === true})
         const unfinished = manualVerAppt.filter((appt) => {return (appt.status !== "completed" && appt.status !== "cancelled")})
         if (unfinished.length === 2) {

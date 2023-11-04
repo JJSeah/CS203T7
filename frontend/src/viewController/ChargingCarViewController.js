@@ -6,6 +6,7 @@ import { BASE_URL } from "../constants/Config";
 
 export default ChargingCarViewController = ({ navigation }) => {
   const { userToken, loadAllAppointments } = useContext(UserContext);
+  const [ isReady, setIsReady ] = useState(false);   
   const [ buttonState, setButtonState ] = useState("STOP");
   const [ chargingCar, setChargingCar ] = useState(null)
   //test
@@ -33,6 +34,8 @@ export default ChargingCarViewController = ({ navigation }) => {
 
 
   return {
+    isReady, 
+    setIsReady,
     buttonState,
     setButtonState,
     checkCarBatteryStatus,

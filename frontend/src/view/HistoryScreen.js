@@ -8,6 +8,8 @@ import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
 import { set, sortBy } from 'lodash';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,8 +37,8 @@ const year =[
 
 export default HistoryScreen = ({navigation}) => {
 
-  const { isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
-  const { allAppointments } = useContext(UserContext);
+  const { isReady, setIsReady, selectedCar, setSelectedCar, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
+  const { userCars, allAppointments } = useContext(UserContext);
   const [ filteredAppointments, setFilteredAppointments ] = useState([]);
   const [ totalCost, setTotalCost ] = useState(0);
 
@@ -73,7 +75,26 @@ export default HistoryScreen = ({navigation}) => {
 
   useEffect(() => {
     const filterData = () => {
-      if (monthValue !== null && yearValue != null && allAppointments) {
+      if (selectedCar != null && monthValue !== null && yearValue != null && allAppointments){
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          const dateParts = appointment.date.split('-');
+          const monthNo = parseInt(dateParts[1]);
+          const yearNo = parseInt(dateParts[0]);
+
+          return appointment.car.nickname === selectedCar && String(monthNo) ===  monthValue && String(yearNo) === yearValue && appointment.status === 'completed';
+        }), 'date').reverse();
+
+        setFilteredAppointments(filtered);
+      }
+      else if (selectedCar != null && allAppointments){
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+          return appointment.car.nickname === selectedCar && appointment.status === 'completed';
+        }), 'date').reverse();
+
+        setFilteredAppointments(filtered);
+      }
+      else if (monthValue !== null && yearValue != null && allAppointments) {
         const filtered = sortBy(allAppointments.filter((appointment) => {
 
           // appointment.status === "completed";
@@ -95,7 +116,7 @@ export default HistoryScreen = ({navigation}) => {
     };
 
     filterData();
-  }, [monthValue, showAllRecords, allAppointments]);
+  }, [selectedCar, monthValue, showAllRecords, allAppointments]);
 
   useEffect(() => {
     if(filteredAppointments){
@@ -107,34 +128,52 @@ export default HistoryScreen = ({navigation}) => {
     }
   }, [filteredAppointments]);
 
-  // let totalCost = 0; 
-  // if(filteredRecords){
-  // filteredRecords.forEach((appointment) => {
-  //   totalCost += appointment.cost; 
-  // });
-  // }
   
   return (
-    <SafeAreaView styles={historyStyles.container}>
-      <View>
+    <SafeAreaView style={[historyStyles.container, {flex:1}]}>
+      <ScrollView></ScrollView>
+      <View styles={historyStyles.container}>
 
-      {monthValue && yearValue && !showAllRecords && (
-        <MaterialCommunityIcons name="filter-remove-outline" size={32} color="black" marginLeft={345} 
-         title='Clear filters'
+      <View style={{marginLeft:240}}>
+      {((selectedCar && monthValue && yearValue && !showAllRecords) || (monthValue && yearValue && !showAllRecords) || 
+      (selectedCar && !showAllRecords)) && (
+        <TouchableOpacity
+        style={historyStyles.filterButton}
          onPress={() => {
+          setSelectedCar(null);
           setMonthValue(null); 
           setYearValue('2023');
           setShowAllRecords(true);
           setFilteredAppointments(allAppointments);
          }}
-        />
-      )}  
-
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+            <MaterialIcons name="clear" size={20} color="white" />
+            <Text style={historyStyles.filterText}>Clear filters</Text>
+          </View>
+          </TouchableOpacity>
+       )}  
+    </View>
         <View style={historyStyles.dropDownContainer}>
+        <Dropdown style={historyStyles.car}
+            data={userCars.map(car => ({ value: car.nickname, label: car.nickname }))}
+            placeholder="Car"
+            placeholderStyle={{color: '#D3D3D3'}}
+            searchPlaceholder="Select Car"
+            value={selectedCar}
+            labelField="label"
+            valueField="value"
+            onChange={data => {
+              setSelectedCar(data.value);
+              setShowAllRecords(false);
+            }} 
+            textStyle={historyStyles.dropdownValueText} 
+            />
+
           <Dropdown style={historyStyles.month}
             data={month}
             placeholder="Month"
-            placeholderStyle={{color: 'black'}}
+            placeholderStyle={{color: '#D3D3D3'}}
             searchPlaceholder="Select Month"
             value={monthValue}
             maxHeight={300}
@@ -148,7 +187,7 @@ export default HistoryScreen = ({navigation}) => {
           <Dropdown style={historyStyles.year}
             data={year}
             placeholder='2023'
-            placeholderStyle={{color: 'black'}}
+            placeholderStyle={{color: '#D3D3D3'}}
             value={yearValue}
             labelField="label"
             valueField="value"
@@ -166,7 +205,7 @@ export default HistoryScreen = ({navigation}) => {
       )}
 
       {monthValue && yearValue && filteredAppointments.length > 0 && (
-        <View>
+        <View style={historyStyles.totalCostContainer}>
           <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
                 {year.find((y) => y.label === yearValue)?.label}: ${totalCost.toFixed(2)}
           </Text>
@@ -174,21 +213,27 @@ export default HistoryScreen = ({navigation}) => {
       )}
 
       {(!monthValue || !yearValue || showAllRecords) &&(
-      <View> 
-        <Text style={historyStyles.totalCost}>Total cost: ${totalCost.toFixed(2)}</Text>
+      <View style={historyStyles.totalCostContainer}> 
+        <Text style={historyStyles.totalCost}>Total cost : ${totalCost.toFixed(2)}</Text>
       </View>
       )}
 
 
       <FlatList
+        style={historyStyles.flatListContainer}
         data={filteredAppointments}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({item}) => (
           <View style={historyStyles.recordContainer}>
             <View style={historyStyles.stationNameContainer}>
+              <View style={historyStyles.carContainer}>
+                <Ionicons name="car-sport-outline" size={21} color="white" />
+                <Text style={historyStyles.carNickname}>{item.car.nickname}</Text>
+              </View>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
               <Text style={historyStyles.address}>{item.station.address}</Text>
-              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)}</Text>
+              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)} - {formatTime(item.endTime)}</Text>
+              
             </View>
             <Text style={historyStyles.cost}>${item.cost.toFixed(2)}</Text>
           </View>
@@ -204,22 +249,39 @@ const historyStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#141414",
   },
+  flatListContainer:{
+    // flex: 1,
+  },
   dropDownContainer:{
+    flex: 1, 
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', 
     padding: 16,
-    marginTop: 0,
+    marginTop: 10,
   },
-  month: {
-    // flex: 1,
+  dropdownValueText: {
+    color: 'white',
+  },
+  car: {
     height: 45, 
     width: 135, 
     borderColor: 'gray', 
     borderWidth: 0.5, 
     borderRadius: 5, 
     paddingHorizontal: 15,
-    marginLeft: 130,
+    marginLeft: 0,
+    marginTop: 10, 
+  },
+  month: {
+    // flex: 1,
+    height: 45, 
+    width: 120, 
+    borderColor: 'gray', 
+    borderWidth: 0.5, 
+    borderRadius: 5, 
+    paddingHorizontal: 15,
+    marginLeft: 10,
     marginTop: 10,  
   }, 
   year:{
@@ -232,12 +294,19 @@ const historyStyles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10, 
   }, 
-  recordContainer: {
+  totalCostContainer:{
+    flex: 0, 
+    marginTop: 20,
+    marginLeft: 240,
+  },
+  recordContainer: {   
+    // flex: 10, 
     borderWidth: 1, 
-    borderColor: 'black', 
+    borderColor: '#D3D3D3', 
     borderRadius: 10, 
-    padding: 20, 
-    margin: 8,
+    padding: 16, 
+    margin: 15,
+    marginBottom: 3,
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     alignItems: 'center',
@@ -245,32 +314,59 @@ const historyStyles = StyleSheet.create({
   stationNameContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start', 
-    flex: 1,
+  },
+  carContainer:{
+    flexDirection: 'row', 
+  },
+  carNickname: {
+    fontWeight: 'bold', 
+    fontSize: 16, 
+    fontFamily: 'Product-Sans-Regular', 
+    marginLeft: 12, 
+    color: 'white',
   },
   stationName: {
     fontWeight: 'bold', 
     fontSize: 20, 
     fontFamily: 'Product-Sans-Regular', 
+    color: 'white',
     // marginBottom: 8,
   },
   address: {
     fontSize: 13, 
-    color: 'gray',
-    fontFamily: 'Product-Sans-Regular'
+    color: '#808080',
+    fontFamily: 'Product-Sans-Regular',
   },
   dateTime: {
     fontSize: 15, 
-    fontFamily: 'Product-Sans-Regular'
+    fontFamily: 'Product-Sans-Regular',
+    color: 'white',
   }, 
   cost: {
     fontSize: 16,
     fontStyle: 'italic', 
-    fontFamily: 'Product-Sans-Regular'
+    fontFamily: 'Product-Sans-Regular',
+    color: 'white',
   }, 
   totalCost: {
     fontSize: 16, 
     fontWeight: 'bold', 
     fontFamily: 'Product-Sans-Regular', 
-    marginHorizontal: 10
+    color: 'white',
+    // marginRight: 30
+  }, 
+  filterButton: {
+    borderRadius: 10, 
+    marginHorizontal: 10, 
+    borderColor: 'white',
+    borderWidth: 0.5,
+    padding: 10,
+  }, 
+  filterText: {
+    fontSize: 15, 
+    color: '#B2D3C2',
+    fontFamily: 'Product-Sans-Regular',
+    fontWeight: 'bold', 
+    marginLeft: 10, 
   }
 })

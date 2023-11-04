@@ -6,6 +6,7 @@ import {
   Dimensions,
   Button,
   ActivityIndicator,
+  TouchableOpacity
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Circle, Text as SvgText } from "react-native-svg";
@@ -19,13 +20,19 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import { ReText } from "react-native-redash";
+import { styles } from "../components/Design"; 
 import ChargingCarViewController from "../viewController/ChargingCarViewController";
 import { useRoute } from "@react-navigation/native";
 import { useIsFocused } from "@react-navigation/native";
 import { CarRepository } from "../model/CarRepository";
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+import { Ionicons } from '@expo/vector-icons';
 
-const backgroundStrokeColor = "black";
-const strokeColor = "white";
+SplashScreen.preventAutoHideAsync();
+
+const backgroundStrokeColor = "white";
+const strokeColor = "#B2D3C2";
 
 const { width, height } = Dimensions.get("window");
 const circleLength = 1000;
@@ -41,6 +48,8 @@ export default ChargingCarView = ({ navigation }) => {
   const { loadCarsData } = CarRepository();
 
   const {
+    isReady, 
+    setIsReady, 
     checkCarBatteryStatus,
     completeChargingButtonPressed,
     buttonState,
@@ -51,6 +60,15 @@ export default ChargingCarView = ({ navigation }) => {
 
   const batteryPercentage = chargingCar?.batteryPercentage || 0;
   const progress = useSharedValue(0);
+
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+    loadFonts(); 
+  }, []);
 
   useEffect(() => {
 
@@ -92,30 +110,29 @@ export default ChargingCarView = ({ navigation }) => {
   });
 
   return (
-    <SafeAreaView style={chargingStyles.container}>
+    <SafeAreaView style={[chargingStyles.container, {flex:1}]}>
       {chargingCar === null ? (
         <View
         >
           <ActivityIndicator />
-          <Text>Loading charging car</Text>
+          <Text style={chargingStyles.loadingText}>Loading charging car</Text>
         </View>
       ) : (
         <View style={{ flex: 1}}>
-          <View>
-            <Text>The car that is charging is</Text>
-            <Text>{chargingCar.nickname}</Text>
-            <Text>The battery percentage is</Text>
-            <Text>{chargingCar.batteryPercentage}%</Text>
+          <View style={{flexDirection: 'row', marginHorizontal: 100}}>
+            <Ionicons name="car-sport-outline" size={40} color="white" />
+            <Text style={chargingStyles.carNickname}>{chargingCar.nickname}</Text>
           </View>
 
-          <View style={{ flex: 2 }}>
+          <View style={{ flex: 1 }}>
             <Svg>
               <Circle
                 cx={width / 2}
                 cy={height / 4}
                 r={radius}
                 stroke={backgroundStrokeColor}
-                strokeWidth={30}
+                strokeWidth={45}
+
               />
 
               <AnimatedCircle
@@ -123,36 +140,45 @@ export default ChargingCarView = ({ navigation }) => {
                 cy={height / 4}
                 r={radius}
                 stroke={strokeColor}
-                strokeWidth={15}
+                strokeWidth={45}
                 strokeDasharray={circleLength}
                 animatedProps={animatedProps}
-                strokeLinecap={"round"}
+                // strokeLinecap={"round"}
               />
+
+              <Circle
+                  cx={width / 2}
+                  cy={height / 4}
+                  r={radius} 
+                  fill="#141414" 
+                />
 
               <SvgText
                 x={width / 2}
                 y={height / 4}
                 textAnchor="middle"
-                fontSize={20}
+                fontSize={17}
                 fill="white"
               >
                 <ReText
-                  style={chargingStyles.progressText}
+                  style={[chargingStyles.progressText, { fontFamily: 'Product-Sans-Regular' }]}
+
                   text={progressText}
                 />
               </SvgText>
             </Svg>
           </View>
 
-          <View style={{ flex: 1 }}>
+          <View style={{ borderWidth: 2, borderColor: 'red', borderRadius: 50, marginHorizontal:120 }}>
             <Button
               title={buttonState}
               onPress={() => {
-                completeChargingButtonPressed(appt)
+                completeChargingButtonPressed(appt);
               }}
-              color={buttonState === "STOP" ? "red" : "green"}
+              color={buttonState === 'STOP' ? 'red' : 'green'}
             />
           </View>
+
         </View>
       )}
     </SafeAreaView>
@@ -162,8 +188,20 @@ export default ChargingCarView = ({ navigation }) => {
 const chargingStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#141414",
     // alignItems: 'center',
     // justifyContent: 'center',
+  },
+  loadingText:{
+    fontSize: 16, 
+    color: 'grey',
+    fontFamily: 'Product-Sans-Regular'
+  },
+  carNickname: {
+    color: 'white', 
+    fontSize: 30, 
+    fontFamily: 'Product-Sans-Regular', 
+    marginLeft: 10,
   },
   progressText: {
     fontSize: 70,

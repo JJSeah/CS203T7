@@ -11,6 +11,7 @@ import { UserContext } from "../model/User";
 // import { styles } from '../components/Design';
 import { BarCodeScanner } from "expo-barcode-scanner";
 import UpcomingAppointmentViewController from "../viewController/UpcomingAppointmentViewController";
+import CustomLongButton from "../components/CustomLongButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { BASE_URL } from "../constants/Config";
@@ -18,9 +19,10 @@ import { useRoute } from "@react-navigation/native";
 
 export default UpcomingAppointmentView = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
-  const { scanQrCodeCorrectCharger, scanQrCodeIncorrectCharger } = UpcomingAppointmentViewController({
-    navigation,
-  });
+  const { scanQrCodeCorrectCharger, scanQrCodeIncorrectCharger } =
+    UpcomingAppointmentViewController({
+      navigation,
+    });
   const route = useRoute();
   const appt = route.params;
 
@@ -35,9 +37,8 @@ export default UpcomingAppointmentView = ({ navigation }) => {
     askForCameraPermission();
   }, []);
 
-
   if (hasPermission === null) {
-    return <View/>;
+    return <View />;
   }
 
   if (hasPermission === false) {
@@ -54,28 +55,54 @@ export default UpcomingAppointmentView = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>{appt.id}</Text>
-      <Text style={styles.text}>Scan the barcode to start charging.</Text>
-      <View style={styles.cameraContainer}>
-        <BarCodeScanner
-          onBarCodeScanned={()=>{}}
-          style={styles.camera}
-        />
+      <View
+        style={{
+          flex: 2,
+          // backgroundColor: "red",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{justifyContent: "center", alignItems: "center"}} 
+        >
+          <View>
+          <Text style={styles.text}>Go to charger {appt.charger.id}</Text>
+          </View>
+          <Text style={styles.text}>Scan the barcode to start charging</Text>
+        </View>
+        <View style={styles.cameraContainer}>
+          <BarCodeScanner onBarCodeScanned={() => {}} style={styles.camera} />
+        </View>
       </View>
 
-      <Button
-        title="Scan QR Code (Correct charger)"
-        onPress={() => {
-          scanQrCodeCorrectCharger(appt)
+      <View
+        style={{
+          flex: 1,
+          paddingBottom: 20,
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
         }}
-      />
+      >
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <CustomLongButton
+            title="Scan (Correct charger)"
+            onPress={() => {
+              scanQrCodeCorrectCharger(appt);
+            }}
+          />
+        </View>
 
-      <Button
-        title="Scan QR Code (Incorrect charger)"
-        onPress={() => {
-          scanQrCodeIncorrectCharger(appt)
-        }}
-      />
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <CustomLongButton
+            title="Scan (Incorrect charger)"
+            onPress={() => {
+              scanQrCodeIncorrectCharger(appt);
+            }}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -85,10 +112,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#141414",
   },
   text: {
     fontSize: 14,
     marginBottom: 20,
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
   cameraContainer: {
     width: "80%",
@@ -96,7 +127,6 @@ const styles = StyleSheet.create({
     height: 300,
     overflow: "hidden",
     borderRadius: 10,
-    marginBottom: 40,
   },
   camera: {
     flex: 1,
@@ -108,6 +138,5 @@ const styles = StyleSheet.create({
   qrCode: {
     width: 350,
     height: 350,
-    marginBottom: 20,
   },
 });

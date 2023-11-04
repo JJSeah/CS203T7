@@ -22,81 +22,105 @@ export default AddCarScreen = ({ navigation }) => {
     addCarButtonPressed,
     setBatteryPercentage,
     setCarPlate,
-    clearAllFieldsPressed,
-    picker
+    isSingaporeCarPlateNumber,
+    setValidInput,
+    validInput
   } = AddCarScreenViewController({ navigation });
 
 
   useEffect(() => {
 
-  }, [carPlate])
+    if (isSingaporeCarPlateNumber(carPlate) && model !== "" && nickname !== "") {
+      setValidInput(true)
+      return;
+    }
+
+    setValidInput(false)
+  }, [carPlate, model, nickname]);
 
   return (
     <SafeAreaView style={localStyles.container}>
       <View style={localStyles.topContainer}>
         <View>
-          <View>
+          <View
+          style={{padding: 10}} 
+          >
             <CustomDropDownList
               setSelected={(model) => {
                 dropdownSelectListPressed(model);
               }}
               data={CarModelsData.map((car) => car.model)}
-              placeholder="Select car"
+              placeholder="Select car model"
               searchPlaceholder="Name of model"
             />
           </View>
 
           <View style={{ margin: 20 }}>
-            <Text style={styles.bodyText}>Car Model {model}</Text>
-
             <Text style={styles.bodyText}>
-              Charging rate (kw) = {chargingRate}
+              Car Model {model === "" ? "" : `= ${model}`}
+            </Text>
+            <Text style={styles.bodyText}>
+              Charging rate {chargingRate === 0 ? "" : `= ${chargingRate} kW`}
             </Text>
 
             <Text style={styles.bodyText}>
-              Battery capacity (kWh) = {batteryCapacity}
+              Battery capacity{" "}
+              {batteryCapacity === 0 ? "" : `= ${batteryCapacity} kW/h`}
             </Text>
           </View>
 
           <View>
-            <CustomTextField
-              placeholder="Nickname"
-              onChangeText={setNickname}
-            />
-
-            <CustomTextField
-              placeholder="Car Plate"
-              onChangeText={setCarPlate}
-            />
-
-            <Text 
-            style={{color: "white"}}>
-              Battery percentage: {batteryPercentage}
-            </Text>
-
-            <Picker
-              selectedValue={batteryPercentage}
-              onValueChange={(itemValue, itemIndex) => setBatteryPercentage(itemValue)}
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              {[...Array(100).keys()].map((value) => (
-                <Picker.Item 
-                key={value} 
-                color="white" 
-                label={value.toString()} 
-                value={value}/>
-              ))}
-            </Picker>
+              <CustomTextField
+                placeholder="Nickname"
+                onChangeText={setNickname}
+              />
 
+              <CustomTextField
+                placeholder="Car Plate"
+                onChangeText={setCarPlate}
+              />
+            </View>
+
+            <View>
+              <View style={{ margin: 20 }}>
+                <Text style={styles.bodyText}>
+                  Battery percentage = {batteryPercentage}%
+                </Text>
+              </View>
+
+              <View>
+                <Picker
+                  selectedValue={batteryPercentage}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setBatteryPercentage(itemValue)
+                  }
+                >
+                  {[...Array(100).keys()].map((value) => (
+                    <Picker.Item
+                      key={value}
+                      color="white"
+                      label={value.toString()}
+                      value={value}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            </View>
           </View>
         </View>
       </View>
 
       <View style={localStyles.buttonsContainer}>
-        <CustomLongButton title="Add car" onPress={addCarButtonPressed} disabled={
-          model === "" ||
-          nickname === "" ||
-          carPlate === ""
-          }
+        <CustomLongButton
+          title="Add car"
+          onPress={addCarButtonPressed}
+          disabled={!validInput}
         />
       </View>
     </SafeAreaView>
@@ -123,7 +147,7 @@ const localStyles = StyleSheet.create({
     flex: 1,
     alignItems: "stretch",
     // margin: 10,
-    backgroundColor: "black",
+    backgroundColor: "#141414",
   },
   topContainer: {
     flex: 9,
