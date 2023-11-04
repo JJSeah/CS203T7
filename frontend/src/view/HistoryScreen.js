@@ -8,6 +8,7 @@ import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
 import { set, sortBy } from 'lodash';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -129,11 +130,13 @@ export default HistoryScreen = ({navigation}) => {
   
   return (
     <SafeAreaView styles={historyStyles.container}>
+      <ScrollView></ScrollView>
       <View>
 
+      <View style={historyStyles.filterButton}>
       {((selectedCar && monthValue && yearValue && !showAllRecords) || (monthValue && yearValue && !showAllRecords) || 
       (selectedCar && !showAllRecords)) && (
-        <Button
+        <Button 
          title='Clear filters'
          onPress={() => {
           setSelectedCar(null);
@@ -143,13 +146,13 @@ export default HistoryScreen = ({navigation}) => {
           setFilteredAppointments(allAppointments);
          }}
         />
-      )}  
-
-         <View style={historyStyles.dropDownContainer}>
-          <Dropdown style={historyStyles.month}
+       )}  
+    </View>
+        <View style={historyStyles.dropDownContainer}>
+        <Dropdown style={historyStyles.car}
             data={userCars.map(car => ({ value: car.nickname, label: car.nickname }))}
             placeholder="Car"
-            placeholderStyle={{color: 'black'}}
+            placeholderStyle={{color: 'grey'}}
             searchPlaceholder="Select Car"
             value={selectedCar}
             labelField="label"
@@ -157,17 +160,12 @@ export default HistoryScreen = ({navigation}) => {
             onChange={data => {
               setSelectedCar(data.value);
               setShowAllRecords(false);
-            }}
-          
-          />
+            }} />
 
-         </View>
-
-        <View style={historyStyles.dropDownContainer}>
           <Dropdown style={historyStyles.month}
             data={month}
             placeholder="Month"
-            placeholderStyle={{color: 'black'}}
+            placeholderStyle={{color: 'grey'}}
             searchPlaceholder="Select Month"
             value={monthValue}
             maxHeight={300}
@@ -181,7 +179,7 @@ export default HistoryScreen = ({navigation}) => {
           <Dropdown style={historyStyles.year}
             data={year}
             placeholder='2023'
-            placeholderStyle={{color: 'black'}}
+            placeholderStyle={{color: 'grey'}}
             value={yearValue}
             labelField="label"
             valueField="value"
@@ -199,7 +197,7 @@ export default HistoryScreen = ({navigation}) => {
       )}
 
       {monthValue && yearValue && filteredAppointments.length > 0 && (
-        <View>
+        <View style={historyStyles.totalCostContainer}>
           <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
                 {year.find((y) => y.label === yearValue)?.label}: ${totalCost.toFixed(2)}
           </Text>
@@ -207,22 +205,27 @@ export default HistoryScreen = ({navigation}) => {
       )}
 
       {(!monthValue || !yearValue || showAllRecords) &&(
-      <View> 
+      <View style={historyStyles.totalCostContainer}> 
         <Text style={historyStyles.totalCost}>Total cost: ${totalCost.toFixed(2)}</Text>
       </View>
       )}
 
 
       <FlatList
+        style={historyStyles.flatListContainer}
         data={filteredAppointments}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({item}) => (
           <View style={historyStyles.recordContainer}>
             <View style={historyStyles.stationNameContainer}>
+              <View style={historyStyles.carContainer}>
+                <Ionicons name="car-sport-outline" size={24} color="black" />
+                <Text style={historyStyles.carNickname}>{item.car.nickname}</Text>
+              </View>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
               <Text style={historyStyles.address}>{item.station.address}</Text>
               <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)} - {formatTime(item.endTime)}</Text>
-              <Text style={historyStyles.dateTime}>{item.car.nickname}</Text>
+              
             </View>
             <Text style={historyStyles.cost}>${item.cost.toFixed(2)}</Text>
           </View>
@@ -238,22 +241,36 @@ const historyStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#141414",
   },
+  flatListContainer:{
+    // flex: 1,
+  },
   dropDownContainer:{
+    flex: 1, 
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', 
     padding: 16,
-    marginTop: 0,
+    marginTop: 10,
   },
-  month: {
-    // flex: 1,
+  car: {
     height: 45, 
     width: 135, 
     borderColor: 'gray', 
     borderWidth: 0.5, 
     borderRadius: 5, 
     paddingHorizontal: 15,
-    marginLeft: 130,
+    marginLeft: 0,
+    marginTop: 10, 
+  },
+  month: {
+    // flex: 1,
+    height: 45, 
+    width: 120, 
+    borderColor: 'gray', 
+    borderWidth: 0.5, 
+    borderRadius: 5, 
+    paddingHorizontal: 15,
+    marginLeft: 10,
     marginTop: 10,  
   }, 
   year:{
@@ -266,12 +283,18 @@ const historyStyles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10, 
   }, 
-  recordContainer: {
+  totalCostContainer:{
+    flex: 0, 
+    marginTop: 20,
+  },
+  recordContainer: {   
+    // flex: 10, 
     borderWidth: 1, 
     borderColor: 'black', 
     borderRadius: 10, 
-    padding: 20, 
-    margin: 8,
+    padding: 16, 
+    margin: 10,
+    marginBottom: 3,
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     alignItems: 'center',
@@ -279,7 +302,15 @@ const historyStyles = StyleSheet.create({
   stationNameContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start', 
-    flex: 1,
+  },
+  carContainer:{
+    flexDirection: 'row', 
+  },
+  carNickname: {
+    fontWeight: 'bold', 
+    fontSize: 18, 
+    fontFamily: 'Product-Sans-Regular', 
+    marginLeft: 12, 
   },
   stationName: {
     fontWeight: 'bold', 
@@ -306,5 +337,14 @@ const historyStyles = StyleSheet.create({
     fontWeight: 'bold', 
     fontFamily: 'Product-Sans-Regular', 
     marginHorizontal: 10
+  }, 
+  filterButton:{
+    // position: 'absolute',
+    // top: 0, 
+    // right: 0, 
+    // borderWidth: 1, 
+    // borderColor: 'black', 
+    // borderRadius: 0.5, 
+    // padding: 5
   }
 })
