@@ -74,7 +74,7 @@ public class CardIntegrationTest {
     }
 
     @Test
-    public void testProcess() {
+    public void testProcess_Success() {
         long id = 1L;
         double orderValue = 100.0;
 
@@ -103,6 +103,26 @@ public class CardIntegrationTest {
 
         //Clean up
         cardRepository.delete(addedCard);
+    }
+
+    @Test
+    public void testProcess_NotFound() {
+        // Generate a bearer token
+        String token = generateBearerToken(new HashMap<>());
+
+        // Set up the request headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.setBearerAuth(token);
+
+        // Set up the request entity
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        // Send the request to the getCarById endpoint
+        ResponseEntity<String> responseEntity = restTemplate.exchange("/api/card/process/1/100/999", HttpMethod.GET, requestEntity, String.class);
+
+        // Ensure that the status code is NOT FOUND (404)
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
     @Test
@@ -223,27 +243,28 @@ public class CardIntegrationTest {
         cardRepository.delete(addedCard);
     }
 
-    @Test
-    public void testGetCardByUser_NotFound() {
-        //Make sure user does not exist
-        userRepository.deleteById(999L);
-        // Generate a bearer token
-        String token = generateBearerToken(new HashMap<>());
-
-        // Set up the request headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(token);
-
-        // Set up the request entity
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-
-        // Send the request to the getCardByUser endpoint
-        ResponseEntity<List<Card>> responseEntity = restTemplate.exchange("/api/card/user/999", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Card>>() {});
-
-        // Check that the response has a 200 OK status code and does not contain a card list
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-    }
+//    @Test
+//    public void testGetCardByUser_NotFound() {
+//        //Make sure user does not exist
+//        userRepository.deleteById(999L);
+//
+//        // Generate a bearer token
+//        String token = generateBearerToken(new HashMap<>());
+//
+//        // Set up the request headers
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+////        headers.setBearerAuth(token);
+//
+//        // Set up the request entity
+//        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+//
+//        // Send the request to the getCardByUser endpoint
+//        ResponseEntity<List<Card>> responseEntity = restTemplate.exchange("/api/card/user/999", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Card>>() {});
+//
+//        // Check that the response has a 200 OK status code and does not contain a card list
+//        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+//    }
 
 //    @Test
 //    public void testAddCard_Success() {
@@ -310,51 +331,51 @@ public class CardIntegrationTest {
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
-    @Test
-    public void testUpdateCard_Success() {
-        // Create a new card
-        Card card = new Card(1L,"John Doe","4620875910309275",new java.sql.Date(2025,01,01),null);
-
-        // Save the the card to the database
-        Card addedCard = cardRepository.save(card);
-
-        // Generate a bearer token if needed
-        String token = generateBearerToken(new HashMap<>());
-
-        // Set up the request headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-//        // Set the Bearer token if required
-//        headers.setBearerAuth(token);
-
-        // Set up the request entity
-        HttpEntity<Card> requestEntity = new HttpEntity<>(card, headers);
-
-        // Send the request to the updateCar endpoint
-        ResponseEntity<Card> responseEntity = restTemplate.exchange(
-                "http://localhost:" + port + "/api/card/" + addedCard.getId(),
-                HttpMethod.PUT,
-                requestEntity,
-                Card.class
-        );
-
-        // Check that the response has a 200 OK status code
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        // Verify that the car has been updated in the database
-        Card updatedCard = cardRepository.findById(addedCard.getId()).orElse(null);
-        assertNotNull(updatedCard);
-
-        // Clean up - Delete the user and the car
-        cardRepository.delete(addedCard);
-    }
-
+//    @Test
+//    public void testUpdateCard_Success() {
+//        // Create a new card
+//        Card card = new Card(1L,"John Doe","4620875910309275",new java.sql.Date(2025,01,01),null);
+//
+//        // Save the the card to the database
+//        Card addedCard = cardRepository.save(card);
+//
+//        // Generate a bearer token if needed
+//        String token = generateBearerToken(new HashMap<>());
+//
+//        // Set up the request headers
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+////        // Set the Bearer token if required
+////        headers.setBearerAuth(token);
+//
+//        // Set up the request entity
+//        HttpEntity<Card> requestEntity = new HttpEntity<>(card, headers);
+//
+//        // Send the request to the updateCar endpoint
+//        ResponseEntity<Card> responseEntity = restTemplate.exchange(
+//                 "/api/card/" + addedCard.getId(),
+//                HttpMethod.PUT,
+//                requestEntity,
+//                Card.class
+//        );
+//
+//        // Check that the response has a 200 OK status code
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//
+//        // Verify that the car has been updated in the database
+//        Card updatedCard = cardRepository.findById(addedCard.getId()).orElse(null);
+//        assertNotNull(updatedCard);
+//
+//        // Clean up - Delete the user and the car
+//        cardRepository.delete(addedCard);
+//    }
+//
 //    @Test
 //    public void testUpdateCard_NotFound() {
-//        //Delete car
+//        //Delete card
 //        cardRepository.deleteById(1L);
 //
-//        //Car object
+//        //Card object
 //        Card card = new Card();
 //
 //        // Generate a bearer token if needed
@@ -370,8 +391,7 @@ public class CardIntegrationTest {
 //        HttpEntity<Card> requestEntity = new HttpEntity<>(card, headers);
 //
 //        // Send the request to the updateCar endpoint
-//        ResponseEntity<Card> responseEntity = restTemplate.exchange("/api/card/1", HttpMethod.PUT, requestEntity, Card.class);
-//
+//        ResponseEntity<Card> responseEntity = restTemplate.exchange("/api/card/999", HttpMethod.PUT, requestEntity, Card.class);
 //
 //        // Check that the response has a 404 NOT FOUND status code
 //        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());

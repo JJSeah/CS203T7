@@ -39,7 +39,7 @@ public class CardController {
      */
     @GetMapping("/process/{id}/{orderValue}/{cardId}")
     public String process(@PathVariable("id") long id, @PathVariable("orderValue") double orderValue, @PathVariable("cardId") long cardId) {
-        if (!cardService.getCardById(id).isPresent()) {
+        if (!cardService.getCardById(cardId).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         return cardService.processPayment(id,orderValue,cardId);
