@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
+import { Alert } from "react-native"
 import * as SecureStore from "expo-secure-store"
 import axios from "axios";
 import { BASE_URL } from '../constants/Config';
@@ -24,7 +25,7 @@ export const UserProvider = ( { children } ) => {
     const [ upcomingAppointmentDetails, setUpcomingAppointmentDetails ] = useState(null);
     const [ currentAppointment, setCurrentAppointment ] = useState(null);
 
-    const [ allAppointments, setAllAppointments ] = useState([]);
+    const [ allAppointments, setAllAppointments ] = useState(null);
     
     const [ isSuccessful, setIsSuccessful ] = useState(false);
     
@@ -46,6 +47,8 @@ export const UserProvider = ( { children } ) => {
     }
 
     const getAllAppointments = async() => {
+        setAllAppointments(null)
+
         let url = `${BASE_URL}/api/appointment/user/${userId}`
 
         axios.get(url)
@@ -92,6 +95,11 @@ export const UserProvider = ( { children } ) => {
             setUserId(JSON.stringify(id));
         })
         .catch(e => {
+
+            Alert.alert(
+                "Incorrect email or password",
+                "Please try again"
+            )
             console.log(`Log in error ${e}`)
         })
 
