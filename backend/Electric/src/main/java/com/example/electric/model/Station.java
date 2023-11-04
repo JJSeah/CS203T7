@@ -60,6 +60,12 @@ public class Station {
     }
 
     public Station(long l, String string, Object object, double d, double e, boolean b, Object object2) {
+        this.id = l;
+        this.name = string;
+        this.latitude = d;
+        this.longitude = e;
+        this.avail = b;
+        this.address = string;
     }
 
     public Station(String string) {
