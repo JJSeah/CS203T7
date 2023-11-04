@@ -132,6 +132,26 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
 
         console.log("charger available is" + chargerId);
 
+        setBookingData({
+          startTime: startTimeString,
+          endTime: endTimeString,
+          date: dateString,
+          station: {
+            id: stationId,
+          },
+          charger: {
+            id: chargerId,
+          },
+          user: {
+            id: userId,
+            // "role": "ROLE_ADMIN"
+          },
+          car: {
+            id: currentCar.id
+          },
+          manualAppointment: false,
+        });
+
         setUpcomingAppointmentDetails(data);
       })
       .catch((e) => {
