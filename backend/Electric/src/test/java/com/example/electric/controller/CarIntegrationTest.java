@@ -71,7 +71,7 @@ public class CarIntegrationTest {
         // Send the request to the getCarById endpoint
         ResponseEntity<Car> responseEntity = restTemplate.exchange("/api/car/" + addedCar.getId(), HttpMethod.GET, requestEntity, Car.class);
 
-        // Check that the response has a 200 OK status code and contains the appointment
+        // Check that the response has a 200 OK status code and contains the car
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(addedCar, responseEntity.getBody());
     }

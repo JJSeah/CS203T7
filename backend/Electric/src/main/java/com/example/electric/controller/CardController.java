@@ -90,6 +90,10 @@ public class CardController {
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get User's Card", description = "Get a list of User's Card from UserID",tags = {"Card"})
     public List<Card> getCardByUser(@PathVariable("userId") long userId) {
+        if (userService.getUserById(userId) == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+
         return cardService.getCardByUserId(userId);
     }
 
@@ -106,16 +110,18 @@ public class CardController {
     @PostMapping("/add/{userId}")
     @Operation(summary = "Add Card", description = "Add Card using ID",tags = {"Card"})
     public Card addCard(@PathVariable("userId") long userId,@RequestBody Card card) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+
         if(card.getNumber().length() != 16){
             System.out.println(card.getExpiry());
             System.out.println(java.sql.Date.valueOf(LocalDate.now()));
             System.out.println(card.getExpiry().after(java.sql.Date.valueOf(LocalDate.now())));
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        User user = userService.getUserById(userId);
-        if (user == null) {
-            throw new ObjectNotFoundException(ErrorCode.E1002);
-        }
+
         card.setUser(user);
         return cardService.addCard(card);
     }
