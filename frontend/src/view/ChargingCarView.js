@@ -115,7 +115,7 @@ export default ChargingCarView = ({ navigation }) => {
         <View
         >
           <ActivityIndicator />
-          <Text style={chargingStyles.loadingText}>Loading charging car</Text>
+          {/* <Text style={chargingStyles.loadingText}>Loading charging car</Text> */}
         </View>
       ) : (
         <View style={{ flex: 1}}>
@@ -131,7 +131,7 @@ export default ChargingCarView = ({ navigation }) => {
                 cy={height / 4}
                 r={radius}
                 stroke={backgroundStrokeColor}
-                strokeWidth={45}
+                strokeWidth={50}
 
               />
 
@@ -140,10 +140,10 @@ export default ChargingCarView = ({ navigation }) => {
                 cy={height / 4}
                 r={radius}
                 stroke={strokeColor}
-                strokeWidth={45}
+                strokeWidth={50}
                 strokeDasharray={circleLength}
                 animatedProps={animatedProps}
-                // strokeLinecap={"round"}
+                strokeLinecap={"round"}
               />
 
               <Circle
@@ -162,14 +162,13 @@ export default ChargingCarView = ({ navigation }) => {
               >
                 <ReText
                   style={[chargingStyles.progressText, { fontFamily: 'Product-Sans-Regular' }]}
-
                   text={progressText}
                 />
               </SvgText>
             </Svg>
           </View>
 
-          <View style={{ borderWidth: 2, borderColor: 'red', borderRadius: 50, marginHorizontal:120 }}>
+          <View style={{ borderWidth: 2, borderColor: 'red', borderRadius: 10, marginHorizontal:80 }}>
             <Button
               title={buttonState}
               onPress={() => {
@@ -192,11 +191,13 @@ const chargingStyles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
   },
-  loadingText:{
-    fontSize: 16, 
-    color: 'grey',
-    fontFamily: 'Product-Sans-Regular'
-  },
+  // loadingText:{
+  //   fontSize: 30, 
+  //   color: 'white',
+  //   fontWeight: 'bold',
+  //   fontFamily: 'Product-Sans-Regular', 
+  //   alignItems: 'center'
+  // },
   carNickname: {
     color: 'white', 
     fontSize: 30, 
@@ -204,10 +205,10 @@ const chargingStyles = StyleSheet.create({
     marginLeft: 10,
   },
   progressText: {
-    fontSize: 70,
+    fontSize: 80,
     color: "white",
     textAlign: "center",
     margin: 160,
-    marginHorizontal: 35,
+    marginHorizontal: 40,
   },
 });

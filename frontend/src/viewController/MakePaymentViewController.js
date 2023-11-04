@@ -5,7 +5,8 @@ import { BASE_URL } from "../constants/Config";
 import axios from "axios";
 
 export default MakePaymentViewController = ({ navigation }) => {
-  const [paymentCard, setPaymentCard] = useState({ id: -1 });
+  const [ isReady, setIsReady ] = useState(false);      
+  const [ paymentCard, setPaymentCard ] = useState({ id: -1 });
   const { userCards, getAllAppointments, userToken } = useContext(UserContext);
   const [ amount, setAmount ] = useState(null);
 
@@ -52,6 +53,8 @@ export default MakePaymentViewController = ({ navigation }) => {
   };
 
   return {
+    isReady, 
+    setIsReady,
     paymentCard,
     setPaymentCard,
     makePayment,
