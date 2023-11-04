@@ -92,7 +92,7 @@ public class UserController {
      * @param id The unique identifier of the user to update.
      * @param updatedUser The updated user object containing new information.
      * @return The updated user.
-     * @throws ObjectNotFoundException If no user with the given ID is found.
+     * @throws ObjectNotFoundException If no users with the given ID is found.
      */
     @PutMapping("/{id}")
     @Operation(summary = "Update User", description = "Update User by ID",tags = {"User"})
