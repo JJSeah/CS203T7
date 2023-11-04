@@ -47,7 +47,6 @@ export default ActivityScreen = ({ navigation }) => {
   }, [allAppointments])
 
 
-
   return (
     <SafeAreaView style={activityStyles.container}>
         <View style={activityStyles.historyButton}>

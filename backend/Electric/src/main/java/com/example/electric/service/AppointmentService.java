@@ -1,7 +1,5 @@
 package com.example.electric.service;
 
-//import com.example.electric.dto.AppointmentDto;
-
 import com.example.electric.exception.CanCreateBookingException;
 import com.example.electric.exception.CannotCreateBookingException;
 import com.example.electric.exception.ExceedMaxManualApptException;
