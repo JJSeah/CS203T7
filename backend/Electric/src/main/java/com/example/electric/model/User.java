@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern.Flag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -118,4 +119,20 @@ public class User implements UserDetails {
     public User(long l, String string, String string2, String string3, String string4, String string5, Role roleUser,
             Object object, Object object2, Object object3) {
     }
+
+    public User(String firstName, String lastName, String usernames,
+            @NotNull @Pattern(regexp = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", flags = Flag.UNICODE_CASE) String email,
+            String password, Role role, List<Car> cars, List<Card> card, List<Appointment> appointment) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.usernames = usernames;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.cars = cars;
+        this.card = card;
+        this.appointment = appointment;
+    }
+
+
 }

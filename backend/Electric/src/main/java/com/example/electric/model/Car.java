@@ -40,4 +40,16 @@ public class Car {
         this.model = modelS;
     }
 
+
+    public Car(String nickname, String model, String plate, int chargingRate, double batteryPercentage,
+            int batteryCapacity, User user) {
+        this.nickname = nickname;
+        this.model = model;
+        this.plate = plate;
+        this.chargingRate = chargingRate;
+        this.batteryPercentage = batteryPercentage;
+        this.batteryCapacity = batteryCapacity;
+        this.user = user;
+    }
+
 }

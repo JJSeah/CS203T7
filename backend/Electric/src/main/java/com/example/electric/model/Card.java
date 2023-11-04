@@ -2,6 +2,7 @@ package com.example.electric.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern.Flag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,4 +47,18 @@ public class Card {
 
     public Card(long l, String string, long m, Date valueOf, User user2) {
     }
+    
+
+    public Card(String name, @Pattern(regexp = "^[0-9]{16}$", flags = Flag.UNICODE_CASE) String number, Date expiry,
+            User user) {
+        this.name = name;
+        this.number = number;
+        this.expiry = expiry;
+        this.user = user;
+    }
+
+
+
+
+
 }
