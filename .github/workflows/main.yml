@@ -1,9 +1,7 @@
 name: Deploy to ECR
 
 on:
- 
-  push:
-    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   
@@ -33,7 +31,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: electricmain
-        IMAGE_TAG: electricmain:latest
+        IMAGE_TAG: electricmain
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -f backend/Electric -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

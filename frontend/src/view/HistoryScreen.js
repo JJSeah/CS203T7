@@ -94,6 +94,7 @@ export default HistoryScreen = ({navigation}) => {
 
         setFilteredAppointments(filtered);
       }
+      
       else if (monthValue !== null && yearValue != null && allAppointments) {
         const filtered = sortBy(allAppointments.filter((appointment) => {
 
@@ -106,6 +107,19 @@ export default HistoryScreen = ({navigation}) => {
         }), 'date').reverse();
         
         setFilteredAppointments(filtered);
+
+      } else if (yearValue != null && allAppointments) {
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          // appointment.status === "completed";
+          const dateParts = appointment.date.split('-');
+          const yearNo = parseInt(dateParts[0]);
+          
+          return String(yearNo) === yearValue && appointment.status === 'completed';
+        }), 'date').reverse();
+        
+        setFilteredAppointments(filtered);
+
       } else if (allAppointments) {
           const allRecords = sortBy(allAppointments.filter((appointment) => {
           return appointment.status === 'completed'
@@ -116,7 +130,7 @@ export default HistoryScreen = ({navigation}) => {
     };
 
     filterData();
-  }, [selectedCar, monthValue, showAllRecords, allAppointments]);
+  }, [selectedCar, monthValue, yearValue, showAllRecords, allAppointments]);
 
   useEffect(() => {
     if(filteredAppointments){
@@ -135,7 +149,7 @@ export default HistoryScreen = ({navigation}) => {
 
       <View style={{marginLeft:240}}>
       {((selectedCar && monthValue && yearValue && !showAllRecords) || (monthValue && yearValue && !showAllRecords) || 
-      (selectedCar && !showAllRecords)) && (
+      (selectedCar && !showAllRecords) || (yearValue && !showAllRecords)) && (
         <TouchableOpacity
         style={historyStyles.filterButton}
          onPress={() => {

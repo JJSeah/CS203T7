@@ -121,7 +121,7 @@ export default ActivityScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
               {ongoingAppointment.length === 0 ? (
                 <View style={activityStyles.centeredContainer}>
-                  <Text>No activity at the moment</Text>
+                  <Text style={activityStyles.text}>No Ongoing Appointment</Text>
                 </View>
               ) : (
                 
@@ -198,7 +198,7 @@ export default ActivityScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
               {upcomingAppointment.length === 0 ? (
                 <View style={activityStyles.centeredContainer}>
-                  <Text>No upcoming appointment</Text>
+                  <Text style={activityStyles.text}>No Upcoming Appointment</Text>
                 </View>
               ) : (
                 <View>
@@ -286,6 +286,12 @@ const activityStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#141414'
+  },
+  text:{
+    color: 'white',
+    fontWeight: "bold",
+    fontSize: 16,
+    fontFamily: "Product-Sans-Regular",
   },
   historyButton:{
     borderWidth: 1,         
