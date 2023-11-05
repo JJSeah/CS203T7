@@ -1,11 +1,15 @@
 package com.example.electric.controller;
 
 import com.example.electric.model.Appointment;
+import com.example.electric.model.request.LoginReq;
+import com.example.electric.model.response.LoginRes;
 import com.example.electric.respository.AppointmentRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +18,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 
+import java.net.URI;
 import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,29 +39,40 @@ public class AppointmentIntegrationTest {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    private String token;
 
-    @Value("${token.signing.key}")
-    private String jwtSigningKey;
+    @BeforeEach
+    public void setUp() throws Exception {
+        URI uri = new URI("http://localhost:" + port + "/auth/login");
+        LoginReq req = new LoginReq("Admin@gmail.com", "mysecretpassword");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LoginReq> requestEntity = new HttpEntity<>(req, headers);
 
+        ResponseEntity<LoginRes> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, LoginRes.class);
+        LoginRes loginRes = responseEntity.getBody();
+        token = loginRes.getToken();
+        System.out.println(token);
 
-    private String generateBearerToken(Map<String, Object> extraClaims) {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
-        String token = Jwts.builder().setClaims(extraClaims).setSubject("ex@example.com")
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(Keys.hmacShaKeyFor(keyBytes), SignatureAlgorithm.HS256).compact();
-        return "Bearer " + token;
     }
 
-//    @Test
-//    public void testGetAllAppointments() throws Exception {
-//        URI uri = new URI("http://localhost:" + port + "/api/appointment");
-//
-//        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        // You can further validate the response content if needed.
-//    }
+   @Test
+   public void testGetAllAppointments() throws Exception {
+       URI uri = new URI("http://localhost:" + port + "/api/appointment");
+
+        // Set up the request headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+
+        // Set up the request entity
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+       ResponseEntity<String> response = restTemplate.exchange(uri , HttpMethod.GET, requestEntity, String.class);
+
+       assertEquals(HttpStatus.OK, response.getStatusCode());
+       // You can further validate the response content if needed.
+   }
 
     @Test
     public void testGetAppointmentById_Success() {
@@ -66,13 +82,10 @@ public class AppointmentIntegrationTest {
         // Add the appointment to the system
         Appointment addedAppointment = appointmentRepository.save(appointment);
 
-        // Generate a bearer token
-        String token = generateBearerToken(new HashMap<>());
-
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(token);
+        headers.setBearerAuth(token);
 
         // Set up the request entity
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
@@ -87,13 +100,11 @@ public class AppointmentIntegrationTest {
 
     @Test
     public void testGetAppointmentById_Failure() {
-        // Generate a bearer token
-        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(token);
+        headers.setBearerAuth(token);
 
         // Set up the request entity
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
@@ -135,28 +146,25 @@ public class AppointmentIntegrationTest {
 //    public void testUpdateAppointment_Sucess() {
 //        // Create a new appointment
 //        Appointment appointment = new Appointment(1L, new Time(0), new Time(0), new Time(0), new java.sql.Date(0),null,0);
-//
+
 //        // Add the appointment to the system
 //        Appointment addedAppointment = appointmentRepository.save(appointment);
-//
+
 //        // Update the appointment
 //        addedAppointment.setStartTime(new Time(1));
 //        addedAppointment.setEndTime(new Time(2));
-//
-//        // Generate a bearer token
-//        String token = generateBearerToken(new HashMap<>());
-//
+
 //        // Set up the request headers
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.APPLICATION_JSON);
-////        headers.setBearerAuth(token);
-//
+//        headers.setBearerAuth(token);
+
 //        // Set up the request entity
 //        HttpEntity<Appointment> requestEntity = new HttpEntity<>(addedAppointment, headers);
-//
+
 //        // Send the request to the updateAppointment endpoint
 //        ResponseEntity<Appointment> responseEntity = restTemplate.exchange("/api/appointment/" + addedAppointment.getId(), HttpMethod.PUT, requestEntity, Appointment.class);
-//
+
 //        // Check that the response has a 200 OK status code and contains the updated appointment
 //        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 //        assertEquals(addedAppointment, responseEntity.getBody());
@@ -174,13 +182,10 @@ public class AppointmentIntegrationTest {
         addedAppointment.setStartTime(new Time(1));
         addedAppointment.setEndTime(new Time(2));
 
-        // Generate a bearer token
-        String token = generateBearerToken(new HashMap<>());
-
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-//    headers.setBearerAuth(token);
+        headers.setBearerAuth(token);
 
         // Set up the request entity with an invalid ID
         HttpEntity<Appointment> requestEntity = new HttpEntity<>(addedAppointment, headers);
@@ -222,13 +227,11 @@ public class AppointmentIntegrationTest {
 //    }
     @Test
     public void testDeleteAppointment_Failure() {
-        // Generate a bearer token
-        String token = generateBearerToken(new HashMap<>());
 
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-//    headers.setBearerAuth(token);
+        headers.setBearerAuth(token);
 
         // Set up the request entity with an invalid ID
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);

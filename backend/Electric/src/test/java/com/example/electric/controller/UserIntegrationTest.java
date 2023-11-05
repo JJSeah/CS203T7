@@ -1,6 +1,8 @@
 package com.example.electric.controller;
 
 import com.example.electric.model.*;
+import com.example.electric.model.request.LoginReq;
+import com.example.electric.model.response.LoginRes;
 import com.example.electric.model.response.UserCarPaymentResponse;
 import com.example.electric.respository.CarRepository;
 import com.example.electric.respository.CardRepository;
@@ -65,29 +67,35 @@ public class UserIntegrationTest {
 //        return objectMapper.readValue(json, clazz);
 //    }
 
+    private String token;
+
     @BeforeEach
-    public void setUp() {
-        objectMapper = new ObjectMapper();
-    }
+    public void setUp() throws Exception {
+        URI uri = new URI("http://localhost:" + port + "/auth/login");
+        LoginReq req = new LoginReq("Admin@gmail.com", "mysecretpassword");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LoginReq> requestEntity = new HttpEntity<>(req, headers);
 
-    @Value("${token.signing.key}")
-    private String jwtSigningKey;
+        ResponseEntity<LoginRes> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, LoginRes.class);
+        LoginRes loginRes = responseEntity.getBody();
+        token = loginRes.getToken();
+        System.out.println(token);
 
-
-    private String generateBearerToken(Map<String, Object> extraClaims) {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
-        String token = Jwts.builder().setClaims(extraClaims).setSubject("ex@example.com")
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(Keys.hmacShaKeyFor(keyBytes), SignatureAlgorithm.HS256).compact();
-        return "Bearer " + token;
     }
 
     @Test
     public void testGetAllUsers() throws Exception {
         URI uri = new URI("http://localhost:" + port + "/api/user/all");
+        // Set up the request headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
-        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+        // Set up the request entity
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, requestEntity, String.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -140,6 +148,7 @@ public class UserIntegrationTest {
 
 //         HttpHeaders headers = new HttpHeaders();
 //         headers.setContentType(MediaType.APPLICATION_JSON);
+//         headers.setBearerAuth(token);
 
 //         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -159,6 +168,7 @@ public class UserIntegrationTest {
     public void testGetUserInfo_Failure() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -197,6 +207,7 @@ public class UserIntegrationTest {
 
     //     HttpHeaders headers = new HttpHeaders();
     //     headers.setContentType(MediaType.APPLICATION_JSON);
+    //     headers.setBearerAuth(token);
 
     //     HttpEntity<User> requestEntity = new HttpEntity<>(user,headers);
 
@@ -214,12 +225,14 @@ public class UserIntegrationTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
         HttpEntity<User> requestEntity = new HttpEntity<>(addedUser,headers);
 
         ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/user/"+userId, HttpMethod.DELETE, requestEntity, Void.class);
 
         assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+        
     }
 
     @Test
@@ -231,6 +244,7 @@ public class UserIntegrationTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
         HttpEntity<User> requestEntity = new HttpEntity<>(addedUser,headers);
 
