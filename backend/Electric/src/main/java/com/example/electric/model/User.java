@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern.Flag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-//@Table(name="user")
-@Table(name="user_account")
+@Table(name="user")
+//@Table(name="user_account")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,14 +57,9 @@ public class User implements UserDetails {
 
     //link to appointment
     @JsonIgnore
+    @Column(name="appointment")
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     private List<Appointment> appointment;
-
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
 
     @Override
@@ -94,6 +90,13 @@ public class User implements UserDetails {
         return true;
     }
 
+
+        public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+
     public User(long userId, String firstName) {
         this.id = userId;
         this.firstName = firstName;
@@ -111,4 +114,25 @@ public class User implements UserDetails {
         this.password = password;
         this.email = email;
     }
+
+
+    public User(long l, String string, String string2, String string3, String string4, String string5, Role roleUser,
+            Object object, Object object2, Object object3) {
+    }
+
+    public User(String firstName, String lastName, String usernames,
+            @NotNull @Pattern(regexp = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$", flags = Flag.UNICODE_CASE) String email,
+            String password, Role role, List<Car> cars, List<Card> card, List<Appointment> appointment) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.usernames = usernames;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.cars = cars;
+        this.card = card;
+        this.appointment = appointment;
+    }
+
+
 }

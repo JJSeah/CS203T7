@@ -1,20 +1,44 @@
 package com.example.electric.controller;
 
+//import com.example.electric.dto.AppointmentDto;
 import com.example.electric.error.ErrorCode;
+import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ObjectNotFoundException;
-import com.example.electric.model.Appointment;
-import com.example.electric.service.AppointmentService;
+import com.example.electric.model.*;
+import com.example.electric.service.*;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/appointment")
 public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private VoronoiService voronoiService;
+
+    @Autowired
+    private CarService carService;
+
+    @Autowired
+    private CardService cardService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private StationService stationService;
+
+    @Autowired
+    private ChargerService chargerService;
 
     /**
      * Retrieve a list of all appointments.
@@ -42,10 +66,9 @@ public class AppointmentController {
      */
     @GetMapping("/{appointmentId}")
     @Operation(summary = "Get Appointment", description = "Get Appointment using ID", tags = {"Appointment"})
-    public Appointment getAppointmentById(@PathVariable("appointmentId") long appointmentId) {
+    public Appointment getAppointmentById(@PathVariable("appointmentId") @NotNull long appointmentId) {
         return appointmentService.getAppointmentById(appointmentId)
                 .orElseThrow(() -> new ObjectNotFoundException(ErrorCode.E1002));
-
     }
 
     /**
@@ -59,8 +82,25 @@ public class AppointmentController {
      */
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get User's Appointments", description = "Get a list of User's Appointment from UserID",tags = {"Appointment"})
-    public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") long userId) {
+    public List<Appointment> getAllAppointmentsByUser(@PathVariable("userId") @NotNull long userId) {
         return appointmentService.getAllAppointmentsByUser(userId);
+    }
+
+
+    /**
+     * Retrieve a list of a user's active manual appointments.
+     *
+     * This endpoint allows you to fetch a list of active manual appointments associated with a specific user
+     * identified by their unique 'userId'. Active appointments are those that are currently scheduled and
+     * have not yet been completed.
+     *
+     * @param userId The unique identifier of the user for whom to retrieve active manual appointments.
+     * @return A list of active manual appointments for the specified user.
+     */
+    @GetMapping("/manual/user/{userId}")
+    @Operation(summary = "Get User's Manual Active Appointments", description = "Get a list of User's Manual Active Appointment from UserID",tags = {"Manual Active Appointment"})
+    public List<Appointment> getActiveManualAppointmentByUser(@PathVariable("userId") @NotNull long userId) {
+        return appointmentService.getAllActiveManualAppointmentByUser(userId);
     }
 
 
@@ -76,7 +116,7 @@ public class AppointmentController {
      */
     @GetMapping("/station/{stationId}")
     @Operation(summary = "Get Stations' Appointment", description = "Get a list of stations' Appointment using StationID",tags = {"Appointment"})
-    public List<Appointment> getAllAppointmentsAtStation(@PathVariable("stationId") long stationId) {
+    public List<Appointment> getAllAppointmentsAtStation(@PathVariable("stationId") @NotNull long stationId) {
         return appointmentService.getAllAppointmentsAtStation(stationId);
     }
 
@@ -88,11 +128,63 @@ public class AppointmentController {
      *
      * @param appointment The appointment object to be added.
      * @return The newly created appointment.
+     * @throws ExceedMaxManualApptException
      */
     @PostMapping
-    @Operation(summary = "Add Appointment", description = "Add Appointment",tags = {"Appointment"})
-    public Appointment addAppointment(@RequestBody Appointment appointment) {
-        return appointmentService.addAppointment(appointment);
+    @Operation(summary = "Add  Appointment", description = "Add  Appointment",tags = {"Appointment"})
+    public Appointment addAppointment(@RequestBody Appointment appointment){
+        //Find id for station and charger
+        long userId = appointment.getUser().getId();
+        long stationId = appointment.getStation().getId();
+        long chargerId = appointment.getCharger().getId();
+        long carId = appointment.getCar().getId();
+
+        //Find user, station, charger
+        User user = userService.getUserById(userId);
+        Station station = stationService.getStationById(stationId);
+        Charger charger = chargerService.getChargerById(chargerId).orElse(null);
+        Car car = carService.getCarById(carId).orElse(null);
+
+        if (user == null || station == null || charger == null || car == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        // Check if current Number of manual appointments exceeded allowed manualAppointment
+        appointment.setUser(user);
+        appointment.setStation(station);
+        appointment.setCharger(charger);
+        appointment.setCar(car);
+
+        int numOfExistingManualAppt = appointmentService.checkManualAppointment(appointment);
+        if(numOfExistingManualAppt >= 0){
+            throw new ExceedMaxManualApptException(numOfExistingManualAppt, Appointment.MAX_MANUALAPPT_ALLOWED);
+        }
+            return appointmentService.addAppointment(appointment);
+
+    }
+
+    /**
+     * Add a new appointment to the system.
+     *
+     * This endpoint allows the addition of a new appointment through auto booking feature of the system. The provided
+     * appointment object should contain the necessary details for creating the appointment.
+     *
+     * @param appointment The appointment object to be added.
+     * @param carId The unique identifier of car to be charged.
+     * @return The newly created appointment.
+     */
+    @PostMapping("/auto/{carId}")
+    @Operation(summary = "Add Auto Appointment", description = "Add Auto Appointment",tags = {"Appointment"})
+    public Appointment addAppointment(@RequestBody Appointment appointment, @PathVariable long carId) {
+        double latitude = appointment.getStation().getLatitude();
+        double longitude = appointment.getStation().getLongitude();
+
+        String startTime = appointment.getStartTime().toString();
+        String endTime = appointment.getEndTime().toString();
+        String date = appointment.getDate().toString();
+
+        Car car = carService.getCarById(carId).orElse(null);
+        String userEmail = appointment.getUser().getEmail();
+        return voronoiService.autobookAppointment(latitude, longitude,startTime, endTime, date,car,userEmail);
     }
 
     /**
@@ -117,6 +209,91 @@ public class AppointmentController {
         return appointmentService.updateAppointment(updatedAppointment, id);
     }
 
+    
+    /**
+     * Complete an existing appointment with the provided information.
+     *
+     * This endpoint allows the update of an existing appointment identified by its unique
+     * identifier (ID). The provided CompletedAppointment object should contain the Completed details
+     * for the appointment. If an appointment with the specified ID is not found, it will result in
+     * an ObjectNotFoundException.
+     *
+     * @param id The unique identifier of the appointment to update.
+     * @return The completed appointment.
+     * @throws ObjectNotFoundException If no appointment with the given ID is found.
+     */
+    @PutMapping("/completed/{id}/{cardId}")
+    @Operation(summary = "Complete Appointment", description = "Complete Appointment using ID",tags = {"Appointment"})
+    public Appointment completeAppointment(@PathVariable("id") long id, @PathVariable("cardId") long cardId) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        else {
+            Optional<Appointment> appointment = appointmentService.getAppointmentById(id);
+            if (!appointment.get().getStatus().equals("charging")) {
+                throw new ObjectNotFoundException(ErrorCode.E1002);
+            }
+            try {
+                String res = cardService.processPayment(appointment.get().getUser().getId(), appointment.get().getCost(), cardId);
+                appointment.get().setTransactionId(res);
+            } catch (Exception e) {
+                throw new ObjectNotFoundException(ErrorCode.E2002);
+            }
+
+            return appointmentService.completedAppointment(appointment.get(), id, appointment.get().getCar().getId());
+        }
+    }
+
+    /**
+     * Calculate and retrieve the cost of an existing charging appointment.
+     *
+     * This endpoint allows you to calculate and retrieve the cost of a charging appointment using its unique ID.
+     * If the specified appointment is not found or is not in the 'charging' status, it will result in an ObjectNotFoundException.
+     *
+     * @param id The unique identifier of the charging appointment for cost calculation.
+     * @return The calculated cost of the charging appointment.
+     * @throws ObjectNotFoundException If no charging appointment with the given ID is found.
+     *
+     * @operation GET /cost/{id}
+     * @summary Get Cost of Charging Appointment
+     * @description Retrieve the cost of an existing charging appointment using its unique ID.
+     * @tags Appointment
+     *
+     * @param id The ID of the charging appointment for which cost is calculated.
+     * @response 200 OK - The cost of the charging appointment is successfully calculated and returned.
+     * @response 404 Not Found - If the charging appointment is not found or is not in the 'charging' status.
+     */
+
+    @GetMapping("/cost/{id}")
+    @Operation(summary = "Get Cost of Appointment", description = "Get Cost of Appointment using ID",tags = {"Appointment"})
+    public double getCostOfAppointment(@PathVariable("id") long id) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        else {
+            Appointment appointment = appointmentService.getAppointmentById(id).get();
+            if (!appointment.getStatus().equals("charging")) {
+                throw new ObjectNotFoundException(ErrorCode.E1002);
+            }
+            //updating end time
+            appointment.setEndTime(Time.valueOf(LocalTime.now()));
+            //Get duration of charging in minutes
+            long duration = (appointment.getEndTime().getTime() - appointment.getStartTime().getTime())/(60 * 1000);
+
+            //update duration of appointment
+            Time duration_time = new Time(duration);
+            appointment.setDuration(duration_time);
+
+            double cost = DistanceMatrixService.calculateCostOfCharging(duration);
+            appointment.setCost(cost);
+
+            appointmentService.updateAppointment(appointment, id);
+
+            return cost;
+        }
+    }
+
+
     /**
      * Delete an appointment by its unique identifier.
      *
@@ -133,6 +310,103 @@ public class AppointmentController {
         if (!appointmentService.getAppointmentById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
+        if (appointmentService.getAppointmentById(id).get().getStatus().equals("Active")) {
+            throw new ObjectNotFoundException(ErrorCode.E1001);
+        }
         appointmentService.deleteAppointment(id);
     }
+
+    /**
+     * Start Appointment to Charging
+     *
+     * This endpoint allows the initiation of an appointment for charging. It is designed to be used by
+     * authorized users to activate an appointment by specifying its unique identifier (ID).
+     *
+     * @param id The unique identifier of the appointment to start.
+     * @return A message indicating the success of the appointment activation.
+     * @throws ObjectNotFoundException If no appointment with the given ID is found or if the appointment is not in an 'Active' state.
+     */
+    @GetMapping("/start/{id}")
+    @Operation(summary = "Start Appointment", description = "Start Appointment using ID",tags = {"Appointment"})
+    public String startAppointment(@PathVariable("id") long id) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        if (!appointmentService.getAppointmentById(id).get().getStatus().equals("Active")) {
+            throw new ObjectNotFoundException(ErrorCode.E1001);
+        }
+        else {
+            Appointment appointment = appointmentService.getAppointmentById(id).get();
+            return appointmentService.startAppointment(appointment, id, appointment.getCar().getId());
+        }
+    }
+
+    /**
+     * Cancel Appointment
+     *
+     * This endpoint allows the cancellation of an existing appointment. Authorized users can use this
+     * operation by specifying the unique identifier (ID) of the appointment they wish to cancel.
+     *
+     * @param id The unique identifier of the appointment to cancel.
+     * @return A message indicating the success of the appointment cancellation.
+     * @throws ObjectNotFoundException If no appointment with the given ID is found or if the appointment is not in an 'Active' state.
+     */
+    @PutMapping("/cancel/{id}")
+    @Operation(summary = "Cancel Appointment", description = "Cancel Appointment using ID",tags = {"Appointment"})
+    public Appointment cancelAppointment(@PathVariable("id") long id) {
+        if (!appointmentService.getAppointmentById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        else {
+            Appointment appointment = appointmentService.getAppointmentById(id).get();
+            if (!appointment.getStatus().equals("Active")) {
+                throw new ObjectNotFoundException(ErrorCode.E1001);
+            }
+            return appointmentService.cancelAppointment(appointment, id);
+        }
+
+    }
+
+    /**
+     * Get Available Stations
+     *
+     * This endpoint retrieves a list of available charging stations for a specified appointment based on the
+     * provided appointment details, including start time, end time, and date.
+     *
+     * @param appointment The appointment details, including start time, end time, and date.
+     * @return A list of available charging stations.
+     */
+
+    @PostMapping ("/available")
+    @Operation(summary = "Get Available Stations", description = "Get a list of available stations",tags = {"Appointment"})
+    public List<Station> getAvailableStations(@RequestBody Appointment appointment) {
+        String startTime = appointment.getStartTime().toString();
+        String endTime = appointment.getEndTime().toString();
+        String date = appointment.getDate().toString();
+
+        return appointmentService.getAvailableStationsAndChargers(startTime, endTime, date);
+    }
+
+    /**
+     * QR Code Checker
+     *
+     * This endpoint checks for the upcoming appointment status for a user at a specified station and charger.
+     * If the user has a valid appointment within the next 20 minutes, it returns the appointment details.
+     * If the user doesn't have an appointment in the upcoming 20 minutes, they are allowed to create a new appointment.
+     * If none of these conditions are met, it returns a "cannotBookAppointment" response.
+     *
+     * @param userId The unique identifier of the user.
+     * @return The upcoming appointment details or a "cannotBookAppointment" response.
+     */
+
+    @GetMapping("/checkComingAppt/charger1/{userID}")
+    @Operation(summary = "QR code checker", description = "Verfied user has appointment with charger, else if no appt in upcoming 20 mins, allow user to create appointment, else return cannotBookAppoinment", tags = {"Appointment"})
+    public Appointment checkUpcomingAppointment(@PathVariable("userID") long userId){
+        long chargerId = 1;
+        return appointmentService.checkUpcomingAppointment(chargerId, userId);
+    }
+
+
+
+    
 }

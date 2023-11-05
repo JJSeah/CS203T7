@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { Text, View, SafeAreaView, TouchableOpacity, StyleSheet, ScrollView, FlatList, Button } from 'react-native';
 import HistoryScreenViewController from '../viewController/HistoryScreenViewController';
 import { UserContext } from '../model/User';
 import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from "../components/Design"; 
 import FontLoader from '../constants/FontLoader';
 import * as SplashScreen from 'expo-splash-screen';
-
-// take here
-import Swiper from "react-native-deck-swiper"
-import SingleCarSwiperView from '../components/SingleCarSwiperView';
-import CarSwiperView from './CarSwiperView';
+import { set, sortBy } from 'lodash';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,36 +34,8 @@ const year =[
   {label: '2024', value: '3'}
 ]
 
-const fakeData = [
-  {
-    "station": "Shell Recharge", 
-    "address": "80 upper thomson",
-    "date": "2023-09-25", 
-    "time": "13:05:35",
-    "cost": 23.5, 
-    key: 1
-  },
-  {
-    "station": "SP Mobility ", 
-    "address": "50 toa payoh",
-    "date": "2023-02-25", 
-    "time": "09:15:05",
-    "cost": 9.2, 
-    key: 2
-  },
-  {
-    "station": "CHARGE+", 
-    "address": "60 orchard",
-    "date": "2023-09-20", 
-    "time": "20:40:45",
-    "cost": 20, 
-    key: 3
-  },
-]
 
 export default HistoryScreen = ({navigation}) => {
-
-  const {isReady, setIsReady, monthValue, setMonthValue, yearValue, setYearValue} = HistoryScreenViewController({navigation})
 
   useEffect(() => {
     const loadFonts = async() => {
@@ -72,9 +43,13 @@ export default HistoryScreen = ({navigation}) => {
       setIsReady(true);
       await SplashScreen.hideAsync();
     }; 
-
-    loadFonts();
+    loadFonts(); 
   }, []);
+
+  const { isReady, setIsReady, selectedCar, setSelectedCar, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
+  const { userCars, allAppointments } = useContext(UserContext);
+  const [ filteredAppointments, setFilteredAppointments ] = useState([]);
+  const [ totalCost, setTotalCost ] = useState(0);
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr); 
@@ -98,133 +73,261 @@ export default HistoryScreen = ({navigation}) => {
     return `${formattedHours}:${mins.toString().padStart(2, '0')} ${ampm}`;
   }
 
-  // const [isFocus, setIsFocus] = useState(false); 
-  // const monthAbbreviation = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  //                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  useEffect(() => {
+    const filterData = () => {
+      if (selectedCar != null && monthValue !== null && yearValue != null && allAppointments){
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          const dateParts = appointment.date.split('-');
+          const monthNo = parseInt(dateParts[1]);
+          const yearNo = parseInt(dateParts[0]);
+
+          return appointment.car.nickname === selectedCar && String(monthNo) ===  monthValue && String(yearNo) === yearValue && appointment.status === 'completed';
+        }), 'date').reverse();
+
+        setFilteredAppointments(filtered);
+      }
+      else if (selectedCar != null && allAppointments){
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+          return appointment.car.nickname === selectedCar && appointment.status === 'completed';
+        }), 'date').reverse();
+
+        setFilteredAppointments(filtered);
+      }
+      
+      else if (monthValue !== null && yearValue != null && allAppointments) {
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          // appointment.status === "completed";
+          const dateParts = appointment.date.split('-');
+          const monthNo = parseInt(dateParts[1]);
+          const yearNo = parseInt(dateParts[0]);
+          
+          return String(monthNo) ===  monthValue && String(yearNo) === yearValue && appointment.status === 'completed';
+        }), 'date').reverse();
+        
+        setFilteredAppointments(filtered);
+
+      } else if (yearValue != null && allAppointments) {
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          // appointment.status === "completed";
+          const dateParts = appointment.date.split('-');
+          const yearNo = parseInt(dateParts[0]);
+          
+          return String(yearNo) === yearValue && appointment.status === 'completed';
+        }), 'date').reverse();
+        
+        setFilteredAppointments(filtered);
+
+      } else if (allAppointments) {
+          const allRecords = sortBy(allAppointments.filter((appointment) => {
+          return appointment.status === 'completed'
+          }), 'date').reverse();
+
+        setFilteredAppointments(allRecords);
+      }
+    };
+
+    filterData();
+  }, [selectedCar, monthValue, yearValue, showAllRecords, allAppointments]);
+
+  useEffect(() => {
+    if(filteredAppointments){
+      let updatedTotalCost = 0; 
+      filteredAppointments.forEach((appointment) => {
+        updatedTotalCost += appointment.cost;
+      });
+      setTotalCost(updatedTotalCost);
+    }
+  }, [filteredAppointments]);
+
   
-
-  // take here
-  const { userCars } = useContext(UserContext);
-  const { currentCar, setCurrentCar } = useContext(UserContext);
-
-  const filteredData = monthValue && yearValue
-    ? fakeData.filter((item) => {
-    const dateParts = item.date.split('-');
-    // const dayNo = parseInt(dateParts[2]);
-    const monthNo = parseInt(dateParts[1]);
-    const yearNo = parseInt(dateParts[0]);
-
-    return String(monthNo) ===  monthValue && String(yearNo) === yearValue;
-    }) 
-    : fakeData;
-
-  let totalCost = 0; 
-  filteredData.forEach((item) => {
-    totalCost += item.cost;
-  });
-
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView style={[historyStyles.container, {flex:1}]}>
+      <View styles={historyStyles.container1}>
 
+      <View style={{marginLeft:240}}>
+      {((selectedCar && monthValue && yearValue && !showAllRecords) || (monthValue && yearValue && !showAllRecords) || 
+      (selectedCar && !showAllRecords) || (yearValue && !showAllRecords)) && (
+        <TouchableOpacity
+        style={historyStyles.filterButton}
+         onPress={() => {
+          setSelectedCar(null);
+          setMonthValue(null); 
+          setYearValue('2023');
+          setShowAllRecords(true);
+          setFilteredAppointments(allAppointments);
+         }}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+            <MaterialIcons name="clear" size={20} color="white" />
+            <Text style={historyStyles.filterText}>Clear Filters</Text>
+          </View>
+          </TouchableOpacity>
+       )}  
+    </View>
         <View style={historyStyles.dropDownContainer}>
+        <Dropdown style={historyStyles.car}
+            data={userCars.map(car => ({ value: car.nickname, label: car.nickname }))}
+            placeholder="Car"
+            placeholderStyle={{color: 'grey'}}
+            searchPlaceholder="Select Car"
+            value={selectedCar}
+            labelField="label"
+            valueField="value"
+            onChange={data => {
+              setSelectedCar(data.value);
+              setShowAllRecords(false);
+            }} 
+            itemTextStyle={historyStyles.dropdownValueText}
+            itemContainerStyle={historyStyles.dropdownList}
+            selectedTextStyle={{color: 'white'}}
+            activeColor='grey'
+            />
+
           <Dropdown style={historyStyles.month}
             data={month}
             placeholder="Month"
-            placeholderStyle={{color: 'black'}}
+            placeholderStyle={{color: 'grey'}}
             searchPlaceholder="Select Month"
             value={monthValue}
             maxHeight={300}
             labelField="label"
             valueField="value"
-            // textStyle={{color : 'white'}}
-            // onFocus={() => setIsFocus(true)}
-            // onBlur={() => setIsFocus(false)}
             onChange={data => {
               setMonthValue(data.value);
-              // setIsFocus(false);
-            } } />
+              setShowAllRecords(false);
+            } } 
+            itemTextStyle={historyStyles.dropdownValueText}
+            itemContainerStyle={historyStyles.dropdownList}
+            selectedTextStyle={{color: 'white'}}
+            activeColor='grey'
+            />
 
           <Dropdown style={historyStyles.year}
             data={year}
             placeholder='2023'
-            placeholderStyle={{color: 'black'}}
+            placeholderStyle={{color: 'grey'}}
             value={yearValue}
             labelField="label"
             valueField="value"
             onChange={data => {
               setYearValue(data.value);
-            } } />
+              setShowAllRecords(false);
+            }} 
+            itemTextStyle={historyStyles.dropdownValueText}
+            itemContainerStyle={historyStyles.dropdownList}
+            selectedTextStyle={{color: 'white'}}
+            activeColor='grey'
+            />
         </View>
       </View>
-
-      {/* <ScrollView>
-        {filteredData.map((item) => {
-          return(
-            <View key={item.key} style={historyStyles.recordContainer}>
-              <Text style={styles.bodyText}>
-                station: {item.station}, 
-                date: {item.date}, 
-                cost: {item.cost}
-              </Text> 
-              </View>
-          );
-        })}
-      </ScrollView> */}
-      {monthValue && yearValue && filteredData.length === 0 && (
-        <View>
-          <Text style={historyStyles.totalCost}>No record</Text>
-        </View>
-      )}
-
-      {monthValue && yearValue && filteredData.length > 0 && (
-        <View>
-          <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
-                {year.find((y) => y.label === yearValue).label}: ${totalCost}
+    
+      
+      <View style={historyStyles.container2}>
+      {(showAllRecords || ((selectedCar || monthValue || yearValue) && filteredAppointments.length > 0)) && (
+        <View style={historyStyles.totalCostContainer}>
+          <Text style={historyStyles.totalCost}>Total Cost : $ {totalCost.toFixed(2)}
           </Text>
-        </View>
+        </View> 
+      )}
+      </View>
+
+
+    <View style={historyStyles.container3}>
+      {(selectedCar || monthValue || yearValue) && filteredAppointments.length === 0 && (
+          <View style={{alignItems: 'center'}}>
+              <Text style={historyStyles.totalCost}>No Record</Text>
+          </View>
       )}
 
       <FlatList
-        data={filteredData}
-        keyExtractor={(item) => item.key.toString()}
+        style={historyStyles.flatListContainer}
+        data={filteredAppointments}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({item}) => (
           <View style={historyStyles.recordContainer}>
             <View style={historyStyles.stationNameContainer}>
-              <Text style={historyStyles.stationName}>{item.station}</Text>
-              <Text style={historyStyles.address}>{item.address}</Text>
-              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.time)}</Text>
+              <View style={historyStyles.carContainer}>
+                <Ionicons name="car-sport-outline" size={21} color="#D3D3D3" />
+                <Text style={historyStyles.carNickname}>{item.car.nickname}</Text>
+              </View>
+              <Text style={historyStyles.stationName}>{item.station.name}</Text>
+              <Text style={historyStyles.address}>{item.station.address}</Text>
+              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)} - {formatTime(item.endTime)}</Text>
+              
             </View>
-            <Text style={historyStyles.cost}>${item.cost}</Text>
+            <Text style={historyStyles.cost}>${item.cost.toFixed(2)}</Text>
           </View>
         )}
         />
-        
+      </View>
     </SafeAreaView> 
   )
 }
 
 const historyStyles = StyleSheet.create({
+  container:{
+    flex: 1,
+    backgroundColor: "#141414",
+  },
+  flatListContainer:{
+    // flex: 1,
+  },
+  container1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#141414',
+  },
+  container2: {
+   flex: 1,
+    backgroundColor: '#141414',
+  },
+  container3: {
+    flex: 15,
+    backgroundColor: '#141414',
+  },
   dropDownContainer:{
+    // flex: 1, 
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', 
     padding: 16,
+    backgroundColor: '#141414', 
+  },
+  dropdownList: {
+    backgroundColor: '#141414',
+  },
+  dropdownValueText: {
+    color: 'white',
+  },
+  car: {
+    height: 45, 
+    width: 135,
+    backgroundColor: '#141414',
+    borderColor: 'grey',
+    borderWidth: 0.5, 
+    borderRadius: 5, 
+    paddingHorizontal: 15,
+    marginLeft: 0,
+    marginTop: 10, 
   },
   month: {
     // flex: 1,
     height: 45, 
-    width: 135, 
+    width: 120, 
     borderColor: 'gray', 
     borderWidth: 0.5, 
     borderRadius: 5, 
     paddingHorizontal: 15,
-    marginLeft: 130,
+    marginLeft: 10,
     marginTop: 10,  
   }, 
   year:{
     height: 45, 
-    width: 95, 
+    width: 90, 
     borderColor: 'gray',
     borderWidth: 0.5, 
     borderRadius: 5, 
@@ -232,12 +335,18 @@ const historyStyles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10, 
   }, 
-  recordContainer: {
+  totalCostContainer:{
+    marginLeft: 240,
+  },
+  recordContainer: {   
+    // flex: 10, 
     borderWidth: 1, 
-    borderColor: 'black', 
+    borderColor: '#D3D3D3', 
     borderRadius: 10, 
-    padding: 20, 
-    margin: 8,
+    padding: 16, 
+    margin: 15,
+    marginTop: 0,
+    marginBottom: 10,
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     alignItems: 'center',
@@ -245,32 +354,60 @@ const historyStyles = StyleSheet.create({
   stationNameContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start', 
-    flex: 1,
+  },
+  carContainer:{
+    flexDirection: 'row', 
+  },
+  carNickname: {
+    fontWeight: 'bold', 
+    fontSize: 16, 
+    fontFamily: 'Product-Sans-Regular', 
+    marginLeft: 12, 
+    color: 'white',
   },
   stationName: {
     fontWeight: 'bold', 
     fontSize: 20, 
     fontFamily: 'Product-Sans-Regular', 
+    color: 'white',
     // marginBottom: 8,
   },
   address: {
     fontSize: 13, 
-    color: 'gray',
-    fontFamily: 'Product-Sans-Regular'
+    color: '#808080',
+    fontFamily: 'Product-Sans-Regular',
   },
   dateTime: {
     fontSize: 15, 
-    fontFamily: 'Product-Sans-Regular'
+    fontFamily: 'Product-Sans-Regular',
+    color: 'white',
   }, 
   cost: {
     fontSize: 16,
     fontStyle: 'italic', 
-    fontFamily: 'Product-Sans-Regular'
+    fontFamily: 'Product-Sans-Regular',
+    color: 'white',
   }, 
   totalCost: {
     fontSize: 16, 
     fontWeight: 'bold', 
     fontFamily: 'Product-Sans-Regular', 
-    marginHorizontal: 10
+    color: 'white',
+    marginBottom: 5,
+    marginRight: 10,
+  }, 
+  filterButton: {
+    borderRadius: 10, 
+    marginHorizontal: 10, 
+    borderColor: 'white',
+    borderWidth: 0.5,
+    padding: 10,
+  }, 
+  filterText: {
+    fontSize: 15, 
+    color: '#B2D3C2',
+    fontFamily: 'Product-Sans-Regular',
+    fontWeight: 'bold', 
+    marginLeft: 10, 
   }
 })

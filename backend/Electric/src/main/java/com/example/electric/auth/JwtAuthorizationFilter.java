@@ -1,7 +1,7 @@
 package com.example.electric.auth;
 
 
-import com.example.electric.service.UserServiceImpl;
+import com.example.electric.service.inter.UserServiceDetailsInter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserServiceImpl userServiceImpl;
+    private final UserServiceDetailsInter userServiceImpl;
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)

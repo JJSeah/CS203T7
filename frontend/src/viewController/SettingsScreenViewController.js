@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default SettingsScreenViewController = ( { navigation } ) => {
 
-    const [ isReady, setIsReady ] = useState(false);    
+    const [ isReady, setIsReady ] = useState(false);
 
     const profileButtonPressed = () => {
         navigation.navigate("ProfileScreen")
@@ -36,6 +36,10 @@ export default SettingsScreenViewController = ( { navigation } ) => {
         navigation.navigate("EditProfileScreen")
     }
 
+    const addCardButtonPressed = () => {
+        navigation.navigate("AddCardScreen")
+    }
+
     return {
         isReady, 
         setIsReady,
@@ -47,5 +51,6 @@ export default SettingsScreenViewController = ( { navigation } ) => {
         privacyPolicyButtonPressed,
         aboutButtonPressed,
         editProfileButtonPressed,
+        addCardButtonPressed,
     };
 }

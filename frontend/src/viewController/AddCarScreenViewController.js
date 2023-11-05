@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { CarRepository } from "../model/CarRepository";
 import { CarModelsData } from "../constants/CarModels";
 import { UserContext } from "../model/User";
+import { Picker } from "@react-native-picker/picker";
 
 export default AddCarScreenViewController = ( { navigation } ) => {
 
@@ -9,11 +10,14 @@ export default AddCarScreenViewController = ( { navigation } ) => {
 
     const [ nickname, setNickname ] = useState("")
     const [ model, setModel ] = useState("")
-    const [ chargingRate, setChargingRate ] = useState(100)
-    const [ batteryPercentage, setBatteryPercentage ] = useState(100)
-    const [ batteryCapacity, setBatteryCapacity ] = useState(100)
+    const [ chargingRate, setChargingRate ] = useState(0)
+    const [ batteryPercentage, setBatteryPercentage ] = useState(0)
+    const [ batteryCapacity, setBatteryCapacity ] = useState(0)
     const [ carPlate, setCarPlate ] = useState("")
     const [ selectedCar, setSelectedCar] = useState(null)
+    const [ carPlateMessage, setCarPlateMessage ] = useState("")
+    const [ validInput, setValidInput ] = useState(false)
+
 
     const clearAllFieldsPressed = () => {
         setNickname("")
@@ -23,6 +27,11 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         setBatteryCapacity(80)
         setCarPlate("")
     }
+
+    const isSingaporeCarPlateNumber = (input) => {
+        const pattern = /^[A-Z]{2,3} \d{1,4}[A-Z]?$/;
+        return pattern.test(input);
+      };
     
     const addCarButtonPressed = () => {
         const newCar = {
@@ -43,7 +52,8 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         setChargingRate(selectedCar.chargingRate)
         setBatteryCapacity(selectedCar.batteryCapacity)
     }
-    
+
+  
     return {
         nickname,
         setNickname,
@@ -60,7 +70,10 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         addCarButtonPressed,
         clearAllFieldsPressed,
         CarModelsData,
-        dropdownSelectListPressed
+        dropdownSelectListPressed,
+        isSingaporeCarPlateNumber,
+        validInput, setValidInput,
+        carPlateMessage, setCarPlateMessage
     };
 
 }

@@ -1,0 +1,285 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DistanceMatrixService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.service</a>
+</div>
+
+<h1>Coverage Summary for Class: DistanceMatrixService (com.example.electric.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DistanceMatrixService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3.1%
+  </span>
+  <span class="absValue">
+    (1/32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.service;
+&nbsp;
+&nbsp;import com.example.electric.model.Car;
+&nbsp;import com.example.electric.model.Station;
+&nbsp;import com.example.electric.respository.StationRepository;
+&nbsp;import com.example.electric.service.inter.DistanceMatrixServiceInter;
+&nbsp;import com.google.maps.DistanceMatrixApi;
+&nbsp;import com.google.maps.GeoApiContext;
+&nbsp;import com.google.maps.model.DistanceMatrix;
+&nbsp;import com.google.maps.model.DistanceMatrixRow;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.beans.factory.annotation.Value;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class DistanceMatrixService implements DistanceMatrixServiceInter {</b>
+&nbsp;    @Value(&quot;${google.maps.api.key}&quot;)
+&nbsp;    private String apiKey;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private StationRepository stationRepository;
+&nbsp;
+&nbsp;    //JSON File includes distance, time taken
+&nbsp;    /**
+&nbsp;     * Get Distance Matrix
+&nbsp;     *
+&nbsp;     * This method retrieves the distance matrix between two locations using the Google Maps Distance Matrix API.
+&nbsp;     *
+&nbsp;     * @param origin The origin location (e.g., coordinates or address).
+&nbsp;     * @param destination The destination location (e.g., coordinates or address).
+&nbsp;     * @return A DistanceMatrix containing distance and duration information between the origin and destination.
+&nbsp;     * @throws Exception If an error occurs during the API request.
+&nbsp;     */
+&nbsp;    public DistanceMatrix getDistanceMatrix(String origin, String destination) throws Exception {
+<b class="nc">&nbsp;        GeoApiContext context = new GeoApiContext.Builder().apiKey(apiKey).build();</b>
+<b class="nc">&nbsp;        return DistanceMatrixApi.newRequest(context)</b>
+<b class="nc">&nbsp;                .origins(origin)</b>
+<b class="nc">&nbsp;                .destinations(destination)</b>
+<b class="nc">&nbsp;                .await(); // This will make the API request and return the result.</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get Distance by Station ID
+&nbsp;     *
+&nbsp;     * This method calculates the distance in meters between a given station and another station using their coordinates.
+&nbsp;     *
+&nbsp;     * @param station The source station for distance calculation.
+&nbsp;     * @return The distance in meters to the specified destination station.
+&nbsp;     * @throws Exception If an error occurs during the distance calculation.
+&nbsp;     */
+&nbsp;    public long getDistanceByID(Station station) throws Exception{
+<b class="nc">&nbsp;        Station dest = stationRepository.findById(station.getId()).orElse(null);</b>
+<b class="nc">&nbsp;        String location1 = Double.toString(station.getLatitude()) + &quot;,&quot; + Double.toString(station.getLongitude());</b>
+<b class="nc">&nbsp;        String location2 = Double.toString(dest.getLatitude()) + &quot;,&quot; + Double.toString(dest.getLongitude());</b>
+&nbsp;
+<b class="nc">&nbsp;        DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];</b>
+&nbsp;
+<b class="nc">&nbsp;        return distanceMatrix.elements[0].distance.inMeters;</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get Duration by Station ID
+&nbsp;     *
+&nbsp;     * This method calculates the estimated travel duration in minutes between a given station and another station using their coordinates.
+&nbsp;     *
+&nbsp;     * @param station The source station for duration calculation.
+&nbsp;     * @return The estimated travel duration in minutes to the specified destination station, rounded to the nearest multiple of 5 minutes.
+&nbsp;     * @throws Exception If an error occurs during the duration calculation.
+&nbsp;     */
+&nbsp;    public int getDurationByID(Station station) throws Exception {
+<b class="nc">&nbsp;        Station dest = stationRepository.findById(station.getId()).orElse(null);</b>
+<b class="nc">&nbsp;        String location1 = Double.toString(station.getLatitude()) + &quot;,&quot; + Double.toString(station.getLongitude());</b>
+<b class="nc">&nbsp;        String location2 = Double.toString(dest.getLatitude()) + &quot;,&quot; + Double.toString(dest.getLongitude());</b>
+&nbsp;
+<b class="nc">&nbsp;        DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];</b>
+&nbsp;
+<b class="nc">&nbsp;        long timeInSeconds = distanceMatrix.elements[0].duration.inSeconds;</b>
+<b class="nc">&nbsp;        long timeInMinutes = timeInSeconds / 60;</b>
+&nbsp;
+<b class="nc">&nbsp;        return (int)(timeInMinutes / 5) * 5;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate Estimate Time of Charging
+&nbsp;     *
+&nbsp;     * This method estimates the time required to charge a car based on its parameters and a standard charging power.
+&nbsp;     *
+&nbsp;     * @param car The car for which the charging time estimate is calculated.
+&nbsp;     * @return The estimated time in minutes required to charge the car, rounded to the nearest multiple of 5 minutes.
+&nbsp;     */
+&nbsp;    public int calculateEstimateTimeOfCharging(Car car) {
+&nbsp;        //Car parameters
+<b class="nc">&nbsp;        double batteryCapacity = car.getBatteryCapacity();</b>
+<b class="nc">&nbsp;        double batteryPercentage = car.getBatteryPercentage();</b>
+<b class="nc">&nbsp;        double currentStateOfCharge = batteryCapacity * batteryPercentage / 100;</b>
+&nbsp;
+&nbsp;        //Standardise charging power at chargers since this represents the most common charging speed - level 2
+&nbsp;        //with a range from 11kW to 19kW in the new models, hence choosing the average of 15kW
+<b class="nc">&nbsp;        double chargingPower = 15;</b>
+&nbsp;
+&nbsp;        //Calculate time
+<b class="nc">&nbsp;        double time = (batteryCapacity - currentStateOfCharge) / chargingPower;</b>
+&nbsp;
+<b class="nc">&nbsp;        double timeInMinutes = time * 60;</b>
+&nbsp;
+<b class="nc">&nbsp;        return (int)(timeInMinutes / 5) * 5;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate Cost of Charging for a Car
+&nbsp;     *
+&nbsp;     * This method calculates the cost of charging a car based on the estimated time of charging.
+&nbsp;     *
+&nbsp;     * @param car The car for which the charging cost is calculated.
+&nbsp;     * @return The estimated cost of charging the car.
+&nbsp;     */
+&nbsp;    public double calculateCostOfCharging(Car car) {
+&nbsp;        //Car parameters
+<b class="nc">&nbsp;        int timeOfCharging = this.calculateEstimateTimeOfCharging(car);</b>
+<b class="nc">&nbsp;        double timeOfChargingInHour = timeOfCharging / 60;</b>
+&nbsp;
+&nbsp;        //Based on research, charging rate is around $3 per hour for overnight slow charging
+&nbsp;        //and $25 for rapid charging. Due to the choice of moderate level of charging rate at level 2,
+&nbsp;        //and to encourage the use of EV in Singapore, we have decided to choose the charging cost
+&nbsp;        //per hour to be at $10.
+&nbsp;
+<b class="nc">&nbsp;        double chargingCostRate = 10;</b>
+&nbsp;
+&nbsp;        //Calculate cost
+<b class="nc">&nbsp;        return chargingCostRate * timeOfChargingInHour;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate Cost of Charging by Duration
+&nbsp;     *
+&nbsp;     * This method calculates the cost of charging based on a given duration.
+&nbsp;     *
+&nbsp;     * @param duration The duration of charging in minutes.
+&nbsp;     * @return The estimated cost of charging based on the provided duration.
+&nbsp;     */
+&nbsp;    public static double calculateCostOfCharging(long duration) {
+&nbsp;
+<b class="nc">&nbsp;        double timeOfChargingInHour = (double) duration / 60;</b>
+&nbsp;
+&nbsp;        //Based on research, charging rate is around $3 per hour for overnight slow charging
+&nbsp;        //and $25 for rapid charging. Due to the choice of moderate level of charging rate at level 2,
+&nbsp;        //and to encourage the use of EV in Singapore, we have decided to choose the charging cost
+&nbsp;        //per hour to be at $10.
+&nbsp;
+<b class="nc">&nbsp;        double chargingCostRate = 10;</b>
+&nbsp;
+&nbsp;        //Calculate cost
+<b class="nc">&nbsp;        return chargingCostRate * timeOfChargingInHour;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    public long getDistanceByName(String latitude,String longitude, String station2) throws Exception {
+&nbsp;////        Station s1 = stationRepository.findStationByName(station1).orElse(null);
+&nbsp;//        Station s2 = stationRepository.findStationByName(station2).orElse(null);
+&nbsp;//        String location1 = (latitude + &quot;,&quot; + longitude);
+&nbsp;//        String location2 = Double.toString(s2.getLatitude()) + &quot;,&quot; + Double.toString(s2.getLongitude());
+&nbsp;//
+&nbsp;//        DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];
+&nbsp;//
+&nbsp;//        return distanceMatrix.elements[0].distance.inMeters;
+&nbsp;//    }
+&nbsp;
+&nbsp;//    public long getDurationByName(String station1, String station2) throws Exception {
+&nbsp;//        Station s1 = stationRepository.findStationByName(station1).orElse(null);
+&nbsp;//        Station s2 = stationRepository.findStationByName(station2).orElse(null);
+&nbsp;//        String location1 = Double.toString(s1.getLatitude()) + &quot;,&quot; + Double.toString(s1.getLongitude());
+&nbsp;//        String location2 = Double.toString(s2.getLatitude()) + &quot;,&quot; + Double.toString(s2.getLongitude());
+&nbsp;//
+&nbsp;//        DistanceMatrixRow distanceMatrix = this.getDistanceMatrix(location1, location2).rows[0];
+&nbsp;//
+&nbsp;//        return distanceMatrix.elements[0].duration.inSeconds;
+&nbsp;//    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

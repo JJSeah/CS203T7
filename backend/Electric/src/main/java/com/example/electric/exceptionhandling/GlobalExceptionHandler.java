@@ -1,10 +1,11 @@
 package com.example.electric.exceptionhandling;
 
 import com.example.electric.dto.ErrorResponse;
-import com.example.electric.exception.ObjectNotFoundException;
+import com.example.electric.exception.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.example.electric.exception.ExceedMaxManualApptException;
 import com.example.electric.exception.ForbiddenException;
 import com.example.electric.exception.ObjectAlreadyExistsException;
 
@@ -76,6 +77,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<String> handleForbiddenException(ForbiddenException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+    }
+
+    
+    @ExceptionHandler(ExceedMaxManualApptException.class)
+    public ResponseEntity<String> handleMaxManualException(ExceedMaxManualApptException e) {
+        return e.toResponseEntity();
+    }
+
+    @ExceptionHandler(CanCreateBookingException.class)
+        public ResponseEntity<String> handleCanCreateBookingException(CanCreateBookingException e) {
+        return e.toResponseEntity();
+    }
+
+        @ExceptionHandler(CannotCreateBookingException.class)
+        public ResponseEntity<String> handleCannotCreateBookingException(CannotCreateBookingException e) {
+        return e.toResponseEntity();
     }
 }
 

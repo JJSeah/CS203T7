@@ -1,0 +1,253 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UserService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.service</a>
+</div>
+
+<h1>Coverage Summary for Class: UserService (com.example.electric.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10.7%
+  </span>
+  <span class="absValue">
+    (3/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.service;
+&nbsp;
+&nbsp;import com.example.electric.model.Role;
+&nbsp;import com.example.electric.model.User;
+&nbsp;import com.example.electric.respository.UserRepository;
+&nbsp;import com.example.electric.service.inter.UserServiceInter;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+<b class="nc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class UserService implements UserServiceInter {
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private BCryptPasswordEncoder passwordEncoder;
+&nbsp;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * User Service Constructor
+&nbsp;     *
+&nbsp;     * Constructor for the UserService class, responsible for managing user-related operations.
+&nbsp;     *
+&nbsp;     * @param userRepository The repository for accessing and managing user data.
+&nbsp;     * @param passwordEncoder The BCrypt password encoder for secure password storage and validation.
+&nbsp;     */
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {</b>
+<b class="fc">&nbsp;        this.passwordEncoder = passwordEncoder;</b>
+<b class="fc">&nbsp;        this.userRepository = userRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get All Users
+&nbsp;     *
+&nbsp;     * Retrieves a list of all users in the system.
+&nbsp;     *
+&nbsp;     * @return A list of User objects representing all users.
+&nbsp;     */
+&nbsp;    public List&lt;User&gt; getAllUsers() {
+<b class="nc">&nbsp;        return userRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get User by ID
+&nbsp;     *
+&nbsp;     * Retrieves a user by their unique identifier (ID).
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the user to retrieve.
+&nbsp;     * @return The User object corresponding to the specified ID, or null if not found.
+&nbsp;     */
+&nbsp;
+&nbsp;    public User getUserById(Long id) {
+<b class="nc">&nbsp;        Optional&lt;User&gt; optionalUser = userRepository.findById(id);</b>
+<b class="nc">&nbsp;        return optionalUser.orElse(null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Create User
+&nbsp;     *
+&nbsp;     * Creates a new user by saving the provided user object to the database. It also encodes and secures the user&#39;s password.
+&nbsp;     *
+&nbsp;     * @param user The User object to be created.
+&nbsp;     * @return The newly created User object with updated information, including its unique identifier.
+&nbsp;     */
+&nbsp;    public User createUser(User user) {
+<b class="nc">&nbsp;        user.setPassword(passwordEncoder.encode(user.getPassword()));</b>
+<b class="nc">&nbsp;        user.setRole(Role.ROLE_USER);</b>
+<b class="nc">&nbsp;        return userRepository.save(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Update User
+&nbsp;     *
+&nbsp;     * Updates an existing user&#39;s information based on their unique identifier (ID).
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the user to be updated.
+&nbsp;     * @param updatedUser The updated User object with new information.
+&nbsp;     * @return The updated User object after applying the changes, or null if the user is not found.
+&nbsp;     */
+&nbsp;    public User updateUser(Long id, User updatedUser) {
+<b class="nc">&nbsp;        Optional&lt;User&gt; optionalUser = userRepository.findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (optionalUser.isPresent()) {</b>
+<b class="nc">&nbsp;            User user = optionalUser.get();</b>
+&nbsp;            // Update the user fields as needed
+<b class="nc">&nbsp;            if(updatedUser.getFirstName() != null) user.setFirstName(updatedUser.getFirstName());</b>
+<b class="nc">&nbsp;            if(updatedUser.getLastName() != null) user.setLastName(updatedUser.getLastName());</b>
+<b class="nc">&nbsp;            if(updatedUser.getUsernames() != null) user.setUsernames(updatedUser.getUsernames());</b>
+<b class="nc">&nbsp;            if(updatedUser.getEmail() != null) user.setEmail(updatedUser.getEmail());</b>
+<b class="nc">&nbsp;            if(updatedUser.getPassword() != null) user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));</b>
+<b class="nc">&nbsp;            if(updatedUser.getCars() != null) user.setCars(updatedUser.getCars());</b>
+<b class="nc">&nbsp;            if(updatedUser.getCard() != null) user.setCard(updatedUser.getCard());</b>
+<b class="nc">&nbsp;            return userRepository.save(user);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return null; // User not found</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Delete User
+&nbsp;     *
+&nbsp;     * Deletes a user from the database based on their unique identifier (ID).
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the user to be deleted.
+&nbsp;     */
+&nbsp;    public void deleteUser(Long id) {
+<b class="nc">&nbsp;        if (!userRepository.existsById(id)) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        userRepository.deleteById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get User by Email
+&nbsp;     *
+&nbsp;     * Retrieves a user by their email address.
+&nbsp;     *
+&nbsp;     * @param email The email address of the user to retrieve.
+&nbsp;     * @return The User object corresponding to the specified email, or null if not found.
+&nbsp;     */
+&nbsp;    public User getUserByEmail(String email) {  // check if user exists
+<b class="nc">&nbsp;        Optional&lt;User&gt; optionalUser = userRepository.findByEmail(email);</b>
+<b class="nc">&nbsp;        return optionalUser.orElse(null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Is Email Unique
+&nbsp;     *
+&nbsp;     * Checks if an email address is unique and not already associated with an existing user.
+&nbsp;     *
+&nbsp;     * @param email The email address to check for uniqueness.
+&nbsp;     * @return true if the email is unique, false if it already exists.
+&nbsp;     */
+&nbsp;
+&nbsp;    public boolean isEmailUnique(String email) {
+<b class="nc">&nbsp;        Optional&lt;User&gt; existinguser = userRepository.findByEmail(email);</b>
+<b class="nc">&nbsp;        return !existinguser.isPresent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

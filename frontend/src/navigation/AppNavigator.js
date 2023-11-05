@@ -4,6 +4,7 @@ import { UserContext } from '../model/User';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LogInScreen from '../view/LogInScreen';
+import PaymentScreen from '../view/MakePaymentScreen';
 import RegisterScreen from '../view/RegisterScreen';
 import HomeNavigator from './HomeNavigator';
 import AutomateBookingScreen from '../view/AutomateBookingScreen';
@@ -16,6 +17,14 @@ import GetHelpScreen from '../view/Settings/Settings Component/GetHelpScreen';
 import PrivacyPolicyScreen from '../view/Settings/Settings Component/PrivacyPolicyScreen';
 import AboutScreen from '../view/Settings/Settings Component/AboutScreen';
 import EditProfileScreen from '../view/Settings/Settings Component/EditProfileScreen';
+import ManualBookingScreen from '../view/ManualBooking/ManualBookingScreen';
+import UpcomingAppointmentView from '../view/UpcomingAppointmentView';
+import SelectStationScreen from '../view/ManualBooking/SelectStationScreen';
+import ChargingCarView from '../view/ChargingCarView';
+import HistoryScreen from '../view/HistoryScreen';
+import AddCardScreen from '../view/Settings/Settings Component/AddCardScreen';
+import MakePaymentScreen from '../view/MakePaymentScreen';
+import ReminderScreen from '../view/ReminderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,7 +50,7 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="RegisterScreen"
                         component={RegisterScreen}
-                        options={{headerShown:false}}
+                        // options={{headerShown:false}}
                     />
 
                 </Stack.Group>) :
@@ -61,19 +70,107 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="AutomateBookingScreen"
                         component={AutomateBookingScreen}
-                        // options={{headerShown:false}}
+                        options={{headerShown:false}}
                     />
-        
+
+                    <Stack.Screen
+                        name="ChargingCarView"
+                        component={ChargingCarView}
+                        options={{
+                            headerShown:true, 
+                            headerStyle: {
+                                backgroundColor: "#141414", 
+                            }, 
+                            headerTintColor: 'white', 
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                                color: 'white',
+                            },
+                            title: '', 
+                            
+                        }}
+                    />
+
+                    <Stack.Screen
+                        name="UpcomingAppointmentView"
+                        component={UpcomingAppointmentView}
+                        options={{headerShown:true}}
+                    />
+
+                    <Stack.Screen
+                        name="HistoryScreen"
+                        component={HistoryScreen}
+                        options={{
+                            headerShown: true, 
+                            headerStyle: {
+                                backgroundColor: "#141414",
+                                borderBottomWidth: 1,  
+                                borderColor: 'white', 
+                            }, 
+                            headerTitleStyle: {
+                                fontWeight: 'bold', 
+                                fontSize: 20, 
+                                fontFamily: 'Product-Sans-Regular'
+                            },
+                            headerTintColor: 'white', 
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                                color: 'white',
+                            },
+                            title: 'History', 
+                            
+                        }}
+                    />           
+
+                    <Stack.Group
+                        screenOptions={{presentation: 'modal'}}
+                    >
+                        <Stack.Screen name="AddCarScreen"
+                            component={AddCarScreen}
+                            options={{headerShown:false}}
+                        />
+
+                        <Stack.Screen name="SelectStationScreen"
+                            component={SelectStationScreen}
+                            options={{headerShown:false}}
+                        />
+                    </Stack.Group>
         
                     <Stack.Screen
-                        name="AddCarScreen"
-                        component={AddCarScreen}
-                        // options={{headerShown:false}}
+                            name="ManualBookingScreen"
+                            component={ManualBookingScreen}
+                            options={{headerShown:false}}
                     />
+        
 
                     <Stack.Screen
                         name="ProfileScreen"
                         component={ProfileScreen}
+                    />
+
+                    <Stack.Screen
+                        name="MakePaymentScreen"
+                        component={MakePaymentScreen}
+                        options={{
+                            headerShown: true, 
+                            headerStyle: {
+                                backgroundColor: "#141414",
+                                borderBottomWidth: 1,  
+                                borderColor: 'white', 
+                            }, 
+                            headerTitleStyle: {
+                                fontWeight: 'bold', 
+                                fontSize: 20, 
+                                fontFamily: 'Product-Sans-Regular'
+                            },
+                            headerTintColor: 'white', 
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                                color: 'white',
+                            },
+                            title: 'Confirm Payment', 
+                            
+                        }}
                     />
 
                     <Stack.Screen
@@ -110,6 +207,18 @@ export default AppStack = () => {
                         name="EditProfileScreen"
                         component={EditProfileScreen}
                     />
+
+                    <Stack.Screen
+                        name="AddCardScreen"
+                        component={AddCardScreen}
+                    />
+
+                    <Stack.Screen
+                        name="ReminderScreen"
+                        component={ReminderScreen}
+                        options={{headerShown:false}}
+                    />
+
 
                 </Stack.Group>)
             }

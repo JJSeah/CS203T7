@@ -1,6 +1,5 @@
 package com.example.electric.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,9 +30,12 @@ public class Station {
     private boolean avail;
 
     //link to charger
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany (mappedBy = "station", cascade = CascadeType.ALL)
     private List<Charger> chargers;
+
+    private Long chargerId;
+    private double chargingRate;
 
     public Station(long id, String name) {
         this.id = id;
@@ -45,6 +47,28 @@ public class Station {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public Station(Long stationId, Long chargerId, String name, double chargingRate, double latitude, double longitude, String address) {
+        this.id = stationId;
+        this.chargerId = chargerId;
+        this.name = name;
+        this.chargingRate = chargingRate;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
+    }
+
+    public Station(long l, String string, Object object, double d, double e, boolean b, Object object2) {
+        this.id = l;
+        this.name = string;
+        this.latitude = d;
+        this.longitude = e;
+        this.avail = b;
+        this.address = string;
+    }
+
+    public Station(String string) {
     }
 
     

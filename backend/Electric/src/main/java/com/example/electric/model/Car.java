@@ -33,10 +33,23 @@ public class Car {
     @JoinColumn(name="user_id")
     private User user;
 
+
     public Car(long id, String tesla, String modelS) {
         this.id = id;
         this.nickname = tesla;
         this.model = modelS;
+    }
+
+
+    public Car(String nickname, String model, String plate, int chargingRate, double batteryPercentage,
+            int batteryCapacity, User user) {
+        this.nickname = nickname;
+        this.model = model;
+        this.plate = plate;
+        this.chargingRate = chargingRate;
+        this.batteryPercentage = batteryPercentage;
+        this.batteryCapacity = batteryCapacity;
+        this.user = user;
     }
 
 }

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import {Button, Text, View, ScrollView, TextBase, StyleSheet, Image,} from "react-native";
+import {Button, Text, View, ScrollView, TextBase, StyleSheet, Image, Alert} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CustomLongButton from "../components/CustomLongButton";
@@ -20,12 +20,11 @@ import { emptyCarIcon } from "../../assets/images/index";
 
 export default HomeScreen = ({ navigation }) => {
   const {
-    addCarButtonPressed,
     manualBookingButtonPressed,
     automateBookingButtonPressed,
   } = HomeScreenViewController({ navigation });
 
-  const { userData, userCars, setCurrentCar, currentCar } =
+  const { userData, userCars, setCurrentCar, currentCar, allAppointments } =
     useContext(UserContext);
 
   const { loadCarsData } = CarRepository();
@@ -33,7 +32,7 @@ export default HomeScreen = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       if (userCars !== null) {
-        loadCarsData();
+        // loadCarsData();
       }
     }, [])
   );
@@ -53,7 +52,7 @@ export default HomeScreen = ({ navigation }) => {
             <Text style = {localStyles.subHeaderText}>
               {currentCar.nickname}
               </Text>
-              {/* <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text> */}
+              <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text>
           </>
         ) : (
           <>
@@ -106,8 +105,12 @@ export default HomeScreen = ({ navigation }) => {
         }
       </View>
 
+      <View>
+        <ScrollView>
+        </ScrollView>
+      </View>
+
       <View style={localStyles.bottomContainer}>
-        <CustomLongButton title="Add car" onPress={addCarButtonPressed} />
 
         <CustomLongButton
           title="Manual booking"
@@ -116,12 +119,18 @@ export default HomeScreen = ({ navigation }) => {
 
         <CustomLongButton
           title="Automate booking"
-          onPress={automateBookingButtonPressed}
+          onPress={() => {
+            automateBookingButtonPressed()
+          }}
         />
+
       </View>
     </SafeAreaView>
   );
 };
+
+
+
 
 const localStyles = StyleSheet.create({
   container: {

@@ -3,17 +3,15 @@ package com.example.electric.model.response;
 import com.example.electric.model.Car;
 import com.example.electric.model.Card;
 import com.example.electric.model.User;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.Optional;
 
 public class UserCarPaymentResponse {
     private User user;
 
     private List<Car> car;
 
-    private Optional<Card> card;
+    private List<Card> card;
 
     public UserCarPaymentResponse() {
 
@@ -35,14 +33,14 @@ public class UserCarPaymentResponse {
         this.car = car;
     }
 
-    public Optional<Card> getCard() {
+    public List<Card> getCard() {
         return card;
     }
 
-    public void setCard(Optional<Card> card) {
+    public void setCard(List <Card> card) {
         this.card = card;
     }
 
-    // Constructors, getters, setters
+
 }
 

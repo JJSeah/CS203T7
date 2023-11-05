@@ -1,0 +1,164 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > QRCodeGenerator</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.service</a>
+</div>
+
+<h1>Coverage Summary for Class: QRCodeGenerator (com.example.electric.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">QRCodeGenerator</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.service;
+&nbsp;
+&nbsp;import com.google.zxing.BarcodeFormat;
+&nbsp;import com.google.zxing.WriterException;
+&nbsp;import com.google.zxing.client.j2se.MatrixToImageWriter;
+&nbsp;import com.google.zxing.common.BitMatrix;
+&nbsp;import com.google.zxing.qrcode.QRCodeWriter;
+&nbsp;
+&nbsp;import java.io.ByteArrayOutputStream;
+&nbsp;import java.io.IOException;
+&nbsp;import java.nio.file.FileSystems;
+&nbsp;import java.nio.file.Path;
+&nbsp;
+<b class="nc">&nbsp;public class QRCodeGenerator {</b>
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Generate QR Code Image
+&nbsp;	 *
+&nbsp;	 * This method generates a QR code image from the provided text and saves it to the specified file path.
+&nbsp;	 *
+&nbsp;	 * @param text The text or data to encode in the QR code.
+&nbsp;	 * @param width The width of the QR code image in pixels.
+&nbsp;	 * @param height The height of the QR code image in pixels.
+&nbsp;	 * @param filePath The file path where the generated QR code image will be saved.
+&nbsp;	 * @throws WriterException If an error occurs during QR code generation.
+&nbsp;	 * @throws IOException If an error occurs while writing the QR code image to the file.
+&nbsp;	 */
+&nbsp;		public static void generateQRCodeImage(String text, int width, int height, String filePath)
+&nbsp;	            throws WriterException, IOException {
+<b class="nc">&nbsp;	        QRCodeWriter qrCodeWriter = new QRCodeWriter();</b>
+<b class="nc">&nbsp;	        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);</b>
+&nbsp;
+<b class="nc">&nbsp;	        Path path = FileSystems.getDefault().getPath(filePath);</b>
+<b class="nc">&nbsp;	        MatrixToImageWriter.writeToPath(bitMatrix, &quot;PNG&quot;, path);</b>
+&nbsp;	       
+&nbsp;	    }
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Get QR Code Image as Byte Array
+&nbsp;	 *
+&nbsp;	 * This method generates a QR code image from the provided text and returns it as a byte array.
+&nbsp;	 *
+&nbsp;	 * @param text The text or data to encode in the QR code.
+&nbsp;	 * @param width The width of the QR code image in pixels.
+&nbsp;	 * @param height The height of the QR code image in pixels.
+&nbsp;	 * @return A byte array containing the generated QR code image in PNG format.
+&nbsp;	 * @throws WriterException If an error occurs during QR code generation.
+&nbsp;	 * @throws IOException If an error occurs while converting the QR code image to a byte array.
+&nbsp;	 */
+&nbsp;		public static byte[] getQRCodeImage(String text, int width, int height) throws WriterException, IOException {
+<b class="nc">&nbsp;		    QRCodeWriter qrCodeWriter = new QRCodeWriter();</b>
+<b class="nc">&nbsp;		    BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);</b>
+&nbsp;		    
+<b class="nc">&nbsp;		    ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();</b>
+<b class="nc">&nbsp;		    MatrixToImageWriter.writeToStream(bitMatrix, &quot;PNG&quot;, pngOutputStream);</b>
+<b class="nc">&nbsp;		    byte[] pngData = pngOutputStream.toByteArray(); </b>
+<b class="nc">&nbsp;		    return pngData;</b>
+&nbsp;		}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

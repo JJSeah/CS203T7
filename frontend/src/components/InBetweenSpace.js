@@ -4,14 +4,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default InBetweenSpace = ( {title, value} ) => {
     return (
-        <View style = {styles.container}>
-            <Text style = {styles.titleText}>{title}</Text>
-            <Text style = {styles.valueText}>{value}</Text>
+        <View style = {localStyles.container}>
+            <Text style = {localStyles.subHeaderText}>{title}</Text>
+            <Text style = {localStyles.subHeaderText}>{value}</Text>
         </View>
     );
 }
 
-const styles = StyleSheet.create({
+const localStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -23,5 +23,11 @@ const styles = StyleSheet.create({
     },
     valueText: {
         fontSize: 16,
-    }
+    },
+    subHeaderText: {
+        fontFamily: "Product-Sans-Regular",
+        fontSize: 14,
+        color: "white",
+        marginBottom: 10,
+      },
 });

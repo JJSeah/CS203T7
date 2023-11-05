@@ -1,0 +1,276 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > StationService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.service</a>
+</div>
+
+<h1>Coverage Summary for Class: StationService (com.example.electric.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StationService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8.7%
+  </span>
+  <span class="absValue">
+    (2/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.service;
+&nbsp;
+&nbsp;import com.example.electric.model.Charger;
+&nbsp;import com.example.electric.model.Station;
+&nbsp;import com.example.electric.respository.StationRepository;
+&nbsp;import com.example.electric.service.inter.StationServiceInter;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalTime;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class StationService implements StationServiceInter {
+&nbsp;
+&nbsp;    private final StationRepository stationRepository;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Station Service Constructor
+&nbsp;     *
+&nbsp;     * Constructor for the StationService class, which is responsible for managing station-related operations.
+&nbsp;     *
+&nbsp;     * @param stationRepository The repository for accessing and managing station data.
+&nbsp;     */
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public StationService(StationRepository stationRepository) {</b>
+<b class="fc">&nbsp;        this.stationRepository = stationRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get All Stations
+&nbsp;     *
+&nbsp;     * Retrieves a list of all available stations in the system.
+&nbsp;     *
+&nbsp;     * @return A list of Station objects representing all available stations.
+&nbsp;     */
+&nbsp;    public List&lt;Station&gt; getAllStations() {
+<b class="nc">&nbsp;        return stationRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get Station by ID
+&nbsp;     *
+&nbsp;     * Retrieves a station by its unique identifier (ID).
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the station to retrieve.
+&nbsp;     * @return The Station object corresponding to the specified ID, or null if not found.
+&nbsp;     */
+&nbsp;    public Station getStationById(Long id) {
+<b class="nc">&nbsp;        Optional&lt;Station&gt; optionalStation = stationRepository.findById(id);</b>
+<b class="nc">&nbsp;        return optionalStation.orElse(null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get Station by Coordinates
+&nbsp;     *
+&nbsp;     * Retrieves a station based on its geographical coordinates (latitude and longitude).
+&nbsp;     *
+&nbsp;     * @param latitude The latitude coordinate of the station&#39;s location.
+&nbsp;     * @param longitude The longitude coordinate of the station&#39;s location.
+&nbsp;     * @return The Station object corresponding to the specified coordinates, or null if not found.
+&nbsp;     */
+&nbsp;    public Station getStationByCoordinate(double latitude, double longitude) {
+<b class="nc">&nbsp;        Optional&lt;Station&gt; optionalStation = stationRepository.findStationByLatitudeAndLongitude(latitude, longitude);</b>
+<b class="nc">&nbsp;        if (optionalStation.isPresent()) {</b>
+<b class="nc">&nbsp;            return optionalStation.get();</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;//        return optionalStation.orElse(null);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get Slowest and Available Charger
+&nbsp;     *
+&nbsp;     * Retrieves the slowest and available charger for a given station and time constraints.
+&nbsp;     *
+&nbsp;     * @param station The station for which the charger is to be selected.
+&nbsp;     * @param startTime The start time of the charging appointment.
+&nbsp;     * @param endTime The end time of the charging appointment.
+&nbsp;     * @param date The date of the charging appointment.
+&nbsp;     * @return The Charger object representing the selected charger, or null if no charger is available.
+&nbsp;     */
+&nbsp;
+&nbsp;    public Charger getSlowestAndAvailableCharger(Station station, LocalTime startTime,
+&nbsp;                                                 LocalTime endTime, LocalDate date) {
+<b class="nc">&nbsp;        return stationRepository.findSlowestAvailableChargerForStation(station, startTime, endTime, date);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//
+&nbsp;//    public Charger getSlowestAndAvailableCharger(Station station) {
+&nbsp;//        List&lt;Charger&gt; chargerList = station.getChargers();
+&nbsp;//
+&nbsp;//        Charger result = null;
+&nbsp;//        double slowestChargingRate = Double.MAX_VALUE;
+&nbsp;//
+&nbsp;//        for (Charger charger : chargerList) {
+&nbsp;//            if (charger.getChargingRate() &lt; slowestChargingRate) {
+&nbsp;//                slowestChargingRate = charger.getChargingRate();
+&nbsp;//                result = charger;
+&nbsp;//            }
+&nbsp;//        }
+&nbsp;//
+&nbsp;//        return result;
+&nbsp;//    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Create Station
+&nbsp;     *
+&nbsp;     * Creates a new station by saving the provided station object to the database.
+&nbsp;     *
+&nbsp;     * @param station The Station object to be created.
+&nbsp;     * @return The newly created Station object with updated information, including its unique identifier.
+&nbsp;     */
+&nbsp;    public Station createStation(Station station) {
+<b class="nc">&nbsp;        return stationRepository.save(station);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Update Station
+&nbsp;     *
+&nbsp;     * Updates an existing station&#39;s information based on its unique identifier.
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the station to be updated.
+&nbsp;     * @param updatedStation The updated Station object with new information.
+&nbsp;     * @return The updated Station object after applying the changes, or null if the station is not found.
+&nbsp;     */
+&nbsp;
+&nbsp;    public Station updateStation(Long id, Station updatedStation) {
+<b class="nc">&nbsp;        Optional&lt;Station&gt; optionalStation = stationRepository.findById(id);</b>
+<b class="nc">&nbsp;        if (optionalStation.isPresent()) {</b>
+<b class="nc">&nbsp;            Station station = optionalStation.get();</b>
+&nbsp;    
+&nbsp;            // Update the station fields only if they are not null or have non-default values
+<b class="nc">&nbsp;            if (updatedStation.getName() != null) station.setName(updatedStation.getName());</b>
+<b class="nc">&nbsp;            if (updatedStation.getLatitude() != 0.0) station.setLongitude(updatedStation.getLongitude());</b>
+<b class="nc">&nbsp;            if (updatedStation.getChargers() != null) station.setChargers(updatedStation.getChargers());</b>
+<b class="nc">&nbsp;            if (updatedStation.isAvail() != false) station.setAvail(updatedStation.isAvail());</b>
+&nbsp;            
+&nbsp;            // Save the updated station entity
+<b class="nc">&nbsp;            return stationRepository.save(station);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return null; // Station not found</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Delete Station
+&nbsp;     *
+&nbsp;     * Deletes a station from the database based on its unique identifier.
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the station to be deleted.
+&nbsp;     */
+&nbsp;    public void deleteStation(Long id) {
+<b class="nc">&nbsp;        stationRepository.deleteById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get Station by Name
+&nbsp;     *
+&nbsp;     * Retrieves a station by its name.
+&nbsp;     *
+&nbsp;     * @param name The name of the station to retrieve.
+&nbsp;     * @return The Station object corresponding to the specified name, or null if not found.
+&nbsp;     */
+&nbsp;    public Station getStationByName(String name) {
+<b class="nc">&nbsp;        Optional&lt;Station&gt; optionalStation = stationRepository.findStationByName(name);</b>
+<b class="nc">&nbsp;        return optionalStation.orElse(null);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

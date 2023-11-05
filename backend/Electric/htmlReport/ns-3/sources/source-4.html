@@ -1,0 +1,266 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CardController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.electric.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: CardController (com.example.electric.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CardController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3.3%
+  </span>
+  <span class="absValue">
+    (1/30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.electric.controller;
+&nbsp;
+&nbsp;import com.example.electric.error.ErrorCode;
+&nbsp;import com.example.electric.exception.ObjectNotFoundException;
+&nbsp;import com.example.electric.model.Card;
+&nbsp;import com.example.electric.model.User;
+&nbsp;import com.example.electric.service.CardService;
+&nbsp;import com.example.electric.service.UserService;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.client.RestTemplate;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;api/card&quot;)
+<b class="fc">&nbsp;public class CardController {</b>
+&nbsp;    @Autowired
+&nbsp;    private CardService cardService;
+&nbsp;    @Autowired
+&nbsp;    private UserService userService;
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/status&quot;)
+&nbsp;    public String status() {
+<b class="nc">&nbsp;        String URL = &quot;http://3.26.230.241:9090/payment/status&quot;;</b>
+<b class="nc">&nbsp;        String obj=  new RestTemplate().getForObject(URL, String.class);</b>
+<b class="nc">&nbsp;        return obj;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Payment Details with Card Details
+&nbsp;     * @param id -&gt; user id
+&nbsp;     * @param orderValue -&gt; cost
+&nbsp;     * @return -&gt; transaction id
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/process/{id}/{orderValue}/{cardId}&quot;)
+&nbsp;    public String process(@PathVariable(&quot;id&quot;) long id, @PathVariable(&quot;orderValue&quot;) double orderValue, @PathVariable(&quot;cardId&quot;) long cardId) {
+<b class="nc">&nbsp;        if (!cardService.getCardById(id).isPresent()) {</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return cardService.processPayment(id,orderValue,cardId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a list of all available cards from the database.
+&nbsp;     *
+&nbsp;     * This endpoint returns a list of all cards currently stored in the system.
+&nbsp;     * If no cards are available, an empty list will be returned.
+&nbsp;     *
+&nbsp;     * @return A list of cards, which may be empty if no cards are found.
+&nbsp;     */
+&nbsp;    @GetMapping
+&nbsp;    @Operation(summary = &quot;Get All Cards&quot;, description = &quot;Get All Cards&quot;,tags = {&quot;Card&quot;})
+&nbsp;    public List&lt;Card&gt; getAllCards() {
+<b class="nc">&nbsp;        return cardService.getAllCards();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieve a card by its unique identifier.
+&nbsp;     *
+&nbsp;     * This endpoint retrieves a card from the system based on its unique identifier (ID).
+&nbsp;     * If a card with the specified ID is not found, it will result in an ObjectNotFoundException.
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the card to retrieve.
+&nbsp;     * @return An Optional containing the retrieved card, or an empty Optional if the card is not found.
+&nbsp;     * @throws ObjectNotFoundException If no card with the given ID is found.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    @Operation(summary = &quot;Get Card&quot;, description = &quot;Get Card using ID&quot;,tags = {&quot;Card&quot;})
+&nbsp;    public Optional&lt;Card&gt; getCardById(@PathVariable(&quot;id&quot;) long id) {
+<b class="nc">&nbsp;        if (!cardService.getCardById(id).isPresent()) {</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return cardService.getCardById(id);</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Retrieve a card owned by a specific user.
+&nbsp;     *
+&nbsp;     * This endpoint retrieves a card that is owned by a user with the specified user ID.
+&nbsp;     * If a card owned by the user is not found, an empty Optional will be returned.
+&nbsp;     *
+&nbsp;     * @param userId The unique identifier of the user who owns the card.
+&nbsp;     * @return An Optional containing the card owned by the user, or an empty Optional if not found.
+&nbsp;     */
+&nbsp;    @GetMapping(&quot;/user/{userId}&quot;)
+&nbsp;    @Operation(summary = &quot;Get User&#39;s Card&quot;, description = &quot;Get a list of User&#39;s Card from UserID&quot;,tags = {&quot;Card&quot;})
+&nbsp;    public List&lt;Card&gt; getCardByUser(@PathVariable(&quot;userId&quot;) long userId) {
+<b class="nc">&nbsp;        return cardService.getCardByUserId(userId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Add a new card to the system.
+&nbsp;     *
+&nbsp;     * This endpoint allows the addition of a new card to the system. The provided card object
+&nbsp;     * should contain the necessary details for creating the card. Upon successful addition,
+&nbsp;     * the newly created card is returned.
+&nbsp;     *
+&nbsp;     * @param card The card object to be added.
+&nbsp;     * @return The newly created card.
+&nbsp;     */
+&nbsp;    @PostMapping(&quot;/add/{userId}&quot;)
+&nbsp;    @Operation(summary = &quot;Add Card&quot;, description = &quot;Add Card using ID&quot;,tags = {&quot;Card&quot;})
+&nbsp;    public Card addCard(@PathVariable(&quot;userId&quot;) long userId,@RequestBody Card card) {
+<b class="nc">&nbsp;        if(card.getNumber().length() != 16){</b>
+<b class="nc">&nbsp;            System.out.println(card.getExpiry());</b>
+<b class="nc">&nbsp;            System.out.println(java.sql.Date.valueOf(LocalDate.now()));</b>
+<b class="nc">&nbsp;            System.out.println(card.getExpiry().after(java.sql.Date.valueOf(LocalDate.now())));</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        User user = userService.getUserById(userId);</b>
+<b class="nc">&nbsp;        if (user == null) {</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        card.setUser(user);</b>
+<b class="nc">&nbsp;        return cardService.addCard(card);</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Update an existing card with the provided information.
+&nbsp;     *
+&nbsp;     * This endpoint allows the update of an existing card identified by its unique identifier (ID).
+&nbsp;     * The provided card object should contain the updated details for the card. If a card with
+&nbsp;     * the specified ID is not found, it will result in an ObjectNotFoundException.
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the card to update.
+&nbsp;     * @param card The updated card object containing new information.
+&nbsp;     * @return The updated card.
+&nbsp;     * @throws ObjectNotFoundException If no card with the given ID is found.
+&nbsp;     */
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    @Operation(summary = &quot;Update Card&quot;, description = &quot;Update Card using ID&quot;,tags = {&quot;Card&quot;})
+&nbsp;    public Card updateCard(@RequestBody Card card, long id) {
+<b class="nc">&nbsp;        if (!cardService.getCardById(id).isPresent()) {</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if(card.getNumber().length() != 16 || card.getExpiry().before(java.sql.Date.valueOf(LocalDate.now()))){</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return cardService.updateCard(card, id);</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Delete a card by its unique identifier.
+&nbsp;     *
+&nbsp;     * This endpoint allows the deletion of a card from the system based on its unique identifier (ID).
+&nbsp;     * If a card with the specified ID is not found, it will result in an ObjectNotFoundException.
+&nbsp;     *
+&nbsp;     * @param id The unique identifier of the card to delete.
+&nbsp;     * @throws ObjectNotFoundException If no card with the given ID is found.
+&nbsp;     */
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @Operation(summary = &quot;Delete Card&quot;, description = &quot;Delete Card using ID&quot;,tags = {&quot;Card&quot;})
+&nbsp;    public void deleteCard(@PathVariable(&quot;id&quot;) long id) {
+<b class="nc">&nbsp;        if (!cardService.getCardById(id).isPresent()) {</b>
+<b class="nc">&nbsp;            throw new ObjectNotFoundException(ErrorCode.E1002);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        cardService.deleteCard(id);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-10-30 13:31</div>
+</div>
+</body>
+</html>

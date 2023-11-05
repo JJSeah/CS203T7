@@ -3,11 +3,15 @@ package com.example.electric.controller;
 import com.example.electric.error.ErrorCode;
 import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Card;
+import com.example.electric.model.User;
 import com.example.electric.service.CardService;
+import com.example.electric.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +20,31 @@ import java.util.Optional;
 public class CardController {
     @Autowired
     private CardService cardService;
+    @Autowired
+    private UserService userService;
+
+
+    @GetMapping("/status")
+    public String status() {
+        String URL = "http://3.26.230.241:9090/payment/status";
+        String obj=  new RestTemplate().getForObject(URL, String.class);
+        return obj;
+    }
+
+    /**
+     * Payment Details with Card Details
+     * @param id -> user id
+     * @param orderValue -> cost
+     * @return -> transaction id
+     */
+    @GetMapping("/process/{id}/{orderValue}/{cardId}")
+    public String process(@PathVariable("id") long id, @PathVariable("orderValue") double orderValue, @PathVariable("cardId") long cardId) {
+        if (!cardService.getCardById(cardId).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        return cardService.processPayment(id,orderValue,cardId);
+    }
+
 
     /**
      * Retrieves a list of all available cards from the database.
@@ -60,10 +89,11 @@ public class CardController {
      */
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get User's Card", description = "Get a list of User's Card from UserID",tags = {"Card"})
-    public Optional<Card> getCardByUser(@PathVariable("userId") long userId) {
-        if (!cardService.getCardById(userId).isPresent()) {
+    public List<Card> getCardByUser(@PathVariable("userId") long userId) {
+        if (userService.getUserById(userId) == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
+
         return cardService.getCardByUserId(userId);
     }
 
@@ -77,9 +107,22 @@ public class CardController {
      * @param card The card object to be added.
      * @return The newly created card.
      */
-    @PostMapping
+    @PostMapping("/add/{userId}")
     @Operation(summary = "Add Card", description = "Add Card using ID",tags = {"Card"})
-    public Card addCard(@RequestBody Card card) {
+    public Card addCard(@PathVariable("userId") long userId,@RequestBody Card card) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+
+        if(card.getNumber().length() != 16){
+            System.out.println(card.getExpiry());
+            System.out.println(java.sql.Date.valueOf(LocalDate.now()));
+            System.out.println(card.getExpiry().after(java.sql.Date.valueOf(LocalDate.now())));
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+
+        card.setUser(user);
         return cardService.addCard(card);
     }
     /**
@@ -98,6 +141,9 @@ public class CardController {
     @Operation(summary = "Update Card", description = "Update Card using ID",tags = {"Card"})
     public Card updateCard(@RequestBody Card card, long id) {
         if (!cardService.getCardById(id).isPresent()) {
+            throw new ObjectNotFoundException(ErrorCode.E1002);
+        }
+        if(card.getNumber().length() != 16 || card.getExpiry().before(java.sql.Date.valueOf(LocalDate.now()))){
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
         return cardService.updateCard(card, id);

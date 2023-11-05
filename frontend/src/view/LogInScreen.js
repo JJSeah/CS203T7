@@ -99,13 +99,13 @@ export default LogInScreen = ({ navigation }) => {
         />
       </View>
 
-      {/* <Button
+      <Button
         title="Load fake data"
         onPress={() => {
-          setEmail("Leong123@gmail.com");
-          setPassword("Leong123@gmail.com!");
+          setEmail("justin@gmail.com");
+          setPassword("Justin123!!!");
         }}
-      />  */}
+      /> 
 
 
       </View>

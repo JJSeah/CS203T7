@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // Right arrow to the right
   },
   itemText: {
+    fontFamily: "Product-Sans-Regular",
     fontSize: 18,
     flex: 1,
     marginRight: 16, // icon and text spacing

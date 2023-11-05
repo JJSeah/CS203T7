@@ -27,6 +27,7 @@ export const CarRepository = () => {
         }
       )
       .then((res) => {
+        loadCarsData()
         console.log(res.data)
         navigation.pop()
       })
@@ -38,12 +39,14 @@ export const CarRepository = () => {
   const loadCarsData = async () => {
     let url = `${BASE_URL}/api/car/user/${userId}`;
 
-    setUserCars([{nickname: "dummy"}])
+    setUserCars(null)
 
     axios
       .get(url)
       .then((res) => {
         let data = res.data;
+
+        data = data.reverse();
 
         setUserCars(data);
 
@@ -58,6 +61,18 @@ export const CarRepository = () => {
       });
   };
 
+  // delete car method
+  const deleteCar = async( id ) => {
+    let url = `${BASE_URL}/api/car/${id}`;
+    axios.delete(url)
+    .then(() => {
+      loadCarsData()
+      console.log("succesfully deleted a car");
+    })
+    .catch((e) => {
+      console.log(`Error deleting car ${e}`);
+    });
+};
 
-  return { addCarToBackend, loadCarsData };
+  return { addCarToBackend, loadCarsData, deleteCar };
 };

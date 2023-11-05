@@ -15,9 +15,10 @@ export default ProfileScreen = ( { navigation } ) => {
       editProfileButtonPressed, } = SettingsScreenViewController( { navigation } );
 
   return (
-    <View>
+    <View style = {localStyles.container}>
 
       {/* Username can't be edited */}
+      <View style = {localStyles.informationContainer}>
 
       <InBetweenSpace
       title="Username"
@@ -39,14 +40,37 @@ export default ProfileScreen = ( { navigation } ) => {
       value={userData.email}
       />
 
+      <InBetweenSpace
+      title="userID"
+      value={userData.id}
+      />
+      </View>
+
+      <View style = {localStyles.buttonContainer}>
+
         <CustomLongButton
           title="Edit"
           onPress={editProfileButtonPressed}
-        />
+          />
+          </View>
 
     </View>
   );
 }
+
+const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#141414",
+  },
+  informationContainer: {
+    flex: 9,
+    backgroundColor: "blue",
+  },
+  buttonContainer: {
+    flex: 1,
+  },
+});
 
 
 

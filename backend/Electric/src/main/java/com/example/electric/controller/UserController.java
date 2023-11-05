@@ -12,11 +12,8 @@ import com.example.electric.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -65,7 +62,7 @@ public class UserController {
     public UserCarPaymentResponse getUserInfo(@PathVariable Long id) {
         User user = userService.getUserById(id);
         List<Car> car = carService.getAllCarsByUser(id);
-        Optional<Card> card = cardService.getCardByUserId(id);
+        List<Card> card = cardService.getCardByUserId(id);
 
         if (user == null) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
@@ -78,14 +75,6 @@ public class UserController {
 
         return response;
     }
-
-//    @GetMapping("/{id}")
-//    public User getUserById(@PathVariable Long id) {
-//        if (userService.getUserById(id) == null) {
-//            throw new ObjectNotFoundException(ErrorCode.E1002);
-//        }
-//        return userService.getUserById(id);
-//    }
 
     @PostMapping("/")
     public User createUser(@RequestBody User user) {
@@ -103,7 +92,7 @@ public class UserController {
      * @param id The unique identifier of the user to update.
      * @param updatedUser The updated user object containing new information.
      * @return The updated user.
-     * @throws ObjectNotFoundException If no user with the given ID is found.
+     * @throws ObjectNotFoundException If no users with the given ID is found.
      */
     @PutMapping("/{id}")
     @Operation(summary = "Update User", description = "Update User by ID",tags = {"User"})

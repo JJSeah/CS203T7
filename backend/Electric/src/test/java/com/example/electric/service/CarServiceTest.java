@@ -92,8 +92,9 @@ class CarServiceTest {
 
     @Test
     public void testAddCar() {
-        Car carToAdd = new Car();
-        when(carRepository.save(carToAdd)).thenReturn(carToAdd);
+        long carId = 1L;
+        Car carToAdd = new Car(carId, "Tesla", "Model S");
+        when(carRepository.save(carToAdd)).thenReturn(new Car(carId, "Tesla", "Model S"));
 
         Car result = carService.addCar(carToAdd);
 
@@ -104,29 +105,38 @@ class CarServiceTest {
     @Test
     public void testUpdateCar() {
         long carId = 1L;
-        Car updatedCar = new Car();
-        updatedCar.setId(carId);
-        when(carRepository.existsById(carId)).thenReturn(true);
-        when(carRepository.save(updatedCar)).thenReturn(updatedCar);
+        Car newCar = new Car(carId, "Tesla", "Model S");
 
-        Car result = carService.updateCar(updatedCar, carId);
+        when(carRepository.findById(carId)).thenReturn(Optional.of(newCar));
 
-        verify(carRepository, times(1)).existsById(carId);
-        verify(carRepository, times(1)).save(updatedCar);
-        assertSame(updatedCar, result);
+        newCar.setModel("Model X");
+        Car result = carService.updateCar(newCar, carId);
+
+        verify(carRepository, times(1)).save(newCar);
+
+        assertEquals(newCar.getModel(), result.getModel());
+
     }
 
     @Test
     public void testUpdateCarNonExistent() {
-        long carId = 1L;
+        // Create a sample card for testing
+        long nonExistentCarId = 999L;
+
+        // Mock the repository's findById method for a non-existent card
+        when(carRepository.findById(nonExistentCarId)).thenReturn(Optional.empty());
+
+        // Call the updateCard method with a card that doesn't exist
         Car updatedCar = new Car();
-        updatedCar.setId(carId);
-        when(carRepository.existsById(carId)).thenReturn(false);
+        updatedCar.setModel("Updated Model");
 
-        Car result = carService.updateCar(updatedCar, carId);
+        // Invoke the updateCard method
+        Car result = carService.updateCar(updatedCar, nonExistentCarId);
 
-        verify(carRepository, times(1)).existsById(carId);
+        // Verify that the repository's save method is not called
         verify(carRepository, never()).save(updatedCar);
+
+        // Check if the result is null as the card doesn't exist
         assertNull(result);
     }
 

@@ -1,6 +1,6 @@
 package com.example.electric.auth;
 
-import com.example.electric.service.UserServiceImpl;
+import com.example.electric.service.inter.UserServiceDetailsInter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 public class SecurityConfig  {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final UserServiceImpl userService;
+    private final UserServiceDetailsInter userService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -37,6 +37,8 @@ public class SecurityConfig  {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
