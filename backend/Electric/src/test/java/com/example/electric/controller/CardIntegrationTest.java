@@ -45,12 +45,14 @@ public class CardIntegrationTest {
 
     private String generateBearerToken(Map<String, Object> extraClaims) {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
-        String token = Jwts.builder().setClaims(extraClaims).setSubject("ex@example.com")
+        String token = Jwts.builder().setClaims(extraClaims).setSubject("justin@gmail.com")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(Keys.hmacShaKeyFor(keyBytes), SignatureAlgorithm.HS256).compact();
         return "Bearer " + token;
     }
+
+    
 
     @Test
     public void testStatusEndpoint() {
@@ -60,7 +62,7 @@ public class CardIntegrationTest {
         // Set up the request headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(token);
+       headers.setBearerAuth(token);
 
         // Set up the request entity
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
