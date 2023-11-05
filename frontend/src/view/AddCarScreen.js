@@ -24,16 +24,24 @@ export default AddCarScreen = ({ navigation }) => {
     setCarPlate,
     isSingaporeCarPlateNumber,
     setValidInput,
-    validInput
+    validInput,
+    setCarPlateMessage,
+    carPlateMessage
   } = AddCarScreenViewController({ navigation });
 
 
   useEffect(() => {
+    
+    if (isSingaporeCarPlateNumber(carPlate)) {
+      setCarPlateMessage("")
+    } else {
+      setCarPlateMessage("Incorrect format for car plate number")
+    }
 
     if (isSingaporeCarPlateNumber(carPlate) && model !== "" && nickname !== "") {
       setValidInput(true)
       return;
-    }
+    } 
 
     setValidInput(false)
   }, [carPlate, model, nickname]);
@@ -85,6 +93,20 @@ export default AddCarScreen = ({ navigation }) => {
                 placeholder="Car Plate"
                 onChangeText={setCarPlate}
               />
+
+              <View
+              >
+              {
+                carPlateMessage === "" ? 
+                <></> :
+                <View
+                >
+                  <Text
+                    style={{color:"grey"}} 
+                  >{carPlateMessage}</Text>
+                </View>
+              }
+              </View>
             </View>
 
             <View>

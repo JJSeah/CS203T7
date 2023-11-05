@@ -6,7 +6,7 @@ import {
   Alert,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { UserContext } from "..//../model/User";
 import ManualBookingScreenViewController from "../../viewController/ManualBookingScreenViewController";
@@ -16,6 +16,7 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import ReminderScreen from "../ReminderScreen";
 import FontLoader from "../../constants/FontLoader";
 import * as SplashScreen from "expo-splash-screen";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -129,32 +130,27 @@ export default ManualBookingScreen = ({ navigation }) => {
                   padding: 10,
                 }}
               >
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingHorizontal: 10,
-                  }}
-                >
+                <View style={{ paddingLeft: 10 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.pop();
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="arrow-left"
+                      size={25}
+                      color="teal"
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                <View>
                   <Text style={localStyles.label3}>
-                    Current time: {currentDate.toLocaleTimeString()}
+                    Car: {currentCar.nickname}
                   </Text>
                 </View>
 
-                <View
-                  style={{paddingEnd: 10}} 
-                >
-                  <TouchableOpacity
-                  onPress={() => {navigation.pop()}} 
-                  >
-                    <Text
-                    style={localStyles.label4} 
-                    >
-                      Return
-                    </Text>
-
-                  </TouchableOpacity>
-                </View>
+                <View></View>
               </View>
 
               <View
@@ -175,52 +171,45 @@ export default ManualBookingScreen = ({ navigation }) => {
                     alignItems: "center",
                   }}
                 >
-                  <View>
-                    <Text style={localStyles.label}>
-                      Hours: {diffHours(bookingStartTime, bookingEndTime)}
-                    </Text>
-                  </View>
-
-                  <View>
-                    <Text style={localStyles.label}>
-                      Minutes: {diffMinutes(bookingStartTime, bookingEndTime)}
-                    </Text>
-                  </View>
-
-                  <View>
+                  {/* <View>
                     <Text style={localStyles.label}>
                       Car: {currentCar.nickname}
                     </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    padding: 10,
-                  }}
-                >
+                  </View> */}
                   <View
                     style={{
                       alignItems: "center",
                       justifyContent: "center",
-                      paddingHorizontal: 10
                     }}
                   >
                     <Text style={localStyles.label2}>Booking date</Text>
                   </View>
+                  <View>
+                    <RNDateTimePicker
+                      display="calendar"
+                      value={bookingStartTime}
+                      onChange={onChangeDate}
+                      minimumDate={currentDate}
+                      maximumDate={maxDate}
+                      themeVariant="dark"
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flex: 2,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingHorizontal: 20,
+                  }}
+                >
                   <View
-                    style={{paddingHorizontal: 10, paddingTop: 12}}
                   >
-                  <RNDateTimePicker
-                    display="calendar"
-                    value={bookingStartTime}
-                    onChange={onChangeDate}
-                    minimumDate={currentDate}
-                    maximumDate={maxDate}
-                    themeVariant="dark"
-                  />
+                    <Text style={localStyles.label}>
+                      Duration: {diffHours(bookingStartTime, bookingEndTime)}{" "}
+                      hour {diffMinutes(bookingStartTime, bookingEndTime)} min
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -229,7 +218,7 @@ export default ManualBookingScreen = ({ navigation }) => {
             <View
               style={{
                 flex: 8,
-                padding: 10,
+                paddingHorizontal: 10,
               }}
             >
               <View
@@ -248,7 +237,7 @@ export default ManualBookingScreen = ({ navigation }) => {
                 </View>
                 <RNDateTimePicker
                   mode="time"
-                  display="spinner"
+                  display="spinner" 
                   value={bookingStartTime}
                   minimumDate={currentDate}
                   onChange={onChangeStartTime}
@@ -343,9 +332,8 @@ const localStyles = StyleSheet.create({
     fontWeight: "bold",
   },
   label3: {
-    textDecorationLine: "underline",
     color: "teal",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
   },
   label4: {

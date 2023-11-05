@@ -121,7 +121,7 @@ export default ActivityScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
               {ongoingAppointment.length === 0 ? (
                 <View style={activityStyles.centeredContainer}>
-                  <Text>No activity at the moment</Text>
+                  <Text style={activityStyles.text}>No Ongoing Appointment</Text>
                 </View>
               ) : (
                 
@@ -198,7 +198,7 @@ export default ActivityScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
               {upcomingAppointment.length === 0 ? (
                 <View style={activityStyles.centeredContainer}>
-                  <Text>No upcoming appointment</Text>
+                  <Text style={activityStyles.text}>No Upcoming Appointment</Text>
                 </View>
               ) : (
                 <View>
@@ -247,16 +247,19 @@ export default ActivityScreen = ({ navigation }) => {
                  
                       </View>
                         
-                        <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                        {/* <View style={{flexDirection: 'column', alignItems: 'center'}}> */}
+                          <View style={{marginRight: 25, marginBottom: 93}}>
                           <MaterialCommunityIcons
                             name="qrcode-scan"
-                            size={35}
+                            size={40}
                             color="white"
-                            style={activityStyles.icon}
+                            // style={activityStyles.icon}
                             onPress={() => {
                               scanQRButtonPressed(item);
                             }}
                           />
+                          </View>
+                          <View style={{position: 'absolute', bottom: 10, right: 2}}>
                           <Button
                             title="CANCEL"
                             color="red"
@@ -264,6 +267,7 @@ export default ActivityScreen = ({ navigation }) => {
                               cancelButtonPressed(item);
                             }}
                           />
+                          {/* </View> */}
                         </View>
                       </View>
                     )}
@@ -282,6 +286,12 @@ const activityStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#141414'
+  },
+  text:{
+    color: 'white',
+    fontWeight: "bold",
+    fontSize: 16,
+    fontFamily: "Product-Sans-Regular",
   },
   historyButton:{
     borderWidth: 1,         
@@ -378,10 +388,6 @@ const activityStyles = StyleSheet.create({
   },
   icon: {
     marginBottom: 10,
-    shadowColor: 'grey',
-    shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
   },
   iconAndButton: {
     flexDirection: "column",

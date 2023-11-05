@@ -72,7 +72,8 @@ export default AddCarScreenViewController = ( { navigation } ) => {
         CarModelsData,
         dropdownSelectListPressed,
         isSingaporeCarPlateNumber,
-        validInput, setValidInput
+        validInput, setValidInput,
+        carPlateMessage, setCarPlateMessage
     };
 
 }
