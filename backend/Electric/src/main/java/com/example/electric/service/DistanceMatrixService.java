@@ -152,7 +152,7 @@ public class DistanceMatrixService implements DistanceMatrixServiceInter {
         double chargingCostRate = 10;
 
         //Calculate cost
-        return chargingCostRate * timeOfChargingInHour;
+        return (chargingCostRate * timeOfChargingInHour)+0.50;
     }
 
 //    public long getDistanceByName(String latitude,String longitude, String station2) throws Exception {
