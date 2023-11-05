@@ -145,16 +145,12 @@ export default ManualBookingScreen = ({ navigation }) => {
                 </View>
 
                 <View>
-                    <Text
-                      style={localStyles.label3}
-                    >
-                     Car: {currentCar.nickname}
-                    </Text>
+                  <Text style={localStyles.label3}>
+                    Car: {currentCar.nickname}
+                  </Text>
                 </View>
 
-                <View>
-
-                </View>
+                <View></View>
               </View>
 
               <View
@@ -180,31 +176,15 @@ export default ManualBookingScreen = ({ navigation }) => {
                       Car: {currentCar.nickname}
                     </Text>
                   </View> */}
-                  <View>
-                    <Text style={localStyles.label}>
-                      Duration: {diffHours(bookingStartTime, bookingEndTime)}{" "}
-                      hour {diffMinutes(bookingStartTime, bookingEndTime)} min
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    padding: 10,
-                  }}
-                >
                   <View
                     style={{
                       alignItems: "center",
                       justifyContent: "center",
-                      paddingHorizontal: 10,
                     }}
                   >
                     <Text style={localStyles.label2}>Booking date</Text>
                   </View>
-                  <View style={{ paddingHorizontal: 10, paddingTop: 12 }}>
+                  <View>
                     <RNDateTimePicker
                       display="calendar"
                       value={bookingStartTime}
@@ -215,13 +195,30 @@ export default ManualBookingScreen = ({ navigation }) => {
                     />
                   </View>
                 </View>
+                <View
+                  style={{
+                    flex: 2,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingHorizontal: 20,
+                  }}
+                >
+                  <View
+                  >
+                    <Text style={localStyles.label}>
+                      Duration: {diffHours(bookingStartTime, bookingEndTime)}{" "}
+                      hour {diffMinutes(bookingStartTime, bookingEndTime)} min
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
 
             <View
               style={{
                 flex: 8,
-                padding: 10,
+                paddingHorizontal: 10,
               }}
             >
               <View
@@ -240,7 +237,7 @@ export default ManualBookingScreen = ({ navigation }) => {
                 </View>
                 <RNDateTimePicker
                   mode="time"
-                  display="spinner"
+                  display="spinner" 
                   value={bookingStartTime}
                   minimumDate={currentDate}
                   onChange={onChangeStartTime}
