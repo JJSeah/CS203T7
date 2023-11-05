@@ -72,7 +72,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
     <View style={styles.container}>
       <View
         style={{
-          flex: 2,
+          flex: 1.5,
           // backgroundColor: "red",
           justifyContent: "flex-end",
           alignItems: "center",
@@ -81,9 +81,9 @@ export default UpcomingAppointmentView = ({ navigation }) => {
         <View
           style={{justifyContent: "center", alignItems: "center"}} 
         >
-          <View>
-          <Text style={styles.text}>Go to charger {appt.charger.id}</Text>
-          </View>
+          {/* <View>
+          <Text style={styles.text}>Go to Charger {appt.charger.id}</Text>
+          </View> */}
           <Text style={styles.text}>Scan the barcode to start charging</Text>
         </View>
         <View style={styles.cameraContainer}>
@@ -109,7 +109,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
           />
         </View>
 
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={{flex: 1, flexDirection: "row" }}>
           <CustomLongButton
             title="Scan (Incorrect charger)"
             onPress={() => {
