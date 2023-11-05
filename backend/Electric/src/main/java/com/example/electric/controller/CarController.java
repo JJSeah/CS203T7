@@ -8,8 +8,6 @@ import com.example.electric.service.CarService;
 import com.example.electric.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -145,16 +143,17 @@ public class CarController {
      * ID is not found, it will result in an ObjectNotFoundException.
      *
      * @param id         The unique identifier of the car to update.
-     * @param updatedCar The updated car object containing the new battery percentage.
      * @throws ObjectNotFoundException If no car with the given ID is found.
      */
+
+
     @PutMapping("/battery/{id}")
     @Operation(summary = "Update Car Battery ", description = "Update Car Battery using ID", tags = { "Car" })
-    public void updateCarBattery(@PathVariable("id") long id,@RequestBody Car updatedCar) {
+    public void updateCarBattery(@PathVariable("id") long id) {
         if (!carService.getCarById(id).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);
         }
-        carService.updateCarBattery(id, updatedCar);
+        carService.updateCarBattery(id);
     }
 
     /**

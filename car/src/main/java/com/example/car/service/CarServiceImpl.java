@@ -42,34 +42,35 @@ public class CarServiceImpl implements CarService {
         return new ResponseEntity<>("Car has been deleted!", HttpStatus.OK);
     }
 
-    public void getCarStatus(long id) {
+    public double getCarStatus(long id) {
         CarDetails car = carRepository.findByCarId(id);
+        return car.getBattery();
 
-        HashMap<String,Object> status = new HashMap<String,Object>();
-        status.put("batteryPercentage", car.getBattery());
-        System.out.println(status);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(status, headers);
-
-        String URL = "http://localhost:8080/api/car/battery/" + car.getCarId();
-        RestTemplate restTemplate = new RestTemplate();
-        System.out.println(requestEntity);
-        try {
-            ResponseEntity<Map> response = restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, Map.class);
-        } catch (HttpClientErrorException e) {
-            // Handle HTTP 4xx errors (e.g., 400 Bad Request, 404 Not Found, etc.)
-            HttpStatus statusCode = (HttpStatus) e.getStatusCode();
-            String responseBody = e.getResponseBodyAsString();
-        } catch (HttpServerErrorException e) {
-            // Handle HTTP 5xx errors (e.g., 500 Internal Server Error)
-            HttpStatus statusCode = (HttpStatus) e.getStatusCode();
-            String responseBody = e.getResponseBodyAsString();
-        } catch (RestClientException e) {
-        } catch (Exception e) {
-        }
+//        HashMap<String,Object> status = new HashMap<String,Object>();
+//        status.put("batteryPercentage", car.getBattery());
+//        System.out.println(status);
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(status, headers);
+//
+//        String URL = "http://localhost:8080/api/car/battery/" + car.getCarId();
+//        RestTemplate restTemplate = new RestTemplate();
+//        System.out.println(requestEntity);
+//        try {
+//            ResponseEntity<Map> response = restTemplate.exchange(URL, HttpMethod.PUT, requestEntity, Map.class);
+//        } catch (HttpClientErrorException e) {
+//            // Handle HTTP 4xx errors (e.g., 400 Bad Request, 404 Not Found, etc.)
+//            HttpStatus statusCode = (HttpStatus) e.getStatusCode();
+//            String responseBody = e.getResponseBodyAsString();
+//        } catch (HttpServerErrorException e) {
+//            // Handle HTTP 5xx errors (e.g., 500 Internal Server Error)
+//            HttpStatus statusCode = (HttpStatus) e.getStatusCode();
+//            String responseBody = e.getResponseBodyAsString();
+//        } catch (RestClientException e) {
+//        } catch (Exception e) {
+//        }
 
 
     }

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointment")
@@ -55,6 +54,7 @@ public class Appointment {
     @Column(name="manual_Appointment")
     private boolean manualAppointment;
 
+    @Transient
     @ManyToOne
     @JoinColumn(name="car_id")
     private Car car;

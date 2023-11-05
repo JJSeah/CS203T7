@@ -1,13 +1,12 @@
 package com.example.electric.service;
 
 import com.example.electric.dto.CarDetails;
-import com.example.electric.error.ErrorCode;
-import com.example.electric.exception.ObjectNotFoundException;
 import com.example.electric.model.Car;
 import com.example.electric.respository.CarRepository;
 import com.example.electric.respository.UserRepository;
 import com.example.electric.service.inter.CarServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -122,11 +121,14 @@ public class CarService implements CarServiceInter {
      * valid range, it updates the car's battery percentage and saves it to the database.
      *
      * @param id         The unique identifier of the car to update.
-     * @param updatedCar The updated car object containing the new battery percentage value.
      */
-    public void updateCarBattery(long id, Car updatedCar) {
+    public void updateCarBattery(long id) {
         Car car = carRepository.findById(id).get();
-        if (updatedCar.getBatteryPercentage() >= 0.0 || updatedCar.getBatteryPercentage() <= 100.0) car.setBatteryPercentage(updatedCar.getBatteryPercentage());
+        String URL = "http://localhost:9091/car/battery/" + id;
+        String obj =  new RestTemplate().getForObject(URL, String.class);
+        double batt = Double.parseDouble(obj);
+        System.out.println(batt);
+        if (batt >= 0.0 || batt <= 100.0) car.setBatteryPercentage(batt);
         carRepository.save(car);
     }
 
@@ -159,7 +161,19 @@ public class CarService implements CarServiceInter {
             return null;
         }
         return carRepository.findCarByUserIdAndId(userId, carId);
+    }
 
+    @Scheduled(fixedRate = 60000) // 60000 milliseconds = 1 minute
+    public void updateBattery() {
+        try {
+            List<Car> cars = carRepository.findAll(); // Retrieve all cars or filter as needed
+            for (Car car : cars) {
+                updateCarBattery(car.getId());
+            }
+        } catch (Exception e) {
+            // Handle exceptions appropriately, e.g., log the error or send notifications.
+            e.printStackTrace();
+        }
     }
 
 
