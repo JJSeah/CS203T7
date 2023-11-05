@@ -2,15 +2,21 @@ package com.example.electric.controller;
 
 import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
+import com.example.electric.model.request.LoginReq;
+import com.example.electric.model.response.LoginRes;
 import com.example.electric.respository.ChargerRepository;
 import com.example.electric.respository.StationRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,11 +48,22 @@ public class ChargerIntegrationTest {
 
    @Autowired
    private MockMvc mockMvc;
+   
+    private String token;
 
-//    @AfterEach
-//    void tearDown() {
-//        chargerRepository.deleteAll();
-//    }
+    @BeforeEach
+    public void setUp() throws Exception {
+        URI uri = new URI("http://localhost:" + port + "/auth/login");
+        LoginReq req = new LoginReq("Admin@gmail.com", "mysecretpassword");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LoginReq> requestEntity = new HttpEntity<>(req, headers);
+
+        ResponseEntity<LoginRes> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, LoginRes.class);
+        LoginRes loginRes = responseEntity.getBody();
+        token = loginRes.getToken();
+        System.out.println(token);
+    }
 
    @Test
    public void getAllChargers_sucess() throws Exception {
@@ -54,8 +71,12 @@ public class ChargerIntegrationTest {
 
     //    chargerRepository.save(new Charger(1L, "Charger1"));
     //    chargerRepository.save(new Charger(2L, "Charger2"));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-       ResponseEntity<Charger[]> result = restTemplate.getForEntity(uri, Charger[].class);
+       ResponseEntity<Charger[]> result = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, Charger[].class);
        Charger[] resultChargers = result.getBody();
 
        assertEquals(200, result.getStatusCode().value());
@@ -71,7 +92,13 @@ public class ChargerIntegrationTest {
     //    chargerRepository.save(new Charger(2L, "Charger2", station));
 
         URI uri = new URI(baseUrl + port + "/api/charger" + "/station/"+ stationId);
-        ResponseEntity<Charger[]> result = restTemplate.getForEntity(uri, Charger[].class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<Charger[]> result = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, Charger[].class);
         Charger[] resultChargers = result.getBody();
 
        assertEquals(200, result.getStatusCode().value());
@@ -82,10 +109,18 @@ public class ChargerIntegrationTest {
    public void testGetAllChargersAtStationId_Found() throws Exception {
        long stationId = 999L;
 
-       // Send a GET request to the endpoint
-       mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + port + "/api/charger" + "/station/{stationId}", stationId)
-               .contentType(MediaType.APPLICATION_JSON))
-               .andExpect(MockMvcResultMatchers.status().isNotFound());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        // Send a GET request to the endpoint
+        mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + "/api/charger/station/{stationId}", stationId)
+                .header(HttpHeaders.AUTHORIZATION, token) // Alternatively, add the token directly to the request
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("") // You might need to add content if needed
+                .accept(MediaType.APPLICATION_JSON)) // Set the response content type you expect
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
                // .andExpect(jsonPath("$.E1002", equalTo("Data not found")));
        }
 
