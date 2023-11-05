@@ -32,10 +32,10 @@ import { Ionicons } from '@expo/vector-icons';
 SplashScreen.preventAutoHideAsync();
 
 const backgroundStrokeColor = "white";
-const strokeColor = "#B2D3C2";
+const strokeColor = "#03C04A";
 
 const { width, height } = Dimensions.get("window");
-const circleLength = 1000;
+const circleLength = 900;
 const radius = circleLength / (2 * Math.PI);
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
