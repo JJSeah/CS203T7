@@ -102,8 +102,8 @@ export default LogInScreen = ({ navigation }) => {
       <Button
         title="Load fake data"
         onPress={() => {
-          setEmail("leongzhecheng1@gmail.com");
-          setPassword("Leongzhecheng1@");
+          setEmail("justin@gmail.com");
+          setPassword("Justin123!!!");
         }}
       /> 
 
