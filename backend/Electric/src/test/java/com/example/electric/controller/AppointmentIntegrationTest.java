@@ -4,15 +4,10 @@ import com.example.electric.model.Appointment;
 import com.example.electric.model.request.LoginReq;
 import com.example.electric.model.response.LoginRes;
 import com.example.electric.respository.AppointmentRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -20,9 +15,7 @@ import org.springframework.http.*;
 
 import java.net.URI;
 import java.sql.Time;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,7 +27,6 @@ public class AppointmentIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
 
     @Autowired
     private AppointmentRepository appointmentRepository;
