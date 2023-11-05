@@ -16,6 +16,7 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import ReminderScreen from "../ReminderScreen";
 import FontLoader from "../../constants/FontLoader";
 import * as SplashScreen from "expo-splash-screen";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -130,28 +131,17 @@ export default ManualBookingScreen = ({ navigation }) => {
                 }}
               >
                 <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingHorizontal: 10,
-                  }}
-                >
-                  <Text style={localStyles.label3}>
-                    Current time: {currentDate.toLocaleTimeString()}
-                  </Text>
-                </View>
-
-                <View
-                  style={{paddingEnd: 10}} 
+                  style={{paddingLeft: 10}} 
                 >
                   <TouchableOpacity
                   onPress={() => {navigation.pop()}} 
                   >
-                    <Text
-                    style={localStyles.label4} 
-                    >
-                      Return
-                    </Text>
+                           <MaterialCommunityIcons
+                name="arrow-left"
+                size={25}
+                color="teal"
+              />
+
 
                   </TouchableOpacity>
                 </View>
@@ -177,21 +167,15 @@ export default ManualBookingScreen = ({ navigation }) => {
                 >
                   <View>
                     <Text style={localStyles.label}>
-                      Hours: {diffHours(bookingStartTime, bookingEndTime)}
-                    </Text>
-                  </View>
-
-                  <View>
-                    <Text style={localStyles.label}>
-                      Minutes: {diffMinutes(bookingStartTime, bookingEndTime)}
-                    </Text>
-                  </View>
-
-                  <View>
-                    <Text style={localStyles.label}>
                       Car: {currentCar.nickname}
                     </Text>
                   </View>
+                  <View>
+                    <Text style={localStyles.label}>
+                      {diffHours(bookingStartTime, bookingEndTime)} hour {diffMinutes(bookingStartTime, bookingEndTime)} min
+                    </Text>
+                  </View>
+
                 </View>
                 <View
                   style={{
