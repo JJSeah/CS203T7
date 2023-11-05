@@ -6,8 +6,8 @@ export default HistoryViewController = ( { navigation } ) => {
     const [ isReady, setIsReady ] = useState(false);      
     const [ selectedCar, setSelectedCar ] = useState(null);
     const [ monthValue, setMonthValue ] = useState(null);
-    const [ yearValue, setYearValue ] = useState('2023');
-    const [ showAllRecords, setShowAllRecords ] = useState(false);
+    const [ yearValue, setYearValue ] = useState(null);
+    const [ showAllRecords, setShowAllRecords ] = useState(true);
     const [ filteredRecords, setFilteredRecords ] = useState(null);
 
     return {

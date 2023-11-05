@@ -29,9 +29,9 @@ const month = [
 ]
 
 const year =[
-  {label: '2022', value:'1'}, 
-  {label: '2023', value: '2'}, 
-  {label: '2024', value: '3'}
+  {label: '2022', value:'2022'}, 
+  {label: '2023', value:'2023'}, 
+  {label: '2024', value:'2024'}
 ]
 
 
@@ -108,6 +108,18 @@ export default HistoryScreen = ({navigation}) => {
         
         setFilteredAppointments(filtered);
 
+      } else if (monthValue !== null && allAppointments) {
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          // appointment.status === "completed";
+          const dateParts = appointment.date.split('-');
+          const monthNo = parseInt(dateParts[1]);
+          
+          return String(monthNo) ===  monthValue && appointment.status === 'completed';
+        }), 'date').reverse();
+        
+        setFilteredAppointments(filtered);
+
       } else if (yearValue != null && allAppointments) {
         const filtered = sortBy(allAppointments.filter((appointment) => {
 
@@ -149,13 +161,13 @@ export default HistoryScreen = ({navigation}) => {
 
       <View style={{marginLeft:240}}>
       {((selectedCar && monthValue && yearValue && !showAllRecords) || (monthValue && yearValue && !showAllRecords) || 
-      (selectedCar && !showAllRecords) || (yearValue && !showAllRecords)) && (
+      (selectedCar && !showAllRecords) || (monthValue && !showAllRecords) || (yearValue && !showAllRecords)) && (
         <TouchableOpacity
         style={historyStyles.filterButton}
          onPress={() => {
           setSelectedCar(null);
           setMonthValue(null); 
-          setYearValue('2023');
+          setYearValue(null);
           setShowAllRecords(true);
           setFilteredAppointments(allAppointments);
          }}
@@ -226,12 +238,19 @@ export default HistoryScreen = ({navigation}) => {
     
       
       <View style={historyStyles.container2}>
-      {(showAllRecords || ((selectedCar || monthValue || yearValue) && filteredAppointments.length > 0)) && (
+      {(showAllRecords || (selectedCar || monthValue || yearValue)) && filteredAppointments.length > 0 && (
         <View style={historyStyles.totalCostContainer}>
           <Text style={historyStyles.totalCost}>Total Cost : $ {totalCost.toFixed(2)}
           </Text>
         </View> 
       )}
+{/* 
+      {showAllRecords && filteredAppointments.length > 0 && (
+        <View style={historyStyles.totalCostContainer}>
+          <Text style={historyStyles.totalCost}>Total Cost : $ {totalCost.toFixed(2)}
+          </Text>
+        </View> 
+      )} */}
       </View>
 
 
@@ -251,7 +270,7 @@ export default HistoryScreen = ({navigation}) => {
             <View style={historyStyles.stationNameContainer}>
               <View style={historyStyles.carContainer}>
                 <Ionicons name="car-sport-outline" size={21} color="#D3D3D3" />
-                <Text style={historyStyles.carNickname}>{item.car.nickname}</Text>
+                {/* <Text style={historyStyles.carNickname}>{item.car.nickname}</Text> */}
               </View>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
               <Text style={historyStyles.address}>{item.station.address}</Text>
