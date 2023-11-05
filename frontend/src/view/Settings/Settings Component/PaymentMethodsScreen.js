@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Text, View, StyleSheet, 
-  ActivityIndicator, Alert, Image
+  ActivityIndicator, Alert, Image, ScrollView,
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,6 +18,8 @@ export default PaymentMethodsScreen = ( {navigation} ) => {
 
   return (
     <SafeAreaView style = {localStyles.container}>
+
+        <ScrollView>
 
       <View style = {localStyles.detailsContainer}>
       {userCards === null ? (
@@ -63,15 +65,15 @@ export default PaymentMethodsScreen = ( {navigation} ) => {
                       style: "destructive",
                     },
                   ]
-                );
+                  );
+                }
               }
-            }
-            />
+              />
             </View>
           </View>
         ))
-      ) : (
-        <View style = {localStyles.textContainer}>
+        ) : (
+          <View style = {localStyles.textContainer}>
         <Text style = {localStyles.textStyle}>No cards available</Text>
         </View>
       )}
@@ -83,6 +85,7 @@ export default PaymentMethodsScreen = ( {navigation} ) => {
           onPress={addCardButtonPressed}
           />
       </View>
+          </ScrollView>
     </SafeAreaView>
   );
 }
@@ -93,10 +96,11 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#141414",
   },
   sectionContainer: {
-
+    felx: 9,
+    padding: 10, 
   },
   buttonContainer: {
-    flex : 4
+    flex : 1
   },
   detailsContainer: {
     flex: 6
@@ -113,18 +117,21 @@ const localStyles = StyleSheet.create({
   },
 
   CardIcon: {
-    width: 250,
+    width: 220,
     height: 175,
     
   },
   textContainer: {
     alignContent:'center',
+    margin: 50,
   },
   textStyle: {
     fontFamily: "Product-Sans-Regular",
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+    alignSelf: 'center',
+    padding: 50,
   },
   
 

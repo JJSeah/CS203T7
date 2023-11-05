@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import {
-  StyleSheet, Text, View,
-  ActivityIndicator, SafeAreaView, Alert,
+  StyleSheet, Text, 
+  View, ScrollView,
+  ActivityIndicator, SafeAreaView, 
+  Alert, Image
 } from "react-native";
 import { UserContext } from "../../../model/User";
 import CarInformation from "../../../components/CarInformation";
@@ -10,10 +12,12 @@ import AddCarScreen from "../../AddCarScreen";
 import DeleteCarViewController from "../../../viewController/DeleteCarViewController";
 import AddCarScreenViewController from "../../../viewController/AddCarScreenViewController";
 
+import { TESLA1 } from "../../../../assets/images/index";
 import IconButton from "../../../components/IconButton";
 
+
 export default VehicleInformationScreen = ( {navigation} ) => {
-  const { userData, userCars, setCurrentCar, currentCar } =
+  const {  userCars } =
     useContext(UserContext);
 
   const { deleteCarButtonPressed } = DeleteCarViewController();
@@ -21,6 +25,7 @@ export default VehicleInformationScreen = ( {navigation} ) => {
   return (
     <SafeAreaView style={localStyles.container}>
 
+      <ScrollView>
       <View style={localStyles.sectionContainer}>
       {userCars === null ? (
         <View>
@@ -28,7 +33,7 @@ export default VehicleInformationScreen = ( {navigation} ) => {
         </View>
       ) : Array.isArray(userCars) && userCars.length > 0 ? (
         userCars.map((car) => (
-          <View key={car.id} style={localStyles.sectionContainer}>
+          <View key={car.id}>
             <View style = {localStyles.informationContainer}>
 
             <View style = {localStyles.sectionHeader}>
@@ -52,32 +57,33 @@ export default VehicleInformationScreen = ( {navigation} ) => {
                       style: "destructive",
                     },
                   ]
-                );
+                  );
+                }
               }
-            }
-            />
+              />
             </View>
-            
-              <CarInformation title="BatteryCapacity" value={`${car.batteryCapacity}/kwh`}/>
+
               <CarInformation title="Model" value={car.model}/>
+              <CarInformation title="BatteryCapacity" value={`${car.batteryCapacity}/kwh`}/>
               <CarInformation title="Plate" value={car.plate}/>
                 </View>
 
-          </View>
+          </View> 
         ))
-      ) : (
-        <Text>NO cars loaded</Text>
-      )}
+        ) : (
+          <Text>NO cars loaded</Text>
+          )}
       </View>
+
 
 
       <View style={localStyles.buttonContainer}>
         <CustomLongButton
           title="Add car"
           onPress={() => navigation.navigate("AddCarScreen")}
-        />
-
+          />
       </View>
+          </ScrollView>
 
 
     </SafeAreaView>
@@ -90,10 +96,12 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#141414",
   },
   sectionContainer: {
-  
+  flex: 9,
+  padding: 10,
   },
   buttonContainer: {
     flex: 1,
+    
   },
   informationContainer: {
     marginBottom: 10,
@@ -103,7 +111,7 @@ const localStyles = StyleSheet.create({
   },
 
   sectionHeader: {
-    backgroundColor: '#808080',
+    backgroundColor: '#333333',
     borderTopLeftRadius: 9,
     borderTopRightRadius: 9,
     flexDirection: 'row',
@@ -115,8 +123,7 @@ const localStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 10,
-    marginTop: 10,
     marginBottom: 5,
+    color: '#fefefe',
   },
-  
 });

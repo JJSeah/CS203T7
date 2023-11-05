@@ -31,12 +31,6 @@ const localStyles = StyleSheet.create({
     resizeMode: "contain",
   },
   buttonContainer : {
-    width: 30,
-    height: 45,
-    borderRadius: 10, // Adjust as needed to make it look like a button
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
+    
   },
 });

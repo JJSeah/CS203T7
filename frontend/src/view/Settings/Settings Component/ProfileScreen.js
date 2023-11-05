@@ -4,10 +4,11 @@ import { UserContext } from '../../../model/User';
 import InBetweenSpace from '../../../components/InBetweenSpace';
 import SettingsScreenViewController from '../../../viewController/SettingsScreenViewController';
 import CustomLongButton from '../../../components/CustomLongButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // fonts
 
-export default ProfileScreen = ( { navigation } ) => {
+export default Profile = ( { navigation } ) => {
 
     const { userData } = useContext(UserContext);
 
@@ -15,9 +16,8 @@ export default ProfileScreen = ( { navigation } ) => {
       editProfileButtonPressed, } = SettingsScreenViewController( { navigation } );
 
   return (
-    <View style = {localStyles.container}>
+    <SafeAreaView style = {localStyles.container}>
 
-      {/* Username can't be edited */}
       <View style = {localStyles.informationContainer}>
 
       <InBetweenSpace
@@ -39,22 +39,18 @@ export default ProfileScreen = ( { navigation } ) => {
       title="Email"
       value={userData.email}
       />
-
-      <InBetweenSpace
-      title="userID"
-      value={userData.id}
-      />
+      
       </View>
 
       <View style = {localStyles.buttonContainer}>
 
         <CustomLongButton
-          title="Edit"
+          title="Edit Profile"
           onPress={editProfileButtonPressed}
           />
           </View>
 
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -65,7 +61,6 @@ const localStyles = StyleSheet.create({
   },
   informationContainer: {
     flex: 9,
-    backgroundColor: "blue",
   },
   buttonContainer: {
     flex: 1,

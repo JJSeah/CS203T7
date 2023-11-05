@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CustomLongButton from "../components/CustomLongButton";
 import CarDetails from "../components/CarDetails";
-import CarSwipeView from "../components/SingleCarSwiperView";
 import { styles } from "../components/Design";
 import CustomCarButton from "../components/CustomCarButton";
 
@@ -52,7 +51,7 @@ export default HomeScreen = ({ navigation }) => {
             <Text style = {localStyles.subHeaderText}>
               {currentCar.nickname}
               </Text>
-              <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text>
+              {/* <Text style = {localStyles.subHeaderText}>{currentCar.id}</Text> */}
           </>
         ) : (
           <>
@@ -77,7 +76,7 @@ export default HomeScreen = ({ navigation }) => {
           <>
             <CarDetails 
             iconName = "batteryIcon" 
-            value = {currentCar.batteryPercentage} 
+            value = {parseInt(currentCar.batteryPercentage)} 
             title = "BATTERY"
             />
 
