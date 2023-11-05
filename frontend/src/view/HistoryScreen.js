@@ -153,7 +153,6 @@ export default HistoryScreen = ({navigation}) => {
       setTotalCost(updatedTotalCost);
     }
   }, [filteredAppointments]);
-
   
   return (
     <SafeAreaView style={[historyStyles.container, {flex:1}]}>
