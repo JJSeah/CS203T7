@@ -1,5 +1,6 @@
 package com.example.electric.controller;
 
+import com.example.electric.model.Car;
 import com.example.electric.model.Charger;
 import com.example.electric.model.Station;
 import com.example.electric.model.request.LoginReq;
@@ -14,12 +15,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+<<<<<<< HEAD
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+=======
+import org.springframework.http.*;
+>>>>>>> d846ef6172766e6f6be098a30224948d1e7a63b5
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -50,7 +55,7 @@ public class ChargerIntegrationTest {
    private MockMvc mockMvc;
    
     private String token;
-
+    
     @BeforeEach
     public void setUp() throws Exception {
         URI uri = new URI("http://localhost:" + port + "/auth/login");
@@ -64,6 +69,7 @@ public class ChargerIntegrationTest {
         token = loginRes.getToken();
         System.out.println(token);
     }
+
 
    @Test
    public void getAllChargers_sucess() throws Exception {
@@ -129,11 +135,21 @@ public class ChargerIntegrationTest {
        long chargerId = 1L;
        URI url = new URI(baseUrl + + port + "/api/charger" + "/" + chargerId);
 
-    //    Charger testCharger = new Charger(chargerId, "Charger1");
-    //    chargerRepository.save(testCharger);
-    //    chargerRepository.save(new Charger(2L, "Charger2"));
+       // Set up the request headers
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
 
-       ResponseEntity<Charger> result = restTemplate.getForEntity(url, Charger.class);
+       // Set up the request entity
+       HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+       ResponseEntity<Charger> result = restTemplate.exchange(
+               url,
+               HttpMethod.GET,
+               requestEntity,
+               Charger.class
+       );
+
        Charger resultCharger = result.getBody();
 
        assertEquals(200, result.getStatusCode().value());
@@ -143,10 +159,24 @@ public class ChargerIntegrationTest {
    @Test
    public void testGetChargerById_NotFound() throws Exception {
        long chargerId = 999;
+
+       // Set up the request headers
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
+
+       // Set up the request entity
+       HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
        URI url = new URI(baseUrl + port + "/api/charger"+ "/" + chargerId);
 
-       ResponseEntity<Charger> result = restTemplate.getForEntity(url, Charger.class);
-       assertEquals(404, result.getStatusCode().value());
+       ResponseEntity<Charger> result = restTemplate.exchange(
+               url,
+               HttpMethod.GET,
+               requestEntity,
+               Charger.class
+       );
+       assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
    }
 
    @Test
@@ -154,14 +184,27 @@ public class ChargerIntegrationTest {
         //300L is not existent in database 
        Long id = 121L;
        Charger testCharger = new Charger(id, "charger121");
+
+       // Set up the request headers
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
+
+       // Set up the request entity
+       HttpEntity<Charger> requestEntity = new HttpEntity<>(testCharger, headers);
        
        URI url = new URI(baseUrl + port + "/api/charger");
-        ResponseEntity<Long> result = restTemplate.postForEntity(url , testCharger, Long.class);
+       ResponseEntity<Long> result = restTemplate.exchange(
+               url,
+               HttpMethod.POST,
+               requestEntity,
+               Long.class
+       );
+
        long chargerId = result.getBody();
 
        assertEquals(HttpStatus.CREATED, result.getStatusCode());
        assertEquals("application/json", result.getHeaders().getContentType().toString());
-       System.out.println(id + ":" + chargerId);
        assertEquals(id, chargerId);
 
        chargerRepository.deleteById(id);

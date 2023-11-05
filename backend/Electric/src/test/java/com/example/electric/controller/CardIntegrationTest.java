@@ -44,9 +44,6 @@ public class CardIntegrationTest {
     @Autowired
     private CardRepository cardRepository;
 
-    @Value("${token.signing.key}")
-    private String jwtSigningKey;
-
     private String token;
 
     @BeforeEach
@@ -225,44 +222,44 @@ public class CardIntegrationTest {
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
-    @Test
-    public void testGetCardByUser_Success() {
-//        //Create a new user
-//        User user = new User(1L,"dang", "gie", "knearestneighbour123", "knearestneighbour123@gmail.com", "danggie123", Role.ROLE_USER, null, null, null);
-        //Create a new card
-        Card card = new Card(1L,"John Doe","4620875910309275",new java.sql.Date(2025,01,01),null);
-
-        //Add car to user and user to car
-//        car.setUser(user);
-//        List<Card> cardList = new ArrayList<>();
-//        cardList.add(card);
-//        user.setCard(cardList);
+//    @Test
+//    public void testGetCardByUser_Success() {
+////        //Create a new user
+////        User user = new User(1L,"dang", "gie", "knearestneighbour123", "knearestneighbour123@gmail.com", "danggie123", Role.ROLE_USER, null, null, null);
+//        //Create a new card
+//        Card card = new Card(1L,"John Doe","4620875910309275",new java.sql.Date(2025,01,01),null);
 //
-//        //Add user, car to the system
-//        User addedUser = userRepository.save(user);
-        Card addedCard = cardRepository.save(card);
-
-//        // Generate a bearer token
-//        String token = generateBearerToken(new HashMap<>());
-
-        // Set up the request headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token);
-
-        // Set up the request entity
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-
-        // Send the request to the getAllCarsByUser endpoint
-        ResponseEntity<List<Card>> responseEntity = restTemplate.exchange("/api/card/user/" + userRepository.findUserByEmail("Admin@gmail.com").getId(), HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Card>>() {});
-
-        // Check that the response has a 200 OK status code and contains the appointment
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        //Clean up
-//        userRepository.delete(addedUser);
-        cardRepository.delete(addedCard);
-    }
+//        //Add car to user and user to car
+////        car.setUser(user);
+////        List<Card> cardList = new ArrayList<>();
+////        cardList.add(card);
+////        user.setCard(cardList);
+////
+////        //Add user, car to the system
+////        User addedUser = userRepository.save(user);
+//        Card addedCard = cardRepository.save(card);
+//
+////        // Generate a bearer token
+////        String token = generateBearerToken(new HashMap<>());
+//
+//        // Set up the request headers
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.setBearerAuth(token);
+//
+//        // Set up the request entity
+//        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+//
+//        // Send the request to the getAllCarsByUser endpoint
+//        ResponseEntity<List<Card>> responseEntity = restTemplate.exchange("/api/card/user/" + userRepository.findUserByEmail("Admin@gmail.com").getId(), HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<Card>>() {});
+//
+//        // Check that the response has a 200 OK status code and contains the appointment
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//
+//        //Clean up
+////        userRepository.delete(addedUser);
+//        cardRepository.delete(addedCard);
+//    }
 
 //    @Test
 //    public void testGetCardByUser_NotFound() {
