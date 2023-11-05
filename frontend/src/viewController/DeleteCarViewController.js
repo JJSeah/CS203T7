@@ -12,12 +12,14 @@ export default DeleteCarViewController = () => {
 
     const carIsInOngoingOrActiveAppt = ( appts, id) => {
         const list = appts.filter((appt) => { return appt.car.id === id} )
+        console.log(list)
         return list.length !== 0
     }
     const deleteCarButtonPressed = (id) => {
 
         const ongoingOrActiveAppt = allAppointments.filter((appt) => { return appt.status === "ongoing" || appt.status === "Active" })
 
+        console.log(ongoingOrActiveAppt)
         if (carIsInOngoingOrActiveAppt(ongoingOrActiveAppt, id)){
             Alert.alert("You cannot delete this car now",
             "Please check your activity screen",

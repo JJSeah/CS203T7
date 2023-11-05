@@ -115,6 +115,7 @@ export default HomeScreen = ({ navigation }) => {
         <CustomLongButton
           title="Manual booking"
           onPress={manualBookingButtonPressed}
+          disabled={userCars===null}
         />
 
         <CustomLongButton
@@ -122,6 +123,7 @@ export default HomeScreen = ({ navigation }) => {
           onPress={() => {
             automateBookingButtonPressed()
           }}
+          disabled={userCars===null}
         />
 
       </View>

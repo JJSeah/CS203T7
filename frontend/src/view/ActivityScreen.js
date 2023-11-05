@@ -140,7 +140,7 @@ export default ActivityScreen = ({ navigation }) => {
 
                         <View style={{flexDirection: 'row'}}>
                           <Ionicons name="car-sport-outline" size={21} color="#D3D3D3" />
-                          {/* <Text style={activityStyles.carNickname}>{item.car.nickname}</Text>   */}
+                          <Text style={activityStyles.carNickname}>{item.car.nickname}</Text>  
                          </View> 
                       
                         <View style={{flexDirection: 'row', marginTop: 10}}>
