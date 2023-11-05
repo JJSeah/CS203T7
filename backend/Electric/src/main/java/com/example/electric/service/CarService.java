@@ -139,11 +139,20 @@ public class CarService implements CarServiceInter {
      *
      * @param id The unique identifier of the car to delete.
      */
-    public void deleteCar(long id) {
+//    public void deleteCar(long id) {
+//        if (!carRepository.existsById(id)) {
+//            return;
+//        }
+//        carRepository.deleteById(id);
+//    }
+
+    public void deleteCar(long id){
         if (!carRepository.existsById(id)) {
             return;
         }
-        carRepository.deleteById(id);
+        Car car = carRepository.findById(id).get();
+        car.setUser(null);
+        carRepository.save(car);
     }
 
     /**
