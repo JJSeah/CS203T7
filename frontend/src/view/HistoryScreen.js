@@ -236,7 +236,7 @@ export default HistoryScreen = ({navigation}) => {
           <View style={historyStyles.recordContainer}>
             <View style={historyStyles.stationNameContainer}>
               <View style={historyStyles.carContainer}>
-                <Ionicons name="car-sport-outline" size={21} color="white" />
+                <Ionicons name="car-sport-outline" size={21} color="#D3D3D3" />
                 <Text style={historyStyles.carNickname}>{item.car.nickname}</Text>
               </View>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
