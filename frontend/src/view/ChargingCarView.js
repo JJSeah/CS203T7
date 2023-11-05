@@ -119,8 +119,8 @@ export default ChargingCarView = ({ navigation }) => {
         </View>
       ) : (
         <View style={{ flex: 1}}>
-          <View style={{flexDirection: 'row', marginHorizontal: 100}}>
-            <Ionicons name="car-sport-outline" size={40} color="white" />
+          <View style={{flexDirection: 'row', marginHorizontal: 110, alignItems: 'center'}}>
+            <Ionicons name="car-sport-outline" size={40} color="#D3D3D3" />
             <Text style={chargingStyles.carNickname}>{chargingCar.nickname}</Text>
           </View>
 
@@ -131,7 +131,7 @@ export default ChargingCarView = ({ navigation }) => {
                 cy={height / 4}
                 r={radius}
                 stroke={backgroundStrokeColor}
-                strokeWidth={50}
+                strokeWidth={55}
 
               />
 
@@ -140,10 +140,10 @@ export default ChargingCarView = ({ navigation }) => {
                 cy={height / 4}
                 r={radius}
                 stroke={strokeColor}
-                strokeWidth={50}
+                strokeWidth={60}
                 strokeDasharray={circleLength}
                 animatedProps={animatedProps}
-                strokeLinecap={"round"}
+                strokeLinecap={'butt'}
               />
 
               <Circle
@@ -168,13 +168,14 @@ export default ChargingCarView = ({ navigation }) => {
             </Svg>
           </View>
 
-          <View style={{ borderWidth: 2, borderColor: 'red', borderRadius: 10, marginHorizontal:80 }}>
+          <View style={{ borderWidth: 1, backgroundColor: buttonState === 'STOP' ? '#9B1003' : '#234F1E', borderRadius: 20, marginHorizontal: 80, marginVertical: 40, padding: 5}}>
             <Button
               title={buttonState}
               onPress={() => {
                 completeChargingButtonPressed(appt);
               }}
-              color={buttonState === 'STOP' ? 'red' : 'green'}
+              color={buttonState === 'STOP' ? 'white' : 'white'}
+              style={{fontWeight: "bold"}}
             />
           </View>
 
@@ -199,10 +200,10 @@ const chargingStyles = StyleSheet.create({
   //   alignItems: 'center'
   // },
   carNickname: {
-    color: 'white', 
+    color: '#D3D3D3', 
     fontSize: 30, 
     fontFamily: 'Product-Sans-Regular', 
-    marginLeft: 10,
+    marginLeft: 15,
   },
   progressText: {
     fontSize: 80,

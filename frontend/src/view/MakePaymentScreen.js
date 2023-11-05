@@ -134,13 +134,16 @@ export default PaymentScreen = ({ navigation }) => {
       </View>
 
       <View style={localStyles.bottomContainer}>
-        <CustomLongButton
-          title="Confirm Payment"
-          onPress={() => {
-            makePayment(appt.id, paymentCard.id);
-          }}
-          disabled={amount === null}
-        />
+        <TouchableOpacity
+        style={localStyles.confirmButton}
+        onPress={() => {
+                      makePayment(appt.id, paymentCard.id);
+                    }}
+                    disabled={amount === null}
+        >
+          <Text style={localStyles.buttonText}>Confirm Payment</Text>
+                    
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -154,7 +157,7 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#141414",
   },
   costContainer: {
-    flex: 2,
+    flex: 1.75,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -165,7 +168,7 @@ const localStyles = StyleSheet.create({
     fontFamily: 'Product-Sans-Regular', 
   },
   costText: {
-    fontSize: 80,
+    fontSize: 90,
     color: 'white',
     fontWeight: 'bold',  
     fontFamily: 'Product-Sans-Regular',
@@ -247,5 +250,27 @@ const localStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "stretch",
   },
+  confirmButton: {
+    width: '70%',
+    height: 50, 
+    borderWidth: 1,         
+    borderColor: 'white',   
+    backgroundColor: 'white',  
+    borderRadius: 80,      
+    paddingHorizontal: 45,   
+    paddingVertical: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#D3D3D3',       // Shadow color
+    shadowOffset: { width: 4, height: 4  }, // Shadow offset
+    shadowOpacity: 0.25,         // Shadow opacity
+    shadowRadius: 4,            // Shadow radius
+    elevation: 5,  
+  }, 
+  buttonText:{
+    color: 'black',
+    fontSize: 16,
+    fontFamily: 'Product-Sans-Regular',
+  }
 });
 

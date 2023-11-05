@@ -76,7 +76,19 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="ChargingCarView"
                         component={ChargingCarView}
-                        options={{headerShown:true}}
+                        options={{
+                            headerShown:true, 
+                            headerStyle: {
+                                backgroundColor: "#141414", 
+                            }, 
+                            headerTintColor: 'white', 
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                                color: 'white',
+                            },
+                            title: '', 
+                            
+                        }}
                     />
 
                     <Stack.Screen
@@ -88,7 +100,26 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="HistoryScreen"
                         component={HistoryScreen}
-                        options={{headerShown:true}}
+                        options={{
+                            headerShown: true, 
+                            headerStyle: {
+                                backgroundColor: "#141414",
+                                borderBottomWidth: 1,  
+                                borderColor: 'white', 
+                            }, 
+                            headerTitleStyle: {
+                                fontWeight: 'bold', 
+                                fontSize: 20, 
+                                fontFamily: 'Product-Sans-Regular'
+                            },
+                            headerTintColor: 'white', 
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                                color: 'white',
+                            },
+                            title: 'History', 
+                            
+                        }}
                     />           
 
                     <Stack.Group
@@ -120,6 +151,26 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="MakePaymentScreen"
                         component={MakePaymentScreen}
+                        options={{
+                            headerShown: true, 
+                            headerStyle: {
+                                backgroundColor: "#141414",
+                                borderBottomWidth: 1,  
+                                borderColor: 'white', 
+                            }, 
+                            headerTitleStyle: {
+                                fontWeight: 'bold', 
+                                fontSize: 20, 
+                                fontFamily: 'Product-Sans-Regular'
+                            },
+                            headerTintColor: 'white', 
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                                color: 'white',
+                            },
+                            title: 'Confirm Payment', 
+                            
+                        }}
                     />
 
                     <Stack.Screen

@@ -37,11 +37,6 @@ const year =[
 
 export default HistoryScreen = ({navigation}) => {
 
-  const { isReady, setIsReady, selectedCar, setSelectedCar, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
-  const { userCars, allAppointments } = useContext(UserContext);
-  const [ filteredAppointments, setFilteredAppointments ] = useState([]);
-  const [ totalCost, setTotalCost ] = useState(0);
-
   useEffect(() => {
     const loadFonts = async() => {
       await FontLoader();
@@ -50,6 +45,11 @@ export default HistoryScreen = ({navigation}) => {
     }; 
     loadFonts(); 
   }, []);
+
+  const { isReady, setIsReady, selectedCar, setSelectedCar, monthValue, setMonthValue, yearValue, setYearValue, showAllRecords, setShowAllRecords, filteredRecords, setFilteredRecords, testButtonPressed} = HistoryScreenViewController({navigation})
+  const { userCars, allAppointments } = useContext(UserContext);
+  const [ filteredAppointments, setFilteredAppointments ] = useState([]);
+  const [ totalCost, setTotalCost ] = useState(0);
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr); 
@@ -131,8 +131,7 @@ export default HistoryScreen = ({navigation}) => {
   
   return (
     <SafeAreaView style={[historyStyles.container, {flex:1}]}>
-      <ScrollView></ScrollView>
-      <View styles={historyStyles.container}>
+      <View styles={historyStyles.container1}>
 
       <View style={{marginLeft:240}}>
       {((selectedCar && monthValue && yearValue && !showAllRecords) || (monthValue && yearValue && !showAllRecords) || 
@@ -149,7 +148,7 @@ export default HistoryScreen = ({navigation}) => {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center'}}>
             <MaterialIcons name="clear" size={20} color="white" />
-            <Text style={historyStyles.filterText}>Clear filters</Text>
+            <Text style={historyStyles.filterText}>Clear Filters</Text>
           </View>
           </TouchableOpacity>
        )}  
@@ -158,7 +157,7 @@ export default HistoryScreen = ({navigation}) => {
         <Dropdown style={historyStyles.car}
             data={userCars.map(car => ({ value: car.nickname, label: car.nickname }))}
             placeholder="Car"
-            placeholderStyle={{color: '#D3D3D3'}}
+            placeholderStyle={{color: 'grey'}}
             searchPlaceholder="Select Car"
             value={selectedCar}
             labelField="label"
@@ -167,13 +166,16 @@ export default HistoryScreen = ({navigation}) => {
               setSelectedCar(data.value);
               setShowAllRecords(false);
             }} 
-            textStyle={historyStyles.dropdownValueText} 
+            itemTextStyle={historyStyles.dropdownValueText}
+            itemContainerStyle={historyStyles.dropdownList}
+            selectedTextStyle={{color: 'white'}}
+            activeColor='grey'
             />
 
           <Dropdown style={historyStyles.month}
             data={month}
             placeholder="Month"
-            placeholderStyle={{color: '#D3D3D3'}}
+            placeholderStyle={{color: 'grey'}}
             searchPlaceholder="Select Month"
             value={monthValue}
             maxHeight={300}
@@ -182,42 +184,49 @@ export default HistoryScreen = ({navigation}) => {
             onChange={data => {
               setMonthValue(data.value);
               setShowAllRecords(false);
-            } } />
+            } } 
+            itemTextStyle={historyStyles.dropdownValueText}
+            itemContainerStyle={historyStyles.dropdownList}
+            selectedTextStyle={{color: 'white'}}
+            activeColor='grey'
+            />
 
           <Dropdown style={historyStyles.year}
             data={year}
             placeholder='2023'
-            placeholderStyle={{color: '#D3D3D3'}}
+            placeholderStyle={{color: 'grey'}}
             value={yearValue}
             labelField="label"
             valueField="value"
             onChange={data => {
               setYearValue(data.value);
               setShowAllRecords(false);
-            } } />
+            }} 
+            itemTextStyle={historyStyles.dropdownValueText}
+            itemContainerStyle={historyStyles.dropdownList}
+            selectedTextStyle={{color: 'white'}}
+            activeColor='grey'
+            />
         </View>
       </View>
+    
       
-      {monthValue && yearValue && filteredAppointments.length === 0 && (
-        <View>
-          <Text style={historyStyles.totalCost}>No record</Text>
-        </View>
-      )}
-
-      {monthValue && yearValue && filteredAppointments.length > 0 && (
+      <View style={historyStyles.container2}>
+      {(showAllRecords || ((selectedCar || monthValue || yearValue) && filteredAppointments.length > 0)) && (
         <View style={historyStyles.totalCostContainer}>
-          <Text style={historyStyles.totalCost}>Total cost for {month.find((m) => m.value === monthValue).label} 
-                {year.find((y) => y.label === yearValue)?.label}: ${totalCost.toFixed(2)}
+          <Text style={historyStyles.totalCost}>Total Cost : $ {totalCost.toFixed(2)}
           </Text>
         </View> 
       )}
-
-      {(!monthValue || !yearValue || showAllRecords) &&(
-      <View style={historyStyles.totalCostContainer}> 
-        <Text style={historyStyles.totalCost}>Total cost : ${totalCost.toFixed(2)}</Text>
       </View>
-      )}
 
+
+    <View style={historyStyles.container3}>
+      {(selectedCar || monthValue || yearValue) && filteredAppointments.length === 0 && (
+          <View style={{alignItems: 'center'}}>
+              <Text style={historyStyles.totalCost}>No Record</Text>
+          </View>
+      )}
 
       <FlatList
         style={historyStyles.flatListContainer}
@@ -239,7 +248,7 @@ export default HistoryScreen = ({navigation}) => {
           </View>
         )}
         />
-       
+      </View>
     </SafeAreaView> 
   )
 }
@@ -252,21 +261,39 @@ const historyStyles = StyleSheet.create({
   flatListContainer:{
     // flex: 1,
   },
+  container1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#141414',
+  },
+  container2: {
+   flex: 1,
+    backgroundColor: '#141414',
+  },
+  container3: {
+    flex: 15,
+    backgroundColor: '#141414',
+  },
   dropDownContainer:{
-    flex: 1, 
+    // flex: 1, 
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', 
     padding: 16,
-    marginTop: 10,
+    backgroundColor: '#141414', 
+  },
+  dropdownList: {
+    backgroundColor: '#141414',
   },
   dropdownValueText: {
     color: 'white',
   },
   car: {
     height: 45, 
-    width: 135, 
-    borderColor: 'gray', 
+    width: 135,
+    backgroundColor: '#141414',
+    borderColor: 'grey',
     borderWidth: 0.5, 
     borderRadius: 5, 
     paddingHorizontal: 15,
@@ -286,7 +313,7 @@ const historyStyles = StyleSheet.create({
   }, 
   year:{
     height: 45, 
-    width: 95, 
+    width: 90, 
     borderColor: 'gray',
     borderWidth: 0.5, 
     borderRadius: 5, 
@@ -295,8 +322,6 @@ const historyStyles = StyleSheet.create({
     marginTop: 10, 
   }, 
   totalCostContainer:{
-    flex: 0, 
-    marginTop: 20,
     marginLeft: 240,
   },
   recordContainer: {   
@@ -306,7 +331,8 @@ const historyStyles = StyleSheet.create({
     borderRadius: 10, 
     padding: 16, 
     margin: 15,
-    marginBottom: 3,
+    marginTop: 0,
+    marginBottom: 10,
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     alignItems: 'center',
@@ -353,7 +379,8 @@ const historyStyles = StyleSheet.create({
     fontWeight: 'bold', 
     fontFamily: 'Product-Sans-Regular', 
     color: 'white',
-    // marginRight: 30
+    marginBottom: 5,
+    marginRight: 10,
   }, 
   filterButton: {
     borderRadius: 10, 
