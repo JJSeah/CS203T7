@@ -15,9 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -173,6 +171,8 @@ public class DistanceMatrixController {
      * @return The calculated duration (time) to charge.
      */
     @PostMapping("/charging/time")
+    @Operation(summary = "Get Time taken to charge", description = "Calculate duration to charge.", tags = {
+            "Algorithm" })
     public int getChargingTime(@RequestBody Car car) {
         return distanceMatrixService.calculateEstimateTimeOfCharging(car);
     }
@@ -186,6 +186,8 @@ public class DistanceMatrixController {
      * @return The calculated cost to charge.
      */
     @PostMapping("/charging/cost")
+    @Operation(summary = "Get Cost to charge", description = "Calculate cost to charge.", tags = {
+            "Algorithm" })
     public double getChargingCost(@RequestBody Car car) {
         return distanceMatrixService.calculateCostOfCharging(car);
     }
