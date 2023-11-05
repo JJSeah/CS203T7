@@ -1,4 +1,4 @@
-name: Deploy to ECR
+name: Deploy to Main to ECR
 
 on:
   workflow_dispatch:
