@@ -54,7 +54,6 @@ public class Appointment {
     @Column(name="manual_Appointment")
     private boolean manualAppointment;
 
-    @Transient
     @ManyToOne
     @JoinColumn(name="car_id")
     private Car car;
