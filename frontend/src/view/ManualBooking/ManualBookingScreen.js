@@ -6,7 +6,7 @@ import {
   Alert,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { UserContext } from "..//../model/User";
 import ManualBookingScreenViewController from "../../viewController/ManualBookingScreenViewController";
@@ -130,20 +130,30 @@ export default ManualBookingScreen = ({ navigation }) => {
                   padding: 10,
                 }}
               >
-                <View
-                  style={{paddingLeft: 10}} 
-                >
+                <View style={{ paddingLeft: 10 }}>
                   <TouchableOpacity
-                  onPress={() => {navigation.pop()}} 
+                    onPress={() => {
+                      navigation.pop();
+                    }}
                   >
-                           <MaterialCommunityIcons
-                name="arrow-left"
-                size={25}
-                color="teal"
-              />
-
-
+                    <MaterialCommunityIcons
+                      name="arrow-left"
+                      size={25}
+                      color="teal"
+                    />
                   </TouchableOpacity>
+                </View>
+
+                <View>
+                    <Text
+                      style={localStyles.label3}
+                    >
+                     Car: {currentCar.nickname}
+                    </Text>
+                </View>
+
+                <View>
+
                 </View>
               </View>
 
@@ -165,17 +175,17 @@ export default ManualBookingScreen = ({ navigation }) => {
                     alignItems: "center",
                   }}
                 >
-                  <View>
+                  {/* <View>
                     <Text style={localStyles.label}>
                       Car: {currentCar.nickname}
                     </Text>
-                  </View>
+                  </View> */}
                   <View>
                     <Text style={localStyles.label}>
-                      {diffHours(bookingStartTime, bookingEndTime)} hour {diffMinutes(bookingStartTime, bookingEndTime)} min
+                      Duration: {diffHours(bookingStartTime, bookingEndTime)}{" "}
+                      hour {diffMinutes(bookingStartTime, bookingEndTime)} min
                     </Text>
                   </View>
-
                 </View>
                 <View
                   style={{
@@ -189,22 +199,20 @@ export default ManualBookingScreen = ({ navigation }) => {
                     style={{
                       alignItems: "center",
                       justifyContent: "center",
-                      paddingHorizontal: 10
+                      paddingHorizontal: 10,
                     }}
                   >
                     <Text style={localStyles.label2}>Booking date</Text>
                   </View>
-                  <View
-                    style={{paddingHorizontal: 10, paddingTop: 12}}
-                  >
-                  <RNDateTimePicker
-                    display="calendar"
-                    value={bookingStartTime}
-                    onChange={onChangeDate}
-                    minimumDate={currentDate}
-                    maximumDate={maxDate}
-                    themeVariant="dark"
-                  />
+                  <View style={{ paddingHorizontal: 10, paddingTop: 12 }}>
+                    <RNDateTimePicker
+                      display="calendar"
+                      value={bookingStartTime}
+                      onChange={onChangeDate}
+                      minimumDate={currentDate}
+                      maximumDate={maxDate}
+                      themeVariant="dark"
+                    />
                   </View>
                 </View>
               </View>
@@ -327,9 +335,8 @@ const localStyles = StyleSheet.create({
     fontWeight: "bold",
   },
   label3: {
-    textDecorationLine: "underline",
     color: "teal",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
   },
   label4: {
