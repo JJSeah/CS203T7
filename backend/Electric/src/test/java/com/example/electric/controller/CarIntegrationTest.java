@@ -1,20 +1,13 @@
 package com.example.electric.controller;
 
 import com.example.electric.model.Car;
-import com.example.electric.model.Role;
-import com.example.electric.model.User;
 import com.example.electric.model.request.LoginReq;
 import com.example.electric.model.response.LoginRes;
 import com.example.electric.respository.CarRepository;
 import com.example.electric.respository.UserRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
