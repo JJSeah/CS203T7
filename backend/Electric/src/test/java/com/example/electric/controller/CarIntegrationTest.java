@@ -99,7 +99,7 @@ public class CarIntegrationTest {
     @Test
     public void testGetAllCarsByUser_Success() {
         //Create a new user
-        User user = new User(1L,"dang", "gie", "agile123", "agile123@gmail.com", "danggie123", Role.ROLE_USER, null, null, null);
+        User user = new User(1L,"dang", "gie", "nihao123456", "nihao123456@gmail.com", "danggie123", Role.ROLE_USER, null, null, null);
         //Create a new car
         Car car = new Car(1L, "Tesla", "Model S", "ABC123", 240, 80.0, 75, null);
 
@@ -162,7 +162,7 @@ public class CarIntegrationTest {
     @Test
     public void testGetCarByUser_Success() {
         //Create a new user
-        User user = new User(1L,"dang", "gie", "giedang", "giedang123@gmail.com", "danggie123", Role.ROLE_USER, null, null, null);
+        User user = new User(1L,"dang", "gie", "nihao123456", "nihao123456@gmail.com", "danggie123", Role.ROLE_USER, null, null, null);
         //Create a new car
         Car car = new Car(1L, "Tesla", "Model S", "ABC123", 240, 80.0, 75, null);
 
