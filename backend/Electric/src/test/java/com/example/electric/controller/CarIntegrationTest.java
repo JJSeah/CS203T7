@@ -41,9 +41,6 @@ public class CarIntegrationTest {
     @Autowired
     private CarRepository carRepository;
 
-    @Value("${token.signing.key}")
-    private String jwtSigningKey;
-
     private String token;
 
     @BeforeEach
