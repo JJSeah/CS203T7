@@ -16,9 +16,24 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { BASE_URL } from "../constants/Config";
 import { useRoute } from "@react-navigation/native";
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default UpcomingAppointmentView = ({ navigation }) => {
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+    loadFonts(); 
+  }, []);
+
   const [hasPermission, setHasPermission] = useState(null);
+  const [ isReady, setIsReady ] = useState(false);   
+
   const { scanQrCodeCorrectCharger, scanQrCodeIncorrectCharger } =
     UpcomingAppointmentViewController({
       navigation,
@@ -103,7 +118,7 @@ export default UpcomingAppointmentView = ({ navigation }) => {
           />
         </View>
       </View>
-    </View>
+    </View> 
   );
 };
 
@@ -120,6 +135,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
   cameraContainer: {
     width: "80%",

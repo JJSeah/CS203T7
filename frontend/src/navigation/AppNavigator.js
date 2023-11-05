@@ -87,14 +87,24 @@ export default AppStack = () => {
                                 color: 'white',
                             },
                             title: '', 
-                            
                         }}
                     />
 
                     <Stack.Screen
                         name="UpcomingAppointmentView"
                         component={UpcomingAppointmentView}
-                        options={{headerShown:true}}
+                        options={{
+                            headerShown:true, 
+                            headerStyle: {
+                                backgroundColor: "#141414", 
+                            }, 
+                            headerTintColor: 'white', 
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                                color: 'white',
+                            },
+                            title: '', 
+                        }}
                     />
 
                     <Stack.Screen

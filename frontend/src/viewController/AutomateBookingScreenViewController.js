@@ -15,6 +15,7 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
     getAllAppointments,
   } = useContext(UserContext);
   const [bookingData, setBookingData] = useState(null);
+  const [ isReady, setIsReady ] = useState(false);    
 
   useEffect(() => {
     if (
@@ -182,6 +183,8 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
   };
 
   return {
+    isReady, 
+    setIsReady,
     cancleButtonPressed,
     confirmButtonPressed,
     findClosestStation,

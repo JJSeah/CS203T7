@@ -13,8 +13,13 @@ import SelectStationScreenViewController from "../../viewController/SelectStatio
 import CustomLongButton from "../../components/CustomLongButton";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import FontLoader from '../../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default SelectStationScreen = ({ navigation }) => {
+
   const route = useRoute();
   const stations = route.params?.stations;
   const currentCar = route.params?.currentCar;
@@ -23,6 +28,8 @@ export default SelectStationScreen = ({ navigation }) => {
   const mapViewRef = useRef(null);
 
   const {
+    isReady,
+    setIsReady,
     selectedChargers,
     markerPressed,
     selectedStation,
@@ -30,6 +37,15 @@ export default SelectStationScreen = ({ navigation }) => {
     finalCharger,
     confirmBookingButtonPressed,
   } = SelectStationScreenViewController({ navigation }, stations);
+
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+    loadFonts(); 
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#141414" }}>
@@ -279,11 +295,13 @@ const localStyles = StyleSheet.create({
   },
   text: {
     color: "white",
+    fontFamily: 'Product-Sans-Regular'
   },
   label: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
   rectangle: {
     width: 200,
@@ -296,5 +314,6 @@ const localStyles = StyleSheet.create({
     fontSize: 25,
     color: "teal",
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
 });

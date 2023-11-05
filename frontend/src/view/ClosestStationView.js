@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Text,
@@ -13,10 +13,25 @@ import MapView, { Marker } from "react-native-maps";
 import UpcomingAppointmentView from "./UpcomingAppointmentView";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { styles } from "../components/Design";
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default ClosestStationView = () => {
   const { closestStation, upcomingAppointmentDetails, currentCar } =
     useContext(UserContext);
+
+  const [ isReady, setIsReady ] = useState(false);      
+
+  useEffect(() => {
+    const loadFonts = async() => {
+      await FontLoader();
+      setIsReady(true);
+      await SplashScreen.hideAsync();
+    }; 
+    loadFonts(); 
+  }, []);
 
   return (
     <View style={localStyles.container}>
@@ -208,18 +223,22 @@ const localStyles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
   text: {
     color: "white",
     fontSize: 15,
+    fontFamily: 'Product-Sans-Regular'
   },
   smallText: {
     color: "grey",
     fontSize: 15,
+    fontFamily: 'Product-Sans-Regular'
   },
   title: {
     color: "white",
     fontSize: 15,
-    fontWeight: "bold"
+    fontWeight: "bold", 
+    fontFamily: 'Product-Sans-Regular'
   },
 });

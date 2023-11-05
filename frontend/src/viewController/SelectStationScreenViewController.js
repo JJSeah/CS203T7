@@ -10,7 +10,7 @@ export default SelectStationScreenViewController = ( { navigation }, stations ) 
 
   const [ selectedChargers, setSelectedChargers ] = useState(null);
   const [ selectedStation, setSelectedStation ] = useState(null);
-
+  const [ isReady, setIsReady ] = useState(false); 
   const [ finalCharger, setFinalCharger ] = useState(null);
 
   const markerPressed = (latitude, longitude) => {
@@ -73,6 +73,8 @@ export default SelectStationScreenViewController = ( { navigation }, stations ) 
   };
 
   return {
+    isReady, 
+    setIsReady,
     confirmBookingButtonPressed,
     selectedChargers,
     markerPressed,

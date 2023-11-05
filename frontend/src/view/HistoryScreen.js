@@ -244,13 +244,6 @@ export default HistoryScreen = ({navigation}) => {
           </Text>
         </View> 
       )}
-{/* 
-      {showAllRecords && filteredAppointments.length > 0 && (
-        <View style={historyStyles.totalCostContainer}>
-          <Text style={historyStyles.totalCost}>Total Cost : $ {totalCost.toFixed(2)}
-          </Text>
-        </View> 
-      )} */}
       </View>
 
 

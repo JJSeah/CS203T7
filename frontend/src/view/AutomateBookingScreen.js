@@ -10,6 +10,10 @@ import GrantLocationScreen from "./GrantLocationScreen";
 import UpcomingAppointmentView from "./UpcomingAppointmentView";
 import ReminderScreen from "./ReminderScreen";
 import MapView, { Marker } from "react-native-maps";
+import FontLoader from '../constants/FontLoader';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 export default AutomateBookingScreen = ({ navigation }) => {
   const {
@@ -20,10 +24,19 @@ export default AutomateBookingScreen = ({ navigation }) => {
     userCards,
   } = useContext(UserContext);
 
-  const { findClosestStation, confirmButtonPressed } =
+  const { isReady, setIsReady, findClosestStation, confirmButtonPressed } =
     AutomateBookingScreenViewController({
       navigation
     });
+
+    useEffect(() => {
+      const loadFonts = async() => {
+        await FontLoader();
+        setIsReady(true);
+        await SplashScreen.hideAsync();
+      }; 
+      loadFonts(); 
+    }, []);  
 
   useEffect(() => {
     if (
@@ -99,5 +112,6 @@ const localStyles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
 });

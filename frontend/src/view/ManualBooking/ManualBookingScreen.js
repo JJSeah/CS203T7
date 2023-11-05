@@ -319,27 +319,32 @@ const localStyles = StyleSheet.create({
   },
   text: {
     color: "white",
+    fontFamily: 'Product-Sans-Regular'
   },
   label: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
   label2: {
     color: "white",
     textDecorationLine: "underline",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
   label3: {
     color: "teal",
     fontSize: 20,
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
   label4: {
     color: "teal",
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: 'Product-Sans-Regular'
   },
   details: {
     color: "white",
