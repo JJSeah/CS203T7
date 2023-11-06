@@ -77,7 +77,8 @@ export default SelectStationScreen = ({ navigation }) => {
                 style={{
                   // textDecorationLine: "underline",
                   fontSize: 22,
-                  color: !selectedStation ? "teal" : "red",
+                  // color: !selectedStation ? "teal" : "red",
+                  color: "white",
                   fontWeight: "bold",
                 }}
               >
@@ -87,7 +88,8 @@ export default SelectStationScreen = ({ navigation }) => {
               <MaterialCommunityIcons
                 name="car-sports"
                 size={25}
-                color={!selectedStation ? "teal" : "red"}
+                // color={!selectedStation ? "teal" : "red"}
+                color={"white"}
                 padding={10}
               />
 
@@ -95,7 +97,8 @@ export default SelectStationScreen = ({ navigation }) => {
                 style={{
                   // textDecorationLine: "underline",
                   fontSize: 22,
-                  color: !selectedStation ? "teal" : "red",
+                  // color: !selectedStation ? "teal" : "red",
+                  color: "white",
                   fontWeight: "bold",
                 }}
               >
