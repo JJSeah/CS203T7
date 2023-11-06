@@ -78,7 +78,7 @@ export default RegisterScreen = ( { navigation } ) => {
    {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
     
 
-    <SafeAreaView style={[styles.container, {flex:1}]}>
+    <SafeAreaView style={[registerStyle.container, {flex:1}]}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Create Account</Text>
       </View>
@@ -184,6 +184,9 @@ export default RegisterScreen = ( { navigation } ) => {
 }
 
 const registerStyle = StyleSheet.create({
+  container: {
+    backgroundColor: '#141414',
+  },
   body:{
     // backgroundColor: '#fff', 
     fontSize: 30, 

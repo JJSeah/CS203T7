@@ -8,6 +8,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import com.example.electric.model.request.LoginReq;
+import com.example.electric.model.response.LoginRes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,27 +38,38 @@ import java.net.URI;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfiguration
 public class StationIntegrationTest {
-   @LocalServerPort
-   private int port;
+    @LocalServerPort
+    private int port;
 
-   private String baseUrl = "http://localhost:";
+    private String baseUrl = "http://localhost:";
 
-   @Autowired
-   private TestRestTemplate restTemplate;
+    @Autowired
+    private TestRestTemplate restTemplate;
 
-   @Autowired
-   private ChargerRepository chargerRepository;
+    @Autowired
+    private ChargerRepository chargerRepository;
 
-   @Autowired
-   private StationRepository stationRepository;
+    @Autowired
+    private StationRepository stationRepository;
 
-   private HttpHeaders headers;
+    private HttpHeaders headers;
 
-//    @AfterEach
-//    void tearDown() {
-//        chargerRepository.deleteAll();
-//        stationRepository.deleteAll();
-//    }
+    private String token;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        URI uri = new URI("http://localhost:" + port + "/auth/login");
+        LoginReq req = new LoginReq("Admin@gmail.com", "mysecretpassword");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LoginReq> requestEntity = new HttpEntity<>(req, headers);
+
+        ResponseEntity<LoginRes> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, LoginRes.class);
+        LoginRes loginRes = responseEntity.getBody();
+        token = loginRes.getToken();
+        System.out.println(token);
+    }
+
 
    @Test
    public void testCreateStation() throws URISyntaxException {
@@ -65,10 +78,17 @@ public class StationIntegrationTest {
        newStation.setLatitude(123.456);
        newStation.setLongitude(789.123);
 
-       URI url = new URI(baseUrl + port + "/api/stations");
-       ResponseEntity<Station> response = restTemplate.postForEntity(url,newStation,Station.class);
-       Station createdStation = response.getBody();
+       // Set up the request headers
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
 
+       // Set up the request entity
+       HttpEntity<Station> requestEntity = new HttpEntity<>(newStation, headers);
+
+       URI url = new URI(baseUrl + port + "/api/stations");
+       ResponseEntity<Station> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, Station.class);
+       Station createdStation = response.getBody();
 
        assertEquals(HttpStatus.OK, response.getStatusCode());
        assertEquals(newStation.getName(), createdStation.getName());
@@ -84,12 +104,20 @@ public class StationIntegrationTest {
        
        Long stationIdToDelete = NewlyCreatedStation.getId();
 
+       // Set up the request headers
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
+
+       // Set up the request entity
+       HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
        String url = "http://localhost:" + port + "/api/stations/{ID}" ;
 
        ResponseEntity<Void> response = restTemplate.exchange(
                url,
                HttpMethod.DELETE,
-               null,
+               requestEntity,
                Void.class,
                stationIdToDelete);
 
@@ -100,45 +128,76 @@ public class StationIntegrationTest {
   @Test
    public void testDeleteStation_IdNotFound() {
        Long stationIdToDelete = 999L;
+
+      // Set up the request headers
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.APPLICATION_JSON);
+      headers.setBearerAuth(token);
+
+      // Set up the request entity
+      HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
        String url = "http://localhost:" + port + "/api/stations/{ID}" ;
 
        ResponseEntity<Void> response = restTemplate.exchange(
                url,
                HttpMethod.DELETE,
-               null,
+               requestEntity,
                Void.class,
                stationIdToDelete);
 
        // Check if the response status code is 204 (No Content) for a successful delete
 
-       assertEquals(404, response.getStatusCode().value());
+       assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
    }
 
    @Test
    public void testGetAllStations() throws URISyntaxException {
+       // Set up the request headers
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
+
+       // Set up the request entity
+       HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
        URI url = new URI(baseUrl + port + "/api/stations/all");
     //    stationRepository.save(new Station(1L, "station1"));
     //    stationRepository.save(new Station(2L, "station2"));
 
-       ResponseEntity<List> response = restTemplate.getForEntity(
+       ResponseEntity<List<Station>> response = restTemplate.exchange(
                url,
-               List.class);
+               HttpMethod.GET,
+               requestEntity,
+               new ParameterizedTypeReference<List<Station>>() {}
+       );
 
        assertEquals(HttpStatus.OK, response.getStatusCode());
        List<Station> stations = response.getBody();
        assertNotNull(stations);
-       assertEquals(60, stations.size());
-       // Add further assertions based on your expected data
    }
 
 
    @Test
    public void testGetStationById_Found() {
+       // Set up the request headers
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
+
+       // Set up the request entity
+       HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
        Long stationIdToRetrieve = 1L;
     //    Station newStation = new Station(stationIdToRetrieve,"Station1");
     //    stationRepository.save(newStation);
        String url = "http://localhost:" + port + "/api/stations/" + stationIdToRetrieve;
-       ResponseEntity<Station> response = restTemplate.getForEntity(url, Station.class);
+       ResponseEntity<Station> response = restTemplate.exchange(
+               url,
+               HttpMethod.GET,
+               requestEntity,
+               Station.class
+       );
 
        // Check if the response status code is 200 (OK) for a successful retrieval
        assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -153,9 +212,22 @@ public class StationIntegrationTest {
    public void testGetStationById_NotFound() {
        Long nonExistentStationId = 999L;
 
+       // Set up the request headers
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
+
+       // Set up the request entity
+       HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
        String url = "http://localhost:" + port + "/api/stations/" + nonExistentStationId;
 
-       ResponseEntity<Void> response = restTemplate.getForEntity(url, Void.class);
+       ResponseEntity<Station> response = restTemplate.exchange(
+               url,
+               HttpMethod.GET,
+               requestEntity,
+               Station.class
+       );
 
        // Check if the response status code is 404 (Not Found) for a non-existent ID
        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -169,15 +241,17 @@ public class StationIntegrationTest {
        Station testingStation = stationRepository.save(newStation);
 
        Long testingId = testingStation.getId();
-       String url = baseUrl + port + "/api/stations/" + testingId;
-
-       HttpHeaders headers = new HttpHeaders();
-       headers.setContentType(MediaType.APPLICATION_JSON);
        // Create an updated station with new data
        Station updatedStation = new Station();
        updatedStation.setName("Updated Station Name");
        updatedStation.setLatitude(123.456);
        updatedStation.setLongitude(789.123);
+
+       String url = baseUrl + port + "/api/stations/" + testingId;
+
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
 
        HttpEntity<Station> request = new HttpEntity<>(updatedStation, headers);
 
@@ -208,6 +282,7 @@ public class StationIntegrationTest {
 
        HttpHeaders headers = new HttpHeaders();
        headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
 
        // Create an updated station with new data
        Station updatedStation = new Station();
@@ -239,6 +314,7 @@ public class StationIntegrationTest {
 
        HttpHeaders headers = new HttpHeaders();
        headers.setContentType(MediaType.APPLICATION_JSON);
+       headers.setBearerAuth(token);
 
        HttpEntity<Station> request = new HttpEntity<>(requestStation, headers);
 

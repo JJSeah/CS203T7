@@ -87,6 +87,19 @@ export default HistoryScreen = ({navigation}) => {
 
         setFilteredAppointments(filtered);
       }
+
+      else if (selectedCar != null && monthValue != null && allAppointments){
+        const filtered = sortBy(allAppointments.filter((appointment) => {
+
+          const dateParts = appointment.date.split('-');
+          const monthNo = parseInt(dateParts[1]);
+          
+          return appointment.car.nickname === selectedCar && String(monthNo) ===  monthValue && appointment.status === 'completed';
+        }), 'date').reverse();
+
+        setFilteredAppointments(filtered);
+      }
+
       else if (selectedCar != null && allAppointments){
         const filtered = sortBy(allAppointments.filter((appointment) => {
           return appointment.car.nickname === selectedCar && appointment.status === 'completed';
@@ -262,11 +275,7 @@ export default HistoryScreen = ({navigation}) => {
             <View style={historyStyles.stationNameContainer}>
               <View style={historyStyles.carContainer}>
                 <Ionicons name="car-sport-outline" size={21} color="#D3D3D3" />
-                {
-                  item.car === null ? 
-                  <Text style ={historyStyles.carNickname}>Deleted car</Text>:
-                  <Text style={historyStyles.carNickname}>{item.car.nickname}</Text> 
-                }
+                <Text style={historyStyles.carNickname}>{item.car.nickname}</Text>
               </View>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
               <Text style={historyStyles.address}>{item.station.address}</Text>

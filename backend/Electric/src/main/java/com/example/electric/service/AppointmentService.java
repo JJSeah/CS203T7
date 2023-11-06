@@ -243,7 +243,7 @@ public class AppointmentService implements AppointmentServiceInter {
         throw new IllegalArgumentException("Updated appointment cannot be null");
     }
 
-    String URL = "http://54.79.122.172:9091/car/stop/" + carId;
+    String URL = "http://3.104.124.12:9091/car/stop/" + carId;
     String obj =  new RestTemplate().getForObject(URL, String.class);
 
     // Set status to completed
@@ -304,7 +304,7 @@ public class AppointmentService implements AppointmentServiceInter {
         appointment.setStatus("charging");
         appointment.setStartTime(Time.valueOf(LocalTime.now()));
 
-        String URL = "http://54.79.122.172:9091/car/start/" + carId;
+        String URL = "http://3.104.124.12:9091/car/start/" + carId;
         String obj =  new RestTemplate().getForObject(URL, String.class);
         updateAppointment(appointment, id);
 

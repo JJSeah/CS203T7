@@ -50,7 +50,18 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="RegisterScreen"
                         component={RegisterScreen}
-                        // options={{headerShown:false}}
+                        options={{
+                            headerShown:true, 
+                            headerStyle: {
+                                backgroundColor: "#141414", 
+                            }, 
+                            headerTintColor: 'white', 
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                                color: 'white',
+                            },
+                            title: '', 
+                        }}
                     />
 
                 </Stack.Group>) :
