@@ -1,4 +1,4 @@
-name: Deploy to Carmicroservice to ECR
+name: Deploy Car microservice to ECR and ECS
 
 on:
   workflow_dispatch:

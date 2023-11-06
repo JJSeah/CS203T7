@@ -74,7 +74,7 @@ public class CarService implements CarServiceInter {
     public Car addCar(Car car) {
 
         Car newcar = carRepository.save(car);
-        String URL = "http://54.79.122.172:9091/car/add";
+        String URL = "http://3.104.124.12:9091/car/add";
         CarDetails carDetails = new CarDetails(newcar.getId(), newcar.getModel(),newcar.getBatteryPercentage(),"off");
         Map<String, Object> response = new RestTemplate().postForObject(URL, carDetails, Map.class);
 
@@ -124,7 +124,7 @@ public class CarService implements CarServiceInter {
      */
     public void updateCarBattery(long id) {
         Car car = carRepository.findById(id).get();
-        String URL = "http://54.79.122.172:9091/car/battery/" + id;
+        String URL = "http://3.104.124.12:9091/car/battery/" + id;
         String obj =  new RestTemplate().getForObject(URL, String.class);
         double batt = Double.parseDouble(obj);
         System.out.println(batt);

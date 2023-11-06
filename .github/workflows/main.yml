@@ -1,4 +1,4 @@
-name: Deploy to Main to ECR
+name: Deploy Main to ECR and ECS
 
 on:
   workflow_dispatch:
@@ -28,6 +28,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Build, tag, and push image to Amazon ECR
+      id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: electricmain
@@ -35,3 +36,20 @@ jobs:
       run: |
         docker build -f backend/Electric/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG backend/Electric
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+    
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+      with:
+        task-definition: backend/Electric/electric-main-revision1.json
+        container-name: electric-main
+        image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: main
+        cluster: ElectricApp
+        wait-for-service-stability: true
