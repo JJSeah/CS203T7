@@ -22,7 +22,7 @@ export default Profile = ( { navigation } ) => {
 
       <InBetweenSpace
       title="Username"
-      value={userData.username}
+      value={userData.usernames}
       />
 
       <InBetweenSpace

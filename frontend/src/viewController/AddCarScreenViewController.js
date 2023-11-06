@@ -29,7 +29,7 @@ export default AddCarScreenViewController = ( { navigation } ) => {
     }
 
     const isSingaporeCarPlateNumber = (input) => {
-        const pattern = /^[A-Z]{2,3} \d{1,4}[A-Z]?$/;
+        const pattern = /^[A-Z]{2,3} \d{1,4}[A-Z]{1}$/;
         return pattern.test(input);
       };
     
