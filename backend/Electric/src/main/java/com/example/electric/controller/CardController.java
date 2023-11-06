@@ -25,8 +25,9 @@ public class CardController {
 
 
     @GetMapping("/status")
+    @Operation(summary = "Get Payment Status", description = "Get Payment Status",tags = {"Card"})
     public String status() {
-        String URL = "http://3.26.230.241:9090/payment/status";
+        String URL = "http://13.239.86.17:9090/payment/status";
         String obj=  new RestTemplate().getForObject(URL, String.class);
         return obj;
     }
@@ -38,6 +39,7 @@ public class CardController {
      * @return -> transaction id
      */
     @GetMapping("/process/{id}/{orderValue}/{cardId}")
+    @Operation(summary = "Process Payment", description = "Process Payment",tags = {"Card"})
     public String process(@PathVariable("id") long id, @PathVariable("orderValue") double orderValue, @PathVariable("cardId") long cardId) {
         if (!cardService.getCardById(cardId).isPresent()) {
             throw new ObjectNotFoundException(ErrorCode.E1002);

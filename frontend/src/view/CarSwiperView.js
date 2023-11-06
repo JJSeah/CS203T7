@@ -35,8 +35,7 @@ export default CarSwiperView = ({ userCars, setCurrentCar }) => {
           <>
             <View style={localStyles.loadingCarContainer}>
               <Text>Please add a car</Text>
-              {/* <Image source = {emptyCarIcon}
-            style = {localStyles.emptyCarIcon}/> */}
+
             </View>
           </>
         ) : (
@@ -79,12 +78,5 @@ const localStyles = StyleSheet.create({
   },
   swiperStyle: {
     backgroundColor: "transparent",
-  },
-  emptyCarIcon: {
-    marginTop: 100,
-    width: 250,
-    height: 160,
-    resizeMode: "contain",
-    opacity: 0.2,
   },
 });

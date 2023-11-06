@@ -2,17 +2,17 @@ export const CarModelsData = [
     {
         "model": "Tesla Model S Long Range",
         "chargingRate": 11.5,
-        "batteryCapacity": 100
+        "batteryCapacity": 100,
     },
     {
         "model": "Tesla Model S Plaid",
         "chargingRate": 19.2,
-        "batteryCapacity": 100
+        "batteryCapacity": 100,
     },
     {
         "model": "Tesla Model 3 Standard Range",
         "chargingRate": 7.7,
-        "batteryCapacity": 54
+        "batteryCapacity": 54,
     },
     {
         "model": "Tesla Model 3 Long Range",

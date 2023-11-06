@@ -156,6 +156,19 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="ProfileScreen"
                         component={ProfileScreen}
+                        options={{ 
+                            headerTitle: 'Profile', 
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                              backgroundColor: "#141414",
+                            },
+                            headerTintColor: 'white',
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                              color: 'white',
+                            },
+                            title: '',
+                          }}
                     />
 
                     <Stack.Screen
@@ -186,11 +199,37 @@ export default AppStack = () => {
                     <Stack.Screen
                         name="VehicleInformationScreen"
                         component={VehicleInformationScreen}
+                        options={{ 
+                            headerTitle: 'Vehicle Information', 
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                              backgroundColor: "#141414",
+                            },
+                            headerTintColor: 'white',
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                              color: 'white',
+                            },
+                            title: '',
+                          }}
                     />
                     
                     <Stack.Screen
                         name="PaymentMethodsScreen"
                         component={PaymentMethodsScreen}
+                        options={{ 
+                            headerTitle: 'Payment Methods', 
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                              backgroundColor: "#141414",
+                            },
+                            headerTintColor: 'white',
+                            headerBackTitle: 'BACK',
+                            headerBackTitleStyle: {
+                              color: 'white',
+                            },
+                            title: '',
+                          }}
                     />
 
                     <Stack.Screen

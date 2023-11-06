@@ -85,7 +85,7 @@ export default SettingsScreen = ( { navigation } ) => {
             <View style = {localStyles.buttonContainer}>
           <CustomLongButton title="Log Out" onPress={logOut} />
             </View>
-
+            
       </View>
     </SafeAreaView>
 
@@ -99,6 +99,7 @@ export default SettingsScreen = ( { navigation } ) => {
   },
   sectionContainer: {
     flex: 9,
+    padding: 10,
   },
   
   buttonContainer: {
@@ -106,7 +107,7 @@ export default SettingsScreen = ( { navigation } ) => {
   },
 
   sectionHeader: {
-    backgroundColor: '#808080',
+    backgroundColor: '#333333',
     borderTopLeftRadius: 9,
     borderTopRightRadius: 9,
   },
@@ -123,6 +124,7 @@ export default SettingsScreen = ( { navigation } ) => {
     marginLeft: 10,
     marginTop: 10,
     marginBottom: 5,
+    color: '#f9f9f9',
   },
   
 });

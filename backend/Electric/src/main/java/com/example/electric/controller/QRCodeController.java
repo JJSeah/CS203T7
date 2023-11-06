@@ -35,6 +35,7 @@ public class QRCodeController {
 
 
     @GetMapping("/generateQRCodeNow/{width}/{height}")
+    @Operation(summary = "QR code generator", description = "Generate QR code image based on the provided width and height dimensions.", tags = {"QrCode"})
 		public void download(
 				// @PathVariable("codeText") String codeText,
 				@PathVariable("width") Integer width,
@@ -56,6 +57,7 @@ public class QRCodeController {
 	 * @throws Exception If there are any issues during QR code generation.
 	 */
     @GetMapping("/genrateQRCode/{codeText}/{width}/{height}")
+    @Operation(summary = "QR code generator", description = "Generate QR code image based on the provided code text, width, and height dimensions.", tags = {"QrCode"})
    	public ResponseEntity<byte[]> generateQRCode(
    			@PathVariable("codeText") String codeText,
    			@PathVariable("width") Integer width,

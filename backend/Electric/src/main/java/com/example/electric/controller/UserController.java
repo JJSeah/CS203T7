@@ -77,6 +77,7 @@ public class UserController {
     }
 
     @PostMapping("/")
+    @Operation(summary = "Create User", description = "Create User",tags = {"User"})
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }

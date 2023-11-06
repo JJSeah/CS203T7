@@ -8,6 +8,29 @@ import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
 
+const darkMapStyle = [
+  {
+    featureType: "all",
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#000000", // Background color (black)
+      },
+    ],
+  },
+  {
+    featureType: "all",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#FFFFFF", // Label text color (white)
+      },
+    ],
+  },
+  // Add more styles for dark mode here...
+];
+
+
 export default MapScreen = ({ navigation }) => {
   const { isReady, setIsReady, selectedStation, setSelectedStation } =
     MapViewController({ navigation });
@@ -39,7 +62,7 @@ export default MapScreen = ({ navigation }) => {
 
   return (
     <View>
-      <MapView style={styles.map} ref={mapViewRef}>
+      <MapView style={styles.map} ref={mapViewRef} customMap={darkMapStyle}>
         {allStations.map((station) => (
           <Marker
             key={station.id}
