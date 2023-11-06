@@ -1,6 +1,8 @@
 package com.example.electric.controller;
 
 import com.example.electric.model.*;
+import com.example.electric.model.request.LoginReq;
+import com.example.electric.model.response.LoginRes;
 import com.example.electric.model.response.UserCarPaymentResponse;
 import com.example.electric.respository.CarRepository;
 import com.example.electric.respository.CardRepository;
@@ -38,82 +40,57 @@ public class UserIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private CardRepository cardRepository;
-
-    @Autowired
-    private CarRepository carRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private BCryptPasswordEncoder encoder;
-
-//    protected String mapToJson(Object obj) throws JsonProcessingException {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        return objectMapper.writeValueAsString(obj);
-//    }
-//
-//    protected <T> T mapFromJson(String json, Class<T> clazz)
-//            throws JsonParseException, JsonMappingException, IOException {
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        return objectMapper.readValue(json, clazz);
-//    }
+    private String token;
 
     @BeforeEach
-    public void setUp() {
-        objectMapper = new ObjectMapper();
-    }
+    public void setUp() throws Exception {
+        URI uri = new URI("http://localhost:" + port + "/auth/login");
+        LoginReq req = new LoginReq("Admin@gmail.com", "mysecretpassword");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LoginReq> requestEntity = new HttpEntity<>(req, headers);
 
-    @Value("${token.signing.key}")
-    private String jwtSigningKey;
+        ResponseEntity<LoginRes> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, LoginRes.class);
+        LoginRes loginRes = responseEntity.getBody();
+        token = loginRes.getToken();
+        System.out.println(token);
 
-
-    private String generateBearerToken(Map<String, Object> extraClaims) {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
-        String token = Jwts.builder().setClaims(extraClaims).setSubject("ex@example.com")
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(Keys.hmacShaKeyFor(keyBytes), SignatureAlgorithm.HS256).compact();
-        return "Bearer " + token;
     }
 
     @Test
     public void testGetAllUsers() throws Exception {
         URI uri = new URI("http://localhost:" + port + "/api/user/all");
+        // Set up the request headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
-        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+        // Set up the request entity
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, requestEntity, String.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
 //     @Test
 //     public void testGetUserInfo_Success() {
-//         User user = new User("Don","Ta","donta","donta@gmail.com","donta123", Role.ROLE_USER,null,null,null);
-
-//         Card card = new Card(1L,"donta", 12345L, java.sql.Date.valueOf("2023-12-21"),user);
-//         List<Card> cardList = List.of(card);
-//         user.setCard(cardList);
-
-//         Car car = new Car(1L,"Tesla","S","SG123",10,10,10,user);
-//         List<Car> carList = List.of(car);
-//         user.setCars(carList);
-
+//         User user = new User("Don","Ta","donta12345","donta12345@gmail.com","donta123", Role.ROLE_ADMIN,null,null,null);
+//
 //         User addedUser = userRepository.save(user);
+//
 //         HttpHeaders headers = new HttpHeaders();
 //         headers.setContentType(MediaType.APPLICATION_JSON);
-
+//         headers.setBearerAuth(token);
+//
 //         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-
-//         ResponseEntity<UserCarPaymentResponse> responseEntity = restTemplate.exchange("/api/user/1", HttpMethod.GET, requestEntity, UserCarPaymentResponse.class);
-
+//
+//         ResponseEntity<UserCarPaymentResponse> responseEntity = restTemplate.exchange("/api/user/" + addedUser.getId(), HttpMethod.GET, requestEntity, UserCarPaymentResponse.class);
+//
+//         //Clean up
+//         userRepository.deleteById(addedUser.getId());
+//
 //         assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
-//         assertEquals(addedUser,responseEntity.getBody());
 // //        assertEquals(addedUser.getCars(),responseEntity.getBody().getCar());
 // //        assertEquals(addedUser.getCard(),responseEntity.getBody().getCard());
 //     }
@@ -140,6 +117,7 @@ public class UserIntegrationTest {
 
 //         HttpHeaders headers = new HttpHeaders();
 //         headers.setContentType(MediaType.APPLICATION_JSON);
+//         headers.setBearerAuth(token);
 
 //         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -159,6 +137,7 @@ public class UserIntegrationTest {
     public void testGetUserInfo_Failure() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -197,6 +176,7 @@ public class UserIntegrationTest {
 
     //     HttpHeaders headers = new HttpHeaders();
     //     headers.setContentType(MediaType.APPLICATION_JSON);
+    //     headers.setBearerAuth(token);
 
     //     HttpEntity<User> requestEntity = new HttpEntity<>(user,headers);
 
@@ -207,30 +187,33 @@ public class UserIntegrationTest {
 
     @Test
     public void testDeleteUser_Success() {
-        User user = new User("test","ing","test","testest@gmail.com","testd", Role.ROLE_USER,null,null,null);
+        User user = new User("test","ing","test12345","testest12345@gmail.com","testd", Role.ROLE_USER,null,null,null);
 
         User addedUser = userRepository.save(user);
         Long userId = addedUser.getId();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
         HttpEntity<User> requestEntity = new HttpEntity<>(addedUser,headers);
 
         ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/user/"+userId, HttpMethod.DELETE, requestEntity, Void.class);
 
         assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+        
     }
 
     @Test
     public void testDeleteUser_Failure() {
-        User user = new User("test","ing","test","testest@gmail.com","testd", Role.ROLE_USER,null,null,null);
+        User user = new User("test","ing","test12345","testest12345@gmail.com","testd", Role.ROLE_USER,null,null,null);
 
         User addedUser = userRepository.save(user);
         Long userId = addedUser.getId();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
         HttpEntity<User> requestEntity = new HttpEntity<>(addedUser,headers);
 
