@@ -180,7 +180,7 @@ public class CarService implements CarServiceInter {
         return carRepository.findCarByUserIdAndId(userId, carId);
     }
 
-    @Scheduled(fixedRate = 30000) // 60000 milliseconds = 1 minute
+    @Scheduled(fixedRate = 10000) // 10000 milliseconds = 10 sec
     public void updateBattery() {
         try {
             List<Car> cars = carRepository.findAll(); // Retrieve all cars or filter as needed

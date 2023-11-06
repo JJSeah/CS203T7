@@ -76,7 +76,7 @@ public class CarServiceImpl implements CarService {
     }
 
     //    update battery as time passes
-    @Scheduled(fixedRate = 60000) // 60000 milliseconds = 1 minute
+    @Scheduled(fixedRate = 10000) // 10000 milliseconds = 10 seconds
     public void updateBattery() {
         try {
             List<CarDetails> cars = carRepository.findAll(); // Retrieve all cars or filter as needed
