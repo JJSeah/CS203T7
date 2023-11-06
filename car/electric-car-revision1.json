@@ -1,0 +1,77 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-southeast-2:633281288571:task-definition/electric-car:1",
+    "containerDefinitions": [
+        {
+            "name": "electric-car",
+            "image": "633281288571.dkr.ecr.ap-southeast-2.amazonaws.com/electriccar",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 9091,
+                    "hostPort": 9091,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/electric-car",
+                    "awslogs-region": "ap-southeast-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+    "family": "electric-car",
+    "taskRoleArn": "arn:aws:iam::633281288571:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::633281288571:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 1,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "registeredAt": "2023-10-27T04:27:08.096Z",
+    "registeredBy": "arn:aws:iam::633281288571:root",
+    "tags": []
+}

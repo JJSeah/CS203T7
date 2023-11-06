@@ -128,23 +128,31 @@ public class CarService implements CarServiceInter {
         String obj =  new RestTemplate().getForObject(URL, String.class);
         double batt = Double.parseDouble(obj);
         System.out.println(batt);
-        if (batt >= 0.0 || batt <= 100.0) car.setBatteryPercentage(batt);
+        if (batt > 0.0 && batt < 100.0) car.setBatteryPercentage(batt);
         carRepository.save(car);
     }
 
     /**
-     * Delete Car
+     * Remove Car
      *
      * This method allows the deletion of a car based on its unique identifier (ID).
      *
      * @param id The unique identifier of the car to delete.
      */
-//    public void deleteCar(long id) {
-//        if (!carRepository.existsById(id)) {
-//            return;
-//        }
-//        carRepository.deleteById(id);
-//    }
+    public void RemoveCar(long id) {
+        if (!carRepository.existsById(id)) {
+            return;
+        }
+        carRepository.deleteById(id);
+    }
+
+    /**
+            * Delete Car
+     *
+             * This method allows the deletion of a car based on its ID, user relationship is set to null.
+            *
+            * @param id The unique identifier of the car to delete.
+     */
 
     public void deleteCar(long id){
         if (!carRepository.existsById(id)) {
@@ -172,7 +180,7 @@ public class CarService implements CarServiceInter {
         return carRepository.findCarByUserIdAndId(userId, carId);
     }
 
-    @Scheduled(fixedRate = 60000) // 60000 milliseconds = 1 minute
+    @Scheduled(fixedRate = 30000) // 60000 milliseconds = 1 minute
     public void updateBattery() {
         try {
             List<Car> cars = carRepository.findAll(); // Retrieve all cars or filter as needed
