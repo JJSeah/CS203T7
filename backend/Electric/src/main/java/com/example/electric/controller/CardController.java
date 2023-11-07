@@ -27,7 +27,7 @@ public class CardController {
     @GetMapping("/status")
     @Operation(summary = "Get Payment Status", description = "Get Payment Status",tags = {"Card"})
     public String status() {
-        String URL = "http://13.239.86.17:9090/payment/status";
+        String URL = "http://localhost:9090/payment/status";
         String obj=  new RestTemplate().getForObject(URL, String.class);
         return obj;
     }

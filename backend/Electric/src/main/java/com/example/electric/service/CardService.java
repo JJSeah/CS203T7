@@ -151,7 +151,7 @@ public class CardService implements CardServiceInter {
 
         Payment payment = new Payment(orderValue,"CREDIT_CARD",paymentCard);
         System.out.println(payment.getCardDetails().getCardNumber());
-        String URL = "http://13.239.86.17:9090/payment/process";
+        String URL = "http://localhost:9090/payment/process";
         Map<String, Object> response = new RestTemplate().postForObject(URL, payment, Map.class);
         return response.get("transactionId").toString();
     }
