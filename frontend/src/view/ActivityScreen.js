@@ -134,7 +134,8 @@ export default ActivityScreen = ({ navigation }) => {
                         <View style={{marginBottom: 10, flexDirection: 'row'}}>  
                         <Fontisto name="date" size={20} color="#D3D3D3" />
                       <Text style={activityStyles.dateTime}>
-                          {formatDate(item.date)}, {formatTime(item.startTime)}
+                          {formatDate(item.date)}
+                          , {formatTime(item.startTime)}
                         </Text>
                         </View>
 
@@ -211,7 +212,8 @@ export default ActivityScreen = ({ navigation }) => {
                         <View style={{marginBottom: 10, flexDirection: 'row'}}>  
                         <Fontisto name="date" size={20} color="#D3D3D3" />
                       <Text style={activityStyles.dateTime}>
-                          {formatDate(item.date)}, {formatTime(item.startTime)}
+                          {formatDate(item.date)}
+                          , {formatTime(item.startTime)}
                         </Text>
                         </View>
 

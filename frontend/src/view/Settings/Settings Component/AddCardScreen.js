@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity, KeyboardAvoidingView, secureTextEntry, Platform, TouchableWithoutFeedback , SafeAreaView, Keyboard} from 'react-native'
 
 import AddCardViewController from '../../../viewController/AddCardViewController';
@@ -8,6 +8,7 @@ import { UserContext } from '../../../model/User';
 import CustomLongButton from '../../../components/CustomLongButton';
 import { styles } from "../../../components/Design"; 
 import CustomTextField from '../../../components/CustomTextField'
+import PasswordField from '../../../components/PasswordField';
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -35,7 +36,9 @@ const AddCardSchema = Yup.object().shape({
     .required('Expiration date is required'),
 });
 
+
 export default AddCardScreen = ( {navigation} ) => {
+    const [ temp, setTemp ] = useState("")
 
     const {
       setIsReady,
@@ -106,7 +109,14 @@ export default AddCardScreen = ( {navigation} ) => {
               {errors.cardExpirationDate && touched.cardExpirationDate && (
                 <Text style={registerStyle.textFailed}>{errors.cardExpirationDate}</Text>
               )}
+
+              <CustomTextField
+                placeholder="CVV"
+                value={temp}
+                onChangeText={(text)=>{setTemp(text)}}
+              />
             </View> 
+
       
             <View style={{margin: 40, marginBottom: 35}}>
               <CustomLongButton

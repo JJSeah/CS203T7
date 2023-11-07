@@ -73,7 +73,7 @@ export default PaymentScreen = ({ navigation }) => {
         ) : (
           <View>
             <Text style={localStyles.sgdText}>SGD</Text>
-            <Text style={localStyles.costText}>{amount.toFixed(2)} </Text>
+            <Text style={localStyles.costText}>{(amount + 5).toFixed(2)} </Text>
           </View>
         )}
       </View>
@@ -95,8 +95,10 @@ export default PaymentScreen = ({ navigation }) => {
         </View>
 
         <View style={{flexDirection: 'row', marginBottom: 15}}>
-            <Text style={localStyles.header}>Time </Text>
-            <Text style={localStyles.dateTime}>{formatTime(appt.startTime)} - {formatTime(appt.endTime)}</Text>
+            <Text style={localStyles.header}>Start</Text>
+            <Text style={localStyles.dateTime}>{formatTime(appt.startTime)} 
+            {/* - {formatTime(appt.endTime)} */}
+            </Text>
         </View>
 
         <Text style={localStyles.header}>Payment</Text>

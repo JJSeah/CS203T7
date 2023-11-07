@@ -43,7 +43,12 @@ export const CarRepository = () => {
     setUserCars(null)
 
     axios
-      .get(url)
+      .get(url,
+        {
+          headers: {
+              'Authorization': `Bearer ${userToken}`
+          }
+      })
       .then((res) => {
         let data = res.data;
 
@@ -65,7 +70,12 @@ export const CarRepository = () => {
   // delete car method
   const deleteCar = async( id ) => {
     let url = `${BASE_URL}/api/car/${id}`;
-    axios.delete(url)
+    axios.delete(url,
+      {
+        headers: {
+            'Authorization': `Bearer ${userToken}`
+        }
+    })
     .then(() => {
       loadCarsData()
       console.log("succesfully deleted a car");

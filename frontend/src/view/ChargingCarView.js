@@ -119,7 +119,7 @@ export default ChargingCarView = ({ navigation }) => {
         </View>
       ) : (
         <View style={{ flex: 1}}>
-          <View style={{flexDirection: 'row', marginHorizontal: 110, alignItems: 'center'}}>
+          <View style={{flexDirection: 'row', marginHorizontal: 110, alignSelf: 'center'}}>
             <Ionicons name="car-sport-outline" size={40} color="#D3D3D3" />
             <Text style={chargingStyles.carNickname}>{chargingCar.nickname}</Text>
           </View>

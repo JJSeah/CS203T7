@@ -161,7 +161,7 @@ export default HistoryScreen = ({navigation}) => {
     if(filteredAppointments){
       let updatedTotalCost = 0; 
       filteredAppointments.forEach((appointment) => {
-        updatedTotalCost += appointment.cost;
+        updatedTotalCost += appointment.cost + 5;
       });
       setTotalCost(updatedTotalCost);
     }
@@ -279,10 +279,12 @@ export default HistoryScreen = ({navigation}) => {
               </View>
               <Text style={historyStyles.stationName}>{item.station.name}</Text>
               <Text style={historyStyles.address}>{item.station.address}</Text>
-              <Text style={historyStyles.dateTime}>{formatDate(item.date)}, {formatTime(item.startTime)} - {formatTime(item.endTime)}</Text>
+              <Text style={historyStyles.dateTime}>{formatDate(item.date)}
+              , {formatTime(item.startTime)} - {formatTime(item.endTime + 50)}
+              </Text>
               
             </View>
-            <Text style={historyStyles.cost}>${item.cost.toFixed(2)}</Text>
+            <Text style={historyStyles.cost}>${(item.cost + 5).toFixed(2)}</Text>
           </View>
         )}
         />

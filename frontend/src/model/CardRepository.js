@@ -38,7 +38,12 @@ export const CardRepository = () => {
     setUserCards(null);
 
     axios
-      .get(url)
+      .get(url,
+        {
+          headers: {
+              'Authorization': `Bearer ${userToken}`
+          }
+      })
       .then((res) => {
         let data = res.data;
         setUserCards(data);
@@ -50,7 +55,13 @@ export const CardRepository = () => {
 
   const deleteCard = async( id ) => {
     let url = `${BASE_URL}/api/card/${id}`;
-    axios.delete(url)
+    axios.delete(url,
+      {
+        headers: {
+            'Authorization': `Bearer ${userToken}`
+        }
+    }
+      )    
     .then(() => {
       loadCardData()
       console.log("succesfully deleted a card");

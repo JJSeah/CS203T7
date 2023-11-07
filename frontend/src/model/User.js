@@ -38,7 +38,8 @@ export const UserProvider = ( { children } ) => {
             "usernames": username,
             "email": email,
             "password" : password
-        })
+        },
+        )
         .then (res => { 
         })
         .catch (e => {
@@ -51,7 +52,12 @@ export const UserProvider = ( { children } ) => {
 
         let url = `${BASE_URL}/api/appointment/user/${userId}`
 
-        axios.get(url)
+        axios.get(url,
+            {
+                headers: {
+                    'Authorization': `Bearer ${userToken}`
+                }
+            })
         .then (res => { 
             let data = res.data
             setAllAppointments(data)
@@ -84,7 +90,8 @@ export const UserProvider = ( { children } ) => {
         axios.post(url, {
             email, 
             password 
-        })
+        }
+        )
         .then( res => {
             let data = res.data;
 
@@ -95,7 +102,6 @@ export const UserProvider = ( { children } ) => {
             setUserId(JSON.stringify(id));
         })
         .catch(e => {
-
             Alert.alert(
                 "Incorrect email or password",
                 "Please try again"
@@ -112,6 +118,11 @@ export const UserProvider = ( { children } ) => {
         axios.post(url, {
             email, 
             password 
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
         })
         .then(() => {
             changePassword(password);
@@ -128,6 +139,11 @@ export const UserProvider = ( { children } ) => {
 
         axios.put(url, {
             "password": password
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
         })
         .then(() => {
             console.log("Successfully change password in backend")
@@ -208,7 +224,12 @@ export const UserProvider = ( { children } ) => {
             "firstName": newFirstName,
             "lastName": newLastName,
             "usernames": newUsername,
-        })
+        }, {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
+        )
         .then(() => {
             console.log("Successfully updated profile in backend")
             loadUserData()

@@ -15,7 +15,7 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
     getAllAppointments,
   } = useContext(UserContext);
   const [bookingData, setBookingData] = useState(null);
-  const [ isReady, setIsReady ] = useState(false);    
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (
@@ -31,7 +31,7 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
   const findClosestStation = async (latitude, longitude) => {
     setClosestStation(null);
     setUpcomingAppointmentDetails(null);
-    
+
     // const fakeData = {
     //   "id": 19,
     //   "name": "SP Mobility Charging Station",
@@ -65,13 +65,17 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
 
     let url = `${BASE_URL}/api/stations/closest`;
 
-    axios.post(url,
+    axios
+      .post(
+        url,
         {
           latitude,
           longitude,
         },
         {
-          headers: { Authorization: `Bearer ${userToken}` },
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
         }
       )
       .then((res) => {
@@ -112,14 +116,18 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
 
     // setUpcomingAppointmentDetails(fakeData)
 
-    axios.post(url,
+    axios
+      .post(
+        url,
         {
           latitude: userCoordinates.latitude,
           longitude: userCoordinates.longitude,
           id: stationId,
         },
         {
-          headers: { Authorization: `Bearer ${userToken}` },
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
         }
       )
       .then((res) => {
@@ -148,7 +156,7 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
             // "role": "ROLE_ADMIN"
           },
           car: {
-            id: currentCar.id
+            id: currentCar.id,
           },
           manualAppointment: false,
         });
@@ -183,7 +191,7 @@ export default AutomateBookingScreenViewController = ({ navigation }) => {
   };
 
   return {
-    isReady, 
+    isReady,
     setIsReady,
     cancleButtonPressed,
     confirmButtonPressed,
