@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
@@ -21,7 +20,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig  {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final UserServiceDetailsInter userService;
@@ -38,6 +37,8 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
@@ -74,7 +75,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/car/*").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/api/car/*").authenticated()
                 //
-                // 
+                //
                 // cardController
                 .requestMatchers(HttpMethod.GET, "/api/card/**", "/api/card/*").authenticated()
                 .requestMatchers(HttpMethod.POST,"/api/card").authenticated()
@@ -96,18 +97,18 @@ public class SecurityConfig {
                 //
                 //Station contoller
                 .requestMatchers(HttpMethod.GET, "/api/stations/all",
-                "/api/stations/*").authenticated()
+                        "/api/stations/*").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/stations/all",
-                "/api/stations/*").authenticated()
+                        "/api/stations/*").authenticated()
                 .requestMatchers(HttpMethod.POST,"/api/stations",
-                "/api/stations/*").hasRole("ADMIN")
+                        "/api/stations/*").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST,"/api/stations",
-                "/api/stations/*").hasRole("ADMIN")
+                        "/api/stations/*").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST,"/api/stationCheck/**").authenticated()
                 .requestMatchers(HttpMethod.POST,"/api/stations/closest").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/stations/*").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/stations/*").hasRole("ADMIN")
-                
+
                 //User contoller
                 .requestMatchers(HttpMethod.GET, "/api/user/*").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/user/all").hasRole("ADMIN")
@@ -116,11 +117,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/user/*").authenticated()
 
                 .anyRequest().authenticated()
-                .and().sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .and().sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS));
         return http.build();
     }
 
+
 }
+
+

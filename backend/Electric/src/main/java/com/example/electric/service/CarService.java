@@ -74,7 +74,7 @@ public class CarService implements CarServiceInter {
     public Car addCar(Car car) {
 
         Car newcar = carRepository.save(car);
-        String URL = "http://3.104.124.12:9091/car/add";
+        String URL = "http://localhost:9091/car/add";
         CarDetails carDetails = new CarDetails(newcar.getId(), newcar.getModel(),newcar.getBatteryPercentage(),"off");
         Map<String, Object> response = new RestTemplate().postForObject(URL, carDetails, Map.class);
 
@@ -124,7 +124,7 @@ public class CarService implements CarServiceInter {
      */
     public void updateCarBattery(long id) {
         Car car = carRepository.findById(id).get();
-        String URL = "http://3.104.124.12:9091/car/battery/" + id;
+        String URL = "http://localhost:9091/car/battery/" + id;
         String obj =  new RestTemplate().getForObject(URL, String.class);
         double batt = Double.parseDouble(obj);
         System.out.println(batt);
@@ -180,7 +180,7 @@ public class CarService implements CarServiceInter {
         return carRepository.findCarByUserIdAndId(userId, carId);
     }
 
-    @Scheduled(fixedRate = 30000) // 60000 milliseconds = 1 minute
+    @Scheduled(fixedRate = 10000) // 10000 milliseconds = 10 sec
     public void updateBattery() {
         try {
             List<Car> cars = carRepository.findAll(); // Retrieve all cars or filter as needed
