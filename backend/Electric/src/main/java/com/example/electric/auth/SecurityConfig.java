@@ -4,6 +4,7 @@ import com.example.electric.service.inter.UserServiceDetailsInter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
@@ -52,73 +52,72 @@ public class SecurityConfig  {
         http.csrf().disable()
                 .authorizeRequests()
                 // .requestMatchers("/**").permitAll()
-                //authorisation here
-                    //AuthController
-                    .requestMatchers(antMatcher("/auth/**")).permitAll()
-                .requestMatchers(antMatcher("/api/**")).permitAll()
+                // authorisation here
+                // AuthController
+                .requestMatchers(antMatcher("/auth/**")).permitAll()
+                // .requestMatchers(antMatcher("/api/**")).permitAll()
 
-//                    //AppointmentController
-//                    .requestMatchers(HttpMethod.GET, "/api/appointment/**", "/api/appointment").permitAll()
-//                    .requestMatchers(HttpMethod.POST, "/api/appointment/station/*").permitAll()
-//                    .requestMatchers(HttpMethod.POST, "/api/appointment").permitAll()
-//                    .requestMatchers(HttpMethod.PUT, "/api/appointment/*").permitAll()
-//                    .requestMatchers(HttpMethod.DELETE, "/api/appointment/*").permitAll()
-//
-//                    //carController
-//                    .requestMatchers(HttpMethod.GET, "/api/car/**", "/api/car").permitAll()
-//                    // .requestMatchers(HttpMethod.POST,"/api/car").permitAll()
-//                    .requestMatchers(HttpMethod.POST,"/api/car").authenticated()
-//                    .requestMatchers(HttpMethod.PUT, "/api/car/*").permitAll()
-//                    .requestMatchers(HttpMethod.DELETE, "/api/car/*").permitAll()
-//
-//
-//                    //cardController
-//                    .requestMatchers(HttpMethod.GET, "/api/card/**", "/api/card").permitAll()
-//                    .requestMatchers(HttpMethod.POST,"/api/card").permitAll()
-//                    .requestMatchers(HttpMethod.PUT, "/api/card/*").permitAll()
-//                    .requestMatchers(HttpMethod.DELETE, "/api/card/*").permitAll()
-//
-//                    //chargerController
-//                    .requestMatchers(HttpMethod.GET, "/api/charger/**", "/api/charger").permitAll()
-//                    .requestMatchers(HttpMethod.POST,"/api/charger").permitAll()
-//                    .requestMatchers(HttpMethod.PUT, "/api/charger/*").permitAll()
-//                    .requestMatchers(HttpMethod.DELETE, "/api/charger/*").permitAll()
-//
-//                    //DistanceController
-//                    .requestMatchers(HttpMethod.GET, "/api/distance").permitAll()
-//
-//                    //RecordController
-//                    .requestMatchers(HttpMethod.GET, "/api/records/all", "/api/records/**").hasRole("USER")
-//                    .requestMatchers(HttpMethod.POST,"/api/records").permitAll()
-//                    .requestMatchers(HttpMethod.PUT, "/api/records/*").permitAll()
-//                    .requestMatchers(HttpMethod.DELETE, "/api/records/*").permitAll()
-//
-//
-//                    //Station contoller
-//                    // .requestMatchers(HttpMethod.GET, "/api/stations/all", "/api/stations/*").permitAll()
-//                    .requestMatchers(HttpMethod.GET, "/api/stations/all", "/api/stations/*").authenticated()
-//                    // .requestMatchers(HttpMethod.POST,"/api/stations", "/api/stations/*").permitAll()
-//                    .requestMatchers(HttpMethod.POST,"/api/stations", "/api/stations/*").authenticated()
-//                    // .requestMatchers(HttpMethod.POST,"/api/stationCheck/**").permitAll()
-//                    .requestMatchers(HttpMethod.POST,"/api/stationCheck/**").authenticated()
-//                    .requestMatchers(HttpMethod.PUT, "/api/stations/*").permitAll()
-//                    .requestMatchers(HttpMethod.DELETE, "/api/stations/*").permitAll()
-//
-//                    //User contoller
-//                    .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").permitAll()
-//                    // .requestMatchers(HttpMethod.GET, "/api/user/all", "/api/user/*").hasRole("ADMIN")
-//                    .requestMatchers(HttpMethod.POST,"/api/user/").permitAll()
-//                    .requestMatchers(HttpMethod.PUT, "/api/user/*").permitAll()
-////                    .requestMatchers(HttpMethod.PUT, "/api/user/*").hasRole("ADMIN")
-//                    .requestMatchers(HttpMethod.DELETE, "/api/user/*").permitAll()
+                // //AppointmentController
+                .requestMatchers(HttpMethod.GET, "/api/appointment/**", "/api/appointment", "/api/appointment/*").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/appointment/station/*").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/appointment").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/appointment/auto/*").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/appointment/available").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/appointment/*").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/appointment/completed/*").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/appointment/cancel/*").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/appointment/*").authenticated()
+                //
+                //carController
+                .requestMatchers(HttpMethod.GET, "/api/car/**", "/api/car", "/api/car/*" ).authenticated()
+                .requestMatchers(HttpMethod.POST,"/api/car/add/*").authenticated()
+                .requestMatchers(HttpMethod.POST,"/api/car").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/car/*").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/car/*").authenticated()
+                //
+                //
+                // cardController
+                .requestMatchers(HttpMethod.GET, "/api/card/**", "/api/card/*").authenticated()
+                .requestMatchers(HttpMethod.POST,"/api/card").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/card/*").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/card/*").authenticated()
+                //
+                //chargerController
+                .requestMatchers(HttpMethod.GET, "/api/charger/**","/api/charger", "/api/charger/*").authenticated()
+                .requestMatchers(HttpMethod.POST,"/api/charger").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/charger/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/charger/*").hasRole("ADMIN")
+                //
+                //DistanceController
+                .requestMatchers(HttpMethod.GET, "/api/distance").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/charging/time").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/charging/cost").authenticated()
 
+                //
+                //
+                //Station contoller
+                .requestMatchers(HttpMethod.GET, "/api/stations/all",
+                        "/api/stations/*").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/stations/all",
+                        "/api/stations/*").authenticated()
+                .requestMatchers(HttpMethod.POST,"/api/stations",
+                        "/api/stations/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST,"/api/stations",
+                        "/api/stations/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST,"/api/stationCheck/**").authenticated()
+                .requestMatchers(HttpMethod.POST,"/api/stations/closest").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/stations/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/stations/*").hasRole("ADMIN")
 
+                //User contoller
+                .requestMatchers(HttpMethod.GET, "/api/user/*").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/user/all").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST,"/api/user/").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/user/*").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/user/*").authenticated()
 
                 .anyRequest().authenticated()
-                .and().sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .and().sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS));
         return http.build();
     }
 
